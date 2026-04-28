@@ -86,29 +86,63 @@
       justify-content: center;
       align-items: center;
       text-align: center;
-      padding: 40px 20px;
+      padding: 120px 20px 70px;
     }
 
-    .hero-content {
-      max-width: 900px;
+    .luxury-hero {
+      flex-direction: column;
+      background:
+        radial-gradient(circle at 50% 22%, rgba(212, 175, 55, 0.18), transparent 25%),
+        radial-gradient(circle at 50% 55%, rgba(178, 102, 255, 0.16), transparent 34%);
+    }
+
+    .hero-logo-wrap {
+      width: min(270px, 68vw);
+      height: min(270px, 68vw);
+      margin: 0 auto 28px;
+      border: 2px solid rgba(212, 175, 55, 0.7);
+      border-radius: 50%;
+      padding: 8px;
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow:
+        0 0 28px rgba(212, 175, 55, 0.32),
+        0 0 56px rgba(178, 102, 255, 0.18);
     }
 
     .hero-logo {
-      width: min(320px, 72vw);
-      height: min(320px, 72vw);
-      margin: 0 auto 28px;
+      width: 100%;
+      height: 100%;
       display: block;
       border-radius: 50%;
       object-fit: cover;
-      background: #fff;
-      box-shadow: 0 0 30px rgba(212, 175, 55, 0.22);
     }
 
-    .hero h1 {
-      font-size: 5rem;
-      margin: 0 0 30px;
-      letter-spacing: 3px;
+    .luxury-kicker {
+      margin: 0 0 18px;
+      color: #d4af37;
+      font-size: 0.92rem;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+    }
+
+    .luxury-title {
+      margin: 0 0 22px;
+      color: #b266ff;
+      font-size: clamp(4rem, 12vw, 8.5rem);
+      line-height: 0.9;
       font-weight: 300;
+      letter-spacing: 0;
+      text-shadow:
+        0 0 26px rgba(178, 102, 255, 0.72),
+        0 0 52px rgba(178, 102, 255, 0.2);
+    }
+
+    .luxury-title span {
+      color: #d4af37;
+      text-shadow:
+        0 0 26px rgba(212, 175, 55, 0.72),
+        0 0 52px rgba(212, 175, 55, 0.22);
     }
 
     .balo {
@@ -121,11 +155,53 @@
       text-shadow: 0 0 20px rgba(212, 175, 55, 0.8);
     }
 
-    .hero .subtitle {
-      font-size: 1.4rem;
-      margin: 30px 0 50px;
-      color: #d4af37;
+    .luxury-subtitle {
+      max-width: 660px;
+      margin: 0 auto 38px;
+      color: #fff1a8;
+      font-size: clamp(1.1rem, 2.5vw, 1.45rem);
       font-weight: 300;
+      line-height: 1.7;
+    }
+
+    .luxury-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 54px;
+      padding: 14px 24px;
+      border: 2px solid #d4af37;
+      border-radius: 4px;
+      color: #d4af37;
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 700;
+      transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.22);
+    }
+
+    .luxury-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .luxury-btn.primary {
+      background: #d4af37;
+      color: #120020;
+    }
+
+    .luxury-btn.primary:hover {
+      box-shadow: 0 0 34px rgba(212, 175, 55, 0.45);
+    }
+
+    .luxury-btn.secondary {
+      background: rgba(0, 0, 0, 0.28);
+      color: #d4af37;
+      border-color: rgba(212, 175, 55, 0.82);
+    }
+
+    .luxury-btn.secondary:hover {
+      background: rgba(178, 102, 255, 0.18);
+      color: #fff1a8;
     }
 
     .btn-primary {
@@ -524,8 +600,21 @@
 
     /* Responsive */
     @media (max-width: 768px) {
-      .hero h1 {
+      .hero h1:not(.luxury-title) {
         font-size: 3.5rem;
+      }
+
+      .hero {
+        padding-top: 150px;
+      }
+
+      .hero-logo-wrap {
+        width: min(220px, 62vw);
+        height: min(220px, 62vw);
+      }
+
+      .luxury-title {
+        font-size: clamp(3.6rem, 16vw, 6rem);
       }
 
       .hero .subtitle {
@@ -595,8 +684,25 @@
     }
 
     @media (max-width: 480px) {
-      .hero h1 {
+      .hero h1:not(.luxury-title) {
         font-size: 2.8rem;
+      }
+
+      .hero {
+        padding-top: 170px;
+      }
+
+      .luxury-kicker {
+        font-size: 0.72rem;
+        line-height: 1.55;
+      }
+
+      .luxury-title {
+        font-size: clamp(3.1rem, 18vw, 4.6rem);
+      }
+
+      .luxury-btn {
+        width: min(100%, 300px);
       }
 
       .hero .subtitle {
@@ -677,18 +783,22 @@
   </nav>
 
   <!-- Hero Section -->
-  <section class="hero" id="hero">
-    <div class="hero-content">
-      <img class="hero-logo" src="assets/balogo.png" alt="BaloWaci Collective logo">
-      <h1>
-        <span class="balo">Balo</span><span class="waci">Waci</span>
-      </h1>
-      <p class="subtitle" data-i18n="hero.subtitle">A Unified Time Interpretation System</p>
-      <div class="hero-actions">
-        <button class="btn-primary" data-i18n="hero.explore" onclick="document.getElementById('time-panel').scrollIntoView({ behavior: 'smooth' });">Explore the System</button>
-        <a class="btn-primary" href="interfaces/universe-time-wheel-patent.html" data-i18n="hero.openWheel">Open Live Wheel</a>
-        <a class="btn-primary" href="interfaces/universe-watch-wrist.html" data-i18n="hero.openWatch">Open Live Watch</a>
-      </div>
+  <section class="hero luxury-hero" id="hero">
+    <div class="hero-logo-wrap">
+      <img src="assets/balogo.png" alt="BaloWaci Logo" class="hero-logo">
+    </div>
+
+    <p class="luxury-kicker">A Unified Time Interpretation System</p>
+
+    <h1 class="luxury-title">Balo<span>Waci</span></h1>
+
+    <p class="luxury-subtitle">
+      Where cultural time, modern time, and symbolic design move together as one.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#founder" class="luxury-btn primary">Discover the Vision</a>
+      <a href="interfaces/universe-watch-wrist.html" class="luxury-btn secondary">View the Timepiece</a>
     </div>
   </section>
 
