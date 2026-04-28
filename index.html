@@ -750,6 +750,95 @@
         gap: 5px;
       }
     }
+
+    .luxury-hero {
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      position: relative;
+    }
+
+    .hero-logo-wrap {
+      width: 210px;
+      height: 210px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 36px;
+      box-shadow: 0 0 45px rgba(212, 175, 55, 0.35);
+    }
+
+    .hero-logo {
+      width: 190px;
+      height: 190px;
+      object-fit: contain;
+      border-radius: 50%;
+    }
+
+    .luxury-kicker {
+      color: #d4af37;
+      font-size: 0.85rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .luxury-title {
+      font-size: clamp(3.2rem, 8vw, 7rem);
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: #c884ff;
+      margin: 0;
+    }
+
+    .luxury-title span {
+      color: #ffd700;
+    }
+
+    .luxury-subtitle {
+      max-width: 620px;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 1.1rem;
+      line-height: 1.8;
+      margin: 24px auto 38px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .luxury-btn {
+      padding: 15px 28px;
+      border: 1px solid #d4af37;
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+    }
+
+    .luxury-btn.primary {
+      background: #d4af37;
+      color: #090812;
+    }
+
+    .luxury-btn.secondary {
+      background: transparent;
+      color: #d4af37;
+    }
+
+    .luxury-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 25px rgba(212, 175, 55, 0.35);
+    }
   </style>
 </head>
 <body>
