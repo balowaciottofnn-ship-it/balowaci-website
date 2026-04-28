@@ -189,6 +189,205 @@
       line-height: 1.7;
     }
 
+    .watch-showcase {
+      min-height: 100vh;
+      padding: 120px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: radial-gradient(circle at center, rgba(96, 45, 180, 0.25), transparent 55%);
+    }
+
+    .showcase-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .showcase-kicker {
+      color: #d4af37;
+      text-transform: uppercase;
+      letter-spacing: 0.28em;
+      font-size: 0.78rem;
+      margin-bottom: 18px;
+    }
+
+    .showcase-title {
+      color: #e6c26a;
+      font-size: clamp(2.4rem, 6vw, 5rem);
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      margin: 0 0 20px;
+    }
+
+    .showcase-text {
+      max-width: 650px;
+      margin: 0 auto 70px;
+      color: rgba(255, 255, 255, 0.78);
+      line-height: 1.8;
+      font-size: 1rem;
+    }
+
+    .watch-stage {
+      position: relative;
+      width: 320px;
+      height: 520px;
+      margin: 0 auto 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .watch-glow {
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212, 175, 55, 0.22), transparent 65%);
+      filter: blur(8px);
+    }
+
+    .watch-body {
+      position: relative;
+      width: 190px;
+      height: 500px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: luxuryFloat 6s ease-in-out infinite;
+    }
+
+    .watch-strap {
+      position: absolute;
+      width: 88px;
+      height: 155px;
+      background: linear-gradient(180deg, #111, #050505);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .watch-strap.top {
+      top: 0;
+      border-radius: 35px 35px 12px 12px;
+    }
+
+    .watch-strap.bottom {
+      bottom: 0;
+      border-radius: 12px 12px 35px 35px;
+    }
+
+    .watch-face {
+      position: relative;
+      width: 210px;
+      height: 210px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #fff 0%, #f4efe1 55%, #d4af37 100%);
+      border: 2px solid #d4af37;
+      box-shadow: 0 0 18px rgba(212, 175, 55, 0.35);
+      z-index: 2;
+    }
+
+    .watch-ring {
+      position: absolute;
+      inset: 22px;
+      border-radius: 50%;
+      border: 1px solid rgba(17, 17, 17, 0.45);
+    }
+
+    .watch-center {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: #111;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .watch-hand {
+      position: absolute;
+      width: 2px;
+      background: #111;
+      left: 50%;
+      bottom: 50%;
+      transform-origin: bottom center;
+    }
+
+    .watch-hand.hour {
+      height: 48px;
+      transform: translateX(-50%) rotate(25deg);
+    }
+
+    .watch-hand.minute {
+      height: 72px;
+      transform: translateX(-50%) rotate(145deg);
+    }
+
+    .watch-hand.second {
+      height: 80px;
+      background: #7b2cff;
+      transform: translateX(-50%) rotate(220deg);
+    }
+
+    .watch-marker {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: #7b2cff;
+      border: 2px solid #d4af37;
+      border-radius: 50%;
+    }
+
+    .m12 {
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .m3 {
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .m6 {
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .m9 {
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .showcase-btn {
+      display: inline-block;
+      padding: 14px 30px;
+      border: 1px solid #d4af37;
+      color: #d4af37;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 0.78rem;
+      transition: all 0.3s ease;
+    }
+
+    .showcase-btn:hover {
+      background: #d4af37;
+      color: #080711;
+      transform: translateY(-3px);
+    }
+
+    @keyframes luxuryFloat {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-14px); }
+      100% { transform: translateY(0px); }
+    }
+
     .button,
     .luxury-btn {
       display: inline-flex;
@@ -988,6 +1187,43 @@
     </div>
   </section>
 
+  <section id="watch-showcase" class="watch-showcase">
+    <div class="showcase-inner">
+      <p class="showcase-kicker" data-i18n="showcase.kicker">BaloWaci Concept Timepiece</p>
+
+      <h2 class="showcase-title" data-i18n="showcase.title">Crafted to Redefine Time.</h2>
+
+      <p class="showcase-text" data-i18n="showcase.text">
+        A symbolic luxury timepiece designed to unite standard time, military time,
+        cultural time, and rotational interpretation into one visual system.
+      </p>
+
+      <div class="watch-stage">
+        <div class="watch-glow"></div>
+
+        <div class="watch-body">
+          <div class="watch-strap top"></div>
+
+          <div class="watch-face">
+            <div class="watch-ring"></div>
+            <div class="watch-center"></div>
+            <div class="watch-hand hour"></div>
+            <div class="watch-hand minute"></div>
+            <div class="watch-hand second"></div>
+            <span class="watch-marker m12"></span>
+            <span class="watch-marker m3"></span>
+            <span class="watch-marker m6"></span>
+            <span class="watch-marker m9"></span>
+          </div>
+
+          <div class="watch-strap bottom"></div>
+        </div>
+      </div>
+
+      <a href="interfaces/universe-watch-wrist.html" class="showcase-btn" data-i18n="showcase.button">Experience Live Watch</a>
+    </div>
+  </section>
+
   <!-- About Section -->
   <section id="about">
     <div class="container">
@@ -1698,6 +1934,10 @@
         'hero.luxurySubtitle': 'Where cultural time, modern time, and symbolic design move together as one.',
         'hero.discover': 'Discover the Vision',
         'hero.viewTimepiece': 'View the Timepiece',
+        'showcase.kicker': 'BaloWaci Concept Timepiece',
+        'showcase.title': 'Crafted to Redefine Time.',
+        'showcase.text': 'A symbolic luxury timepiece designed to unite standard time, military time, cultural time, and rotational interpretation into one visual system.',
+        'showcase.button': 'Experience Live Watch',
         'gallery.origin': 'Origin Sketch: First circular dial exploration, establishing the center point and radial time marks.',
         'gallery.mode': 'Mode Comparison: Separate analog studies for cultural, standard, and military time interpretations.',
         'gallery.trilayer': 'Tri-Layer Concept: Early move toward combining multiple time systems into one readable face.',
@@ -1732,6 +1972,10 @@
         'hero.luxurySubtitle': 'Donde el tiempo cultural, el tiempo moderno y el diseño simbólico se mueven juntos como uno.',
         'hero.discover': 'Descubrir la Visión',
         'hero.viewTimepiece': 'Ver el Reloj',
+        'showcase.kicker': 'Reloj Conceptual BaloWaci',
+        'showcase.title': 'Creado para Redefinir el Tiempo.',
+        'showcase.text': 'Un reloj simbólico de lujo diseñado para unir el tiempo estándar, el tiempo militar, el tiempo cultural y la interpretación rotacional en un solo sistema visual.',
+        'showcase.button': 'Experimentar el Reloj en Vivo',
         'gallery.origin': 'Boceto de Origen: Primera exploración de una esfera circular, estableciendo el punto central y las marcas radiales de tiempo.',
         'gallery.mode': 'Comparación de Modos: Estudios analógicos separados para interpretaciones culturales, estándar y militares del tiempo.',
         'gallery.trilayer': 'Concepto de Tres Capas: Primer paso hacia la combinación de varios sistemas de tiempo en una sola esfera legible.',
@@ -1766,6 +2010,10 @@
         'hero.luxurySubtitle': 'Onde tempo cultural, tempo moderno e design simbólico se movem juntos como um só.',
         'hero.discover': 'Descobrir a Visão',
         'hero.viewTimepiece': 'Ver o Relógio',
+        'showcase.kicker': 'Relógio Conceitual BaloWaci',
+        'showcase.title': 'Criado para Redefinir o Tempo.',
+        'showcase.text': 'Um relógio simbólico de luxo projetado para unir tempo padrão, tempo militar, tempo cultural e interpretação rotacional em um único sistema visual.',
+        'showcase.button': 'Experimentar o Relógio ao Vivo',
         'gallery.origin': 'Esboço de Origem: Primeira exploração de mostrador circular, definindo o ponto central e as marcações radiais de tempo.',
         'gallery.mode': 'Comparação de Modos: Estudos analógicos separados para interpretações cultural, padrão e militar do tempo.',
         'gallery.trilayer': 'Conceito de Três Camadas: Primeiro movimento para combinar vários sistemas de tempo em um único mostrador legível.',
