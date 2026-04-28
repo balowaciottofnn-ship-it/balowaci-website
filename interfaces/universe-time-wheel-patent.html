@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Universe Time Wheel — Invention Disclosure</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Josefin+Sans:wght@100;300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --gold: #c9a84c;
+  --gold-light: #f0d080;
+  --gold-dim: #7a5e20;
+  --brown: #8B5E3C;
+  --cream: #f0e8d0;
+  --ink: #080604;
+  --smoke: #111009;
+  --panel: #0f0d09;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--ink);
+  color: var(--cream);
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 300;
+  line-height: 1.7;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.1rem 3rem;
+  background: rgba(8,6,4,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(201,168,76,0.12);
+}
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: var(--gold);
+  letter-spacing: 0.06em;
+}
+.nav-links {
+  display: flex; gap: 2.4rem; list-style: none;
+  font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase;
+}
+.nav-links a { color: rgba(240,232,208,0.45); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover { color: var(--gold); }
+
+/* ── HERO ── */
+#hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: flex-start;
+  padding: 10rem 3rem 5rem;
+  max-width: 900px; margin: 0 auto;
+  position: relative;
+}
+.stamp {
+  display: inline-block;
+  border: 1px solid rgba(201,168,76,0.4);
+  color: var(--gold);
+  font-size: 0.60rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  padding: 0.4rem 1rem;
+  border-radius: 2px;
+  margin-bottom: 2.5rem;
+}
+h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  line-height: 1.05;
+  color: var(--cream);
+  margin-bottom: 2rem;
+}
+h1 em { font-style: italic; color: var(--gold-light); }
+.hero-p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.25rem;
+  font-weight: 300;
+  color: rgba(240,232,208,0.65);
+  max-width: 560px;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+.divider {
+  width: 60px; height: 1px;
+  background: linear-gradient(to right, var(--gold-dim), transparent);
+  margin: 3rem 0;
+}
+.meta-row {
+  display: flex; gap: 3rem; flex-wrap: wrap;
+}
+.meta-item { }
+.meta-label {
+  font-size: 0.58rem; letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--gold-dim); margin-bottom: 0.3rem;
+}
+.meta-val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem; color: rgba(240,232,208,0.7);
+}
+
+/* ── CLOCK SECTION ── */
+#clock-section {
+  background: var(--smoke);
+  border-top: 1px solid rgba(201,168,76,0.12);
+  border-bottom: 1px solid rgba(201,168,76,0.12);
+  padding: 5rem 2rem;
+  display: flex; flex-direction: column; align-items: center;
+}
+.section-eyebrow {
+  font-size: 0.60rem; letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--gold-dim); margin-bottom: 1rem; text-align: center;
+}
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300; font-size: 1.8rem;
+  color: var(--cream); text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+canvas#clock {
+  display: block;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(201,168,76,0.18), 0 30px 80px rgba(0,0,0,0.7);
+  cursor: default;
+}
+
+.clock-hint {
+  margin-top: 1rem;
+  font-size: 0.60rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(201,168,76,0.30); text-align: center;
+}
+
+/* Readout bar */
+.readout {
+  display: flex; gap: 0;
+  margin-top: 2.5rem;
+  border: 1px solid rgba(201,168,76,0.16);
+  border-radius: 3px; overflow: hidden;
+}
+.rd {
+  padding: 0.8rem 1.5rem; text-align: center;
+  border-right: 1px solid rgba(201,168,76,0.10);
+}
+.rd:last-child { border-right: none; }
+.rd-l { font-size: 0.56rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 0.3rem; }
+.rd-v { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--cream); white-space: nowrap; }
+
+/* ── CONTENT ── */
+.content-section {
+  max-width: 820px; margin: 0 auto;
+  padding: 6rem 3rem;
+  border-bottom: 1px solid rgba(201,168,76,0.08);
+}
+.content-section:last-of-type { border-bottom: none; }
+
+h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300; font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  line-height: 1.2; color: var(--cream);
+  margin-bottom: 1.8rem;
+}
+h2 em { font-style: italic; color: var(--gold-light); }
+
+p {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300; font-size: 1.1rem;
+  color: rgba(240,232,208,0.70);
+  line-height: 1.9; margin-bottom: 1.2rem;
+}
+
+/* Callout box */
+.callout {
+  border-left: 2px solid var(--gold-dim);
+  padding: 1.4rem 1.8rem;
+  margin: 2.5rem 0;
+  background: rgba(201,168,76,0.04);
+}
+.callout p {
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 100; font-size: 0.80rem;
+  letter-spacing: 0.06em; line-height: 1.9;
+  color: rgba(240,232,208,0.60) !important;
+  margin-bottom: 0.4rem !important;
+}
+.callout strong { color: var(--gold-light); font-weight: 400; }
+
+/* Table */
+.data-table {
+  width: 100%; border-collapse: collapse;
+  margin: 2.5rem 0; font-size: 0.85rem;
+}
+.data-table th {
+  text-align: left; font-family: 'Josefin Sans', sans-serif;
+  font-weight: 100; font-size: 0.58rem; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--gold-dim); padding: 0.7rem 1rem;
+  border-bottom: 1px solid rgba(201,168,76,0.14);
+}
+.data-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid rgba(201,168,76,0.07);
+  color: rgba(240,232,208,0.65);
+  font-family: 'Cormorant Garamond', serif; font-size: 1rem;
+}
+.data-table td:first-child { color: var(--cream); }
+.dot { display: inline-block; width:10px; height:10px; border-radius:2px; margin-right:8px; vertical-align: middle; }
+
+/* Swahili grid */
+.saa-grid {
+  display: grid; grid-template-columns: repeat(6,1fr);
+  gap: 1px; background: rgba(139,94,60,0.18);
+  border: 1px solid rgba(139,94,60,0.25);
+  border-radius: 3px; overflow: hidden;
+  margin: 2rem 0;
+}
+.saa-cell {
+  background: var(--panel);
+  padding: 0.9rem 0.5rem; text-align: center;
+  transition: background 0.3s;
+}
+.saa-cell.active { background: rgba(139,94,60,0.28); }
+.saa-n { font-family:'Cormorant Garamond',serif; font-size:1.3rem; color:var(--brown); line-height:1; }
+.saa-cell.active .saa-n { color:#d4a060; }
+.saa-w { font-size:0.58rem; letter-spacing:0.05em; color:rgba(139,94,60,0.55); display:block; margin-top:0.15rem; }
+.saa-wst { font-size:0.55rem; color:rgba(240,232,208,0.28); margin-top:0.15rem; }
+
+/* Patent claim boxes */
+.claim-list { list-style:none; margin: 2rem 0; }
+.claim-list li {
+  display: flex; gap: 1.2rem; align-items: flex-start;
+  padding: 1.2rem 1.4rem;
+  border: 1px solid rgba(201,168,76,0.10);
+  border-radius: 3px; margin-bottom: 0.8rem;
+  background: rgba(201,168,76,0.03);
+}
+.claim-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem; font-weight: 300;
+  color: var(--gold-dim); line-height: 1;
+  flex-shrink: 0; width: 2rem; text-align: center; padding-top: 0.15rem;
+}
+.claim-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.0rem; color: rgba(240,232,208,0.68); line-height: 1.8;
+}
+.claim-text strong { color: var(--cream); font-weight: 400; }
+
+/* Next steps */
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 1px; background: rgba(201,168,76,0.10); border: 1px solid rgba(201,168,76,0.14); border-radius:3px; overflow:hidden; margin: 2rem 0; }
+.step { background:var(--panel); padding:1.5rem 1.4rem; }
+.step-n { font-size:0.58rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold-dim); margin-bottom:0.7rem; }
+.step-title { font-family:'Cormorant Garamond',serif; font-size:1.05rem; color:var(--cream); margin-bottom:0.5rem; }
+.step-body { font-family:'Josefin Sans',serif; font-size:0.75rem; font-weight:100; color:rgba(240,232,208,0.45); line-height:1.7; }
+
+/* Footer */
+footer {
+  border-top: 1px solid rgba(201,168,76,0.10);
+  padding: 3rem 3rem;
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+}
+.footer-logo { font-family:'Cormorant Garamond',serif; font-size:1rem; color:var(--gold-dim); }
+.footer-note { font-size:0.60rem; letter-spacing:0.16em; text-transform:uppercase; color:rgba(201,168,76,0.22); }
+
+@media(max-width:640px){
+  nav { padding: 1rem 1.4rem; }
+  .nav-links { gap: 1.2rem; }
+  #hero { padding: 8rem 1.4rem 4rem; }
+  .content-section { padding: 4rem 1.4rem; }
+  .readout { flex-wrap: wrap; }
+  .rd { flex: 1 1 40%; }
+  .saa-grid { grid-template-columns: repeat(4,1fr); }
+  footer { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Universe Time Wheel</div>
+  <ul class="nav-links">
+    <li><a href="#clock-section">Live Demo</a></li>
+    <li><a href="#discovery">Discovery</a></li>
+    <li><a href="#claims">Claims</a></li>
+    <li><a href="#next">Next Steps</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="stamp">Invention Disclosure Document</div>
+  <h1>The <em>Universe</em><br>Time Wheel</h1>
+  <p class="hero-p">
+    A unified timekeeping instrument that encodes four independent cyclical time systems — orbital, solar, civil, and cultural — on a single concentric face, derivable from a single angular measurement.
+  </p>
+  <div class="divider"></div>
+  <div class="meta-row">
+    <div class="meta-item">
+      <div class="meta-label">Concept Origin</div>
+      <div class="meta-val">Hand-drawn notebook sketch</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Disclosure Date</div>
+      <div class="meta-val">March 12, 2026</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Status</div>
+      <div class="meta-val">Pre-filing / Confidential</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Field</div>
+      <div class="meta-val">Horology · Cosmology · Cultural Timekeeping</div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE CLOCK -->
+<section id="clock-section">
+  <p class="section-eyebrow">Working Prototype</p>
+  <p class="section-title">The instrument — live</p>
+  <canvas id="clock"></canvas>
+  <p class="clock-hint">Four time systems · One face · One hand angle</p>
+  <div class="readout">
+    <div class="rd"><div class="rd-l">Western 12h</div><div class="rd-v" id="r-west">—</div></div>
+    <div class="rd"><div class="rd-l">24-hour</div><div class="rd-v" id="r-24h">—</div></div>
+    <div class="rd"><div class="rd-l">Swahili Saa</div><div class="rd-v" id="r-swa">—</div></div>
+    <div class="rd"><div class="rd-l">Day of Year</div><div class="rd-v" id="r-doy">—</div></div>
+    <div class="rd"><div class="rd-l">Date</div><div class="rd-v" id="r-date">—</div></div>
+    <div class="rd"><div class="rd-l">Season</div><div class="rd-v" id="r-season">—</div></div>
+  </div>
+</section>
+
+<!-- THE DISCOVERY -->
+<section class="content-section" id="discovery">
+  <p class="section-eyebrow">I. The Core Discovery</p>
+  <h2>All cycles of time are <em>geometrically identical</em></h2>
+  <p>
+    The central insight of the Universe Time Wheel is that every recurring time cycle — a second, a minute, an hour, a day, a year — is geometrically the same object: one complete rotation of 360°. The only variable is scale.
+  </p>
+  <p>
+    By mapping multiple independent time scales to a single circular face, any one angular measurement on the face simultaneously encodes the full state of time across all scales. The wheel is not a display — it is a <em>geometric calculator</em>.
+  </p>
+
+  <div class="callout">
+    <p><strong>Key ratio:</strong> 365 days ÷ 360° = 1.0139 days per degree of arc</p>
+    <p><strong>Orbital angular rate:</strong> Earth travels 0.9863° per solar day</p>
+    <p><strong>Quarter markers (exact):</strong> 91.25 · 182.50 · 273.75 · 365 days — not rounded to 90°</p>
+    <p><strong>Cardinal anchors:</strong> North = Winter solstice · East = Spring equinox · South = Summer solstice · West = Autumn equinox</p>
+  </div>
+
+  <p>
+    This is not an approximation. The numbers inscribed on the outer ring are exact fractional day-counts of Earth's orbital quarters. No prior clock or calendar instrument unifies these four scales — orbital year, solar day, civil hour, and cultural time — on a single readable face.
+  </p>
+</section>
+
+<!-- ARCHITECTURE -->
+<section class="content-section">
+  <p class="section-eyebrow">II. Architecture</p>
+  <h2>Four rings, <em>four civilisations</em> of time</h2>
+  <p>
+    The instrument consists of four concentric annular rings, each representing a complete and independent timekeeping tradition. All four share the same rotational geometry, enabling simultaneous cross-system reading.
+  </p>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Ring</th>
+        <th>Cycle</th>
+        <th>One Full Rotation</th>
+        <th>Key Markers</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="dot" style="background:#c9a84c"></span>Orbital</td>
+        <td>Earth's solar orbit</td>
+        <td>365 days (1 year)</td>
+        <td>N/S/E/W = solstices & equinoxes</td>
+      </tr>
+      <tr>
+        <td><span class="dot" style="background:#2a5a8a"></span>24-hour</td>
+        <td>Solar day</td>
+        <td>24 hours</td>
+        <td>Hours 0–23</td>
+      </tr>
+      <tr>
+        <td><span class="dot" style="background:#5a1e6e"></span>12-hour</td>
+        <td>Civil half-day</td>
+        <td>12 hours</td>
+        <td>Hours 1–12, AM/PM</td>
+      </tr>
+      <tr>
+        <td><span class="dot" style="background:#5a2e0a"></span>Swahili Saa</td>
+        <td>Sunrise-based day</td>
+        <td>12 saa (sunrise to sunset)</td>
+        <td>Saa 1 (moja) = 7 AM Western</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>
+    The innermost ring encodes <strong>Saa za Kiswahili</strong> — the timekeeping system of East African coastal cultures — in which the day begins at sunrise rather than midnight. The Swahili numbers 1–12 are rotationally offset by six positions from the Western 12-hour ring, so both systems are readable from the same hand position.
+  </p>
+</section>
+
+<!-- SWAHILI -->
+<section class="content-section">
+  <p class="section-eyebrow">III. The Cultural Layer</p>
+  <h2>Saa za Kiswahili — <em>time from sunrise</em></h2>
+  <p>
+    The integration of Swahili time is not decorative. It represents a distinct philosophical framework: time counted from the natural anchor of sunrise, not from the arbitrary civil midnight. The Universe Time Wheel is the first instrument to display both frameworks simultaneously and geometrically.
+  </p>
+
+  <div class="saa-grid" id="saa-grid"></div>
+
+  <p style="margin-top:1.5rem">
+    The highlighted cell updates live. Both the Western 12-hour position and the Swahili saa position are read from a single hand — the geometry of the rings handles the conversion automatically, with no calculation required by the reader.
+  </p>
+</section>
+
+<!-- PATENT CLAIMS -->
+<section class="content-section" id="claims">
+  <p class="section-eyebrow">IV. Potential Patent Claims</p>
+  <h2>What may be <em>protectable</em></h2>
+  <p>
+    The following represent potential independent claims for a utility patent application. These should be reviewed and refined with a registered patent attorney. The core novelty lies in the geometric unification of independent time systems on a single instrument.
+  </p>
+
+  <ul class="claim-list">
+    <li>
+      <div class="claim-num">1</div>
+      <div class="claim-text">
+        <strong>Unified concentric time display</strong> — A timekeeping instrument comprising four or more concentric annular rings, each encoding a distinct cyclical time system sharing a common rotational axis, wherein a single angular measurement of a pointer simultaneously yields a valid reading in all encoded time systems.
+      </div>
+    </li>
+    <li>
+      <div class="claim-num">2</div>
+      <div class="claim-text">
+        <strong>Orbital-to-calendar ring</strong> — An annular ring encoding Earth's solar orbital position in degrees, wherein cardinal compass directions N, S, E, W correspond to solstices and equinoxes respectively, and wherein quarter-year markers are inscribed at the exact fractional values 91.25, 182.50, 273.75, and 365 days.
+      </div>
+    </li>
+    <li>
+      <div class="claim-num">3</div>
+      <div class="claim-text">
+        <strong>Simultaneous multi-system readout</strong> — A method of reading time wherein a single indicator position, expressed as an angle θ from a fixed reference, yields the time of day in a 12-hour civil system, the time of day in a 24-hour solar system, the day of the year in an orbital system, and the cultural time in a sunrise-referenced system, all without arithmetic.
+      </div>
+    </li>
+    <li>
+      <div class="claim-num">4</div>
+      <div class="claim-text">
+        <strong>Swahili cultural integration</strong> — A clock face incorporating a Swahili saa ring wherein Swahili hour numerals 1–12 are angularly offset from Western hour numerals 1–12 by six hour-positions (180°), enabling simultaneous reading of Western civil time and Swahili sunrise-referenced time from the same pointer position.
+      </div>
+    </li>
+    <li>
+      <div class="claim-num">5</div>
+      <div class="claim-text">
+        <strong>Physical embodiment</strong> — A physical clock device comprising the concentric ring system described above, wherein each ring is fabricated from a distinct material to visually differentiate time systems (e.g. brass, anodized aluminium, acrylic, wood), and wherein the device includes at minimum three hands operating at independent angular velocities corresponding to hour, day-of-year, and sub-hour resolution.
+      </div>
+    </li>
+  </ul>
+
+  <div class="callout">
+    <p><strong>Note on prior art:</strong> Standard clock faces encode one or two time systems (12h and 24h). Astronomical clocks (e.g. Prague Orloj) encode celestial position but do not unify civil and cultural time systems. No known instrument encodes Swahili saa time geometrically alongside orbital, 24-hour, and 12-hour civil time on a single readable face.</p>
+    <p><strong>Design patent:</strong> The specific visual arrangement, proportions, and material language of the four-ring face may also be protectable as a separate design patent.</p>
+  </div>
+</section>
+
+<!-- NEXT STEPS -->
+<section class="content-section" id="next">
+  <p class="section-eyebrow">V. Path Forward</p>
+  <h2>Recommended <em>next steps</em></h2>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-n">Step 01</div>
+      <div class="step-title">Provisional Patent Application</div>
+      <div class="step-body">File a provisional patent application (PPA) in the US or relevant jurisdiction. A PPA costs ~$320 USD and establishes a priority date — giving 12 months to develop the full application. This document serves as an initial invention disclosure.</div>
+    </div>
+    <div class="step">
+      <div class="step-n">Step 02</div>
+      <div class="step-title">Prior Art Search</div>
+      <div class="step-body">Commission a formal prior art search across patent databases (USPTO, EPO, WIPO) and horology literature. Particular attention to astronomical clocks, multi-timezone instruments, and ethnographic timekeeping devices.</div>
+    </div>
+    <div class="step">
+      <div class="step-n">Step 03</div>
+      <div class="step-title">Utility Patent Application</div>
+      <div class="step-body">Work with a registered patent attorney to draft and file a full utility patent application based on the claims above. The geometric unification of time systems is the core novel claim to protect.</div>
+    </div>
+    <div class="step">
+      <div class="step-n">Step 04</div>
+      <div class="step-title">Design Patent</div>
+      <div class="step-body">File a separate design patent for the visual face arrangement — the concentric ring layout, proportions, and material differentiation system. Design patents are faster and cheaper to obtain than utility patents.</div>
+    </div>
+    <div class="step">
+      <div class="step-n">Step 05</div>
+      <div class="step-title">Prototype & Documentation</div>
+      <div class="step-body">Produce a physical prototype and full technical drawings. Physical prototypes strengthen patent filings and are essential for manufacturing partnership conversations.</div>
+    </div>
+    <div class="step">
+      <div class="step-n">Step 06</div>
+      <div class="step-title">International Protection</div>
+      <div class="step-body">File a PCT (Patent Cooperation Treaty) application to preserve rights in 150+ countries. Particularly relevant given the Swahili cultural dimension — East African markets may hold significant commercial interest.</div>
+    </div>
+  </div>
+
+  <div class="callout" style="margin-top:3rem">
+    <p><strong>Important:</strong> This document is for internal exploration only and does not constitute legal advice. Before public disclosure or sharing, consult a registered patent attorney. Public disclosure before filing can invalidate patent rights in many jurisdictions. Keep this document confidential until a provisional application is filed.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Universe Time Wheel</div>
+  <div class="footer-note">Confidential · Invention Disclosure · March 2026</div>
+</footer>
+
+<!-- ── 2D CLOCK ENGINE ── -->
+<script>
+const canvas = document.getElementById('clock');
+const SIZE = Math.min(window.innerWidth * 0.82, 500);
+canvas.width = SIZE * Math.min(devicePixelRatio,2);
+canvas.height = SIZE * Math.min(devicePixelRatio,2);
+canvas.style.width = SIZE+'px'; canvas.style.height = SIZE+'px';
+const ctx = canvas.getContext('2d');
+const W = canvas.width, H = canvas.height;
+const cx = W/2, cy = H/2;
+const SC = Math.min(devicePixelRatio,2);
+
+const R_orb  = 220*SC, R_orb_in  = 190*SC;
+const R_24   = 190*SC, R_24_in   = 158*SC;
+const R_12   = 158*SC, R_12_in   = 124*SC;
+const R_face = 124*SC;
+
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MSHORT=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const DAY_NAMES=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const MONTH_START=[0,31,59,90,120,151,181,212,243,273,304,334,365];
+const SAA_WORD=['moja','mbili','tatu','nne','tano','sita','saba','nane','tisa','kumi','kumi na moja','kumi na mbili'];
+
+function toSwahili(h){const saa=((h-7+24)%12)+1;const period=h>=6&&h<12?'asubuhi':h>=12&&h<18?'mchana':h>=18?'jioni':'usiku';return{saa,word:SAA_WORD[saa-1],period};}
+function pad(n){return n.toString().padStart(2,'0');}
+function diy(y){return(y%4===0&&(y%100!==0||y%400===0))?366:365;}
+function doy(d){const s=new Date(d.getFullYear(),0,0);return Math.floor((d-s+(s.getTimezoneOffset()-d.getTimezoneOffset())*60000)/86400000);}
+function getMo(dy){let m=0;for(let i=0;i<12;i++)if(dy>MONTH_START[i]&&dy<=MONTH_START[i+1])m=i;return m;}
+function seas(dy){if(dy<80)return'Winter ❄';if(dy<172)return'Spring';if(dy<265)return'Summer';if(dy<355)return'Autumn';return'Winter ❄';}
+
+function drawArc(r1,r2,sa,ea,fill,stroke,sw){
+  ctx.beginPath();ctx.arc(cx,cy,r1,sa,ea);ctx.arc(cx,cy,r2,ea,sa,true);ctx.closePath();
+  if(fill){ctx.fillStyle=fill;ctx.fill();}
+  if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=sw||0.5;ctx.stroke();}
+}
+function rlabel(text,radius,angleDeg,size,col,bold){
+  const a=(angleDeg-90)*Math.PI/180;
+  ctx.save();ctx.translate(cx+radius*Math.cos(a),cy+radius*Math.sin(a));
+  ctx.rotate(a+Math.PI/2);ctx.fillStyle=col;
+  ctx.font=`${bold?'500':'400'} ${size}px "Josefin Sans",sans-serif`;
+  ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(text,0,0);ctx.restore();
+}
+function tick(radius,angleDeg,len,col,w){
+  const a=(angleDeg-90)*Math.PI/180;
+  ctx.beginPath();
+  ctx.moveTo(cx+radius*Math.cos(a),cy+radius*Math.sin(a));
+  ctx.lineTo(cx+(radius-len)*Math.cos(a),cy+(radius-len)*Math.sin(a));
+  ctx.strokeStyle=col;ctx.lineWidth=w||0.5;ctx.stroke();
+}
+function drawHand(angleDeg,length,width,col,tail){
+  const a=(angleDeg-90)*Math.PI/180;
+  ctx.beginPath();
+  ctx.moveTo(tail?cx-tail*Math.cos(a):cx,tail?cy-tail*Math.sin(a):cy);
+  ctx.lineTo(cx+length*Math.cos(a),cy+length*Math.sin(a));
+  ctx.strokeStyle=col;ctx.lineWidth=width;ctx.lineCap='round';ctx.stroke();
+}
+function arrowTip(angleDeg,dist,col,size){
+  const a=(angleDeg-90)*Math.PI/180;
+  ctx.save();ctx.translate(cx+dist*Math.cos(a),cy+dist*Math.sin(a));ctx.rotate(a+Math.PI/2);
+  ctx.beginPath();ctx.moveTo(0,-size);ctx.lineTo(size*0.7,size*0.6);ctx.lineTo(-size*0.7,size*0.6);ctx.closePath();
+  ctx.fillStyle=col;ctx.fill();ctx.restore();
+}
+
+let lastSaa=-1;
+function drawClock(){
+  ctx.clearRect(0,0,W,H);
+  const now=new Date();
+  const hr=now.getHours(),mi=now.getMinutes(),sc=now.getSeconds(),ms=now.getMilliseconds();
+  const dy=doy(now),td=diy(now.getFullYear());
+  const orbAngle=((dy-1)/td)*360;
+  const mo=getMo(dy),dom=dy-MONTH_START[mo];
+  const hourAngle=((hr%12)+mi/60+sc/3600+ms/3600000)/12*360;
+  const minAngle=(mi+sc/60+ms/60000)/60*360;
+  const secAngle=(sc+ms/1000)/60*360;
+  const sw=toSwahili(hr);
+
+  // BG
+  ctx.beginPath();ctx.arc(cx,cy,R_orb+2*SC,0,Math.PI*2);ctx.fillStyle='#090704';ctx.fill();
+
+  // Orbital (brass)
+  drawArc(R_orb,R_orb_in,0,Math.PI*2,'#3a3010','#c9a84c',0.5*SC);
+  for(let d=0;d<360;d+=5){const isMaj=d%90===0,isMed=d%45===0;tick(R_orb,d,isMaj?14*SC:isMed?8*SC:5*SC,'#c9a84c',isMaj?1*SC:0.5*SC);}
+  [{deg:0,lbl:'N',box:'365/360°'},{deg:90,lbl:'E',box:'91.25/90°'},{deg:180,lbl:'S',box:'182.5/180°'},{deg:270,lbl:'W',box:'273.75/270°'}]
+  .forEach(({deg,lbl,box})=>{
+    rlabel(lbl,(R_orb+R_orb_in)/2+2*SC,deg,9*SC,'#e8d080',true);
+    const a=(deg-90)*Math.PI/180;
+    const rx=cx+(R_orb+18*SC)*Math.cos(a),ry=cy+(R_orb+18*SC)*Math.sin(a);
+    ctx.save();ctx.fillStyle='#2a2008';ctx.strokeStyle='#c9a84c';ctx.lineWidth=0.8*SC;
+    ctx.beginPath();ctx.roundRect(rx-24*SC,ry-11*SC,48*SC,22*SC,3*SC);ctx.fill();ctx.stroke();
+    ctx.fillStyle='#f0d070';ctx.font=`500 ${8*SC}px "Josefin Sans",sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(box,rx,ry);ctx.restore();
+  });
+  // Sweep
+  drawArc(R_orb-SC,R_orb_in+SC,(-90)*Math.PI/180,(orbAngle-90)*Math.PI/180,'rgba(220,180,60,0.18)','#c9a84c',SC);
+  // Triangle
+  const orbA=(orbAngle-90)*Math.PI/180,orbR=(R_orb+R_orb_in)/2;
+  ctx.save();ctx.translate(cx+orbR*Math.cos(orbA),cy+orbR*Math.sin(orbA));ctx.rotate(orbA+Math.PI/2);
+  ctx.beginPath();ctx.moveTo(0,-7*SC);ctx.lineTo(6*SC,6*SC);ctx.lineTo(-6*SC,6*SC);ctx.closePath();
+  ctx.fillStyle='#ffcc44';ctx.fill();ctx.restore();
+
+  // 24h (blue)
+  drawArc(R_24,R_24_in,0,Math.PI*2,'#1a2535','#5a7ba0',0.5*SC);
+  for(let h=0;h<24;h++){tick(R_24,(h/24)*360,9*SC,'#4a6a8a',SC);rlabel(h.toString(),(R_24+R_24_in)/2,(h/24)*360,9*SC,'#9ab0cc');}
+
+  // 12h (purple)
+  drawArc(R_12,R_12_in,0,Math.PI*2,'#251828','#8a5a9a',0.5*SC);
+  for(let h=1;h<=12;h++){tick(R_12,(h/12)*360,8*SC,'#6a3a7a',SC);rlabel(h.toString(),(R_12+R_12_in)/2,(h/12)*360,9*SC,'#c09ac0');}
+
+  // Swahili face (walnut brown)
+  ctx.beginPath();ctx.arc(cx,cy,R_face,0,Math.PI*2);ctx.fillStyle='#2a1505';ctx.fill();
+  ctx.strokeStyle='#8B5E3C';ctx.lineWidth=SC;ctx.stroke();
+  for(let saa=1;saa<=12;saa++){
+    const wh=((saa+6-1)%12)+1,deg=(wh/12)*360;
+    const isCur=saa===sw.saa;
+    tick(R_face,deg,12*SC,'#8B5E3C',1.5*SC);
+    for(let t=1;t<5;t++)tick(R_face,deg+(t/5)*(360/12),5*SC,'#6a3e20',0.5*SC);
+    if(isCur){
+      const pw=((((saa-1)+6-1+12)%12)+1);
+      drawArc(R_face-SC,R_face-14*SC,(pw/12*360-90)*Math.PI/180,(deg-90)*Math.PI/180,'rgba(200,120,40,0.4)','#c08040',1.5*SC);
+    }
+    rlabel(saa.toString(),R_face-20*SC,deg,11*SC,isCur?'#ffcc88':'#d4a060',isCur);
+  }
+
+  // Hands
+  [{a:hourAngle,l:68*SC,w:4.5*SC},{a:minAngle,l:88*SC,w:2.5*SC},{a:secAngle,l:100*SC,w:1.5*SC}].forEach(({a,l,w})=>{
+    const ra=(a-90)*Math.PI/180;
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+l*Math.cos(ra),cy+l*Math.sin(ra));
+    ctx.strokeStyle='rgba(0,0,0,0.12)';ctx.lineWidth=w+2*SC;ctx.lineCap='round';ctx.stroke();
+  });
+  drawHand(hourAngle,68*SC,4.5*SC,'#e0d0a0');arrowTip(hourAngle,68*SC,'#e0d0a0',7*SC);
+  drawHand(minAngle,88*SC,2.5*SC,'#5a9ad4');arrowTip(minAngle,88*SC,'#5a9ad4',6*SC);
+  drawHand(secAngle,100*SC,1.5*SC,'#cc3322',16*SC);
+  ctx.beginPath();ctx.arc(cx+(100*SC)*Math.cos((secAngle-90)*Math.PI/180),cy+(100*SC)*Math.sin((secAngle-90)*Math.PI/180),3*SC,0,Math.PI*2);ctx.fillStyle='#cc3322';ctx.fill();
+
+  // Center
+  ctx.beginPath();ctx.arc(cx,cy,8*SC,0,Math.PI*2);ctx.fillStyle='#555';ctx.fill();
+  ctx.beginPath();ctx.arc(cx,cy,5*SC,0,Math.PI*2);ctx.fillStyle='#e0d0a0';ctx.fill();
+  ctx.beginPath();ctx.arc(cx,cy,3*SC,0,Math.PI*2);ctx.fillStyle='#cc3322';ctx.fill();
+
+  // Readouts
+  const h12=hr%12||12,ampm=hr<12?'AM':'PM';
+  document.getElementById('r-west').textContent=`${pad(h12)}:${pad(mi)}:${pad(sc)} ${ampm}`;
+  document.getElementById('r-24h').textContent=`${pad(hr)}:${pad(mi)}:${pad(sc)}`;
+  document.getElementById('r-swa').textContent=`saa ${sw.saa} — ${sw.word}`;
+  document.getElementById('r-doy').textContent=`${dy} / ${td}`;
+  document.getElementById('r-date').textContent=`${MSHORT[mo]} ${dom}, ${now.getFullYear()}`;
+  document.getElementById('r-season').textContent=seas(dy);
+
+  // Saa grid highlight
+  if(sw.saa!==lastSaa){
+    document.querySelectorAll('.saa-cell').forEach(el=>{
+      el.classList.toggle('active', parseInt(el.dataset.saa)===sw.saa);
+    });
+    lastSaa=sw.saa;
+  }
+
+  requestAnimationFrame(drawClock);
+}
+
+// Build Swahili grid
+const saaGrid=document.getElementById('saa-grid');
+const SAA_DATA=[
+  {saa:1,word:'moja',west:'7 AM'},{saa:2,word:'mbili',west:'8 AM'},
+  {saa:3,word:'tatu',west:'9 AM'},{saa:4,word:'nne',west:'10 AM'},
+  {saa:5,word:'tano',west:'11 AM'},{saa:6,word:'sita',west:'12 PM'},
+  {saa:7,word:'saba',west:'1 PM'},{saa:8,word:'nane',west:'2 PM'},
+  {saa:9,word:'tisa',west:'3 PM'},{saa:10,word:'kumi',west:'4 PM'},
+  {saa:11,word:'kumi na moja',west:'5 PM'},{saa:12,word:'kumi na mbili',west:'6 PM'},
+];
+SAA_DATA.forEach(({saa,word,west})=>{
+  const d=document.createElement('div');
+  d.className='saa-cell'; d.dataset.saa=saa;
+  d.innerHTML=`<div class="saa-n">${saa}</div><span class="saa-w">${word}</span><div class="saa-wst">${west}</div>`;
+  saaGrid.appendChild(d);
+});
+
+drawClock();
+</script>
+</body>
+</html>

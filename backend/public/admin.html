@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BaloWaci Admin Dashboard</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #07020d;
+      color: #f4d26a;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.5;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 18px 28px;
+      background: rgba(7, 2, 13, 0.94);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.45);
+    }
+
+    h1 {
+      color: #fff4c1;
+      font-size: 1.55rem;
+      font-weight: 500;
+    }
+
+    button,
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 0 16px;
+      border: 1px solid #d4af37;
+      border-radius: 4px;
+      background: #12051e;
+      color: #f4d26a;
+      cursor: pointer;
+      font: inherit;
+      text-decoration: none;
+    }
+
+    button:hover,
+    .button:hover {
+      background: #d4af37;
+      color: #12051e;
+    }
+
+    main {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 48px;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .status {
+      color: #d7c796;
+      font-size: 0.95rem;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .stat {
+      min-height: 104px;
+      padding: 18px;
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.045);
+    }
+
+    .stat span {
+      display: block;
+      color: #c7b37c;
+      font-size: 0.86rem;
+    }
+
+    .stat strong {
+      display: block;
+      margin-top: 10px;
+      color: #ffffff;
+      font-size: 1.75rem;
+      font-weight: 600;
+    }
+
+    .panel {
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      border-radius: 8px;
+      overflow: hidden;
+      background: rgba(0, 0, 0, 0.38);
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.24);
+    }
+
+    .panel-header h2 {
+      color: #fff4c1;
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 980px;
+    }
+
+    th,
+    td {
+      padding: 13px 14px;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.16);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: #fff4c1;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    td {
+      color: #ead996;
+      font-size: 0.92rem;
+    }
+
+    tr:hover td {
+      background: rgba(212, 175, 55, 0.07);
+    }
+
+    .truncate {
+      max-width: 230px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    dialog {
+      width: min(780px, calc(100% - 28px));
+      max-height: calc(100vh - 48px);
+      margin: auto;
+      padding: 0;
+      border: 1px solid #d4af37;
+      border-radius: 8px;
+      background: #0d0615;
+      color: #f4d26a;
+    }
+
+    dialog::backdrop {
+      background: rgba(0, 0, 0, 0.76);
+    }
+
+    .dialog-body {
+      display: grid;
+      gap: 16px;
+      padding: 18px;
+    }
+
+    .answer {
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.18);
+    }
+
+    .answer:last-child {
+      border-bottom: 0;
+    }
+
+    .answer h3 {
+      margin-bottom: 6px;
+      color: #fff4c1;
+      font-size: 0.95rem;
+    }
+
+    .empty,
+    .error {
+      padding: 28px 16px;
+      color: #d7c796;
+      text-align: center;
+    }
+
+    .error {
+      color: #ff9f9f;
+    }
+
+    @media (max-width: 780px) {
+      header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 520px) {
+      .stats {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>BaloWaci Admin Dashboard</h1>
+      <p class="status" id="apiStatus">Checking backend status...</p>
+    </div>
+    <div class="toolbar">
+      <button type="button" id="refreshButton">Refresh</button>
+      <a class="button" href="/api/feedback/export.csv">Export CSV</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="stats" aria-label="Feedback statistics">
+      <div class="stat">
+        <span>Total feedback</span>
+        <strong id="totalFeedback">0</strong>
+      </div>
+      <div class="stat">
+        <span>Investor-ready responses</span>
+        <strong id="investorReady">0</strong>
+      </div>
+      <div class="stat">
+        <span>Payment signals</span>
+        <strong id="paymentSignals">0</strong>
+      </div>
+      <div class="stat">
+        <span>Partnership signals</span>
+        <strong id="partnershipSignals">0</strong>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-header">
+        <h2>Recent Feedback</h2>
+        <p class="status" id="lastUpdated">Not loaded yet</p>
+      </div>
+      <div class="table-wrap" id="tableWrap">
+        <p class="empty">Loading feedback...</p>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="feedbackDialog">
+    <div class="panel-header">
+      <h2>Feedback Detail</h2>
+      <button type="button" id="closeDialog">Close</button>
+    </div>
+    <div class="dialog-body" id="dialogBody"></div>
+  </dialog>
+
+  <script>
+    const state = {
+      feedback: []
+    };
+
+    const labels = {
+      visitor_name: 'Name',
+      visitor_email: 'Email',
+      visitor_phone: 'Phone',
+      first_impression: 'First impression',
+      unique_experience: 'Does this feel unique?',
+      interest: 'Most interesting',
+      journey_thoughts: 'Journey or founder thoughts',
+      target_customer: 'Target customer',
+      problem_solved: 'Problem solved',
+      willingness_to_pay: 'Willingness to pay',
+      watch_value_estimate: 'Initial price and first-piece value',
+      adoption_barriers: 'Adoption barriers',
+      must_have_features: 'Must-have features or proof',
+      pilot_interest: 'Pilot, partnership, or investor conversation'
+    };
+
+    function setText(id, value) {
+      document.getElementById(id).textContent = value;
+    }
+
+    function formatDate(value) {
+      if (!value) return 'Never';
+      return new Date(value).toLocaleString();
+    }
+
+    function escapeHtml(value) {
+      return String(value || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function renderStats(stats) {
+      setText('totalFeedback', stats.total_feedback || 0);
+      setText('investorReady', stats.investor_ready_feedback || 0);
+      setText('paymentSignals', stats.payment_signal_count || 0);
+      setText('partnershipSignals', stats.partnership_signal_count || 0);
+      setText('lastUpdated', `Last submission: ${formatDate(stats.last_submission)}`);
+    }
+
+    function renderFeedback(items) {
+      const tableWrap = document.getElementById('tableWrap');
+      if (!items.length) {
+        tableWrap.innerHTML = '<p class="empty">No feedback has been submitted yet.</p>';
+        return;
+      }
+
+      const rows = items.map((item, index) => `
+        <tr>
+          <td>${formatDate(item.created_at)}</td>
+          <td class="truncate">${escapeHtml(item.visitor_name)}</td>
+          <td class="truncate">${escapeHtml(item.visitor_email)}</td>
+          <td class="truncate">${escapeHtml(item.first_impression)}</td>
+          <td class="truncate">${escapeHtml(item.target_customer)}</td>
+          <td class="truncate">${escapeHtml(item.problem_solved)}</td>
+          <td class="truncate">${escapeHtml(item.willingness_to_pay)}</td>
+          <td><button type="button" data-index="${index}">View</button></td>
+        </tr>
+      `).join('');
+
+      tableWrap.innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th>Submitted</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Impression</th>
+              <th>Target Customer</th>
+              <th>Problem</th>
+              <th>Payment Signal</th>
+              <th>Detail</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      `;
+
+      tableWrap.querySelectorAll('button[data-index]').forEach((button) => {
+        button.addEventListener('click', () => openDetail(items[Number(button.dataset.index)]));
+      });
+    }
+
+    function openDetail(item) {
+      const dialogBody = document.getElementById('dialogBody');
+      dialogBody.innerHTML = Object.entries(labels).map(([key, label]) => `
+        <div class="answer">
+          <h3>${label}</h3>
+          <p>${escapeHtml(item[key]) || 'No answer provided.'}</p>
+        </div>
+      `).join('');
+      document.getElementById('feedbackDialog').showModal();
+    }
+
+    async function loadDashboard() {
+      setText('apiStatus', 'Loading backend data...');
+      try {
+        const [healthResponse, statsResponse, feedbackResponse] = await Promise.all([
+          fetch('/api/health'),
+          fetch('/api/feedback/stats'),
+          fetch('/api/feedback/all')
+        ]);
+
+        const health = await healthResponse.json();
+        const stats = await statsResponse.json();
+        const feedback = await feedbackResponse.json();
+
+        if (!health.success) {
+          throw new Error(health.error || 'Backend health check failed');
+        }
+
+        if (!stats.success || !feedback.success) {
+          throw new Error('Unable to load dashboard data');
+        }
+
+        state.feedback = feedback.data;
+        setText('apiStatus', `Backend online. Database: ${health.database}.`);
+        renderStats(stats.data);
+        renderFeedback(state.feedback);
+      } catch (error) {
+        setText('apiStatus', error.message);
+        document.getElementById('tableWrap').innerHTML = '<p class="error">Unable to load feedback. Check the backend console and database connection.</p>';
+      }
+    }
+
+    document.getElementById('refreshButton').addEventListener('click', loadDashboard);
+    document.getElementById('closeDialog').addEventListener('click', () => {
+      document.getElementById('feedbackDialog').close();
+    });
+
+    loadDashboard();
+  </script>
+</body>
+</html>

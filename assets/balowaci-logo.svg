@@ -1,0 +1,83 @@
+<svg width="500" height="500" viewBox="240 70 500 500" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">BaloWaci Collective logo</title>
+  <desc id="desc">Circular BaloWaci Collective clock symbol in gold, purple, black, and white.</desc>
+  <defs>
+    <linearGradient id="outerTop" x1="282" y1="118" x2="692" y2="202" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#e0a12e"/>
+      <stop offset=".48" stop-color="#b99342"/>
+      <stop offset=".7" stop-color="#333333"/>
+      <stop offset="1" stop-color="#070707"/>
+    </linearGradient>
+    <linearGradient id="centerDisc" x1="420" y1="323" x2="552" y2="323" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#d8a33e"/>
+      <stop offset=".5" stop-color="#a77a2d"/>
+      <stop offset=".51" stop-color="#0e0e0e"/>
+      <stop offset="1" stop-color="#d8d8d8"/>
+    </linearGradient>
+    <filter id="softShadow" x="244" y="73" width="482" height="490" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="2" stdDeviation="1.5" flood-color="#000" flood-opacity=".32"/>
+    </filter>
+  </defs>
+
+  <rect width="970" height="645" fill="#ffffff"/>
+
+  <g filter="url(#softShadow)">
+    <path d="M294 234C327 150 400 108 487 108C574 108 648 151 680 235L622 258C601 202 549 181 487 181C425 181 372 202 351 258L294 234Z" fill="url(#outerTop)" stroke="#050505" stroke-width="6"/>
+    <path d="M680 235C691 262 696 291 696 322C696 436 604 529 489 529C375 529 282 436 282 322C282 291 288 262 298 235" stroke="#050505" stroke-width="6" stroke-linecap="round"/>
+    <path d="M348 258C367 210 418 181 487 181C555 181 607 210 626 258" stroke="#050505" stroke-width="6" stroke-linecap="round"/>
+    <path d="M350 387C372 434 420 464 487 464C554 464 603 435 625 387" stroke="#050505" stroke-width="6" stroke-linecap="round"/>
+
+    <circle cx="487" cy="322" r="133" stroke="#050505" stroke-width="4"/>
+    <circle cx="487" cy="322" r="83" fill="url(#centerDisc)" stroke="#050505" stroke-width="4"/>
+    <path d="M487 157V488" stroke="#050505" stroke-width="8" stroke-linecap="round"/>
+    <path d="M487 144L459 259H515L487 144Z" fill="#ffffff" stroke="#050505" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M487 144V259" stroke="#050505" stroke-width="6"/>
+    <path d="M463 258C471 238 479 218 487 198C496 219 505 239 514 258H463Z" fill="#ffffff"/>
+
+    <g stroke="#050505" stroke-width="3" stroke-linecap="round">
+      <path d="M358 211L403 259"/>
+      <path d="M574 259L620 211"/>
+      <path d="M353 322H282"/>
+      <path d="M622 322H693"/>
+      <path d="M403 386L358 433"/>
+      <path d="M573 386L620 433"/>
+      <path d="M487 107V177"/>
+      <path d="M487 467V537"/>
+    </g>
+    <g fill="#050505">
+      <circle cx="403" cy="211" r="7"/>
+      <circle cx="573" cy="211" r="7"/>
+      <circle cx="617" cy="322" r="7"/>
+      <circle cx="573" cy="433" r="7"/>
+      <circle cx="403" cy="433" r="7"/>
+      <circle cx="358" cy="322" r="7"/>
+    </g>
+
+    <g fill="#f4c44d" stroke="#050505" stroke-width="7">
+      <circle cx="487" cy="112" r="22"/>
+      <circle cx="619" cy="158" r="22"/>
+      <circle cx="693" cy="296" r="22"/>
+      <circle cx="631" cy="460" r="22"/>
+      <circle cx="487" cy="520" r="22"/>
+      <circle cx="344" cy="460" r="22"/>
+      <circle cx="283" cy="296" r="22"/>
+      <circle cx="357" cy="158" r="22"/>
+    </g>
+    <g stroke="#5f2c85" stroke-width="8">
+      <circle cx="487" cy="112" r="22"/>
+      <circle cx="619" cy="158" r="22"/>
+      <circle cx="693" cy="296" r="22"/>
+      <circle cx="631" cy="460" r="22"/>
+      <circle cx="487" cy="520" r="22"/>
+      <circle cx="344" cy="460" r="22"/>
+      <circle cx="283" cy="296" r="22"/>
+      <circle cx="357" cy="158" r="22"/>
+    </g>
+
+    <rect x="361" y="258" width="252" height="119" rx="2" fill="#ffffff"/>
+    <text x="487" y="326" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="61" font-weight="700">
+      <tspan fill="#602c8a">Balo</tspan><tspan fill="#c88900">Waci</tspan>
+    </text>
+    <text x="487" y="363" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="25" letter-spacing="13" fill="#111111">COLLECTIVE</text>
+  </g>
+</svg>

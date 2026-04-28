@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BaloWaci - A Unified Time Interpretation System</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: radial-gradient(circle at center, #2b0052 0%, #120020 45%, #000 100%);
+      color: #d4af37;
+      overflow-x: hidden;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .stars-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .star {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: #d4af37;
+      border-radius: 50%;
+      animation: twinkle 4s infinite ease-in-out;
+      opacity: 0.8;
+    }
+
+    .star::before,
+    .star::after {
+      content: '';
+      position: absolute;
+      background: #d4af37;
+      opacity: 0.6;
+    }
+
+    .star::before {
+      width: 1px;
+      height: 16px;
+      top: -6px;
+      left: 1px;
+    }
+
+    .star::after {
+      width: 16px;
+      height: 1px;
+      left: -6px;
+      top: 1px;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.3; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .hero-content {
+      max-width: 900px;
+    }
+
+    .hero-logo {
+      width: min(320px, 72vw);
+      height: min(320px, 72vw);
+      margin: 0 auto 28px;
+      display: block;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #fff;
+      box-shadow: 0 0 30px rgba(212, 175, 55, 0.22);
+    }
+
+    .hero h1 {
+      font-size: 5rem;
+      margin: 0 0 30px;
+      letter-spacing: 3px;
+      font-weight: 300;
+    }
+
+    .balo {
+      color: #b266ff;
+      text-shadow: 0 0 20px rgba(178, 102, 255, 0.8);
+    }
+
+    .waci {
+      color: #d4af37;
+      text-shadow: 0 0 20px rgba(212, 175, 55, 0.8);
+    }
+
+    .hero .subtitle {
+      font-size: 1.4rem;
+      margin: 30px 0 50px;
+      color: #d4af37;
+      font-weight: 300;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      padding: 16px 32px;
+      background: transparent;
+      color: #d4af37;
+      border: 2px solid #d4af37;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.1rem;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      background: #d4af37;
+      color: #120020;
+      box-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+    }
+
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    /* Content Sections */
+    section {
+      padding: 120px 30px;
+      text-align: center;
+    }
+
+    section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+      color: #d4af37;
+      font-weight: 300;
+      letter-spacing: 1px;
+    }
+
+    section p {
+      font-size: 1.2rem;
+      line-height: 1.8;
+      color: #d4af37;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* Time Interpretation Panel */
+    .time-panel {
+      background: rgba(0, 0, 0, 0.6);
+      border: 2px solid #d4af37;
+      border-radius: 8px;
+      padding: 30px;
+      margin: 40px auto;
+      max-width: 600px;
+      text-align: left;
+    }
+
+    .time-panel h3 {
+      color: #d4af37;
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 1.5rem;
+    }
+
+    .time-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+      color: #d4af37;
+    }
+
+    .time-row:last-child {
+      border-bottom: none;
+    }
+
+    .time-label {
+      font-weight: bold;
+      color: #b266ff;
+    }
+
+    .time-value {
+      font-family: 'Courier New', monospace;
+      color: #d4af37;
+    }
+
+    .time-loading {
+      text-align: center;
+      color: #d4af37;
+      font-style: italic;
+    }
+
+    .founder-message-section {
+      background:
+        radial-gradient(circle at top, rgba(178, 102, 255, 0.16), transparent 34%),
+        linear-gradient(180deg, rgba(18, 0, 32, 0.96), rgba(0, 0, 0, 0.98));
+    }
+
+    .founder-message-card {
+      max-width: 1050px;
+      margin: 0 auto;
+      padding: 42px;
+      border: 2px solid #d4af37;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.58);
+      box-shadow:
+        0 0 28px rgba(212, 175, 55, 0.22),
+        0 0 60px rgba(178, 102, 255, 0.12);
+      text-align: left;
+    }
+
+    .founder-message-header {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 34px;
+      align-items: center;
+      margin-bottom: 34px;
+    }
+
+    .founder-portrait {
+      width: 220px;
+      height: 220px;
+      border: 2px solid #d4af37;
+      border-radius: 50%;
+      display: block;
+      object-fit: cover;
+      object-position: 50% 10%;
+      filter: contrast(1.06) saturate(1.06);
+      box-shadow:
+        inset 0 0 28px rgba(212, 175, 55, 0.18),
+        0 0 26px rgba(212, 175, 55, 0.22),
+        0 0 44px rgba(178, 102, 255, 0.16);
+    }
+
+    .founder-message-title h2 {
+      margin: 0 0 12px;
+      color: #d4af37;
+      font-size: 2.6rem;
+      font-weight: 300;
+      letter-spacing: 1px;
+    }
+
+    .founder-message-title h3 {
+      margin: 0;
+      color: #b266ff;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .founder-message-body p {
+      max-width: none;
+      margin: 0 0 22px;
+      color: #d4af37;
+      font-size: 1.12rem;
+      line-height: 1.85;
+    }
+
+    .founder-quote-box {
+      margin: 34px 0 0;
+      padding: 24px 28px;
+      border-left: 4px solid #b266ff;
+      background: rgba(212, 175, 55, 0.08);
+      box-shadow: inset 0 0 18px rgba(178, 102, 255, 0.1);
+    }
+
+    .founder-quote-box blockquote {
+      margin: 0;
+      color: #fff1a8;
+      font-size: 1.35rem;
+      line-height: 1.5;
+      font-style: italic;
+    }
+
+    .journey-intro {
+      margin-bottom: 36px;
+    }
+
+    .product-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 22px;
+      margin-top: 42px;
+      text-align: left;
+    }
+
+    .journey-card {
+      background: rgba(0, 0, 0, 0.48);
+      border: 1px solid rgba(212, 175, 55, 0.5);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 0 22px rgba(178, 102, 255, 0.12);
+    }
+
+    .journey-card img {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      display: block;
+      object-fit: cover;
+      background: rgba(212, 175, 55, 0.08);
+    }
+
+    .journey-card figcaption {
+      padding: 16px;
+      color: #d4af37;
+      font-size: 0.95rem;
+      line-height: 1.45;
+    }
+
+    .journey-card strong {
+      display: block;
+      color: #b266ff;
+      font-size: 0.78rem;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    /* Feedback Form */
+    .feedback-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+      margin-top: 40px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .form-group {
+      width: 100%;
+    }
+
+    .form-group label {
+      display: block;
+      color: #d4af37;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 16px;
+      background: rgba(0, 0, 0, 0.7);
+      border: 2px solid #d4af37;
+      color: #d4af37;
+      font-size: 1rem;
+      font-family: inherit;
+      border-radius: 4px;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: #b266ff;
+      box-shadow: 0 0 10px rgba(178, 102, 255, 0.3);
+    }
+
+    textarea {
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    .form-status {
+      text-align: center;
+      padding: 15px;
+      border-radius: 4px;
+      margin-top: 20px;
+      display: none;
+    }
+
+    .form-status.success {
+      background: rgba(76, 175, 80, 0.2);
+      color: #4caf50;
+      border: 1px solid #4caf50;
+      display: block;
+    }
+
+    .form-status.error {
+      background: rgba(244, 67, 54, 0.2);
+      color: #f44336;
+      border: 1px solid #f44336;
+      display: block;
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      right: 20px;
+      z-index: 100;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 15px 25px;
+      border-radius: 4px;
+      border: 1px solid #d4af37;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .nav-logo {
+      width: 66px;
+      height: 66px;
+      display: block;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #fff;
+      transition: transform 0.3s ease, filter 0.3s ease;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      margin: 0;
+      padding: 0;
+      line-height: 0;
+    }
+
+    nav a:first-of-type {
+      margin: 0;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .language-select {
+      background: rgba(0, 0, 0, 0.72);
+      color: #d4af37;
+      border: 1px solid #d4af37;
+      border-radius: 4px;
+      padding: 8px 10px;
+      font: inherit;
+      outline: none;
+    }
+
+    html[dir="rtl"] .time-row,
+    html[dir="rtl"] .feedback-form,
+    html[dir="rtl"] .product-gallery {
+      text-align: right;
+    }
+
+    nav a {
+      color: #d4af37;
+      text-decoration: none;
+      margin: 0 10px;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+      white-space: nowrap;
+    }
+
+    nav a:hover {
+      color: #b266ff;
+    }
+
+    .nav-logo:hover {
+      transform: scale(1.05);
+      filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.5));
+    }
+
+    /* Footer */
+    footer {
+      background: rgba(0, 0, 0, 0.9);
+      border-top: 1px solid #d4af37;
+      padding: 40px 20px;
+      text-align: center;
+      color: #d4af37;
+      margin-top: 60px;
+    }
+
+    footer p {
+      font-size: 1rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 3.5rem;
+      }
+
+      .hero .subtitle {
+        font-size: 1.1rem;
+      }
+
+      section h2 {
+        font-size: 2rem;
+      }
+
+      section p {
+        font-size: 1.1rem;
+      }
+
+      section {
+        padding: 100px 20px;
+      }
+
+      nav {
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        padding: 10px 15px;
+        flex-wrap: wrap;
+      }
+
+      .nav-logo {
+        width: 54px;
+        height: 54px;
+      }
+
+      nav a {
+        margin: 0 8px;
+        font-size: 0.9rem;
+      }
+
+      .time-panel {
+        padding: 20px;
+      }
+
+      .founder-message-card {
+        padding: 28px 22px;
+      }
+
+      .founder-message-header {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .founder-portrait {
+        width: 168px;
+        height: 168px;
+        margin: 0 auto;
+      }
+
+      .founder-message-title h2 {
+        font-size: 2rem;
+      }
+
+      .founder-message-body p {
+        font-size: 1rem;
+      }
+
+      .founder-quote-box blockquote {
+        font-size: 1.12rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: 2.8rem;
+      }
+
+      .hero .subtitle {
+        font-size: 1rem;
+      }
+
+      section h2 {
+        font-size: 1.8rem;
+      }
+
+      section p {
+        font-size: 1rem;
+      }
+
+      .btn-primary {
+        padding: 14px 28px;
+        font-size: 1rem;
+      }
+
+      nav {
+        display: flex;
+        left: 10px;
+        right: 10px;
+        top: 10px;
+      }
+
+      .nav-logo {
+        width: 44px;
+        height: 44px;
+      }
+
+      .nav-links {
+        flex: 1;
+        justify-content: flex-end;
+        gap: 8px;
+      }
+
+      nav a {
+        margin: 0 5px;
+        font-size: 0.8rem;
+      }
+
+      .time-row {
+        flex-direction: column;
+        gap: 5px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="stars-container" id="starsContainer"></div>
+
+  <!-- Navigation -->
+  <nav>
+    <a class="nav-brand" href="#hero" aria-label="BaloWaci home">
+      <img class="nav-logo" src="balogo.png" alt="BaloWaci Collective logo">
+    </a>
+    <div class="nav-links">
+      <a href="#hero" data-i18n="nav.home">Home</a>
+      <a href="#about" data-i18n="nav.about">About</a>
+      <a href="#how" data-i18n="nav.how">How</a>
+      <a href="#founder" data-i18n="nav.founder">Founder</a>
+      <a href="#journey" data-i18n="nav.journey">Journey</a>
+      <a href="#product-journey" data-i18n="nav.productJourney">Product Journey</a>
+      <a href="interfaces/universe-time-wheel-patent.html" data-i18n="nav.liveWheel">Live Wheel</a>
+      <a href="interfaces/universe-watch-wrist.html" data-i18n="nav.liveWatch">Live Watch</a>
+      <a href="#feedback" data-i18n="nav.feedback">Feedback</a>
+      <select id="languageSelect" class="language-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="sw">Swahili</option>
+        <option value="es">Español</option>
+        <option value="pt">Português</option>
+        <option value="fr">Français</option>
+        <option value="zh">中文</option>
+        <option value="ar">العربية</option>
+      </select>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <img class="hero-logo" src="balogo.png" alt="BaloWaci Collective logo">
+      <h1>
+        <span class="balo">Balo</span><span class="waci">Waci</span>
+      </h1>
+      <p class="subtitle" data-i18n="hero.subtitle">A Unified Time Interpretation System</p>
+      <div class="hero-actions">
+        <button class="btn-primary" data-i18n="hero.explore" onclick="document.getElementById('time-panel').scrollIntoView({ behavior: 'smooth' });">Explore the System</button>
+        <a class="btn-primary" href="interfaces/universe-time-wheel-patent.html" data-i18n="hero.openWheel">Open Live Wheel</a>
+        <a class="btn-primary" href="interfaces/universe-watch-wrist.html" data-i18n="hero.openWatch">Open Live Watch</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about">
+    <div class="container">
+      <h2 data-i18n="about.title">About BaloWaci</h2>
+      <p data-i18n="about.body">
+        BaloWaci reimagines time through multiple interpretations — standard, military, cultural, and rotational — within one unified system. We believe time should be flexible, expressive, and meaningful across different contexts and perspectives.
+      </p>
+    </div>
+  </section>
+
+  <!-- Founder Message Section -->
+  <section id="founder" class="founder-message-section">
+    <div class="founder-message-card">
+      <div class="founder-message-header">
+        <img class="founder-portrait" src="assets/founder-fadhili-baloci.jpg" alt="Fadhili Baloci, founder of BaloWaci">
+        <div class="founder-message-title">
+          <h2 data-i18n="founder.title">Founder’s Message</h2>
+          <h3>Fadhili Baloci</h3>
+        </div>
+      </div>
+
+      <div class="founder-message-body">
+        <p data-i18n="founder.body">
+          My name is Fadhili Baloci, founder of BaloWaci.
+          <br><br>
+          I was born in Fizi, Democratic Republic of Congo, and raised in Mozambique after my family fled war in search of peace. In the year 2000, we found refuge there and built a life for 11 years before I moved to the United States in 2011 at the age of 11. Today, I reside in Iowa City, Iowa—but my journey across continents, cultures, and challenges is what shaped the vision behind BaloWaci.
+          <br><br>
+          BaloWaci was not created overnight. It was born from reflection, curiosity, and a deep desire to understand time, perception, and human potential in a new way. Growing up between different worlds taught me that perspective is everything—and that what we accept as fixed can always be reimagined. BaloWaci represents that belief: a system that challenges how we interpret time and invites us to think beyond limits.
+          <br><br>
+          I want to show both young and old minds that there are no boundaries to what the human mind can achieve. When you choose a domain in your life and commit to it with 100% focus, discipline, and faith, results will come—sooner or later. The journey may be silent, but the impact will speak.
+          <br><br>
+          True work doesn’t always need to be loud to be powerful. Work hard whether you are noticed or not. Move with integrity. Build with humility. And trust that what you create in silence will one day echo in the world.
+          <br><br>
+          BaloWaci is more than a system—it is a reflection of resilience, vision, and the belief that greatness can come from anywhere. If my story stands for anything, it is this: your beginning does not define your ending. What matters is what you choose to build.
+          <br><br>
+          — Fadhili Baloci
+        </p>
+
+        <div class="founder-quote-box">
+          <blockquote data-i18n="founder.quote">“Sound is the absence of silence, not action.”</blockquote>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Time Interpretation Panel -->
+  <section id="time-panel">
+    <div class="container">
+      <h2 data-i18n="time.title">Live Time Interpretation</h2>
+      <div class="time-panel">
+        <h3 data-i18n="time.heading">Current Time Across BaloWaci Modes</h3>
+        <div id="timeContent" class="time-loading" data-i18n="time.loading">Loading interpretations...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section id="how">
+    <div class="container">
+      <h2 data-i18n="how.title">How It Works</h2>
+      <p data-i18n="how.body">
+        One moment. Multiple representations. BaloWaci combines mathematical transformation and circular design to express time differently. Each mode reveals a unique perspective on the passage of moments, from the familiar to the innovative.
+      </p>
+    </div>
+  </section>
+
+  <!-- Journey Section -->
+  <section id="journey">
+    <div class="container">
+      <h2 data-i18n="journey.title">The Journey</h2>
+      <p data-i18n="journey.body">
+        From hand-drawn concepts to system-level design, BaloWaci continues to evolve as a unified time innovation. Each interpretation represents a step forward in reimagining how different cultures, industries, and individuals can experience time in ways that make sense to them.
+      </p>
+    </div>
+  </section>
+
+  <!-- Product Journey Section -->
+  <section id="product-journey">
+    <div class="container">
+      <h2 data-i18n="product.title">Product Journey</h2>
+      <p class="journey-intro" data-i18n="product.body">
+        BaloWaci began in notebooks, through circles, layers, colors, and repeated experiments. These sketches document the evolution from early time-wheel ideas into a layered system for standard, military, cultural, and rotational interpretation.
+      </p>
+
+      <div class="product-gallery" aria-label="BaloWaci product evolution sketches">
+        <figure class="journey-card">
+          <img src="assets/product-journey/20260226_015335060_iOS - Copy.jpg" alt="Early circular BaloWaci clock sketch on lined paper" loading="lazy">
+          <figcaption><strong>Origin Sketch</strong>First circular dial exploration, establishing the center point and radial time marks.</figcaption>
+        </figure>
+        <figure class="journey-card">
+          <img src="assets/product-journey/20260226_021353703_iOS - Copy.jpg" alt="Three analog clock sketches comparing cultural standard and military time" loading="lazy">
+          <figcaption><strong>Mode Comparison</strong>Separate analog studies for cultural, standard, and military time interpretations.</figcaption>
+        </figure>
+        <figure class="journey-card">
+          <img src="assets/product-journey/20260226_022015199_iOS.jpg" alt="Tri-layer analog clock concept sketch" loading="lazy">
+          <figcaption><strong>Tri-Layer Concept</strong>Early move toward combining multiple time systems into one readable face.</figcaption>
+        </figure>
+        <figure class="journey-card">
+          <img src="assets/product-journey/20260226_164716374_iOS.jpg" alt="Tri-layer clock with colored hands" loading="lazy">
+          <figcaption><strong>Hand Direction</strong>Testing colored hands and directional meaning inside the layered dial.</figcaption>
+        </figure>
+        <figure class="journey-card">
+          <img src="assets/product-journey/20260226_230317314_iOS.jpg" alt="Standard military and cultural layered clock sketch" loading="lazy">
+          <figcaption><strong>Layer Stack</strong>Standard, military, and cultural readings begin to share one structure.</figcaption>
+        </figure>
+        <figure class="journey-card">
+          <img src="assets/product-journey/20260227_041439599_iOS.jpg" alt="Detailed multi-ring clock sketch with colored rings" loading="lazy">
+          <figcaption><strong>Ring System</strong>Expanded rings show how each time layer can occupy its own visual track.</figcaption>
+        </figure>
+        <figure class="journey-card">
+          <img src="assets/product-journey/20260227_050006815_iOS.jpg" alt="Layered clock with legend for military standard cultural cognitive interface and calculation" loading="lazy">
+          <figcaption><strong>Interface Legend</strong>Adding a legend for time modes, cognitive interface, and calculation layers.</figcaption>
+        </figure>
+        <figure class="journey-card">
+          <img src="assets/product-journey/20260301_061617706_iOS.jpg" alt="Sketchbook cover and desk workspace" loading="lazy">
+          <figcaption><strong>Sketchbook Phase</strong>The product journey moves into a dedicated sketchbook workflow.</figcaption>
+        </figure>
+        <figure class="journey-card">
+          <img src="assets/product-journey/20260301_061657117_iOS.jpg" alt="Standard analog clock sketch in notebook" loading="lazy">
+          <figcaption><strong>Standard Mode</strong>Isolating standard analog time as one layer in the larger system.</figcaption>
+        </figure>
+        <figure class="journey-card">
+          <img src="assets/product-journey/20260301_061836870_iOS.jpg" alt="Military analog clock sketch in notebook" loading="lazy">
+          <figcaption><strong>Military Mode</strong>Mapping the 24-hour military clock into a circular interface.</figcaption>
+        </figure>
+        <figure class="journey-card">
+          <img src="assets/product-journey/20260301_061917059_iOS - Copy.jpg" alt="Cultural analog clock sketch in notebook" loading="lazy">
+          <figcaption><strong>Cultural Mode</strong>Exploring cultural analog time as a distinct reading layer.</figcaption>
+        </figure>
+        <figure class="journey-card">
+          <img src="assets/product-journey/20260301_061944909_iOS - Copy.jpg" alt="Workspace desk with sketchbook pencils and monitor" loading="lazy">
+          <figcaption><strong>Studio Setup</strong>The physical workspace where the colored product studies were developed.</figcaption>
+        </figure>
+        <figure class="journey-card">
+          <img src="assets/product-journey/20260301_062015746_iOS.jpg" alt="Colored layer synthesizer clock close-up" loading="lazy">
+          <figcaption><strong>Layer Synthesizer</strong>A colored prototype that starts unifying the system visually.</figcaption>
+        </figure>
+        <figure class="journey-card">
+          <img src="assets/product-journey/20260301_062109242_iOS - Copy.jpg" alt="Tri-layer synthesizer analog clock sketch" loading="lazy">
+          <figcaption><strong>Unified Prototype</strong>Standard, military, and cultural rings become one synthesized clock face.</figcaption>
+        </figure>
+        <figure class="journey-card">
+          <img src="assets/product-journey/20260301_062122942_iOS - Copy.jpg" alt="Green lit workspace prototype environment" loading="lazy">
+          <figcaption><strong>Environment Test</strong>Testing the mood and presentation language around the BaloWaci system.</figcaption>
+        </figure>
+        <figure class="journey-card">
+          <img src="assets/product-journey/20260301_062210065_iOS.jpg" alt="Blue lit workspace prototype environment" loading="lazy">
+          <figcaption><strong>Atmosphere Study</strong>Light, color, and workspace presentation become part of the product story.</figcaption>
+        </figure>
+        <figure class="journey-card">
+          <img src="assets/product-journey/20260301_062237348_iOS - Copy.jpg" alt="Compass-like layered dial sketch with directions" loading="lazy">
+          <figcaption><strong>Directional System</strong>North, south, east, and west references enter the clock design language.</figcaption>
+        </figure>
+        <figure class="journey-card">
+          <img src="assets/product-journey/20260302_003121833_iOS.jpg" alt="Layered dial with degrees and time labels" loading="lazy">
+          <figcaption><strong>Degree Mapping</strong>Rotational degrees connect with time labels around the outer ring.</figcaption>
+        </figure>
+        <figure class="journey-card">
+          <img src="assets/product-journey/20260302_003220035_iOS.jpg" alt="Colored multi-ring dial with degree and time mappings" loading="lazy">
+          <figcaption><strong>Color Integration</strong>Color coding clarifies how the layers separate and recombine.</figcaption>
+        </figure>
+        <figure class="journey-card">
+          <img src="assets/product-journey/20260311_153918081_iOS.jpg" alt="Calculation sketch for triangle and ring geometry" loading="lazy">
+          <figcaption><strong>Geometry Study</strong>Working through the math and connection logic behind the interface.</figcaption>
+        </figure>
+        <figure class="journey-card">
+          <img src="assets/product-journey/20260312_131406949_iOS.jpg" alt="Geometric layered clock sketch with triangular divisions" loading="lazy">
+          <figcaption><strong>Structural Grid</strong>Triangles and ring segments begin shaping the final system geometry.</figcaption>
+        </figure>
+        <figure class="journey-card">
+          <img src="assets/product-journey/20260312_142411110_iOS.jpg" alt="Refined geometric time wheel sketch" loading="lazy">
+          <figcaption><strong>Refinement Pass</strong>The geometric framework becomes cleaner and more deliberate.</figcaption>
+        </figure>
+        <figure class="journey-card">
+          <img src="assets/product-journey/20260312_161957217_iOS - Copy.jpg" alt="Geometric time wheel sketch with clock hands and outer ticks" loading="lazy">
+          <figcaption><strong>Hands and Ticks</strong>Clock hands return inside the more advanced geometric wheel.</figcaption>
+        </figure>
+        <figure class="journey-card">
+          <img src="assets/product-journey/20260312_162001676_iOS - Copy.jpg" alt="Colored geometric BaloWaci time wheel" loading="lazy">
+          <figcaption><strong>Colored Geometry</strong>The advanced wheel gains stronger visual hierarchy through color.</figcaption>
+        </figure>
+        <figure class="journey-card">
+          <img src="assets/product-journey/20260313_071100560_iOS.jpg" alt="Rotated colored geometric time wheel" loading="lazy">
+          <figcaption><strong>Orientation Test</strong>Testing how the same system reads when rotated and reoriented.</figcaption>
+        </figure>
+        <figure class="journey-card">
+          <img src="assets/product-journey/20260313_072746733_iOS.jpg" alt="BaloWaci geometric time wheel sketch" loading="lazy">
+          <figcaption><strong>System Study</strong>A more complete pass at the geometric time interpretation system.</figcaption>
+        </figure>
+        <figure class="journey-card">
+          <img src="assets/product-journey/20260313_084605620_iOS.jpg" alt="BaloWaci geometric time wheel with colored rings" loading="lazy">
+          <figcaption><strong>Visual System</strong>Color, geometry, and layered time readings converge into a recognizable form.</figcaption>
+        </figure>
+        <figure class="journey-card">
+          <img src="assets/product-journey/20260313_093108547_iOS.jpg" alt="Final colored BaloWaci wheel study" loading="lazy">
+          <figcaption><strong>Evolution Milestone</strong>A mature sketch showing the direction of the BaloWaci product language.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feedback Section -->
+  <section id="feedback">
+    <div class="container">
+      <h2 data-i18n="feedback.title">Share Your Feedback</h2>
+      <p data-i18n="feedback.body">Help us understand your perspective on BaloWaci. Your insights will shape the future of this unified time system.</p>
+      
+      <form class="feedback-form" id="feedbackForm">
+        <div class="form-group">
+          <label for="visitorName" data-i18n="form.name">Your name</label>
+          <input type="text" id="visitorName" name="visitorName" required>
+        </div>
+
+        <div class="form-group">
+          <label for="visitorEmail" data-i18n="form.email">Email address</label>
+          <input type="email" id="visitorEmail" name="visitorEmail" required>
+        </div>
+
+        <div class="form-group">
+          <label for="visitorPhone" data-i18n="form.phone">Phone number</label>
+          <input type="tel" id="visitorPhone" name="visitorPhone">
+        </div>
+
+        <div class="form-group">
+          <label for="impression" data-i18n="form.impression">What is your first impression?</label>
+          <input type="text" id="impression" name="impression" required>
+        </div>
+
+        <div class="form-group">
+          <label for="unique" data-i18n="form.unique">Does this feel unique?</label>
+          <input type="text" id="unique" name="unique" required>
+        </div>
+
+        <div class="form-group">
+          <label for="interests" data-i18n="form.interests">What interests you most?</label>
+          <input type="text" id="interests" name="interests" required>
+        </div>
+
+        <div class="form-group">
+          <label for="thoughts" data-i18n="form.thoughts">Any thoughts on the journey or founder?</label>
+          <textarea id="thoughts" name="thoughts"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="targetCustomer" data-i18n="form.targetCustomer">Who do you think would benefit most from BaloWaci?</label>
+          <textarea id="targetCustomer" name="targetCustomer" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="problemSolved" data-i18n="form.problemSolved">What real-world problem or need could BaloWaci solve?</label>
+          <textarea id="problemSolved" name="problemSolved" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="willingnessToPay" data-i18n="form.willingnessToPay">Would you or an organization pay for access, licensing, or implementation?</label>
+          <textarea id="willingnessToPay" name="willingnessToPay" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="watchValueEstimate" data-i18n="form.watchValueEstimate">How much do you think BaloWaci's ideal initial price should be at the starting cost, and how much do you think this type of watch might be worth for its very first pieces?</label>
+          <textarea id="watchValueEstimate" name="watchValueEstimate" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="adoptionBarriers" data-i18n="form.adoptionBarriers">What might prevent people or organizations from adopting it?</label>
+          <textarea id="adoptionBarriers" name="adoptionBarriers" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="mustHaveFeatures" data-i18n="form.mustHaveFeatures">What feature, integration, or proof would make it more valuable?</label>
+          <textarea id="mustHaveFeatures" name="mustHaveFeatures" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="pilotInterest" data-i18n="form.pilotInterest">Would you recommend a pilot, partnership, or investor conversation?</label>
+          <textarea id="pilotInterest" name="pilotInterest" required></textarea>
+        </div>
+
+        <button type="submit" class="btn-primary" data-i18n="form.submit">Submit Feedback</button>
+        <div class="form-status" id="formStatus"></div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p data-i18n="footer.rights">&copy; 2026 BaloWaci. A Unified Time Interpretation System. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const API_BASE_URL = window.location.hostname === 'localhost' && window.location.port === '8000'
+      ? 'http://localhost:5000/api'
+      : '/api';
+    const defaultLanguage = 'en';
+    let currentLanguage = localStorage.getItem('balowaciLanguage') || defaultLanguage;
+
+    const translations = {
+      en: {
+        'nav.home': 'Home',
+        'nav.about': 'About',
+        'nav.how': 'How',
+        'nav.founder': 'Founder',
+        'nav.journey': 'Journey',
+        'nav.productJourney': 'Product Journey',
+        'nav.liveWheel': 'Live Wheel',
+        'nav.liveWatch': 'Live Watch',
+        'nav.feedback': 'Feedback',
+        'hero.subtitle': 'A Unified Time Interpretation System',
+        'hero.explore': 'Explore the System',
+        'hero.openWheel': 'Open Live Wheel',
+        'hero.openWatch': 'Open Live Watch',
+        'about.title': 'About BaloWaci',
+        'about.body': 'BaloWaci reimagines time through multiple interpretations — standard, military, cultural, and rotational — within one unified system. We believe time should be flexible, expressive, and meaningful across different contexts and perspectives.',
+        'time.title': 'Live Time Interpretation',
+        'time.heading': 'Current Time Across BaloWaci Modes',
+        'time.loading': 'Loading interpretations...',
+        'time.standard': 'Standard Time:',
+        'time.military': 'Military Time:',
+        'time.cultural': 'Cultural Time:',
+        'time.rotational': 'Rotational Time:',
+        'time.updated': 'Updated:',
+        'time.failed': 'Failed to load time interpretations',
+        'time.apiError': 'Unable to connect to the API. Make sure the backend is running.',
+        'how.title': 'How It Works',
+        'how.body': 'One moment. Multiple representations. BaloWaci combines mathematical transformation and circular design to express time differently. Each mode reveals a unique perspective on the passage of moments, from the familiar to the innovative.',
+        'founder.title': 'Founder’s Message',
+        'founder.body': 'My name is Fadhili Baloci, founder of BaloWaci.\n\nI was born in Fizi, Democratic Republic of Congo, and raised in Mozambique after my family fled war in search of peace. In the year 2000, we found refuge there and built a life for 11 years before I moved to the United States in 2011 at the age of 11. Today, I reside in Iowa City, Iowa—but my journey across continents, cultures, and challenges is what shaped the vision behind BaloWaci.\n\nBaloWaci was not created overnight. It was born from reflection, curiosity, and a deep desire to understand time, perception, and human potential in a new way. Growing up between different worlds taught me that perspective is everything—and that what we accept as fixed can always be reimagined. BaloWaci represents that belief: a system that challenges how we interpret time and invites us to think beyond limits.\n\nI want to show both young and old minds that there are no boundaries to what the human mind can achieve. When you choose a domain in your life and commit to it with 100% focus, discipline, and faith, results will come—sooner or later. The journey may be silent, but the impact will speak.\n\nTrue work doesn’t always need to be loud to be powerful. Work hard whether you are noticed or not. Move with integrity. Build with humility. And trust that what you create in silence will one day echo in the world.\n\nBaloWaci is more than a system—it is a reflection of resilience, vision, and the belief that greatness can come from anywhere. If my story stands for anything, it is this: your beginning does not define your ending. What matters is what you choose to build.\n\n— Fadhili Baloci',
+        'founder.quote': '“Sound is the absence of silence, not action.”',
+        'journey.title': 'The Journey',
+        'journey.body': 'From hand-drawn concepts to system-level design, BaloWaci continues to evolve as a unified time innovation. Each interpretation represents a step forward in reimagining how different cultures, industries, and individuals can experience time in ways that make sense to them.',
+        'product.title': 'Product Journey',
+        'product.body': 'BaloWaci began in notebooks, through circles, layers, colors, and repeated experiments. These sketches document the evolution from early time-wheel ideas into a layered system for standard, military, cultural, and rotational interpretation.',
+        'feedback.title': 'Share Your Feedback',
+        'feedback.body': 'Help us understand your perspective on BaloWaci. Your insights will shape the future of this unified time system.',
+        'form.name': 'Your name',
+        'form.email': 'Email address',
+        'form.phone': 'Phone number',
+        'form.impression': 'What is your first impression?',
+        'form.unique': 'Does this feel unique?',
+        'form.interests': 'What interests you most?',
+        'form.thoughts': 'Any thoughts on the journey or founder?',
+        'form.targetCustomer': 'Who do you think would benefit most from BaloWaci?',
+        'form.problemSolved': 'What real-world problem or need could BaloWaci solve?',
+        'form.willingnessToPay': 'Would you or an organization pay for access, licensing, or implementation?',
+        'form.watchValueEstimate': "How much do you think BaloWaci's ideal initial price should be at the starting cost, and how much do you think this type of watch might be worth for its very first pieces?",
+        'form.adoptionBarriers': 'What might prevent people or organizations from adopting it?',
+        'form.mustHaveFeatures': 'What feature, integration, or proof would make it more valuable?',
+        'form.pilotInterest': 'Would you recommend a pilot, partnership, or investor conversation?',
+        'form.submit': 'Submit Feedback',
+        'form.success': 'Thank you! Your feedback has been submitted successfully.',
+        'form.submitError': 'Failed to submit feedback',
+        'form.backendError': 'Error: Unable to submit feedback. Make sure the backend is running.',
+        'footer.rights': '© 2026 BaloWaci. A Unified Time Interpretation System. All rights reserved.'
+      },
+      sw: {
+        'nav.home': 'Mwanzo', 'nav.about': 'Kuhusu', 'nav.how': 'Inavyofanya Kazi', 'nav.founder': 'Mwanzilishi', 'nav.journey': 'Safari', 'nav.productJourney': 'Safari ya Bidhaa', 'nav.liveWheel': 'Gurudumu Hai', 'nav.liveWatch': 'Saa Hai', 'nav.feedback': 'Maoni',
+        'hero.subtitle': 'Mfumo Umoja wa Ufafanuzi wa Wakati', 'hero.explore': 'Chunguza Mfumo', 'hero.openWheel': 'Fungua Gurudumu Hai', 'hero.openWatch': 'Fungua Saa Hai',
+        'about.title': 'Kuhusu BaloWaci', 'about.body': 'BaloWaci hufikiria upya wakati kupitia tafsiri nyingi: kawaida, kijeshi, kitamaduni, na mzunguko ndani ya mfumo mmoja. Tunaamini wakati unaweza kuwa nyumbufu, wenye maana, na unaofaa katika mitazamo tofauti.',
+        'time.title': 'Ufafanuzi Hai wa Wakati', 'time.heading': 'Wakati wa Sasa Katika Njia za BaloWaci', 'time.loading': 'Inapakia tafsiri...', 'time.standard': 'Wakati wa Kawaida:', 'time.military': 'Wakati wa Kijeshi:', 'time.cultural': 'Wakati wa Kitamaduni:', 'time.rotational': 'Wakati wa Mzunguko:', 'time.updated': 'Imesasishwa:', 'time.failed': 'Imeshindwa kupakia tafsiri za wakati', 'time.apiError': 'Haiwezi kuunganishwa na API. Hakikisha backend inaendelea kufanya kazi.',
+        'how.title': 'Inavyofanya Kazi', 'how.body': 'Dakika moja. Uwakilishi mwingi. BaloWaci huunganisha hesabu na muundo wa duara ili kueleza wakati kwa njia tofauti.',
+        'founder.title': 'Ujumbe wa Mwanzilishi', 'founder.body': 'Jina langu ni Fadhili Baloci, mwanzilishi wa BaloWaci.\n\nNilizaliwa Fizi, Jamhuri ya Kidemokrasia ya Congo, na nikalelewa Mozambique baada ya familia yangu kukimbia vita kutafuta amani. Mwaka wa 2000, tulipata hifadhi huko na kujenga maisha kwa miaka 11 kabla sijahamia Marekani mwaka 2011 nikiwa na umri wa miaka 11. Leo ninaishi Iowa City, Iowa—lakini safari yangu kupitia mabara, tamaduni, na changamoto ndiyo iliyounda maono ya BaloWaci.\n\nBaloWaci haikuundwa kwa usiku mmoja. Ilizaliwa kutokana na tafakari, udadisi, na hamu ya kina ya kuelewa wakati, mtazamo, na uwezo wa mwanadamu kwa njia mpya. Kukua kati ya dunia tofauti kulinifundisha kwamba mtazamo ni kila kitu—na kwamba tunachokikubali kama kitu kisichobadilika kinaweza kufikiriwa upya. BaloWaci inawakilisha imani hiyo: mfumo unaochallenge jinsi tunavyotafsiri wakati na kutualika kufikiri zaidi ya mipaka.\n\nNataka kuwaonyesha vijana na wazee kwamba hakuna mipaka kwa kile akili ya mwanadamu inaweza kufanikisha. Unapochagua eneo katika maisha yako na kujitoa kwa 100% ya umakini, nidhamu, na imani, matokeo yatakuja—mapema au baadaye. Safari inaweza kuwa kimya, lakini athari itazungumza.\n\nKazi ya kweli haihitaji kila wakati kuwa na kelele ili iwe na nguvu. Fanya kazi kwa bidii iwe unaonekana au hauonekani. Tembea kwa uadilifu. Jenga kwa unyenyekevu. Na amini kwamba kile unachounda kimyakimya siku moja kitasikika duniani.\n\nBaloWaci ni zaidi ya mfumo—ni kielelezo cha ustahimilivu, maono, na imani kwamba ukuu unaweza kutoka popote. Ikiwa hadithi yangu inasimamia jambo lolote, ni hili: mwanzo wako hauamui mwisho wako. Kinachojalisha ni kile unachochagua kujenga.\n\n— Fadhili Baloci',
+        'founder.quote': '“Sauti ni kutokuwepo kwa ukimya, si kitendo.”',
+        'journey.title': 'Safari', 'journey.body': 'Kutoka michoro ya mkono hadi muundo wa mfumo, BaloWaci inaendelea kukua kama ubunifu wa wakati uliounganishwa.',
+        'product.title': 'Safari ya Bidhaa', 'product.body': 'BaloWaci ilianza kwenye madaftari, kupitia miduara, tabaka, rangi, na majaribio mengi. Michoro hii inaonyesha mageuzi ya mfumo.',
+        'feedback.title': 'Shiriki Maoni Yako', 'feedback.body': 'Tusaidie kuelewa mtazamo wako kuhusu BaloWaci. Maoni yako yataunda mustakabali wa mfumo huu.',
+        'form.name': 'Jina lako', 'form.email': 'Barua pepe', 'form.phone': 'Nambari ya simu', 'form.impression': 'Mtazamo wako wa kwanza ni upi?', 'form.unique': 'Je, hii inaonekana kuwa ya kipekee?', 'form.interests': 'Ni nini kinakuvutia zaidi?', 'form.thoughts': 'Mawazo yoyote kuhusu safari au mwanzilishi?', 'form.targetCustomer': 'Nani atanufaika zaidi na BaloWaci?', 'form.problemSolved': 'BaloWaci inaweza kutatua tatizo gani halisi?', 'form.willingnessToPay': 'Je, wewe au shirika lingelipia ufikiaji, leseni, au utekelezaji?', 'form.watchValueEstimate': 'Unafikiri bei ya awali ya BaloWaci inapaswa kuwa kiasi gani, na vipande vya kwanza vya saa hii vinaweza kuwa na thamani gani?', 'form.adoptionBarriers': 'Ni nini kinaweza kuzuia watu au mashirika kuikubali?', 'form.mustHaveFeatures': 'Ni kipengele, muunganiko, au uthibitisho gani ungeifanya iwe na thamani zaidi?', 'form.pilotInterest': 'Je, ungependekeza jaribio, ushirikiano, au mazungumzo na mwekezaji?', 'form.submit': 'Tuma Maoni', 'form.success': 'Asante! Maoni yako yametumwa kwa mafanikio.', 'form.submitError': 'Imeshindwa kutuma maoni', 'form.backendError': 'Hitilafu: Haiwezi kutuma maoni. Hakikisha backend inaendelea kufanya kazi.', 'footer.rights': '© 2026 BaloWaci. Mfumo Umoja wa Ufafanuzi wa Wakati. Haki zote zimehifadhiwa.'
+      },
+      es: {
+        'nav.home': 'Inicio', 'nav.about': 'Acerca de', 'nav.how': 'Cómo funciona', 'nav.founder': 'Fundador', 'nav.journey': 'Trayectoria', 'nav.productJourney': 'Evolución del Producto', 'nav.liveWheel': 'Rueda en Vivo', 'nav.liveWatch': 'Reloj en Vivo', 'nav.feedback': 'Comentarios',
+        'hero.subtitle': 'Un Sistema Unificado de Interpretación del Tiempo', 'hero.explore': 'Explorar el Sistema', 'hero.openWheel': 'Abrir Rueda en Vivo', 'hero.openWatch': 'Abrir Reloj en Vivo',
+        'about.title': 'Acerca de BaloWaci', 'about.body': 'BaloWaci reimagina el tiempo mediante múltiples interpretaciones: estándar, militar, cultural y rotacional, dentro de un solo sistema unificado.',
+        'time.title': 'Interpretación del Tiempo en Vivo', 'time.heading': 'Hora Actual en los Modos de BaloWaci', 'time.loading': 'Cargando interpretaciones...', 'time.standard': 'Hora estándar:', 'time.military': 'Hora militar:', 'time.cultural': 'Hora cultural:', 'time.rotational': 'Hora rotacional:', 'time.updated': 'Actualizado:', 'time.failed': 'No se pudieron cargar las interpretaciones del tiempo', 'time.apiError': 'No se puede conectar con la API. Asegúrate de que el backend esté funcionando.',
+        'how.title': 'Cómo Funciona', 'how.body': 'Un momento. Múltiples representaciones. BaloWaci combina transformación matemática y diseño circular para expresar el tiempo de otra manera.',
+        'founder.title': 'Mensaje del Fundador', 'founder.body': 'Mi nombre es Fadhili Baloci, fundador de BaloWaci.\n\nNací en Fizi, República Democrática del Congo, y crecí en Mozambique después de que mi familia huyera de la guerra en busca de paz. En el año 2000 encontramos refugio allí y construimos una vida durante 11 años antes de que yo me mudara a Estados Unidos en 2011, a los 11 años. Hoy vivo en Iowa City, Iowa, pero mi viaje a través de continentes, culturas y desafíos es lo que dio forma a la visión detrás de BaloWaci.\n\nBaloWaci no fue creado de la noche a la mañana. Nació de la reflexión, la curiosidad y un profundo deseo de entender el tiempo, la percepción y el potencial humano de una manera nueva. Crecer entre mundos diferentes me enseñó que la perspectiva lo es todo, y que aquello que aceptamos como fijo siempre puede ser reimaginado. BaloWaci representa esa creencia: un sistema que desafía cómo interpretamos el tiempo y nos invita a pensar más allá de los límites.\n\nQuiero mostrar a las mentes jóvenes y mayores que no existen fronteras para lo que la mente humana puede lograr. Cuando eliges un dominio en tu vida y te comprometes con él con 100% de enfoque, disciplina y fe, los resultados llegarán, tarde o temprano. El camino puede ser silencioso, pero el impacto hablará.\n\nEl verdadero trabajo no siempre necesita ser ruidoso para ser poderoso. Trabaja duro aunque te vean o no. Muévete con integridad. Construye con humildad. Y confía en que lo que creas en silencio algún día resonará en el mundo.\n\nBaloWaci es más que un sistema: es un reflejo de resiliencia, visión y la creencia de que la grandeza puede venir de cualquier lugar. Si mi historia representa algo, es esto: tu comienzo no define tu final. Lo que importa es lo que eliges construir.\n\n— Fadhili Baloci',
+        'founder.quote': '“El sonido es la ausencia de silencio, no la acción.”',
+        'journey.title': 'La Trayectoria', 'journey.body': 'Desde conceptos dibujados a mano hasta diseño de sistema, BaloWaci sigue evolucionando como una innovación unificada del tiempo.',
+        'product.title': 'Evolución del Producto', 'product.body': 'BaloWaci comenzó en cuadernos, con círculos, capas, colores y experimentos repetidos. Estos bocetos documentan su evolución.',
+        'feedback.title': 'Comparte tus Comentarios', 'feedback.body': 'Ayúdanos a entender tu perspectiva sobre BaloWaci. Tus ideas darán forma al futuro de este sistema.',
+        'form.name': 'Tu nombre', 'form.email': 'Correo electrónico', 'form.phone': 'Número de teléfono', 'form.impression': '¿Cuál es tu primera impresión?', 'form.unique': '¿Se siente único?', 'form.interests': '¿Qué te interesa más?', 'form.thoughts': '¿Alguna idea sobre la trayectoria o el fundador?', 'form.targetCustomer': '¿Quién crees que se beneficiaría más de BaloWaci?', 'form.problemSolved': '¿Qué problema o necesidad real podría resolver BaloWaci?', 'form.willingnessToPay': '¿Tú o una organización pagarían por acceso, licencia o implementación?', 'form.watchValueEstimate': '¿Cuál debería ser el precio inicial ideal de BaloWaci y cuánto podrían valer sus primeras piezas?', 'form.adoptionBarriers': '¿Qué podría impedir que personas u organizaciones lo adopten?', 'form.mustHaveFeatures': '¿Qué función, integración o prueba lo haría más valioso?', 'form.pilotInterest': '¿Recomendarías una prueba piloto, asociación o conversación con inversionistas?', 'form.submit': 'Enviar Comentarios', 'form.success': '¡Gracias! Tus comentarios se enviaron correctamente.', 'form.submitError': 'No se pudieron enviar los comentarios', 'form.backendError': 'Error: No se pudieron enviar los comentarios. Asegúrate de que el backend esté funcionando.', 'footer.rights': '© 2026 BaloWaci. Un Sistema Unificado de Interpretación del Tiempo. Todos los derechos reservados.'
+      },
+      pt: {
+        'nav.home': 'Início', 'nav.about': 'Sobre', 'nav.how': 'Como Funciona', 'nav.founder': 'Fundador', 'nav.journey': 'Jornada', 'nav.productJourney': 'Jornada do Produto', 'nav.liveWheel': 'Roda ao Vivo', 'nav.liveWatch': 'Relógio ao Vivo', 'nav.feedback': 'Feedback',
+        'hero.subtitle': 'Um Sistema Unificado de Interpretação do Tempo', 'hero.explore': 'Explorar o Sistema', 'hero.openWheel': 'Abrir Roda ao Vivo', 'hero.openWatch': 'Abrir Relógio ao Vivo',
+        'about.title': 'Sobre BaloWaci', 'about.body': 'BaloWaci reinventa o tempo por meio de múltiplas interpretações: padrão, militar, cultural e rotacional, dentro de um sistema unificado.',
+        'time.title': 'Interpretação do Tempo ao Vivo', 'time.heading': 'Hora Atual nos Modos BaloWaci', 'time.loading': 'Carregando interpretações...', 'time.standard': 'Hora padrão:', 'time.military': 'Hora militar:', 'time.cultural': 'Hora cultural:', 'time.rotational': 'Hora rotacional:', 'time.updated': 'Atualizado:', 'time.failed': 'Falha ao carregar interpretações do tempo', 'time.apiError': 'Não foi possível conectar à API. Verifique se o backend está em execução.',
+        'how.title': 'Como Funciona', 'how.body': 'Um momento. Múltiplas representações. BaloWaci combina transformação matemática e design circular para expressar o tempo de forma diferente.',
+        'founder.title': 'Mensagem do Fundador', 'founder.body': 'Meu nome é Fadhili Baloci, fundador da BaloWaci.\n\nNasci em Fizi, República Democrática do Congo, e fui criado em Moçambique depois que minha família fugiu da guerra em busca de paz. No ano 2000, encontramos refúgio lá e construímos uma vida por 11 anos antes de eu me mudar para os Estados Unidos em 2011, aos 11 anos de idade. Hoje moro em Iowa City, Iowa, mas minha jornada por continentes, culturas e desafios foi o que moldou a visão por trás da BaloWaci.\n\nA BaloWaci não foi criada da noite para o dia. Ela nasceu da reflexão, da curiosidade e de um profundo desejo de entender o tempo, a percepção e o potencial humano de uma nova maneira. Crescer entre mundos diferentes me ensinou que perspectiva é tudo, e que aquilo que aceitamos como fixo sempre pode ser reimaginado. A BaloWaci representa essa crença: um sistema que desafia a forma como interpretamos o tempo e nos convida a pensar além dos limites.\n\nQuero mostrar a mentes jovens e mais velhas que não existem fronteiras para o que a mente humana pode alcançar. Quando você escolhe um domínio em sua vida e se compromete com ele com 100% de foco, disciplina e fé, os resultados virão, mais cedo ou mais tarde. A jornada pode ser silenciosa, mas o impacto falará.\n\nO verdadeiro trabalho nem sempre precisa ser barulhento para ser poderoso. Trabalhe duro, seja notado ou não. Caminhe com integridade. Construa com humildade. E confie que aquilo que você cria em silêncio um dia ecoará pelo mundo.\n\nA BaloWaci é mais do que um sistema: é um reflexo de resiliência, visão e da crença de que a grandeza pode vir de qualquer lugar. Se minha história representa algo, é isto: o seu começo não define o seu fim. O que importa é aquilo que você escolhe construir.\n\n— Fadhili Baloci',
+        'founder.quote': '“O som é a ausência de silêncio, não ação.”',
+        'journey.title': 'A Jornada', 'journey.body': 'De conceitos desenhados à mão ao design de sistema, BaloWaci continua evoluindo como uma inovação unificada do tempo.',
+        'product.title': 'Jornada do Produto', 'product.body': 'BaloWaci começou em cadernos, por meio de círculos, camadas, cores e experimentos repetidos. Estes esboços documentam sua evolução.',
+        'feedback.title': 'Compartilhe seu Feedback', 'feedback.body': 'Ajude-nos a entender sua perspectiva sobre BaloWaci. Suas ideias moldarão o futuro deste sistema.',
+        'form.name': 'Seu nome', 'form.email': 'Endereço de e-mail', 'form.phone': 'Número de telefone', 'form.impression': 'Qual é sua primeira impressão?', 'form.unique': 'Isso parece único?', 'form.interests': 'O que mais chama sua atenção?', 'form.thoughts': 'Alguma ideia sobre a jornada ou o fundador?', 'form.targetCustomer': 'Quem você acha que mais se beneficiaria com BaloWaci?', 'form.problemSolved': 'Que problema ou necessidade real BaloWaci poderia resolver?', 'form.willingnessToPay': 'Você ou uma organização pagariam por acesso, licença ou implementação?', 'form.watchValueEstimate': 'Qual deveria ser o preço inicial ideal do BaloWaci e quanto as primeiras peças deste relógio poderiam valer?', 'form.adoptionBarriers': 'O que poderia impedir pessoas ou organizações de adotá-lo?', 'form.mustHaveFeatures': 'Que recurso, integração ou prova o tornaria mais valioso?', 'form.pilotInterest': 'Você recomendaria um piloto, parceria ou conversa com investidores?', 'form.submit': 'Enviar Feedback', 'form.success': 'Obrigado! Seu feedback foi enviado com sucesso.', 'form.submitError': 'Falha ao enviar feedback', 'form.backendError': 'Erro: Não foi possível enviar o feedback. Verifique se o backend está em execução.', 'footer.rights': '© 2026 BaloWaci. Um Sistema Unificado de Interpretação do Tempo. Todos os direitos reservados.'
+      },
+      fr: {
+        'nav.home': 'Accueil', 'nav.about': 'À propos', 'nav.how': 'Fonctionnement', 'nav.founder': 'Fondateur', 'nav.journey': 'Parcours', 'nav.productJourney': 'Évolution Produit', 'nav.liveWheel': 'Roue en Direct', 'nav.liveWatch': 'Montre en Direct', 'nav.feedback': 'Avis',
+        'hero.subtitle': 'Un Système Unifié d’Interprétation du Temps', 'hero.explore': 'Explorer le Système', 'hero.openWheel': 'Ouvrir la Roue', 'hero.openWatch': 'Ouvrir la Montre',
+        'about.title': 'À propos de BaloWaci', 'about.body': 'BaloWaci réinvente le temps grâce à plusieurs interprétations : standard, militaire, culturelle et rotationnelle, dans un système unifié.',
+        'time.title': 'Interprétation du Temps en Direct', 'time.heading': 'Heure Actuelle dans les Modes BaloWaci', 'time.loading': 'Chargement des interprétations...', 'time.standard': 'Heure standard :', 'time.military': 'Heure militaire :', 'time.cultural': 'Heure culturelle :', 'time.rotational': 'Heure rotationnelle :', 'time.updated': 'Mis à jour :', 'time.failed': 'Impossible de charger les interprétations du temps', 'time.apiError': 'Impossible de se connecter à l’API. Assurez-vous que le backend fonctionne.',
+        'how.title': 'Fonctionnement', 'how.body': 'Un moment. Plusieurs représentations. BaloWaci combine transformation mathématique et design circulaire pour exprimer le temps autrement.',
+        'founder.title': 'Message du Fondateur', 'founder.body': 'Je m’appelle Fadhili Baloci, fondateur de BaloWaci.\n\nJe suis né à Fizi, en République démocratique du Congo, et j’ai grandi au Mozambique après que ma famille a fui la guerre à la recherche de paix. En 2000, nous y avons trouvé refuge et construit une vie pendant 11 ans avant que je déménage aux États-Unis en 2011, à l’âge de 11 ans. Aujourd’hui, je vis à Iowa City, dans l’Iowa, mais mon parcours à travers les continents, les cultures et les défis est ce qui a façonné la vision derrière BaloWaci.\n\nBaloWaci n’a pas été créé du jour au lendemain. Il est né de la réflexion, de la curiosité et d’un profond désir de comprendre le temps, la perception et le potentiel humain d’une nouvelle manière. Grandir entre différents mondes m’a appris que la perspective est essentielle, et que ce que nous acceptons comme fixe peut toujours être réimaginé. BaloWaci représente cette conviction : un système qui remet en question notre façon d’interpréter le temps et nous invite à penser au-delà des limites.\n\nJe veux montrer aux jeunes comme aux plus âgés qu’il n’existe aucune frontière à ce que l’esprit humain peut accomplir. Lorsque vous choisissez un domaine dans votre vie et que vous vous y engagez avec 100 % de concentration, de discipline et de foi, les résultats viendront, tôt ou tard. Le chemin peut être silencieux, mais l’impact parlera.\n\nLe vrai travail n’a pas toujours besoin d’être bruyant pour être puissant. Travaillez dur, que l’on vous remarque ou non. Avancez avec intégrité. Construisez avec humilité. Et ayez confiance que ce que vous créez dans le silence résonnera un jour dans le monde.\n\nBaloWaci est plus qu’un système : c’est le reflet de la résilience, de la vision et de la conviction que la grandeur peut venir de n’importe où. Si mon histoire signifie quelque chose, c’est ceci : votre début ne définit pas votre fin. Ce qui compte, c’est ce que vous choisissez de construire.\n\n— Fadhili Baloci',
+        'founder.quote': '« Le son est l’absence de silence, pas l’action. »',
+        'journey.title': 'Le Parcours', 'journey.body': 'Des concepts dessinés à la main au design système, BaloWaci continue d’évoluer comme une innovation temporelle unifiée.',
+        'product.title': 'Évolution du Produit', 'product.body': 'BaloWaci a commencé dans des carnets, à travers des cercles, des couches, des couleurs et des expérimentations répétées.',
+        'feedback.title': 'Partagez Votre Avis', 'feedback.body': 'Aidez-nous à comprendre votre point de vue sur BaloWaci. Vos idées façonneront l’avenir de ce système.',
+        'form.name': 'Votre nom', 'form.email': 'Adresse e-mail', 'form.phone': 'Numéro de téléphone', 'form.impression': 'Quelle est votre première impression ?', 'form.unique': 'Cela vous semble-t-il unique ?', 'form.interests': 'Qu’est-ce qui vous intéresse le plus ?', 'form.thoughts': 'Des idées sur le parcours ou le fondateur ?', 'form.targetCustomer': 'Qui bénéficierait le plus de BaloWaci ?', 'form.problemSolved': 'Quel problème ou besoin réel BaloWaci pourrait-il résoudre ?', 'form.willingnessToPay': 'Vous ou une organisation paieriez-vous pour l’accès, la licence ou la mise en œuvre ?', 'form.watchValueEstimate': 'Quel devrait être le prix initial idéal de BaloWaci et quelle pourrait être la valeur des toutes premières pièces ?', 'form.adoptionBarriers': 'Qu’est-ce qui pourrait empêcher son adoption ?', 'form.mustHaveFeatures': 'Quelle fonctionnalité, intégration ou preuve le rendrait plus précieux ?', 'form.pilotInterest': 'Recommanderiez-vous un pilote, un partenariat ou une discussion avec des investisseurs ?', 'form.submit': 'Envoyer l’Avis', 'form.success': 'Merci ! Votre avis a bien été envoyé.', 'form.submitError': 'Échec de l’envoi de l’avis', 'form.backendError': 'Erreur : impossible d’envoyer l’avis. Assurez-vous que le backend fonctionne.', 'footer.rights': '© 2026 BaloWaci. Un Système Unifié d’Interprétation du Temps. Tous droits réservés.'
+      },
+      zh: {
+        'nav.home': '首页', 'nav.about': '关于', 'nav.how': '原理', 'nav.founder': '创始人', 'nav.journey': '旅程', 'nav.productJourney': '产品历程', 'nav.liveWheel': '实时轮盘', 'nav.liveWatch': '实时腕表', 'nav.feedback': '反馈',
+        'hero.subtitle': '统一时间解读系统', 'hero.explore': '探索系统', 'hero.openWheel': '打开实时轮盘', 'hero.openWatch': '打开实时腕表',
+        'about.title': '关于 BaloWaci', 'about.body': 'BaloWaci 通过标准、军事、文化和旋转等多种方式重新想象时间，并将它们统一在一个系统中。',
+        'time.title': '实时意义解读', 'time.heading': 'BaloWaci 模式下的当前时间', 'time.loading': '正在加载解读...', 'time.standard': '标准时间：', 'time.military': '军事时间：', 'time.cultural': '文化时间：', 'time.rotational': '旋转时间：', 'time.updated': '更新时间：', 'time.failed': '无法加载时间解读', 'time.apiError': '无法连接 API。请确认后端正在运行。',
+        'how.title': '工作原理', 'how.body': '一个时刻，多种表达。BaloWaci 结合数学转换和圆形设计，以不同方式表达时间。',
+        'founder.title': '创始人寄语', 'founder.body': '我的名字是 Fadhili Baloci，BaloWaci 的创始人。\n\n我出生在刚果民主共和国的 Fizi。后来，因为家人为了逃离战争、寻找和平，我们在莫桑比克长大。2000 年，我们在那里获得庇护，并生活了 11 年。2011 年，11 岁的我来到美国。今天，我住在爱荷华州的 Iowa City，但正是这段跨越大陆、文化与挑战的旅程，塑造了 BaloWaci 背后的愿景。\n\nBaloWaci 不是一夜之间被创造出来的。它诞生于反思、好奇，以及一种深切的愿望：用新的方式理解时间、感知和人类潜能。在不同世界之间成长让我明白，视角就是一切；我们认为固定不变的东西，也永远可以被重新想象。BaloWaci 代表的正是这种信念：它挑战我们解释时间的方式，并邀请我们超越限制去思考。\n\n我想向年轻和年长的心灵证明，人类的思想能够达到的高度没有边界。当你在生命中选择一个领域，并以 100% 的专注、纪律和信念投入其中，结果终会到来——或早或晚。旅程也许是安静的，但影响会自己发声。\n\n真正的工作并不总是需要喧嚣才有力量。无论是否被看见，都要努力工作。以正直前行。以谦逊建造。并相信你在沉默中创造的东西，终有一天会在世界中回响。\n\nBaloWaci 不只是一个系统——它是坚韧、愿景，以及伟大可以来自任何地方这一信念的体现。如果我的故事代表什么，那就是：你的起点并不决定你的终点。重要的是你选择去建造什么。\n\n— Fadhili Baloci',
+        'founder.quote': '“声音是沉默的缺席，而不是行动。”',
+        'journey.title': '旅程', 'journey.body': '从手绘概念到系统级设计，BaloWaci 作为统一时间创新不断发展。',
+        'product.title': '产品历程', 'product.body': 'BaloWaci 从笔记本中的圆形、层次、颜色和反复实验开始。这些草图记录了它的演变。',
+        'feedback.title': '分享你的反馈', 'feedback.body': '帮助我们了解你对 BaloWaci 的看法。你的意见会塑造这个系统的未来。',
+        'form.name': '你的姓名', 'form.email': '电子邮箱', 'form.phone': '电话号码', 'form.impression': '你的第一印象是什么？', 'form.unique': '你觉得它独特吗？', 'form.interests': '你最感兴趣的是什么？', 'form.thoughts': '对旅程或创始人有什么想法？', 'form.targetCustomer': '你认为谁最能从 BaloWaci 中受益？', 'form.problemSolved': 'BaloWaci 可以解决什么现实问题或需求？', 'form.willingnessToPay': '你或机构会为访问、授权或实施付费吗？', 'form.watchValueEstimate': '你认为 BaloWaci 的理想初始价格应是多少？这种腕表的首批作品可能价值多少？', 'form.adoptionBarriers': '什么可能阻止人们或组织采用它？', 'form.mustHaveFeatures': '什么功能、集成或证明会让它更有价值？', 'form.pilotInterest': '你会推荐试点、合作或投资者交流吗？', 'form.submit': '提交反馈', 'form.success': '谢谢！你的反馈已成功提交。', 'form.submitError': '反馈提交失败', 'form.backendError': '错误：无法提交反馈。请确认后端正在运行。', 'footer.rights': '© 2026 BaloWaci。统一时间解读系统。保留所有权利。'
+      },
+      ar: {
+        'nav.home': 'الرئيسية', 'nav.about': 'حول', 'nav.how': 'كيف يعمل', 'nav.founder': 'المؤسس', 'nav.journey': 'الرحلة', 'nav.productJourney': 'رحلة المنتج', 'nav.liveWheel': 'العجلة الحية', 'nav.liveWatch': 'الساعة الحية', 'nav.feedback': 'الملاحظات',
+        'hero.subtitle': 'نظام موحد لتفسير الوقت', 'hero.explore': 'استكشف النظام', 'hero.openWheel': 'افتح العجلة الحية', 'hero.openWatch': 'افتح الساعة الحية',
+        'about.title': 'حول BaloWaci', 'about.body': 'يعيد BaloWaci تصور الوقت من خلال تفسيرات متعددة: قياسية وعسكرية وثقافية ودورانية، داخل نظام موحد واحد.',
+        'time.title': 'تفسير الوقت المباشر', 'time.heading': 'الوقت الحالي عبر أوضاع BaloWaci', 'time.loading': 'جار تحميل التفسيرات...', 'time.standard': 'الوقت القياسي:', 'time.military': 'الوقت العسكري:', 'time.cultural': 'الوقت الثقافي:', 'time.rotational': 'الوقت الدوراني:', 'time.updated': 'آخر تحديث:', 'time.failed': 'تعذر تحميل تفسيرات الوقت', 'time.apiError': 'تعذر الاتصال بواجهة API. تأكد من أن الخلفية تعمل.',
+        'how.title': 'كيف يعمل', 'how.body': 'لحظة واحدة. تمثيلات متعددة. يجمع BaloWaci بين التحويل الرياضي والتصميم الدائري للتعبير عن الوقت بطريقة مختلفة.',
+        'founder.title': 'رسالة المؤسس', 'founder.body': 'اسمي فاضيلي بالوتشي، مؤسس BaloWaci.\n\nوُلدت في فيزي، جمهورية الكونغو الديمقراطية، ونشأت في موزمبيق بعد أن فرت عائلتي من الحرب بحثًا عن السلام. في عام 2000، وجدنا ملجأ هناك وبنينا حياة لمدة 11 عامًا قبل أن أنتقل إلى الولايات المتحدة في عام 2011 عندما كنت في الحادية عشرة من عمري. اليوم أعيش في آيوا سيتي، آيوا—لكن رحلتي عبر القارات والثقافات والتحديات هي ما شكّل الرؤية وراء BaloWaci.\n\nلم يتم إنشاء BaloWaci بين ليلة وضحاها. لقد وُلد من التأمل والفضول والرغبة العميقة في فهم الوقت والإدراك والإمكانات البشرية بطريقة جديدة. علّمني النمو بين عوالم مختلفة أن المنظور هو كل شيء، وأن ما نقبله على أنه ثابت يمكن دائمًا إعادة تخيله. يمثل BaloWaci هذا الإيمان: نظامًا يتحدى طريقة تفسيرنا للوقت ويدعونا إلى التفكير beyond الحدود.\n\nأريد أن أُظهر للعقول الشابة والكبيرة أنه لا توجد حدود لما يمكن للعقل البشري تحقيقه. عندما تختار مجالًا في حياتك وتلتزم به بتركيز وانضباط وإيمان بنسبة 100%، ستأتي النتائج—عاجلًا أم آجلًا. قد تكون الرحلة صامتة، لكن الأثر سيتحدث.\n\nالعمل الحقيقي لا يحتاج دائمًا إلى أن يكون صاخبًا ليكون قويًا. اعمل بجد سواء لاحظك الناس أم لا. تحرك بنزاهة. ابنِ بتواضع. وثق أن ما تصنعه في الصمت سيصدح يومًا ما في العالم.\n\nBaloWaci أكثر من مجرد نظام—إنه انعكاس للصمود والرؤية والإيمان بأن العظمة يمكن أن تأتي من أي مكان. إذا كان لقصتي معنى واحد، فهو هذا: بدايتك لا تحدد نهايتك. ما يهم هو ما تختار أن تبنيه.\n\n— فاضيلي بالوتشي',
+        'founder.quote': '«الصوت هو غياب الصمت، وليس الفعل.»',
+        'journey.title': 'الرحلة', 'journey.body': 'من المفاهيم المرسومة يدويًا إلى تصميم النظام، يواصل BaloWaci التطور كابتكار موحد للوقت.',
+        'product.title': 'رحلة المنتج', 'product.body': 'بدأ BaloWaci في الدفاتر، عبر الدوائر والطبقات والألوان والتجارب المتكررة. توثق هذه الرسومات تطوره.',
+        'feedback.title': 'شارك ملاحظاتك', 'feedback.body': 'ساعدنا على فهم وجهة نظرك حول BaloWaci. ستساهم أفكارك في تشكيل مستقبل هذا النظام.',
+        'form.name': 'اسمك', 'form.email': 'البريد الإلكتروني', 'form.phone': 'رقم الهاتف', 'form.impression': 'ما هو انطباعك الأول؟', 'form.unique': 'هل يبدو هذا فريدًا؟', 'form.interests': 'ما أكثر ما يثير اهتمامك؟', 'form.thoughts': 'أي أفكار حول الرحلة أو المؤسس؟', 'form.targetCustomer': 'من تعتقد أنه سيستفيد أكثر من BaloWaci؟', 'form.problemSolved': 'ما المشكلة أو الحاجة الواقعية التي يمكن أن يحلها BaloWaci؟', 'form.willingnessToPay': 'هل ستدفع أنت أو مؤسسة مقابل الوصول أو الترخيص أو التنفيذ؟', 'form.watchValueEstimate': 'ما السعر الأولي المثالي لـ BaloWaci برأيك، وكم قد تساوي أولى قطع هذه الساعة؟', 'form.adoptionBarriers': 'ما الذي قد يمنع الناس أو المؤسسات من اعتماده؟', 'form.mustHaveFeatures': 'ما الميزة أو التكامل أو الدليل الذي يجعله أكثر قيمة؟', 'form.pilotInterest': 'هل توصي بتجربة أولية أو شراكة أو محادثة مع مستثمر؟', 'form.submit': 'إرسال الملاحظات', 'form.success': 'شكرًا لك! تم إرسال ملاحظاتك بنجاح.', 'form.submitError': 'فشل إرسال الملاحظات', 'form.backendError': 'خطأ: تعذر إرسال الملاحظات. تأكد من أن الخلفية تعمل.', 'footer.rights': '© 2026 BaloWaci. نظام موحد لتفسير الوقت. جميع الحقوق محفوظة.'
+      }
+    };
+
+    function t(key) {
+      return translations[currentLanguage]?.[key] || translations.en[key] || key;
+    }
+
+    function applyLanguage(language) {
+      currentLanguage = translations[language] ? language : defaultLanguage;
+      localStorage.setItem('balowaciLanguage', currentLanguage);
+      document.documentElement.lang = currentLanguage;
+      document.documentElement.dir = currentLanguage === 'ar' ? 'rtl' : 'ltr';
+
+      document.querySelectorAll('[data-i18n]').forEach((element) => {
+        const value = t(element.dataset.i18n);
+        if (element.dataset.i18n === 'founder.body') {
+          element.innerHTML = value.replace(/\n/g, '<br>');
+        } else {
+          element.textContent = value;
+        }
+      });
+
+      const languageSelect = document.getElementById('languageSelect');
+      if (languageSelect) {
+        languageSelect.value = currentLanguage;
+      }
+    }
+
+    // Initialize stars background
+    function initializeStars() {
+      const container = document.getElementById('starsContainer');
+      const starCount = 40;
+
+      for (let i = 0; i < starCount; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.animationDuration = (Math.random() * 3 + 3) + 's';
+        star.style.animationDelay = Math.random() * 4 + 's';
+        container.appendChild(star);
+      }
+    }
+
+    // Fetch and display live time interpretation
+    async function loadTimeInterpretation() {
+      const timeContent = document.getElementById('timeContent');
+      
+      try {
+        const response = await fetch(`${API_BASE_URL}/time/current`);
+        const result = await response.json();
+
+        if (result.success) {
+          const data = result.data;
+          timeContent.innerHTML = `
+            <div class="time-row">
+              <span class="time-label">${t('time.standard')}</span>
+              <span class="time-value">${data.standard}</span>
+            </div>
+            <div class="time-row">
+              <span class="time-label">${t('time.military')}</span>
+              <span class="time-value">${data.military}</span>
+            </div>
+            <div class="time-row">
+              <span class="time-label">${t('time.cultural')}</span>
+              <span class="time-value">${data.cultural}</span>
+            </div>
+            <div class="time-row">
+              <span class="time-label">${t('time.rotational')}</span>
+              <span class="time-value">${data.rotational}</span>
+            </div>
+            <div class="time-row">
+              <span class="time-label">${t('time.updated')}</span>
+              <span class="time-value">${new Date(data.timestamp).toLocaleTimeString()}</span>
+            </div>
+          `;
+        } else {
+          timeContent.innerHTML = `<p style="color: #f44336;">${t('time.failed')}</p>`;
+        }
+      } catch (error) {
+        console.error('Error loading time interpretation:', error);
+        timeContent.innerHTML = `<p style="color: #f44336;">${t('time.apiError')}</p>`;
+      }
+    }
+
+    // Handle feedback form submission
+    async function handleFeedbackSubmit(e) {
+      e.preventDefault();
+
+      const form = document.getElementById('feedbackForm');
+      const formStatus = document.getElementById('formStatus');
+
+      const visitorName = document.getElementById('visitorName').value;
+      const visitorEmail = document.getElementById('visitorEmail').value;
+      const visitorPhone = document.getElementById('visitorPhone').value;
+      const impression = document.getElementById('impression').value;
+      const unique = document.getElementById('unique').value;
+      const interests = document.getElementById('interests').value;
+      const thoughts = document.getElementById('thoughts').value;
+      const targetCustomer = document.getElementById('targetCustomer').value;
+      const problemSolved = document.getElementById('problemSolved').value;
+      const willingnessToPay = document.getElementById('willingnessToPay').value;
+      const watchValueEstimate = document.getElementById('watchValueEstimate').value;
+      const adoptionBarriers = document.getElementById('adoptionBarriers').value;
+      const mustHaveFeatures = document.getElementById('mustHaveFeatures').value;
+      const pilotInterest = document.getElementById('pilotInterest').value;
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/feedback/submit`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            visitorName: visitorName,
+            visitorEmail: visitorEmail,
+            visitorPhone: visitorPhone,
+            firstImpression: impression,
+            isUnique: unique,
+            interests: interests,
+            journeyThoughts: thoughts,
+            targetCustomer: targetCustomer,
+            problemSolved: problemSolved,
+            willingnessToPay: willingnessToPay,
+            watchValueEstimate: watchValueEstimate,
+            adoptionBarriers: adoptionBarriers,
+            mustHaveFeatures: mustHaveFeatures,
+            pilotInterest: pilotInterest
+          })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          formStatus.className = 'form-status success';
+          formStatus.textContent = t('form.success');
+          form.reset();
+          setTimeout(() => {
+            formStatus.style.display = 'none';
+          }, 5000);
+        } else {
+          formStatus.className = 'form-status error';
+          formStatus.textContent = 'Error: ' + (result.error || t('form.submitError'));
+        }
+      } catch (error) {
+        console.error('Error submitting feedback:', error);
+        formStatus.className = 'form-status error';
+        formStatus.textContent = t('form.backendError');
+      }
+    }
+
+    // Refresh time interpretation every 10 seconds
+    function startTimeRefresh() {
+      loadTimeInterpretation();
+      setInterval(loadTimeInterpretation, 10000);
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      applyLanguage(currentLanguage);
+      document.getElementById('languageSelect').addEventListener('change', (event) => {
+        applyLanguage(event.target.value);
+        loadTimeInterpretation();
+      });
+      initializeStars();
+      startTimeRefresh();
+      document.getElementById('feedbackForm').addEventListener('submit', handleFeedbackSubmit);
+    });
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Universe Time — Mechanical</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Josefin+Sans:wght@100;300;400;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{
+  min-height:100vh;width:100%;
+  background:#18120a;
+  color:#e8d8b0;
+  font-family:'Josefin Sans',sans-serif;font-weight:300;
+  display:flex;flex-direction:column;align-items:center;
+  overflow-x:hidden;
+}
+
+/* ── STRAP ── */
+.strap{
+  width:var(--sw);
+  background:linear-gradient(90deg,#1a0e06 0%,#2e1a08 30%,#2e1a08 70%,#1a0e06 100%);
+  border-radius:6px;
+  position:relative;
+  flex-shrink:0;
+}
+.strap::before,.strap::after{
+  content:'';position:absolute;top:0;bottom:0;width:1px;
+  background:rgba(255,200,120,0.15);
+}
+.strap::before{left:12px}
+.strap::after{right:12px}
+.strap-holes{
+  display:flex;flex-direction:column;align-items:center;
+  gap:var(--hg);padding:var(--hp) 0;
+}
+.strap-hole{
+  width:7px;height:7px;border-radius:50%;
+  background:#0e0806;border:1px solid #3a2010;
+}
+.strap-bottom .buckle{
+  width:60%;margin:0 auto;
+  height:22px;
+  background:linear-gradient(90deg,#2a1a08,#3a2810,#2a1a08);
+  border:1px solid #5a4020;border-radius:4px;
+  display:flex;align-items:center;justify-content:center;
+}
+.buckle-pin{width:2px;height:14px;background:#c8a030;border-radius:1px;opacity:0.7}
+
+/* ── WATCH CASE ── */
+#watch{
+  position:relative;
+  width:var(--cw);
+  flex-shrink:0;
+}
+
+/* Lugs */
+.lugs{
+  display:flex;justify-content:space-between;
+  padding:0 calc((var(--cw) - var(--lw)*2 - var(--sw))/2);
+  height:var(--lh);
+}
+.lug{
+  width:var(--lw);height:var(--lh);border-radius:6px;
+  background:linear-gradient(90deg,#222 0%,#555 40%,#333 100%);
+}
+.lug.right{background:linear-gradient(90deg,#333 0%,#555 60%,#222 100%)}
+
+/* Case body ring */
+.case-body{
+  width:var(--cw);height:var(--cw);
+  border-radius:50%;
+  background:linear-gradient(135deg,#2a2a2a 0%,#5a5a5a 20%,#3a3a3a 50%,#5a5a5a 80%,#2a2a2a 100%);
+  position:relative;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 40px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.08);
+}
+.case-body::after{
+  content:'';position:absolute;inset:0;border-radius:50%;
+  border:1.5px solid rgba(255,255,255,0.07);
+  pointer-events:none;
+}
+
+/* Crown */
+.crown{
+  position:absolute;right:calc(var(--cw)*-0.06);
+  top:50%;transform:translateY(-50%);
+  width:calc(var(--cw)*0.07);height:calc(var(--cw)*0.16);
+  border-radius:4px;
+  background:linear-gradient(90deg,#c8a030,#e8c050,#a07818);
+  box-shadow:2px 0 6px rgba(0,0,0,0.4);
+  display:flex;flex-direction:column;justify-content:space-evenly;align-items:center;
+  padding:2px 0;
+  z-index:10;
+}
+.crown-groove{width:80%;height:1px;background:#906010;opacity:0.7}
+
+/* Crystal + canvas container */
+.crystal{
+  width:calc(var(--cw)*0.91);height:calc(var(--cw)*0.91);
+  border-radius:50%;
+  overflow:hidden;
+  position:relative;
+  box-shadow:inset 0 2px 12px rgba(0,0,0,0.5);
+}
+.crystal::after{
+  content:'';position:absolute;inset:0;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,rgba(255,255,255,0.1) 0%,transparent 60%);
+  pointer-events:none;z-index:10;
+}
+canvas#cv{display:block;cursor:grab;border-radius:50%}
+canvas#cv.dragging{cursor:grabbing}
+
+/* Fixed pointer crown (SVG overlay at 12) */
+.pointer-crown{
+  position:absolute;top:-1%;left:50%;transform:translateX(-50%);
+  width:0;height:0;
+  border-left:8px solid transparent;
+  border-right:8px solid transparent;
+  border-bottom:16px solid #c8880a;
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,0.5));
+  z-index:20;
+}
+
+/* ── INFO PANEL ── */
+#info-wrap{
+  width:var(--cw);max-width:600px;
+  margin-top:0.6rem;
+}
+#card{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(180,150,80,.15);
+  border-radius:6px 6px 0 0;
+  padding:.75rem 1rem .5rem;
+}
+.city-row{display:flex;align-items:baseline;gap:.5rem;margin-bottom:.15rem}
+.city-name{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:#e8d090}
+.city-country{font-size:.52rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(200,160,40,.45)}
+.city-time{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;color:#c8a030;line-height:1;margin-bottom:.12rem;letter-spacing:.02em}
+.city-meta{font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(220,200,150,.28)}
+#meta{display:flex;width:100%;background:rgba(255,255,255,.03);border:1px solid rgba(180,150,80,.12);border-top:none;overflow:hidden}
+.mc{flex:1;padding:.4rem .6rem;border-right:1px solid rgba(180,150,80,.08);text-align:center}
+.mc:last-child{border-right:none}
+.mc-l{font-size:.44rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(200,160,40,.35);margin-bottom:.08rem}
+.mc-v{font-family:'Cormorant Garamond',serif;font-size:.85rem;color:rgba(220,200,150,.7)}
+#hidden{display:flex;width:100%;background:rgba(255,255,255,.02);border:1px solid rgba(29,158,117,.12);border-top:none;border-radius:0 0 6px 6px;overflow:hidden;margin-bottom:1.2rem}
+.hc{flex:1;padding:.4rem .6rem;border-right:1px solid rgba(29,158,117,.07);text-align:center}
+.hc:last-child{border-right:none}
+.hc-l{font-size:.44rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,120,80,.45);margin-bottom:.08rem}
+.hc-v{font-family:'Cormorant Garamond',serif;font-size:.85rem;color:rgba(15,90,60,.82)}
+.hint{font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(200,160,40,.22);text-align:center;margin:.35rem 0}
+@media(max-width:500px){#meta,#hidden{flex-wrap:wrap}.mc,.hc{flex:1 1 45%}}
+</style>
+</head>
+<body>
+<script>
+// Calculate watch dimensions responsively
+const VW = Math.min(window.innerWidth, 620);
+const CW = Math.round(VW * 0.88);  // case width
+const SW = Math.round(CW * 0.42);  // strap width
+const LW = Math.round((CW - SW) / 2 * 0.7); // lug width
+const LH = Math.round(CW * 0.075); // lug height
+const STRAP_H_TOP = Math.round(CW * 0.28);
+const STRAP_H_BOT = Math.round(CW * 0.32);
+document.documentElement.style.setProperty('--cw', CW+'px');
+document.documentElement.style.setProperty('--sw', SW+'px');
+document.documentElement.style.setProperty('--lw', LW+'px');
+document.documentElement.style.setProperty('--lh', LH+'px');
+</script>
+
+<!-- TOP STRAP -->
+<div class="strap" style="height:var(--strap-top,120px);padding-top:8px" id="strap-top">
+  <div class="strap-holes" id="holes-top"></div>
+</div>
+
+<!-- WATCH CASE -->
+<div id="watch">
+  <!-- Top lugs -->
+  <div class="lugs" id="lugs-top">
+    <div class="lug left"></div>
+    <div class="lug right"></div>
+  </div>
+
+  <!-- Case body -->
+  <div class="case-body">
+    <!-- Crown -->
+    <div class="crown" id="crown">
+      <div class="crown-groove"></div>
+      <div class="crown-groove"></div>
+      <div class="crown-groove"></div>
+      <div class="crown-groove"></div>
+      <div class="crown-groove"></div>
+    </div>
+    <!-- Fixed pointer at 12 -->
+    <div class="pointer-crown"></div>
+    <!-- Crystal with canvas -->
+    <div class="crystal">
+      <canvas id="cv"></canvas>
+    </div>
+  </div>
+
+  <!-- Bottom lugs -->
+  <div class="lugs" id="lugs-bot">
+    <div class="lug left"></div>
+    <div class="lug right"></div>
+  </div>
+</div>
+
+<!-- BOTTOM STRAP -->
+<div class="strap strap-bottom" id="strap-bot" style="padding-bottom:12px">
+  <div class="strap-holes" id="holes-bot"></div>
+  <div class="buckle"><div class="buckle-pin"></div></div>
+</div>
+
+<!-- INFO -->
+<div id="info-wrap">
+  <p class="hint">↻ Drag bezel to any city · Snaps like a ratchet</p>
+  <div id="card">
+    <div class="city-row">
+      <span class="city-name" id="c-name">Chicago</span>
+      <span class="city-country" id="c-ctry">US</span>
+    </div>
+    <div class="city-time" id="c-time">—</div>
+    <div class="city-meta" id="c-meta">—</div>
+  </div>
+  <div id="meta">
+    <div class="mc"><div class="mc-l">Day of Year</div><div class="mc-v" id="m-doy">—</div></div>
+    <div class="mc"><div class="mc-l">Season</div><div class="mc-v" id="m-season">—</div></div>
+    <div class="mc"><div class="mc-l">Orbital Angle</div><div class="mc-v" id="m-orb">—</div></div>
+    <div class="mc"><div class="mc-l">UTC Offset</div><div class="mc-v" id="m-utc">—</div></div>
+  </div>
+  <div id="hidden">
+    <div class="hc"><div class="hc-l">☀ Subsolar Point</div><div class="hc-v" id="h-sun">—</div></div>
+    <div class="hc"><div class="hc-l">Daylight Hours</div><div class="hc-v" id="h-day">—</div></div>
+    <div class="hc"><div class="hc-l">Solar Noon</div><div class="hc-v" id="h-noon">—</div></div>
+    <div class="hc"><div class="hc-l">Earth–Sun Dist</div><div class="hc-v" id="h-dist">—</div></div>
+  </div>
+</div>
+<script>
+// ── CITIES ──
+const CITIES=[
+  {n:'Honolulu',c:'US',z:'Pacific/Honolulu',lon:-157.8,lat:21.3},
+  {n:'Anchorage',c:'US',z:'America/Anchorage',lon:-149.9,lat:61.2},
+  {n:'Vancouver',c:'CA',z:'America/Vancouver',lon:-123.1,lat:49.3},
+  {n:'Los Angeles',c:'US',z:'America/Los_Angeles',lon:-118.2,lat:34.1},
+  {n:'Phoenix',c:'US',z:'America/Phoenix',lon:-112.1,lat:33.4},
+  {n:'Denver',c:'US',z:'America/Denver',lon:-104.9,lat:39.7},
+  {n:'Mexico City',c:'MX',z:'America/Mexico_City',lon:-99.1,lat:19.4},
+  {n:'Chicago',c:'US',z:'America/Chicago',lon:-87.6,lat:41.9},
+  {n:'Havana',c:'CU',z:'America/Havana',lon:-82.4,lat:23.1},
+  {n:'Toronto',c:'CA',z:'America/Toronto',lon:-79.4,lat:43.7},
+  {n:'Lima',c:'PE',z:'America/Lima',lon:-77.0,lat:-12.0},
+  {n:'Bogotá',c:'CO',z:'America/Bogota',lon:-74.1,lat:4.7},
+  {n:'New York',c:'US',z:'America/New_York',lon:-74.0,lat:40.7},
+  {n:'Caracas',c:'VE',z:'America/Caracas',lon:-66.9,lat:10.5},
+  {n:'La Paz',c:'BO',z:'America/La_Paz',lon:-68.1,lat:-16.5},
+  {n:'Santiago',c:'CL',z:'America/Santiago',lon:-70.7,lat:-33.5},
+  {n:'Buenos Aires',c:'AR',z:'America/Argentina/Buenos_Aires',lon:-58.4,lat:-34.6},
+  {n:'São Paulo',c:'BR',z:'America/Sao_Paulo',lon:-46.6,lat:-23.5},
+  {n:'Reykjavik',c:'IS',z:'Atlantic/Reykjavik',lon:-22.0,lat:64.1},
+  {n:'Lisbon',c:'PT',z:'Europe/Lisbon',lon:-9.1,lat:38.7},
+  {n:'Dublin',c:'IE',z:'Europe/Dublin',lon:-6.3,lat:53.3},
+  {n:'Madrid',c:'ES',z:'Europe/Madrid',lon:-3.7,lat:40.4},
+  {n:'London',c:'GB',z:'Europe/London',lon:-0.1,lat:51.5},
+  {n:'Paris',c:'FR',z:'Europe/Paris',lon:2.3,lat:48.9},
+  {n:'Amsterdam',c:'NL',z:'Europe/Amsterdam',lon:4.9,lat:52.4},
+  {n:'Zurich',c:'CH',z:'Europe/Zurich',lon:8.5,lat:47.4},
+  {n:'Oslo',c:'NO',z:'Europe/Oslo',lon:10.7,lat:59.9},
+  {n:'Rome',c:'IT',z:'Europe/Rome',lon:12.5,lat:41.9},
+  {n:'Berlin',c:'DE',z:'Europe/Berlin',lon:13.4,lat:52.5},
+  {n:'Copenhagen',c:'DK',z:'Europe/Copenhagen',lon:12.6,lat:55.7},
+  {n:'Vienna',c:'AT',z:'Europe/Vienna',lon:16.4,lat:48.2},
+  {n:'Stockholm',c:'SE',z:'Europe/Stockholm',lon:18.1,lat:59.3},
+  {n:'Warsaw',c:'PL',z:'Europe/Warsaw',lon:21.0,lat:52.2},
+  {n:'Athens',c:'GR',z:'Europe/Athens',lon:23.7,lat:37.9},
+  {n:'Helsinki',c:'FI',z:'Europe/Helsinki',lon:25.0,lat:60.2},
+  {n:'Bucharest',c:'RO',z:'Europe/Bucharest',lon:26.1,lat:44.4},
+  {n:'Istanbul',c:'TR',z:'Europe/Istanbul',lon:29.0,lat:41.0},
+  {n:'Kiev',c:'UA',z:'Europe/Kiev',lon:30.5,lat:50.5},
+  {n:'Moscow',c:'RU',z:'Europe/Moscow',lon:37.6,lat:55.8},
+  {n:'Dakar',c:'SN',z:'Africa/Dakar',lon:-17.4,lat:14.7},
+  {n:'Casablanca',c:'MA',z:'Africa/Casablanca',lon:-7.6,lat:33.6},
+  {n:'Accra',c:'GH',z:'Africa/Accra',lon:-0.2,lat:5.6},
+  {n:'Abidjan',c:'CI',z:'Africa/Abidjan',lon:-4.0,lat:5.4},
+  {n:'Algiers',c:'DZ',z:'Africa/Algiers',lon:3.1,lat:36.7},
+  {n:'Lagos',c:'NG',z:'Africa/Lagos',lon:3.4,lat:6.5},
+  {n:'Tunis',c:'TN',z:'Africa/Tunis',lon:10.2,lat:36.8},
+  {n:'Kinshasa',c:'CD',z:'Africa/Kinshasa',lon:15.3,lat:-4.3},
+  {n:'Luanda',c:'AO',z:'Africa/Luanda',lon:13.2,lat:-8.8},
+  {n:'Cairo',c:'EG',z:'Africa/Cairo',lon:31.2,lat:30.0},
+  {n:'Khartoum',c:'SD',z:'Africa/Khartoum',lon:32.5,lat:15.6},
+  {n:'Kampala',c:'UG',z:'Africa/Kampala',lon:32.6,lat:0.3},
+  {n:'Nairobi',c:'KE',z:'Africa/Nairobi',lon:36.8,lat:-1.3},
+  {n:'Addis Ababa',c:'ET',z:'Africa/Addis_Ababa',lon:38.7,lat:9.0},
+  {n:'Dar es Salaam',c:'TZ',z:'Africa/Dar_es_Salaam',lon:39.3,lat:-6.8},
+  {n:'Johannesburg',c:'ZA',z:'Africa/Johannesburg',lon:28.0,lat:-26.2},
+  {n:'Lusaka',c:'ZM',z:'Africa/Lusaka',lon:28.3,lat:-15.4},
+  {n:'Harare',c:'ZW',z:'Africa/Harare',lon:31.0,lat:-17.8},
+  {n:'Maputo',c:'MZ',z:'Africa/Maputo',lon:32.6,lat:-25.9},
+  {n:'Antananarivo',c:'MG',z:'Indian/Antananarivo',lon:47.5,lat:-18.9},
+  {n:'Baghdad',c:'IQ',z:'Asia/Baghdad',lon:44.4,lat:33.3},
+  {n:'Riyadh',c:'SA',z:'Asia/Riyadh',lon:46.7,lat:24.7},
+  {n:'Tehran',c:'IR',z:'Asia/Tehran',lon:51.4,lat:35.7},
+  {n:'Doha',c:'QA',z:'Asia/Qatar',lon:51.5,lat:25.3},
+  {n:'Baku',c:'AZ',z:'Asia/Baku',lon:49.9,lat:40.4},
+  {n:'Dubai',c:'AE',z:'Asia/Dubai',lon:55.3,lat:25.2},
+  {n:'Muscat',c:'OM',z:'Asia/Muscat',lon:58.6,lat:23.6},
+  {n:'Karachi',c:'PK',z:'Asia/Karachi',lon:67.0,lat:24.9},
+  {n:'Mumbai',c:'IN',z:'Asia/Kolkata',lon:72.9,lat:19.1},
+  {n:'Delhi',c:'IN',z:'Asia/Kolkata',lon:77.2,lat:28.6},
+  {n:'Colombo',c:'LK',z:'Asia/Colombo',lon:79.9,lat:6.9},
+  {n:'Kathmandu',c:'NP',z:'Asia/Kathmandu',lon:85.3,lat:27.7},
+  {n:'Dhaka',c:'BD',z:'Asia/Dhaka',lon:90.4,lat:23.7},
+  {n:'Yangon',c:'MM',z:'Asia/Rangoon',lon:96.2,lat:16.8},
+  {n:'Bangkok',c:'TH',z:'Asia/Bangkok',lon:100.5,lat:13.8},
+  {n:'Kuala Lumpur',c:'MY',z:'Asia/Kuala_Lumpur',lon:101.7,lat:3.1},
+  {n:'Singapore',c:'SG',z:'Asia/Singapore',lon:103.8,lat:1.4},
+  {n:'Ho Chi Minh',c:'VN',z:'Asia/Ho_Chi_Minh',lon:106.7,lat:10.8},
+  {n:'Jakarta',c:'ID',z:'Asia/Jakarta',lon:106.8,lat:-6.2},
+  {n:'Hong Kong',c:'HK',z:'Asia/Hong_Kong',lon:114.2,lat:22.3},
+  {n:'Beijing',c:'CN',z:'Asia/Shanghai',lon:116.4,lat:39.9},
+  {n:'Manila',c:'PH',z:'Asia/Manila',lon:121.0,lat:14.6},
+  {n:'Shanghai',c:'CN',z:'Asia/Shanghai',lon:121.5,lat:31.2},
+  {n:'Taipei',c:'TW',z:'Asia/Taipei',lon:121.5,lat:25.0},
+  {n:'Seoul',c:'KR',z:'Asia/Seoul',lon:126.9,lat:37.6},
+  {n:'Tokyo',c:'JP',z:'Asia/Tokyo',lon:139.7,lat:35.7},
+  {n:'Ulaanbaatar',c:'MN',z:'Asia/Ulaanbaatar',lon:106.9,lat:47.9},
+  {n:'Tashkent',c:'UZ',z:'Asia/Tashkent',lon:69.3,lat:41.3},
+  {n:'Almaty',c:'KZ',z:'Asia/Almaty',lon:76.9,lat:43.3},
+  {n:'Kabul',c:'AF',z:'Asia/Kabul',lon:69.2,lat:34.5},
+  {n:'Yerevan',c:'AM',z:'Asia/Yerevan',lon:44.5,lat:40.2},
+  {n:'Perth',c:'AU',z:'Australia/Perth',lon:115.9,lat:-31.9},
+  {n:'Adelaide',c:'AU',z:'Australia/Adelaide',lon:138.6,lat:-34.9},
+  {n:'Melbourne',c:'AU',z:'Australia/Melbourne',lon:144.9,lat:-37.8},
+  {n:'Brisbane',c:'AU',z:'Australia/Brisbane',lon:153.0,lat:-27.5},
+  {n:'Sydney',c:'AU',z:'Australia/Sydney',lon:151.2,lat:-33.9},
+  {n:'Auckland',c:'NZ',z:'Pacific/Auckland',lon:174.8,lat:-36.9},
+];
+
+// ── GEO DATA ──
+let geoFeatures=null,geoReady=false;
+fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
+  .then(r=>r.json())
+  .then(topo=>{
+    geoFeatures=topojson.feature(topo,topo.objects.countries).features;
+    geoReady=true;
+    if(typeof nightDirty!=='undefined')nightDirty=true;
+  }).catch(()=>{});
+
+// ── CANVAS ──
+const cv=document.getElementById('cv');
+const DPR=Math.min(devicePixelRatio,2);
+const VW2=Math.min(window.innerWidth,620);
+const CW2=Math.round(VW2*0.88);
+const SIZE=Math.round(CW2*0.91*0.98); // fits inside crystal
+cv.width=SIZE*DPR; cv.height=SIZE*DPR;
+cv.style.width=SIZE+'px'; cv.style.height=SIZE+'px';
+
+// Build strap dynamically
+const SW2=Math.round(CW2*0.42);
+const strapTop=Math.round(CW2*0.28);
+const strapBot=Math.round(CW2*0.32);
+const holeCount=5;
+document.getElementById('strap-top').style.height=strapTop+'px';
+document.getElementById('strap-top').style.width=SW2+'px';
+document.getElementById('strap-bot').style.width=SW2+'px';
+document.getElementById('strap-bot').style.minHeight=strapBot+'px';
+// Holes
+const holesT=document.getElementById('holes-top');
+const holesB=document.getElementById('holes-bot');
+for(let i=0;i<holeCount;i++){
+  const h=document.createElement('div');h.className='strap-hole';holesT.appendChild(h);
+  const h2=document.createElement('div');h2.className='strap-hole';holesB.appendChild(h2);
+}
+// Lug sizing
+const LW2=Math.round((CW2-SW2)/2*0.7);
+const LH2=Math.round(CW2*0.075);
+document.querySelectorAll('.lug').forEach(l=>{
+  l.style.width=LW2+'px';l.style.height=LH2+'px';
+});
+// Crown height
+document.getElementById('crown').style.height=(CW2*0.15)+'px';
+document.getElementById('crown').style.width=(CW2*0.065)+'px';
+const ctx=cv.getContext('2d');
+const W=cv.width,H=cv.height,cx=W/2,cy=H/2;
+const F=W/600;
+
+// ── RING RADII (600-unit system × F) ──
+const R={
+  // Outer mechanical bezel
+  bezelO:298*F, knurlI:281*F, bezelI:261*F,
+  // Single timezone arc
+  tzO:257*F, tzI:243*F,
+  // Orbital/year
+  orbO:239*F, orbI:209*F,
+  // 24-hour
+  h24O:205*F, h24I:173*F,
+  // 12-hour
+  h12O:169*F, h12I:135*F,
+  // Earth face
+  face:130*F
+};
+
+// ── EARTH OFFSCREEN CANVASES ──
+const FR=Math.ceil(R.face);
+const FW=FR*2,FH=FR*2;
+const earthCv=document.createElement('canvas');
+earthCv.width=FW; earthCv.height=FH;
+const eCtx=earthCv.getContext('2d');
+const nightCv=document.createElement('canvas');
+nightCv.width=FW; nightCv.height=FH;
+const nCtx=nightCv.getContext('2d');
+
+// ── STATE ──
+let selectedIdx=CITIES.findIndex(c=>c.n==='Chicago');
+let viewLon=CITIES[selectedIdx].lon;
+let targetLon=viewLon,snapVel=0;
+let isDragging=false,dragStartAngle=0,dragStartLon=0;
+let nightDirty=true,lastNightLon=viewLon,lastNightSec=-1;
+
+// ── MATH ──
+const D2R=Math.PI/180,R2D=180/Math.PI;
+function pad(n){return String(Math.floor(Math.abs(n))).padStart(2,'0');}
+function doy(d){const s=new Date(d.getFullYear(),0,0);return Math.floor((d-s+(s.getTimezoneOffset()-d.getTimezoneOffset())*60000)/86400000);}
+function diy(y){return y%4===0&&(y%100!==0||y%400===0)?366:365;}
+function seas(dy){if(dy<80)return'Winter ❄';if(dy<172)return'Spring 🌱';if(dy<265)return'Summer ☀';if(dy<355)return'Autumn 🍂';return'Winter ❄';}
+function getOffsetMins(iana){
+  const d=new Date();
+  const fmt=tz=>d.toLocaleString('en-US',{timeZone:tz,hour12:false,hour:'2-digit',minute:'2-digit'});
+  const parse=s=>{const p=s.split(':');let h=parseInt(p[0]);if(h===24)h=0;return h*60+parseInt(p[1]);};
+  let diff=parse(fmt(iana))-parse(fmt('UTC'));
+  if(diff>720)diff-=1440;if(diff<-720)diff+=1440;
+  return diff;
+}
+function fmtOff(o){return`UTC${o>=0?'+':''}${Math.floor(Math.abs(o)/60)}${o%60?':'+pad(Math.abs(o)%60):''}` ;}
+function getCityTimeStr(iana){return new Date().toLocaleTimeString('en-US',{timeZone:iana,hour12:false,hour:'2-digit',minute:'2-digit',second:'2-digit'});}
+function getCityDateStr(iana){return new Date().toLocaleDateString('en-US',{timeZone:iana,weekday:'short',month:'short',day:'numeric'});}
+function getCityTimeParts(iana){
+  const now=new Date();
+  const s=now.toLocaleString('en-US',{timeZone:iana,hour12:false,hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const p=s.split(':');let h=parseInt(p[0]);if(h===24)h=0;
+  return{h,m:parseInt(p[1]),s:parseInt(p[2]),ms:now.getMilliseconds()};
+}
+function subSolarPoint(now,dy_){
+  const utcH=now.getUTCHours()+now.getUTCMinutes()/60+now.getUTCSeconds()/3600;
+  return{lon:(12-utcH)*15,lat:23.45*Math.sin(2*Math.PI*(dy_-81)/365)};
+}
+function dayLengthAt(lat,declDeg){
+  const t=-Math.tan(lat*D2R)*Math.tan(declDeg*D2R);
+  if(t>1)return 0;if(t<-1)return 24;
+  return 2*Math.acos(t)*R2D/15;
+}
+function earthSunDist(dy_){return 1-0.01672*Math.cos(2*Math.PI*(dy_-3)/365);}
+function snapToCity(lon){
+  let best=0,bestD=999;
+  CITIES.forEach((c,i)=>{let d=Math.abs(c.lon-lon);if(d>180)d=360-d;if(d<bestD){bestD=d;best=i;}});
+  return best;
+}
+
+// ── EARTH RENDERING ──
+function lonToEx(lon,cLon){
+  let dl=lon-cLon;while(dl>180)dl-=360;while(dl<-180)dl+=360;
+  return FW/2+dl*(FW/360);
+}
+function latToEy(lat){return FH/2-lat*(FH/180);}
+const MAP_SCALE=FW/360;
+
+function renderEarth(cLon){
+  eCtx.clearRect(0,0,FW,FH);
+  // Ocean gradient
+  const og=eCtx.createLinearGradient(0,0,0,FH);
+  og.addColorStop(0,'#b4d0e8');og.addColorStop(.5,'#c4dcea');og.addColorStop(1,'#aecce2');
+  eCtx.fillStyle=og;eCtx.fillRect(0,0,FW,FH);
+  // Lat/lon grid
+  eCtx.strokeStyle='rgba(90,130,180,0.14)';eCtx.lineWidth=.4;
+  for(let ln=-180;ln<=180;ln+=30){
+    const x=lonToEx(ln,cLon);
+    eCtx.beginPath();eCtx.moveTo(x,0);eCtx.lineTo(x,FH);eCtx.stroke();
+  }
+  for(let lt=-60;lt<=60;lt+=30){
+    const y=latToEy(lt);
+    eCtx.beginPath();eCtx.moveTo(0,y);eCtx.lineTo(FW,y);eCtx.stroke();
+  }
+  // Equator
+  eCtx.strokeStyle='rgba(50,90,160,0.28)';eCtx.lineWidth=.9;
+  const ey=latToEy(0);eCtx.beginPath();eCtx.moveTo(0,ey);eCtx.lineTo(FW,ey);eCtx.stroke();
+
+  if(geoReady&&geoFeatures){
+    // Fill pass
+    [-360,0,360].forEach(off=>{
+      geoFeatures.forEach(feat=>{
+        const geom=feat.geometry;if(!geom)return;
+        const polys=geom.type==='Polygon'?[geom.coordinates]:geom.coordinates;
+        polys.forEach(poly=>{
+          poly.forEach((ring,ri)=>{
+            if(ring.length<4)return;
+            let s=0;ring.forEach(([ln])=>s+=ln+off);
+            const avg=s/ring.length;
+            if(avg<-310||avg>310)return;
+            eCtx.beginPath();
+            ring.forEach(([ln,lt],i)=>{
+              const x=lonToEx(ln+off,cLon),y=latToEy(lt);
+              i===0?eCtx.moveTo(x,y):eCtx.lineTo(x,y);
+            });
+            eCtx.closePath();
+            eCtx.fillStyle=ri===0?'#b2c584':'#c4dcea';
+            eCtx.fill();
+          });
+        });
+      });
+    });
+    // Border pass
+    eCtx.strokeStyle='rgba(80,105,55,0.30)';eCtx.lineWidth=.55;
+    [-360,0,360].forEach(off=>{
+      geoFeatures.forEach(feat=>{
+        const geom=feat.geometry;if(!geom)return;
+        const polys=geom.type==='Polygon'?[geom.coordinates]:geom.coordinates;
+        polys.forEach(poly=>{
+          const ring=poly[0];if(!ring||ring.length<4)return;
+          let s=0;ring.forEach(([ln])=>s+=ln+off);
+          const avg=s/ring.length;
+          if(avg<-310||avg>310)return;
+          eCtx.beginPath();
+          ring.forEach(([ln,lt],i)=>{
+            const x=lonToEx(ln+off,cLon),y=latToEy(lt);
+            i===0?eCtx.moveTo(x,y):eCtx.lineTo(x,y);
+          });
+          eCtx.closePath();eCtx.stroke();
+        });
+      });
+    });
+  }
+}
+
+function renderNight(cLon,subLon,subLat){
+  nCtx.clearRect(0,0,FW,FH);
+  const sinD=Math.sin(subLat*D2R),cosD=Math.cos(subLat*D2R);
+  const cosH=new Float32Array(FW);
+  for(let px=0;px<FW;px++){
+    const lon=(px-FW/2)/MAP_SCALE+cLon;
+    cosH[px]=Math.cos((lon-subLon)*D2R);
+  }
+  const img=nCtx.createImageData(FW,FH);
+  const d=img.data;
+  for(let py=0;py<FH;py++){
+    const lat=(FH/2-py)/MAP_SCALE;
+    const sinL=Math.sin(lat*D2R),cosL=Math.cos(lat*D2R);
+    const c1=sinL*sinD,c2=cosL*cosD;
+    for(let px=0;px<FW;px++){
+      const cz=c1+c2*cosH[px];
+      if(cz<0){
+        const i=(py*FW+px)*4;
+        const a=Math.min(158,Math.round(-cz*188));
+        d[i]=8;d[i+1]=18;d[i+2]=58;d[i+3]=a;
+      }
+    }
+  }
+  nCtx.putImageData(img,0,0);
+  // Terminator glow
+  nCtx.strokeStyle='rgba(255,210,90,0.22)';nCtx.lineWidth=1.6;
+  for(let step=0;step<2;step++){
+    nCtx.beginPath();let first=true;
+    for(let lat=-85;lat<=85;lat+=2){
+      const t=-Math.tan(lat*D2R)*Math.tan(subLat*D2R);
+      if(Math.abs(t)>1)continue;
+      const H=Math.acos(t)*R2D;
+      const lon=step===0?subLon-H:subLon+H;
+      const x=lonToEx(lon,cLon),y=latToEy(lat);
+      first?(nCtx.moveTo(x,y),first=false):nCtx.lineTo(x,y);
+    }
+    nCtx.stroke();
+  }
+}
+
+function drawSunOnEarth(subLon,subLat){
+  const x=lonToEx(subLon,viewLon),y=latToEy(subLat);
+  for(let i=0;i<8;i++){
+    const a=i*Math.PI/4;
+    eCtx.beginPath();
+    eCtx.moveTo(x+5.5*Math.cos(a),y+5.5*Math.sin(a));
+    eCtx.lineTo(x+9.5*Math.cos(a),y+9.5*Math.sin(a));
+    eCtx.strokeStyle='rgba(255,205,40,0.82)';eCtx.lineWidth=1.3;eCtx.stroke();
+  }
+  eCtx.beginPath();eCtx.arc(x,y,4.2,0,Math.PI*2);
+  eCtx.fillStyle='rgba(255,218,40,0.97)';eCtx.fill();
+}
+function drawCityOnEarth(city){
+  const x=lonToEx(city.lon,viewLon),y=latToEy(city.lat);
+  const g=eCtx.createRadialGradient(x,y,0,x,y,9);
+  g.addColorStop(0,'rgba(200,130,10,0.7)');g.addColorStop(1,'rgba(200,130,10,0)');
+  eCtx.beginPath();eCtx.arc(x,y,9,0,Math.PI*2);eCtx.fillStyle=g;eCtx.fill();
+  eCtx.beginPath();eCtx.arc(x,y,3.5,0,Math.PI*2);
+  eCtx.fillStyle='#c8800a';eCtx.fill();
+  eCtx.strokeStyle='rgba(255,255,255,0.88)';eCtx.lineWidth=1.1;eCtx.stroke();
+}
+
+// ── DRAW HELPERS ──
+function arcRing(rO,rI,a1,a2,fill,stroke,sw){
+  ctx.beginPath();ctx.arc(cx,cy,rO,a1,a2);ctx.arc(cx,cy,rI,a2,a1,true);ctx.closePath();
+  if(fill){ctx.fillStyle=fill;ctx.fill();}
+  if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=sw;ctx.stroke();}
+}
+function fullRing(rO,rI,fill,stroke,sw){arcRing(rO,rI,0,Math.PI*2,fill,stroke,sw);}
+function rlabel(txt,r,deg,sz,col,wt){
+  const a=(deg-90)*D2R;
+  ctx.save();ctx.translate(cx+r*Math.cos(a),cy+r*Math.sin(a));ctx.rotate(a+Math.PI/2);
+  ctx.fillStyle=col;ctx.font=`${wt||400} ${sz}px 'Josefin Sans',sans-serif`;
+  ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(txt,0,0);ctx.restore();
+}
+function tick(r,deg,len,col,w){
+  const a=(deg-90)*D2R;
+  ctx.beginPath();ctx.moveTo(cx+r*Math.cos(a),cy+r*Math.sin(a));
+  ctx.lineTo(cx+(r-len)*Math.cos(a),cy+(r-len)*Math.sin(a));
+  ctx.strokeStyle=col;ctx.lineWidth=w;ctx.stroke();
+}
+function hand(deg,len,back,wid,col){
+  const a=(deg-90)*D2R;
+  ctx.save();ctx.beginPath();
+  ctx.moveTo(cx-back*Math.cos(a),cy-back*Math.sin(a));
+  ctx.lineTo(cx+len*Math.cos(a),cy+len*Math.sin(a));
+  ctx.strokeStyle=col;ctx.lineWidth=wid;ctx.lineCap='round';ctx.stroke();ctx.restore();
+}
+function arrowTip(deg,dist,col,sz){
+  const a=(deg-90)*D2R;
+  ctx.save();ctx.translate(cx+dist*Math.cos(a),cy+dist*Math.sin(a));ctx.rotate(a+Math.PI/2);
+  ctx.beginPath();ctx.moveTo(0,-sz);ctx.lineTo(sz*.65,sz*.65);ctx.lineTo(-sz*.65,sz*.65);ctx.closePath();
+  ctx.fillStyle=col;ctx.fill();ctx.restore();
+}
+
+// ── MAIN DRAW ──
+function drawFrame(){
+  // ── Spring snap physics ──
+  if(!isDragging){
+    let diff=targetLon-viewLon;
+    while(diff>180)diff-=360;while(diff<-180)diff+=360;
+    if(Math.abs(diff)>0.025||Math.abs(snapVel)>0.025){
+      snapVel=snapVel*.70+diff*.26;
+      viewLon+=snapVel;
+      nightDirty=true;
+    } else {
+      viewLon=targetLon;snapVel=0;
+    }
+  }
+  selectedIdx=snapToCity(viewLon);
+
+  const now=new Date();
+  const dy_=doy(now),td=diy(now.getFullYear());
+  const orbA=((dy_-1)/td)*Math.PI*2;
+  const sp=subSolarPoint(now,dy_);
+  const city=CITIES[selectedIdx];
+  const tp=getCityTimeParts(city.z);
+  const hA=((tp.h%12)+tp.m/60+tp.s/3600+tp.ms/3600000)/12*360;
+  const mA=(tp.m+tp.s/60+tp.ms/60000)/60*360;
+  const sA=(tp.s+tp.ms/1000)/60*360;
+
+  // White backing disc with subtle outer shadow
+  ctx.clearRect(0,0,W,H);
+  ctx.beginPath();ctx.arc(cx,cy,R.bezelO+7*F,0,Math.PI*2);
+  ctx.fillStyle='#ffffff';ctx.fill();
+  const outerGlow=ctx.createRadialGradient(cx,cy,R.bezelO,cx,cy,R.bezelO+7*F);
+  outerGlow.addColorStop(0,'rgba(160,130,50,0.15)');outerGlow.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.beginPath();ctx.arc(cx,cy,R.bezelO+7*F,0,Math.PI*2);ctx.fillStyle=outerGlow;ctx.fill();
+
+  // ════════════════════════════
+  // ── KNURLED BEZEL (rotates) ──
+  // ════════════════════════════
+  const bezelRot=-viewLon*D2R;
+  const N=96;
+
+  // Outer bezel edge ring (base brass color)
+  fullRing(R.bezelO,R.knurlI,'#d8be78',null,0);
+
+  // Knurl notches — alternating light/shadow
+  for(let i=0;i<N;i++){
+    const a1=(i/N)*Math.PI*2+bezelRot-Math.PI/2;
+    const a2=((i+.46)/N)*Math.PI*2+bezelRot-Math.PI/2;
+    arcRing(R.bezelO,R.knurlI,a1,a2,i%2===0?'#e8d090':'#b89030',null,0);
+  }
+  // Highlight line on each notch edge for 3D feel
+  for(let i=0;i<N;i++){
+    const a=(i/N)*Math.PI*2+bezelRot-Math.PI/2;
+    const x1=cx+R.knurlI*Math.cos(a),y1=cy+R.knurlI*Math.sin(a);
+    const x2=cx+R.bezelO*Math.cos(a),y2=cy+R.bezelO*Math.sin(a);
+    ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);
+    ctx.strokeStyle='rgba(255,245,200,0.35)';ctx.lineWidth=.6*F;ctx.stroke();
+  }
+
+  // Bezel FACE (cream ring with city names)
+  fullRing(R.knurlI,R.bezelI,'#ede0b4',null,0);
+
+  // City names etched on bezel face (rotate with bezel)
+  ctx.save();
+  CITIES.forEach((c,i)=>{
+    let diff=c.lon-viewLon;
+    while(diff>180)diff-=360;while(diff<-180)diff+=360;
+    const angDist=Math.abs(diff);
+    if(angDist>86)return;
+    const angle=diff*D2R-Math.PI/2;
+    const r=(R.knurlI+R.bezelI)/2;
+    const alpha=Math.pow(Math.max(0,1-angDist/86),1.4); // sharper fade
+    const isSel=(i===selectedIdx);
+    ctx.save();
+    ctx.globalAlpha=alpha*(isSel?1:.78);
+    ctx.translate(cx+r*Math.cos(angle),cy+r*Math.sin(angle));
+    ctx.rotate(angle+Math.PI/2);
+    ctx.fillStyle=isSel?'#7a4506':'#50380e';
+    ctx.font=`${isSel?600:300} ${(isSel?6.6:5.4)*F}px 'Josefin Sans',sans-serif`;
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(c.n,0,0);
+    ctx.restore();
+  });
+  ctx.restore();
+
+  // Bezel border rings
+  ctx.beginPath();ctx.arc(cx,cy,R.bezelO,0,Math.PI*2);
+  ctx.strokeStyle='rgba(130,95,25,0.60)';ctx.lineWidth=1.6*F;ctx.stroke();
+  ctx.beginPath();ctx.arc(cx,cy,R.knurlI,0,Math.PI*2);
+  ctx.strokeStyle='rgba(130,95,25,0.28)';ctx.lineWidth=.8*F;ctx.stroke();
+  ctx.beginPath();ctx.arc(cx,cy,R.bezelI,0,Math.PI*2);
+  ctx.strokeStyle='rgba(130,95,25,0.38)';ctx.lineWidth=.9*F;ctx.stroke();
+
+  // ── FIXED POINTER CROWN (12 o'clock, never rotates) ──
+  {
+    const pa=-Math.PI/2;
+    const pr=R.bezelO+11*F;
+    ctx.save();
+    ctx.translate(cx+pr*Math.cos(pa),cy+pr*Math.sin(pa));
+    ctx.rotate(pa+Math.PI/2);
+    // Body
+    ctx.beginPath();
+    ctx.moveTo(0,11*F);        // tip pointing inward
+    ctx.lineTo(-6*F,-7*F);
+    ctx.lineTo(6*F,-7*F);
+    ctx.closePath();
+    ctx.fillStyle='#c8880a';
+    ctx.fill();
+    ctx.strokeStyle='#7a5008';ctx.lineWidth=.9*F;ctx.stroke();
+    // Highlight
+    ctx.beginPath();
+    ctx.moveTo(-1.5*F,6*F);ctx.lineTo(-3*F,-4*F);
+    ctx.strokeStyle='rgba(255,230,130,0.55)';ctx.lineWidth=1.2*F;ctx.stroke();
+    ctx.restore();
+  }
+
+  // ── TIMEZONE ARC (single selected city daytime) ──
+  const offMin=getOffsetMins(city.z);
+  const dawn=((6*60-offMin)+1440)%1440/60;
+  const dusk=((22*60-offMin)+1440)%1440/60;
+  const ta1=(dawn/24)*Math.PI*2-Math.PI/2,ta2=(dusk/24)*Math.PI*2-Math.PI/2;
+  fullRing(R.tzO,R.tzI,'rgba(200,168,50,0.18)',null,0);
+  arcRing(R.tzO-F,R.tzI+F,ta1,ta2,'rgba(220,180,55,0.68)',null,0);
+  ctx.beginPath();ctx.arc(cx,cy,R.tzO,0,Math.PI*2);
+  ctx.strokeStyle='rgba(175,138,38,0.42)';ctx.lineWidth=.8*F;ctx.stroke();
+  ctx.beginPath();ctx.arc(cx,cy,R.tzI,0,Math.PI*2);
+  ctx.strokeStyle='rgba(175,138,38,0.22)';ctx.lineWidth=.5*F;ctx.stroke();
+
+  // ── ORBITAL RING ──
+  fullRing(R.orbO,R.orbI,'#f0dfa0','#b89030',.5*F);
+  for(let d=0;d<360;d+=5){
+    const m=d%90===0,h=d%45===0;
+    tick(R.orbO,d,(m?10:h?6:3.5)*F,'#9a7020',(m?1.2:.6)*F);
+  }
+  [{deg:0,box:'365/360°'},{deg:90,box:'91.25/90°'},{deg:180,box:'182.5/180°'},{deg:270,box:'273.75/270°'}]
+    .forEach(({deg,box})=>{
+      const a=(deg-90)*D2R;
+      const bx=cx+(R.orbO+14*F)*Math.cos(a),by=cy+(R.orbO+14*F)*Math.sin(a);
+      ctx.save();
+      ctx.fillStyle='#fff8e8';ctx.strokeStyle='#b89030';ctx.lineWidth=.8*F;
+      ctx.beginPath();ctx.roundRect(bx-19*F,by-8.5*F,38*F,17*F,2*F);ctx.fill();ctx.stroke();
+      ctx.fillStyle='#6a4a08';ctx.font=`400 ${6.5*F}px 'Josefin Sans',sans-serif`;
+      ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(box,bx,by);
+      ctx.restore();
+    });
+  // Orbital progress arc
+  arcRing(R.orbO-F,R.orbI+F,-Math.PI/2,orbA-Math.PI/2,'rgba(184,144,48,.18)','#b89030',1.3*F);
+  // Position arrow
+  const or=(R.orbO+R.orbI)/2;
+  ctx.save();
+  ctx.translate(cx+or*Math.cos(orbA-Math.PI/2),cy+or*Math.sin(orbA-Math.PI/2));
+  ctx.rotate(orbA);
+  ctx.beginPath();ctx.moveTo(0,-6.5*F);ctx.lineTo(5.5*F,6*F);ctx.lineTo(-5.5*F,6*F);ctx.closePath();
+  ctx.fillStyle='#c8880a';ctx.fill();
+  ctx.restore();
+
+  // ── 24H RING ──
+  fullRing(R.h24O,R.h24I,'#d8e8f4','#6090b8',.5*F);
+  for(let h=0;h<24;h++){
+    tick(R.h24O,(h/24)*360,7*F,'#4a7aaa',1.2*F);
+    rlabel(h.toString(),(R.h24O+R.h24I)/2,(h/24)*360,8*F,'#284860');
+  }
+  ctx.beginPath();ctx.arc(cx,cy,R.h24O,0,Math.PI*2);ctx.strokeStyle='#6888a8';ctx.lineWidth=.7*F;ctx.stroke();
+  ctx.beginPath();ctx.arc(cx,cy,R.h24I,0,Math.PI*2);ctx.strokeStyle='#88a0bc';ctx.lineWidth=.4*F;ctx.stroke();
+
+  // ── 12H RING ──
+  fullRing(R.h12O,R.h12I,'#f4e0ec','#b878a0',.5*F);
+  for(let h=1;h<=12;h++){
+    tick(R.h12O,(h/12)*360,6*F,'#9a6080',1.3*F);
+    rlabel(h.toString(),(R.h12O+R.h12I)/2,(h/12)*360,9*F,'#5a2840');
+  }
+  ctx.beginPath();ctx.arc(cx,cy,R.h12O,0,Math.PI*2);ctx.strokeStyle='#b870a0';ctx.lineWidth=.7*F;ctx.stroke();
+  ctx.beginPath();ctx.arc(cx,cy,R.h12I,0,Math.PI*2);ctx.strokeStyle='#cc90b8';ctx.lineWidth=.4*F;ctx.stroke();
+
+  // ── EARTH FACE ──
+  renderEarth(viewLon);
+  const curSec=Math.floor(Date.now()/30000);
+  if(nightDirty||Math.abs(viewLon-lastNightLon)>0.6||curSec!==lastNightSec){
+    renderNight(viewLon,sp.lon,sp.lat);
+    nightDirty=false;lastNightLon=viewLon;lastNightSec=curSec;
+  }
+  drawSunOnEarth(sp.lon,sp.lat);
+  drawCityOnEarth(city);
+
+  // Composite earth + night onto main canvas clipped to face circle
+  ctx.save();
+  ctx.beginPath();ctx.arc(cx,cy,R.face,0,Math.PI*2);ctx.clip();
+  ctx.drawImage(earthCv,cx-FR,cy-FR);
+  ctx.drawImage(nightCv,cx-FR,cy-FR);
+  ctx.restore();
+
+  // Face border + inner vignette
+  ctx.beginPath();ctx.arc(cx,cy,R.face,0,Math.PI*2);
+  ctx.strokeStyle='rgba(90,60,25,0.42)';ctx.lineWidth=1.6*F;ctx.stroke();
+  const fv=ctx.createRadialGradient(cx,cy,R.face*.82,cx,cy,R.face);
+  fv.addColorStop(0,'rgba(0,0,0,0)');fv.addColorStop(1,'rgba(0,0,0,0.11)');
+  ctx.beginPath();ctx.arc(cx,cy,R.face,0,Math.PI*2);ctx.fillStyle=fv;ctx.fill();
+
+  // ── CLOCK HANDS — show selected city's time ──
+  // Hour hand (dark walnut)
+  hand(hA,72*F,14*F,4.5*F,'#281408');
+  arrowTip(hA,72*F,'#281408',6*F);
+  // Minute hand (deep navy)
+  hand(mA,90*F,16*F,2.8*F,'#1a3468');
+  arrowTip(mA,90*F,'#1a3468',5.5*F);
+  // Second hand (crimson, long thin sweep)
+  hand(sA,104*F,18*F,1.5*F,'#c82010');
+  ctx.beginPath();ctx.arc(cx+104*F*Math.cos((sA-90)*D2R),cy+104*F*Math.sin((sA-90)*D2R),2.5*F,0,Math.PI*2);
+  ctx.fillStyle='#c82010';ctx.fill();
+
+  // Center jewel (layered)
+  ctx.beginPath();ctx.arc(cx,cy,8*F,0,Math.PI*2);
+  ctx.fillStyle='#eee8d5';ctx.fill();
+  ctx.strokeStyle='rgba(110,80,30,0.35)';ctx.lineWidth=.9*F;ctx.stroke();
+  ctx.beginPath();ctx.arc(cx,cy,4.8*F,0,Math.PI*2);ctx.fillStyle='#c09028';ctx.fill();
+  ctx.beginPath();ctx.arc(cx,cy,2.4*F,0,Math.PI*2);ctx.fillStyle='#c82010';ctx.fill();
+
+  // ── READOUT ──
+  document.getElementById('c-name').textContent=city.n;
+  document.getElementById('c-ctry').textContent=city.c;
+  document.getElementById('c-time').textContent=getCityTimeStr(city.z);
+  const oA=getOffsetMins(city.z);
+  document.getElementById('c-meta').textContent=`${getCityDateStr(city.z)} · ${fmtOff(oA)}`;
+  document.getElementById('m-doy').textContent=`${dy_} of ${td}`;
+  document.getElementById('m-season').textContent=seas(dy_);
+  document.getElementById('m-orb').textContent=`${((dy_-1)/td*360).toFixed(2)}°`;
+  document.getElementById('m-utc').textContent=fmtOff(oA);
+  // Subsolar
+  let spLon=sp.lon;while(spLon>180)spLon-=360;while(spLon<-180)spLon+=360;
+  document.getElementById('h-sun').textContent=
+    `${sp.lat>=0?'N':'S'}${Math.abs(sp.lat).toFixed(1)}° ${spLon>=0?'E':'W'}${Math.abs(spLon).toFixed(1)}°`;
+  // Daylight hours
+  const dl=dayLengthAt(city.lat,sp.lat);
+  const dlH=Math.floor(dl),dlM=Math.round((dl-dlH)*60);
+  document.getElementById('h-day').textContent=`${dlH}h ${dlM}m`;
+  // Solar noon local
+  const noonUTC=12-(city.lon/15);
+  const noonLoc=((noonUTC+oA/60)%24+24)%24;
+  const nH=Math.floor(noonLoc),nM=Math.round((noonLoc-nH)*60);
+  document.getElementById('h-noon').textContent=`${pad(nH)}:${pad(nM)}`;
+  // Earth-Sun
+  document.getElementById('h-dist').textContent=`${earthSunDist(dy_).toFixed(4)} AU`;
+}
+
+// ── INTERACTION ──
+function getXY(e){
+  const rect=cv.getBoundingClientRect();
+  const src=e.touches?e.touches[0]:e;
+  return{x:(src.clientX-rect.left)*DPR,y:(src.clientY-rect.top)*DPR};
+}
+function inBezel(x,y){
+  const d=Math.hypot(x-cx,y-cy);
+  return d>=R.bezelI-6*F&&d<=R.bezelO+14*F;
+}
+cv.addEventListener('mousedown',e=>{
+  const{x,y}=getXY(e);
+  if(inBezel(x,y)){
+    isDragging=true;
+    dragStartAngle=Math.atan2(y-cy,x-cx)*R2D;
+    dragStartLon=viewLon;
+    cv.classList.add('dragging');
+    e.preventDefault();
+  }
+});
+cv.addEventListener('touchstart',e=>{
+  const{x,y}=getXY(e);
+  if(inBezel(x,y)){isDragging=true;dragStartAngle=Math.atan2(y-cy,x-cx)*R2D;dragStartLon=viewLon;}
+},{passive:true});
+window.addEventListener('mousemove',e=>{
+  if(!isDragging)return;
+  const{x,y}=getXY(e);
+  let delta=Math.atan2(y-cy,x-cx)*R2D-dragStartAngle;
+  while(delta>180)delta-=360;while(delta<-180)delta+=360;
+  viewLon=dragStartLon+delta;
+  nightDirty=true;
+});
+cv.addEventListener('touchmove',e=>{
+  if(!isDragging)return;e.preventDefault();
+  const{x,y}=getXY(e);
+  let delta=Math.atan2(y-cy,x-cx)*R2D-dragStartAngle;
+  while(delta>180)delta-=360;while(delta<-180)delta+=360;
+  viewLon=dragStartLon+delta;
+  nightDirty=true;
+},{passive:false});
+window.addEventListener('mouseup',()=>{
+  if(!isDragging)return;
+  isDragging=false;cv.classList.remove('dragging');
+  targetLon=CITIES[snapToCity(viewLon)].lon;
+  snapVel*=.28; // carry just a sliver of momentum into the snap
+});
+window.addEventListener('touchend',()=>{
+  if(!isDragging)return;
+  isDragging=false;
+  targetLon=CITIES[snapToCity(viewLon)].lon;
+  snapVel*=.28;
+});
+
+// ── LOOP ──
+function loop(){drawFrame();requestAnimationFrame(loop);}
+loop();
+</script>
+</body>
+</html>

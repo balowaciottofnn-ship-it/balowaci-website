@@ -1,0 +1,30 @@
+[
+  {
+    "id": 2,
+    "first_impression": "its wow!",
+    "unique_experience": " it feels very unique",
+    "interest": "the time interpretation",
+    "journey_thoughts": "you are a genius",
+    "target_customer": "the wealth and time learners",
+    "problem_solved": "cultural time interpretations confusion",
+    "willingness_to_pay": "of course",
+    "adoption_barriers": "its unique patent",
+    "must_have_features": "make it interactive",
+    "pilot_interest": "yes 100 percent",
+    "created_at": "2026-04-27T07:00:03.887Z"
+  },
+  {
+    "id": 1,
+    "first_impression": "Backend test submission",
+    "unique_experience": "Yes",
+    "interest": "Investor dashboard",
+    "journey_thoughts": "Testing backend activation",
+    "target_customer": "Founders, investors, and early pilot partners",
+    "problem_solved": "Collects clear validation signals",
+    "willingness_to_pay": "Yes, for licensing or pilots",
+    "adoption_barriers": "Needs a clear demo",
+    "must_have_features": "Dashboard and export",
+    "pilot_interest": "Yes, recommend investor conversation",
+    "created_at": "2026-04-27T03:06:06.033Z"
+  }
+]
