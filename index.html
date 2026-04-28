@@ -420,6 +420,13 @@
       display: block;
     }
 
+    .form-status.info {
+      background: rgba(178, 102, 255, 0.16);
+      color: #d4af37;
+      border: 1px solid #b266ff;
+      display: block;
+    }
+
     /* Navigation */
     nav {
       position: fixed;
@@ -1034,6 +1041,7 @@
         'form.mustHaveFeatures': 'What feature, integration, or proof would make it more valuable?',
         'form.pilotInterest': 'Would you recommend a pilot, partnership, or investor conversation?',
         'form.submit': 'Submit Feedback',
+        'form.submitting': 'Submitting...',
         'form.success': 'Thank you! Your feedback has been submitted successfully.',
         'form.submitError': 'Failed to submit feedback',
         'form.backendError': 'Error: Unable to submit feedback. Make sure the backend is running.',
@@ -1208,6 +1216,13 @@
 
       const form = document.getElementById('feedbackForm');
       const formStatus = document.getElementById('formStatus');
+      const submitButton = form.querySelector('button[type="submit"]');
+      const submitLabel = submitButton.textContent;
+
+      submitButton.disabled = true;
+      submitButton.textContent = t('form.submitting');
+      formStatus.className = 'form-status info';
+      formStatus.textContent = t('form.submitting');
 
       const visitorName = document.getElementById('visitorName').value;
       const visitorEmail = document.getElementById('visitorEmail').value;
@@ -1265,6 +1280,9 @@
         console.error('Error submitting feedback:', error);
         formStatus.className = 'form-status error';
         formStatus.textContent = t('form.backendError');
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = submitLabel;
       }
     }
 
