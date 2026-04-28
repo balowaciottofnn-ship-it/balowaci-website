@@ -109,7 +109,7 @@
       justify-content: center;
       align-items: center;
       text-align: center;
-      padding: 120px 20px 70px;
+      padding: 70px 20px 70px;
     }
 
     .luxury-hero {
@@ -1044,7 +1044,7 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 120px 24px 80px;
+      padding: 70px 24px 80px;
       position: relative;
     }
 
@@ -1197,33 +1197,6 @@
 </head>
 <body>
   <div class="stars-container" id="starsContainer"></div>
-
-  <!-- Navigation -->
-  <nav>
-    <a class="nav-brand" href="#hero" aria-label="BaloWaci home">
-      <img class="nav-logo" src="assets/balogo-circle.png" alt="BaloWaci Collective logo">
-    </a>
-    <div class="nav-links">
-      <a href="#hero" data-i18n="nav.home">Home</a>
-      <a href="#about" data-i18n="nav.about">About</a>
-      <a href="#how" data-i18n="nav.how">How</a>
-      <a href="#founder" data-i18n="nav.founder">Founder</a>
-      <a href="#journey" data-i18n="nav.journey">Journey</a>
-      <a href="#product-journey" data-i18n="nav.productJourney">Product Journey</a>
-      <a href="#product-demos" data-i18n="nav.liveWheel">Live Wheel</a>
-      <a href="#product-demos" data-i18n="nav.liveWatch">Live Watch</a>
-      <a href="#feedback" data-i18n="nav.feedback">Feedback</a>
-      <select id="languageSelect" class="language-select" aria-label="Language">
-        <option value="en">English</option>
-        <option value="sw">Swahili</option>
-        <option value="es">Español</option>
-        <option value="pt">Português</option>
-        <option value="fr">Français</option>
-        <option value="zh">中文</option>
-        <option value="ar">العربية</option>
-      </select>
-    </div>
-  </nav>
 
   <!-- Hero Section -->
   <section class="hero luxury-hero" id="hero">
@@ -2609,10 +2582,13 @@
     // Initialize on page load
     document.addEventListener('DOMContentLoaded', () => {
       applyLanguage(currentLanguage);
-      document.getElementById('languageSelect').addEventListener('change', (event) => {
-        applyLanguage(event.target.value);
-        loadTimeInterpretation();
-      });
+      const languageSelect = document.getElementById('languageSelect');
+      if (languageSelect) {
+        languageSelect.addEventListener('change', (event) => {
+          applyLanguage(event.target.value);
+          loadTimeInterpretation();
+        });
+      }
       initializeStars();
       initializeHomeWatchNav();
       startTimeRefresh();
