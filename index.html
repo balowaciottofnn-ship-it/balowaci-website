@@ -846,6 +846,45 @@
       outline: none;
     }
 
+    .site-corner-logo,
+    .site-language-control {
+      position: fixed;
+      top: 20px;
+      z-index: 100;
+    }
+
+    .site-corner-logo {
+      left: 20px;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: 1px solid rgba(212, 175, 55, 0.75);
+      background: rgba(0, 0, 0, 0.72);
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.22);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5px;
+    }
+
+    .site-corner-logo img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .site-language-control {
+      right: 20px;
+    }
+
+    .site-language-control .language-select {
+      min-width: 132px;
+      padding: 12px 14px;
+      background: rgba(0, 0, 0, 0.82);
+    }
+
     html[dir="rtl"] .time-row,
     html[dir="rtl"] .feedback-form,
     html[dir="rtl"] .product-gallery {
@@ -930,6 +969,23 @@
       .nav-logo {
         width: 54px;
         height: 54px;
+      }
+
+      .site-corner-logo {
+        width: 58px;
+        height: 58px;
+        top: 14px;
+        left: 14px;
+      }
+
+      .site-language-control {
+        top: 14px;
+        right: 14px;
+      }
+
+      .site-language-control .language-select {
+        min-width: 112px;
+        padding: 10px 12px;
       }
 
       nav a {
@@ -1018,6 +1074,11 @@
       .nav-logo {
         width: 44px;
         height: 44px;
+      }
+
+      .site-corner-logo {
+        width: 52px;
+        height: 52px;
       }
 
       .nav-links {
@@ -1197,6 +1258,22 @@
 </head>
 <body>
   <div class="stars-container" id="starsContainer"></div>
+
+  <a class="site-corner-logo" href="#hero" aria-label="BaloWaci home">
+    <img src="assets/balogo-circle.png" alt="BaloWaci logo">
+  </a>
+
+  <div class="site-language-control">
+    <select id="languageSelect" class="language-select" aria-label="Language">
+      <option value="en">English</option>
+      <option value="sw">Swahili</option>
+      <option value="es">Español</option>
+      <option value="pt">Português</option>
+      <option value="fr">Français</option>
+      <option value="zh">中文</option>
+      <option value="ar">العربية</option>
+    </select>
+  </div>
 
   <!-- Hero Section -->
   <section class="hero luxury-hero" id="hero">
