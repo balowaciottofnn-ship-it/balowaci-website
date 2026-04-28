@@ -839,6 +839,70 @@
       transform: translateY(-3px);
       box-shadow: 0 0 25px rgba(212, 175, 55, 0.35);
     }
+
+    .product-vision-section,
+    .product-demo-section,
+    .final-cta-section {
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.2), rgba(18, 0, 32, 0.66));
+    }
+
+    .vision-grid,
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 18px;
+      margin-top: 36px;
+      text-align: left;
+    }
+
+    .vision-item,
+    .demo-card {
+      border: 1px solid rgba(212, 175, 55, 0.42);
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.42);
+      padding: 24px;
+      box-shadow: 0 0 24px rgba(178, 102, 255, 0.1);
+    }
+
+    .vision-item h3,
+    .demo-card h3 {
+      color: #b266ff;
+      font-size: 1.08rem;
+      margin-bottom: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .vision-item p,
+    .demo-card p {
+      max-width: none;
+      margin: 0;
+      color: #fff1a8;
+      font-size: 1rem;
+      line-height: 1.65;
+    }
+
+    .demo-card .luxury-btn {
+      margin-top: 22px;
+    }
+
+    .demo-lead {
+      color: #fff1a8;
+      font-size: 1.35rem;
+    }
+
+    .final-cta-section {
+      border-top: 1px solid rgba(212, 175, 55, 0.28);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.28);
+    }
+
+    .final-cta-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 32px;
+    }
   </style>
 </head>
 <body>
@@ -856,8 +920,8 @@
       <a href="#founder" data-i18n="nav.founder">Founder</a>
       <a href="#journey" data-i18n="nav.journey">Journey</a>
       <a href="#product-journey" data-i18n="nav.productJourney">Product Journey</a>
-      <a href="interfaces/universe-time-wheel-patent.html" data-i18n="nav.liveWheel">Live Wheel</a>
-      <a href="interfaces/universe-watch-wrist.html" data-i18n="nav.liveWatch">Live Watch</a>
+      <a href="#product-demos" data-i18n="nav.liveWheel">Live Wheel</a>
+      <a href="#product-demos" data-i18n="nav.liveWatch">Live Watch</a>
       <a href="#feedback" data-i18n="nav.feedback">Feedback</a>
       <select id="languageSelect" class="language-select" aria-label="Language">
         <option value="en">English</option>
@@ -887,7 +951,7 @@
 
     <div class="hero-actions">
       <a href="#founder" class="luxury-btn primary">Discover the Vision</a>
-      <a href="interfaces/universe-watch-wrist.html" class="luxury-btn secondary">View the Timepiece</a>
+      <a href="#product-demos" class="luxury-btn secondary">View the Timepiece</a>
     </div>
   </section>
 
@@ -962,8 +1026,58 @@
     <div class="container">
       <h2 data-i18n="journey.title">The Journey</h2>
       <p data-i18n="journey.body">
-        From hand-drawn concepts to system-level design, BaloWaci continues to evolve as a unified time innovation. Each interpretation represents a step forward in reimagining how different cultures, industries, and individuals can experience time in ways that make sense to them.
+        This is the personal path behind BaloWaci: a founder's movement across countries, cultures, and questions about identity, time, and possibility. The idea grew from lived experience before it became a product system.
       </p>
+    </div>
+  </section>
+
+  <!-- Product Vision Section -->
+  <section id="product-vision" class="product-vision-section">
+    <div class="container">
+      <h2>Luxury Product Vision</h2>
+      <p class="journey-intro">
+        BaloWaci is a symbolic timepiece concept: a watch and interface system that lets cultural time, modern time, and rotational design live in one visual language.
+      </p>
+
+      <div class="vision-grid">
+        <article class="vision-item">
+          <h3>What It Is</h3>
+          <p>A time interpretation watch and digital interface built around layered circular readings.</p>
+        </article>
+        <article class="vision-item">
+          <h3>Why It Matters</h3>
+          <p>It turns time into something cultural, educational, personal, and visually memorable.</p>
+        </article>
+        <article class="vision-item">
+          <h3>Who It Is For</h3>
+          <p>Collectors, educators, cultural institutions, design lovers, global teams, and future-focused brands.</p>
+        </article>
+        <article class="vision-item">
+          <h3>Future Model Vision</h3>
+          <p>A physical watch line, digital app, licensing model, and immersive learning interface.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product Demo Section -->
+  <section id="product-demos" class="product-demo-section">
+    <div class="container">
+      <h2>Product Demos</h2>
+      <p class="demo-lead">Experience BaloWaci in motion.</p>
+
+      <div class="demo-grid">
+        <article class="demo-card">
+          <h3>Live Wheel</h3>
+          <p>Explore the circular logic behind the BaloWaci system: time as rings, motion, geometry, and cultural interpretation.</p>
+          <a class="luxury-btn primary" href="interfaces/universe-time-wheel-patent.html">Open Live Wheel</a>
+        </article>
+        <article class="demo-card">
+          <h3>Live Watch</h3>
+          <p>View the timepiece direction as a product demo, with a watch-style interface designed to make the system feel tangible.</p>
+          <a class="luxury-btn secondary" href="interfaces/universe-watch-wrist.html">Open Live Watch</a>
+        </article>
+      </div>
     </div>
   </section>
 
@@ -972,7 +1086,7 @@
     <div class="container">
       <h2 data-i18n="product.title">Product Journey</h2>
       <p class="journey-intro" data-i18n="product.body">
-        BaloWaci began in notebooks, through circles, layers, colors, and repeated experiments. These sketches document the evolution from early time-wheel ideas into a layered system for standard, military, cultural, and rotational interpretation.
+        These sketches document the invention path: early circles, layered time modes, ring systems, color studies, geometry, and the evolution toward a watch and interface model.
       </p>
 
       <div class="product-gallery" aria-label="BaloWaci product evolution sketches">
@@ -1175,6 +1289,18 @@
     </div>
   </section>
 
+  <!-- Final CTA Section -->
+  <section id="join" class="final-cta-section">
+    <div class="container">
+      <h2>Join the BaloWaci Journey</h2>
+      <p>Follow the evolution of the timepiece, share feedback, and help shape the next model.</p>
+      <div class="final-cta-actions">
+        <a class="luxury-btn primary" href="mailto:info@balowaci.com">Email BaloWaci</a>
+        <a class="luxury-btn secondary" href="#feedback">Leave Feedback</a>
+      </div>
+    </div>
+  </section>
+
   <!-- Footer -->
   <footer>
     <p data-i18n="footer.rights">&copy; 2026 BaloWaci. A Unified Time Interpretation System. All rights reserved.</p>
@@ -1203,7 +1329,7 @@
         'hero.openWheel': 'Open Live Wheel',
         'hero.openWatch': 'Open Live Watch',
         'about.title': 'About BaloWaci',
-        'about.body': 'BaloWaci reimagines time through multiple interpretations — standard, military, cultural, and rotational — within one unified system. We believe time should be flexible, expressive, and meaningful across different contexts and perspectives.',
+        'about.body': 'BaloWaci is a unified time interpretation system that connects cultural time, modern time, and circular design in one visual language.',
         'time.title': 'Live Time Interpretation',
         'time.heading': 'Current Time Across BaloWaci Modes',
         'time.loading': 'Loading interpretations...',
@@ -1215,14 +1341,14 @@
         'time.failed': 'Failed to load time interpretations',
         'time.apiError': 'Unable to connect to the API. Make sure the backend is running.',
         'how.title': 'How It Works',
-        'how.body': 'One moment. Multiple representations. BaloWaci combines mathematical transformation and circular design to express time differently. Each mode reveals a unique perspective on the passage of moments, from the familiar to the innovative.',
+        'how.body': 'One moment can be read in multiple ways. BaloWaci uses circular design to show standard, military, cultural, and rotational time together.',
         'founder.title': 'Founder’s Message',
-        'founder.body': 'My name is Fadhili Baloci, founder of BaloWaci.\n\nI was born in Fizi, Democratic Republic of Congo, and raised in Mozambique after my family fled war in search of peace. In the year 2000, we found refuge there and built a life for 11 years before I moved to the United States in 2011 at the age of 11. Today, I reside in Iowa City, Iowa—but my journey across continents, cultures, and challenges is what shaped the vision behind BaloWaci.\n\nBaloWaci was not created overnight. It was born from reflection, curiosity, and a deep desire to understand time, perception, and human potential in a new way. Growing up between different worlds taught me that perspective is everything—and that what we accept as fixed can always be reimagined. BaloWaci represents that belief: a system that challenges how we interpret time and invites us to think beyond limits.\n\nI want to show both young and old minds that there are no boundaries to what the human mind can achieve. When you choose a domain in your life and commit to it with 100% focus, discipline, and faith, results will come—sooner or later. The journey may be silent, but the impact will speak.\n\nTrue work doesn’t always need to be loud to be powerful. Work hard whether you are noticed or not. Move with integrity. Build with humility. And trust that what you create in silence will one day echo in the world.\n\nBaloWaci is more than a system—it is a reflection of resilience, vision, and the belief that greatness can come from anywhere. If my story stands for anything, it is this: your beginning does not define your ending. What matters is what you choose to build.\n\n— Fadhili Baloci',
+        'founder.body': 'My name is Fadhili Baloci, founder of BaloWaci.\n\nI was born in Fizi, Democratic Republic of Congo, raised in Mozambique, and later moved to the United States. Living between cultures taught me that perspective changes how we understand the world.\n\nBaloWaci grew from that lesson. It is a way to reimagine time through culture, motion, design, and meaning.\n\nThis project is also a message to builders: your beginning does not define your ending. What matters is what you choose to build with focus, discipline, and faith.\n\n- Fadhili Baloci',
         'founder.quote': '“Sound is the absence of silence, not action.”',
         'journey.title': 'The Journey',
-        'journey.body': 'From hand-drawn concepts to system-level design, BaloWaci continues to evolve as a unified time innovation. Each interpretation represents a step forward in reimagining how different cultures, industries, and individuals can experience time in ways that make sense to them.',
+        'journey.body': "This is the personal path behind BaloWaci: a founder's movement across countries, cultures, and questions about identity, time, and possibility. The idea grew from lived experience before it became a product system.",
         'product.title': 'Product Journey',
-        'product.body': 'BaloWaci began in notebooks, through circles, layers, colors, and repeated experiments. These sketches document the evolution from early time-wheel ideas into a layered system for standard, military, cultural, and rotational interpretation.',
+        'product.body': 'These sketches document the invention path: early circles, layered time modes, ring systems, color studies, geometry, and the evolution toward a watch and interface model.',
         'feedback.title': 'Share Your Feedback',
         'feedback.body': 'Help us understand your perspective on BaloWaci. Your insights will shape the future of this unified time system.',
         'form.name': 'Your name',
