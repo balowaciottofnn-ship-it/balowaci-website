@@ -163,6 +163,63 @@
       text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
     }
 
+    .home-watch-nav {
+      width: min(720px, 92vw);
+      margin: 0 auto 28px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .home-watch-shell {
+      position: relative;
+      width: min(560px, 86vw);
+      aspect-ratio: 1;
+      margin: 0 auto;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.08), transparent 62%),
+        radial-gradient(circle at 50% 50%, rgba(123, 44, 255, 0.16), transparent 72%);
+      box-shadow: 0 0 34px rgba(212, 175, 55, 0.24);
+    }
+
+    #homeWatchNav {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border-radius: 50%;
+      cursor: grab;
+      touch-action: none;
+    }
+
+    #homeWatchNav.dragging {
+      cursor: grabbing;
+    }
+
+    .home-watch-readout {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin: 18px auto 0;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .home-watch-readout strong {
+      color: #f5d061;
+      font-weight: 400;
+    }
+
+    .home-watch-hint {
+      margin: 12px auto 0;
+      color: rgba(212, 175, 55, 0.68);
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
     .hero-title {
       font-size: 64px;
       font-weight: 500;
@@ -1170,8 +1227,16 @@
 
   <!-- Hero Section -->
   <section class="hero luxury-hero" id="hero">
-    <div class="hero-logo-wrap">
-      <img src="assets/balogo-circle.png" alt="BaloWaci Logo" class="hero-logo">
+    <div class="home-watch-nav" aria-label="Interactive BaloWaci section navigator">
+      <div class="home-watch-shell">
+        <canvas id="homeWatchNav" width="720" height="720"></canvas>
+      </div>
+      <div class="home-watch-readout" aria-live="polite">
+        <span data-i18n="homeWatch.time">Local Time</span>
+        <strong id="homeWatchTime">--:--:--</strong>
+        <span id="homeWatchSection">Home</span>
+      </div>
+      <p class="home-watch-hint" data-i18n="homeWatch.hint">Drag or click the watch bezel to navigate</p>
     </div>
 
     <p class="luxury-kicker" data-i18n="hero.kicker">A Unified Time Interpretation System</p>
@@ -1935,6 +2000,8 @@
         'hero.luxurySubtitle': 'Where cultural time, modern time, and symbolic design move together as one.',
         'hero.discover': 'Discover the Vision',
         'hero.viewTimepiece': 'View the Timepiece',
+        'homeWatch.time': 'Local Time',
+        'homeWatch.hint': 'Drag or click the watch bezel to navigate',
         'showcase.kicker': 'BaloWaci Concept Timepiece',
         'showcase.title': 'Crafted to Redefine Time.',
         'showcase.text': 'A symbolic luxury timepiece designed to unite standard time, military time, cultural time, and rotational interpretation into one visual system.',
@@ -1973,6 +2040,8 @@
         'hero.luxurySubtitle': 'Donde el tiempo cultural, el tiempo moderno y el diseño simbólico se mueven juntos como uno.',
         'hero.discover': 'Descubrir la Visión',
         'hero.viewTimepiece': 'Ver el Reloj',
+        'homeWatch.time': 'Hora Local',
+        'homeWatch.hint': 'Arrastra o haz clic en el bisel del reloj para navegar',
         'showcase.kicker': 'Reloj Conceptual BaloWaci',
         'showcase.title': 'Creado para Redefinir el Tiempo.',
         'showcase.text': 'Un reloj simbólico de lujo diseñado para unir el tiempo estándar, el tiempo militar, el tiempo cultural y la interpretación rotacional en un solo sistema visual.',
@@ -2011,6 +2080,8 @@
         'hero.luxurySubtitle': 'Onde tempo cultural, tempo moderno e design simbólico se movem juntos como um só.',
         'hero.discover': 'Descobrir a Visão',
         'hero.viewTimepiece': 'Ver o Relógio',
+        'homeWatch.time': 'Hora Local',
+        'homeWatch.hint': 'Arraste ou clique no aro do relógio para navegar',
         'showcase.kicker': 'Relógio Conceitual BaloWaci',
         'showcase.title': 'Criado para Redefinir o Tempo.',
         'showcase.text': 'Um relógio simbólico de luxo projetado para unir tempo padrão, tempo militar, tempo cultural e interpretação rotacional em um único sistema visual.',
@@ -2215,6 +2286,326 @@
       setInterval(loadTimeInterpretation, 10000);
     }
 
+    const homeWatchNavItems = [
+      { key: 'nav.home', target: '#hero' },
+      { key: 'nav.about', target: '#about' },
+      { key: 'nav.how', target: '#how' },
+      { key: 'nav.founder', target: '#founder' },
+      { key: 'nav.journey', target: '#journey' },
+      { key: 'nav.productJourney', target: '#product-journey' },
+      { key: 'nav.liveWatch', target: '#product-demos' },
+      { key: 'nav.feedback', target: '#feedback' }
+    ];
+
+    const homeWatchState = {
+      canvas: null,
+      ctx: null,
+      rotation: 0,
+      targetRotation: 0,
+      selectedIndex: 0,
+      dragging: false,
+      dragMoved: false,
+      startAngle: 0,
+      startRotation: 0,
+      dpr: 1
+    };
+
+    function normalizeRadians(angle) {
+      const full = Math.PI * 2;
+      return ((angle % full) + full) % full;
+    }
+
+    function shortestAngleDelta(from, to) {
+      const full = Math.PI * 2;
+      return ((to - from + Math.PI) % full + full) % full - Math.PI;
+    }
+
+    function getCanvasPoint(event, canvas) {
+      const source = event.touches ? event.touches[0] : event;
+      const rect = canvas.getBoundingClientRect();
+      return {
+        x: source.clientX - rect.left,
+        y: source.clientY - rect.top,
+        cx: rect.width / 2,
+        cy: rect.height / 2
+      };
+    }
+
+    function getPointerAngle(event, canvas) {
+      const point = getCanvasPoint(event, canvas);
+      return Math.atan2(point.y - point.cy, point.x - point.cx);
+    }
+
+    function drawCenteredText(ctx, text, x, y, maxWidth) {
+      const words = text.split(' ');
+      let line = '';
+      const lines = [];
+      words.forEach((word) => {
+        const test = line ? `${line} ${word}` : word;
+        if (ctx.measureText(test).width > maxWidth && line) {
+          lines.push(line);
+          line = word;
+        } else {
+          line = test;
+        }
+      });
+      lines.push(line);
+      const lineHeight = 14;
+      lines.forEach((item, index) => {
+        ctx.fillText(item, x, y + (index - (lines.length - 1) / 2) * lineHeight);
+      });
+    }
+
+    function drawHomeWatchNav() {
+      const state = homeWatchState;
+      if (!state.canvas || !state.ctx) return;
+
+      const canvas = state.canvas;
+      const ctx = state.ctx;
+      const rect = canvas.getBoundingClientRect();
+      const width = rect.width;
+      const height = rect.height;
+      const size = Math.min(width, height);
+      const cx = width / 2;
+      const cy = height / 2;
+      const radius = size * 0.46;
+      const faceRadius = radius * 0.64;
+      const segment = (Math.PI * 2) / homeWatchNavItems.length;
+      const now = new Date();
+      const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
+      const minutes = now.getMinutes() + seconds / 60;
+      const hours = (now.getHours() % 12) + minutes / 60;
+
+      state.rotation += shortestAngleDelta(state.rotation, state.targetRotation) * 0.16;
+
+      ctx.clearRect(0, 0, width, height);
+      ctx.save();
+      ctx.translate(cx, cy);
+
+      const glow = ctx.createRadialGradient(0, 0, faceRadius * 0.45, 0, 0, radius * 1.08);
+      glow.addColorStop(0, 'rgba(212, 175, 55, 0.2)');
+      glow.addColorStop(0.65, 'rgba(123, 44, 255, 0.12)');
+      glow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = glow;
+      ctx.beginPath();
+      ctx.arc(0, 0, radius * 1.08, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(0, 0, radius, 0, Math.PI * 2);
+      ctx.fillStyle = '#141112';
+      ctx.fill();
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = 'rgba(212, 175, 55, 0.78)';
+      ctx.stroke();
+
+      homeWatchNavItems.forEach((item, index) => {
+        const start = -Math.PI / 2 + index * segment + state.rotation - segment / 2;
+        const end = start + segment;
+        const active = index === state.selectedIndex;
+        ctx.beginPath();
+        ctx.arc(0, 0, radius * 0.98, start, end);
+        ctx.arc(0, 0, radius * 0.75, end, start, true);
+        ctx.closePath();
+        ctx.fillStyle = active ? 'rgba(212, 175, 55, 0.22)' : 'rgba(255, 255, 255, 0.025)';
+        ctx.fill();
+        ctx.strokeStyle = active ? 'rgba(212, 175, 55, 0.5)' : 'rgba(212, 175, 55, 0.16)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        const angle = -Math.PI / 2 + index * segment + state.rotation;
+        const labelRadius = radius * 0.86;
+        ctx.save();
+        ctx.translate(Math.cos(angle) * labelRadius, Math.sin(angle) * labelRadius);
+        ctx.rotate(angle + Math.PI / 2);
+        ctx.fillStyle = active ? '#f5d061' : 'rgba(255, 255, 255, 0.72)';
+        ctx.font = `${active ? 600 : 400} ${Math.max(11, size * 0.021)}px Inter, sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        drawCenteredText(ctx, t(item.key), 0, 0, radius * 0.22);
+        ctx.restore();
+      });
+
+      for (let i = 0; i < 60; i += 1) {
+        const angle = -Math.PI / 2 + (i / 60) * Math.PI * 2;
+        const outer = radius * 0.72;
+        const inner = i % 5 === 0 ? radius * 0.66 : radius * 0.69;
+        ctx.beginPath();
+        ctx.moveTo(Math.cos(angle) * inner, Math.sin(angle) * inner);
+        ctx.lineTo(Math.cos(angle) * outer, Math.sin(angle) * outer);
+        ctx.strokeStyle = i % 5 === 0 ? 'rgba(212, 175, 55, 0.68)' : 'rgba(255, 255, 255, 0.18)';
+        ctx.lineWidth = i % 5 === 0 ? 2 : 1;
+        ctx.stroke();
+      }
+
+      const faceGradient = ctx.createRadialGradient(-faceRadius * 0.2, -faceRadius * 0.25, 0, 0, 0, faceRadius);
+      faceGradient.addColorStop(0, '#fffaf0');
+      faceGradient.addColorStop(0.58, '#f4efe1');
+      faceGradient.addColorStop(1, '#d4af37');
+      ctx.beginPath();
+      ctx.arc(0, 0, faceRadius, 0, Math.PI * 2);
+      ctx.fillStyle = faceGradient;
+      ctx.fill();
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = '#d4af37';
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(0, 0, faceRadius * 0.78, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(17, 17, 17, 0.42)';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      ctx.font = `600 ${Math.max(16, size * 0.035)}px Playfair Display, serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = '#6f2aa8';
+      ctx.fillText('Balo', -faceRadius * 0.34, 0);
+      ctx.fillStyle = '#b79518';
+      ctx.fillText('Waci', faceRadius * 0.34, 0);
+
+      function drawHand(value, length, color, lineWidth) {
+        const angle = -Math.PI / 2 + value * Math.PI * 2;
+        ctx.beginPath();
+        ctx.moveTo(-Math.cos(angle) * length * 0.12, -Math.sin(angle) * length * 0.12);
+        ctx.lineTo(Math.cos(angle) * length, Math.sin(angle) * length);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = lineWidth;
+        ctx.lineCap = 'round';
+        ctx.stroke();
+      }
+
+      drawHand(hours / 12, faceRadius * 0.46, '#111', 5);
+      drawHand(minutes / 60, faceRadius * 0.66, '#111', 3);
+      drawHand(seconds / 60, faceRadius * 0.72, '#7b2cff', 1.6);
+
+      ctx.beginPath();
+      ctx.arc(0, 0, 7, 0, Math.PI * 2);
+      ctx.fillStyle = '#111';
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.moveTo(0, -radius * 1.02);
+      ctx.lineTo(-10, -radius * 0.94);
+      ctx.lineTo(10, -radius * 0.94);
+      ctx.closePath();
+      ctx.fillStyle = '#f5d061';
+      ctx.fill();
+
+      ctx.restore();
+
+      const timeElement = document.getElementById('homeWatchTime');
+      const sectionElement = document.getElementById('homeWatchSection');
+      if (timeElement) timeElement.textContent = now.toLocaleTimeString();
+      if (sectionElement) sectionElement.textContent = t(homeWatchNavItems[state.selectedIndex].key);
+
+      requestAnimationFrame(drawHomeWatchNav);
+    }
+
+    function resizeHomeWatchNav() {
+      const state = homeWatchState;
+      if (!state.canvas) return;
+      const rect = state.canvas.getBoundingClientRect();
+      state.dpr = Math.min(window.devicePixelRatio || 1, 2);
+      state.canvas.width = Math.round(rect.width * state.dpr);
+      state.canvas.height = Math.round(rect.height * state.dpr);
+      state.ctx.setTransform(state.dpr, 0, 0, state.dpr, 0, 0);
+    }
+
+    function snapHomeWatchNav(shouldNavigate = false) {
+      const state = homeWatchState;
+      const segment = (Math.PI * 2) / homeWatchNavItems.length;
+      const index = ((Math.round(-state.targetRotation / segment) % homeWatchNavItems.length) + homeWatchNavItems.length) % homeWatchNavItems.length;
+      state.selectedIndex = index;
+      state.targetRotation = -index * segment;
+
+      if (shouldNavigate) {
+        const target = document.querySelector(homeWatchNavItems[index].target);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    function selectHomeWatchNavFromPoint(event) {
+      const state = homeWatchState;
+      const canvas = state.canvas;
+      const point = getCanvasPoint(event, canvas);
+      const distance = Math.hypot(point.x - point.cx, point.y - point.cy);
+      const outer = Math.min(point.cx, point.cy) * 0.98;
+      const inner = outer * 0.46;
+      if (distance < inner || distance > outer) return false;
+
+      const segment = (Math.PI * 2) / homeWatchNavItems.length;
+      const angle = normalizeRadians(Math.atan2(point.y - point.cy, point.x - point.cx) + Math.PI / 2 - state.targetRotation);
+      const index = Math.round(angle / segment) % homeWatchNavItems.length;
+      state.selectedIndex = index;
+      state.targetRotation = -index * segment;
+      snapHomeWatchNav(true);
+      return true;
+    }
+
+    function initializeHomeWatchNav() {
+      const canvas = document.getElementById('homeWatchNav');
+      if (!canvas) return;
+      homeWatchState.canvas = canvas;
+      homeWatchState.ctx = canvas.getContext('2d');
+      resizeHomeWatchNav();
+
+      canvas.addEventListener('mousedown', (event) => {
+        homeWatchState.dragging = true;
+        homeWatchState.dragMoved = false;
+        homeWatchState.startAngle = getPointerAngle(event, canvas);
+        homeWatchState.startRotation = homeWatchState.targetRotation;
+        canvas.classList.add('dragging');
+      });
+
+      canvas.addEventListener('touchstart', (event) => {
+        homeWatchState.dragging = true;
+        homeWatchState.dragMoved = false;
+        homeWatchState.startAngle = getPointerAngle(event, canvas);
+        homeWatchState.startRotation = homeWatchState.targetRotation;
+        canvas.classList.add('dragging');
+      }, { passive: true });
+
+      window.addEventListener('mousemove', (event) => {
+        if (!homeWatchState.dragging) return;
+        const delta = getPointerAngle(event, canvas) - homeWatchState.startAngle;
+        if (Math.abs(delta) > 0.03) homeWatchState.dragMoved = true;
+        homeWatchState.targetRotation = homeWatchState.startRotation + delta;
+      });
+
+      window.addEventListener('touchmove', (event) => {
+        if (!homeWatchState.dragging) return;
+        const delta = getPointerAngle(event, canvas) - homeWatchState.startAngle;
+        if (Math.abs(delta) > 0.03) homeWatchState.dragMoved = true;
+        homeWatchState.targetRotation = homeWatchState.startRotation + delta;
+      }, { passive: true });
+
+      window.addEventListener('mouseup', (event) => {
+        if (!homeWatchState.dragging) return;
+        homeWatchState.dragging = false;
+        canvas.classList.remove('dragging');
+        if (homeWatchState.dragMoved) {
+          snapHomeWatchNav(true);
+        } else {
+          selectHomeWatchNavFromPoint(event);
+        }
+      });
+
+      window.addEventListener('touchend', () => {
+        if (!homeWatchState.dragging) return;
+        homeWatchState.dragging = false;
+        canvas.classList.remove('dragging');
+        snapHomeWatchNav(homeWatchState.dragMoved);
+      });
+
+      canvas.addEventListener('click', (event) => {
+        if (!homeWatchState.dragMoved) selectHomeWatchNavFromPoint(event);
+      });
+
+      window.addEventListener('resize', resizeHomeWatchNav);
+      requestAnimationFrame(drawHomeWatchNav);
+    }
+
     // Initialize on page load
     document.addEventListener('DOMContentLoaded', () => {
       applyLanguage(currentLanguage);
@@ -2223,6 +2614,7 @@
         loadTimeInterpretation();
       });
       initializeStars();
+      initializeHomeWatchNav();
       startTimeRefresh();
       document.getElementById('feedbackForm').addEventListener('submit', handleFeedbackSubmit);
     });
