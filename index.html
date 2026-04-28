@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BaloWaci - A Unified Time Interpretation System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@300;400&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
@@ -16,12 +17,34 @@
     }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Inter', sans-serif;
       background: radial-gradient(circle at center, #2b0052 0%, #120020 45%, #000 100%);
       color: #d4af37;
       overflow-x: hidden;
       line-height: 1.6;
       min-height: 100vh;
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: 'Playfair Display', serif;
+      letter-spacing: 1px;
+    }
+
+    .glow {
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+    }
+
+    .logo {
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
     }
 
     .stars-container {
@@ -104,9 +127,8 @@
       border-radius: 50%;
       padding: 8px;
       background: rgba(255, 255, 255, 0.96);
-      box-shadow:
-        0 0 28px rgba(212, 175, 55, 0.32),
-        0 0 56px rgba(178, 102, 255, 0.18);
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+      animation: float 6s ease-in-out infinite;
     }
 
     .hero-logo {
@@ -128,21 +150,24 @@
 
     .luxury-title {
       margin: 0 0 22px;
-      color: #b266ff;
+      color: #c884ff;
       font-size: clamp(4rem, 12vw, 8.5rem);
       line-height: 0.9;
-      font-weight: 300;
-      letter-spacing: 0;
-      text-shadow:
-        0 0 26px rgba(178, 102, 255, 0.72),
-        0 0 52px rgba(178, 102, 255, 0.2);
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-shadow: 0 0 10px rgba(200, 132, 255, 0.35);
     }
 
     .luxury-title span {
-      color: #d4af37;
-      text-shadow:
-        0 0 26px rgba(212, 175, 55, 0.72),
-        0 0 52px rgba(212, 175, 55, 0.22);
+      color: #f5d061;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+    }
+
+    .hero-title {
+      font-size: 64px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      color: #f5d061;
     }
 
     .balo {
@@ -164,65 +189,70 @@
       line-height: 1.7;
     }
 
+    .button,
     .luxury-btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 54px;
-      padding: 14px 24px;
-      border: 2px solid #d4af37;
+      min-height: 46px;
+      padding: 12px 28px;
+      border: 1px solid #d4af37;
       border-radius: 4px;
       color: #d4af37;
+      background: transparent;
       text-decoration: none;
-      font-size: 1rem;
-      font-weight: 700;
-      transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
-      box-shadow: 0 0 20px rgba(212, 175, 55, 0.22);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 12px;
+      font-weight: 400;
+      transition: all 0.3s ease;
     }
 
+    .button:hover,
     .luxury-btn:hover {
-      transform: translateY(-2px);
+      background: #d4af37;
+      color: black;
     }
 
     .luxury-btn.primary {
-      background: #d4af37;
-      color: #120020;
+      background: transparent;
+      color: #d4af37;
     }
 
     .luxury-btn.primary:hover {
-      box-shadow: 0 0 34px rgba(212, 175, 55, 0.45);
+      background: #d4af37;
+      color: black;
     }
 
     .luxury-btn.secondary {
-      background: rgba(0, 0, 0, 0.28);
+      background: transparent;
       color: #d4af37;
-      border-color: rgba(212, 175, 55, 0.82);
     }
 
     .luxury-btn.secondary:hover {
-      background: rgba(178, 102, 255, 0.18);
-      color: #fff1a8;
+      background: #d4af37;
+      color: black;
     }
 
     .btn-primary {
       display: inline-block;
-      padding: 16px 32px;
+      padding: 12px 28px;
       background: transparent;
       color: #d4af37;
-      border: 2px solid #d4af37;
+      border: 1px solid #d4af37;
       text-decoration: none;
-      font-weight: bold;
-      font-size: 1.1rem;
+      font-weight: 400;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
       border-radius: 4px;
       transition: all 0.3s ease;
-      box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
       cursor: pointer;
     }
 
     .btn-primary:hover {
       background: #d4af37;
-      color: #120020;
-      box-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+      color: black;
     }
 
     .hero-actions {
@@ -770,7 +800,8 @@
       align-items: center;
       justify-content: center;
       margin-bottom: 36px;
-      box-shadow: 0 0 45px rgba(212, 175, 55, 0.35);
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+      animation: float 6s ease-in-out infinite;
     }
 
     .hero-logo {
@@ -790,14 +821,14 @@
 
     .luxury-title {
       font-size: clamp(3.2rem, 8vw, 7rem);
-      font-weight: 300;
-      letter-spacing: 0.05em;
+      font-weight: 500;
+      letter-spacing: 2px;
       color: #c884ff;
       margin: 0;
     }
 
     .luxury-title span {
-      color: #ffd700;
+      color: #f5d061;
     }
 
     .luxury-subtitle {
@@ -816,18 +847,20 @@
     }
 
     .luxury-btn {
-      padding: 15px 28px;
+      padding: 12px 28px;
       border: 1px solid #d4af37;
+      color: #d4af37;
+      background: transparent;
       text-decoration: none;
-      font-size: 0.85rem;
-      letter-spacing: 0.12em;
+      font-size: 12px;
+      letter-spacing: 2px;
       text-transform: uppercase;
       transition: all 0.3s ease;
     }
 
     .luxury-btn.primary {
-      background: #d4af37;
-      color: #090812;
+      background: transparent;
+      color: #d4af37;
     }
 
     .luxury-btn.secondary {
@@ -836,8 +869,8 @@
     }
 
     .luxury-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 0 25px rgba(212, 175, 55, 0.35);
+      background: #d4af37;
+      color: black;
     }
 
     .product-vision-section,
