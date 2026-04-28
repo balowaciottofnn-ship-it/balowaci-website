@@ -645,7 +645,7 @@
   <!-- Navigation -->
   <nav>
     <a class="nav-brand" href="#hero" aria-label="BaloWaci home">
-      <img class="nav-logo" src="balogo.png" alt="BaloWaci Collective logo">
+      <img class="nav-logo" src="assets/balogo.png" alt="BaloWaci Collective logo">
     </a>
     <div class="nav-links">
       <a href="#hero" data-i18n="nav.home">Home</a>
@@ -672,7 +672,7 @@
   <!-- Hero Section -->
   <section class="hero" id="hero">
     <div class="hero-content">
-      <img class="hero-logo" src="balogo.png" alt="BaloWaci Collective logo">
+      <img class="hero-logo" src="assets/balogo.png" alt="BaloWaci Collective logo">
       <h1>
         <span class="balo">Balo</span><span class="waci">Waci</span>
       </h1>
@@ -1165,7 +1165,8 @@
       const timeContent = document.getElementById('timeContent');
       
       try {
-        const response = await fetch(`${API_BASE_URL}/time/current`);
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const response = await fetch(`${API_BASE_URL}/time/current?timezone=${encodeURIComponent(timezone)}`);
         const result = await response.json();
 
         if (result.success) {
