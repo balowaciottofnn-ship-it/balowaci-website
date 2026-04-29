@@ -825,6 +825,15 @@
       display: block;
     }
 
+    .feedback-thank-you {
+      max-width: 560px;
+      margin: 0;
+      color: rgba(255, 255, 255, 0.78);
+      line-height: 1.7;
+      font-size: 0.95rem;
+      text-align: center;
+    }
+
     /* Navigation */
     nav {
       position: fixed;
@@ -1703,74 +1712,51 @@
       
       <form class="feedback-form" id="feedbackForm">
         <div class="form-group">
-          <label for="visitorName" data-i18n="form.name">Your name</label>
-          <input type="text" id="visitorName" name="visitorName" required>
+          <label for="impression">1. What do you think BaloWaci does after using it?</label>
+          <textarea id="impression" name="impression" required></textarea>
         </div>
 
         <div class="form-group">
-          <label for="visitorEmail" data-i18n="form.email">Email address</label>
-          <input type="email" id="visitorEmail" name="visitorEmail" required>
+          <label for="unique">2. What part of the experience was confusing or difficult?</label>
+          <textarea id="unique" name="unique" required></textarea>
         </div>
 
         <div class="form-group">
-          <label for="visitorPhone" data-i18n="form.phone">Phone number</label>
-          <input type="tel" id="visitorPhone" name="visitorPhone">
+          <label for="interests">3. What part of the experience was confusing or difficult?</label>
+          <textarea id="interests" name="interests" required></textarea>
         </div>
 
         <div class="form-group">
-          <label for="impression" data-i18n="form.impression">What is your first impression?</label>
-          <input type="text" id="impression" name="impression" required>
+          <label for="thoughts">4. What part of the experience was confusing or difficult? How do you think this could be useful in real life?</label>
+          <textarea id="thoughts" name="thoughts" required></textarea>
         </div>
 
         <div class="form-group">
-          <label for="unique" data-i18n="form.unique">Does this feel unique?</label>
-          <input type="text" id="unique" name="unique" required>
-        </div>
-
-        <div class="form-group">
-          <label for="interests" data-i18n="form.interests">What interests you most?</label>
-          <input type="text" id="interests" name="interests" required>
-        </div>
-
-        <div class="form-group">
-          <label for="thoughts" data-i18n="form.thoughts">Any thoughts on the journey or founder?</label>
-          <textarea id="thoughts" name="thoughts"></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="targetCustomer" data-i18n="form.targetCustomer">Who do you think would benefit most from BaloWaci?</label>
-          <textarea id="targetCustomer" name="targetCustomer" required></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="problemSolved" data-i18n="form.problemSolved">What real-world problem or need could BaloWaci solve?</label>
-          <textarea id="problemSolved" name="problemSolved" required></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="willingnessToPay" data-i18n="form.willingnessToPay">Would you or an organization pay for access, licensing, or implementation?</label>
-          <textarea id="willingnessToPay" name="willingnessToPay" required></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="watchValueEstimate" data-i18n="form.watchValueEstimate">How much do you think BaloWaci's ideal initial price should be at the starting cost, and how much do you think this type of watch might be worth for its very first pieces?</label>
+          <label for="watchValueEstimate">5. If this existed as a product (app or watch), what price range would feel reasonable to you?</label>
           <textarea id="watchValueEstimate" name="watchValueEstimate" required></textarea>
         </div>
 
         <div class="form-group">
-          <label for="adoptionBarriers" data-i18n="form.adoptionBarriers">What might prevent people or organizations from adopting it?</label>
-          <textarea id="adoptionBarriers" name="adoptionBarriers" required></textarea>
+          <label for="willingnessToPay">6. Would you use this system again or replace your current way of telling time? Why or why not?</label>
+          <textarea id="willingnessToPay" name="willingnessToPay" required></textarea>
         </div>
 
         <div class="form-group">
-          <label for="mustHaveFeatures" data-i18n="form.mustHaveFeatures">What feature, integration, or proof would make it more valuable?</label>
+          <label for="mustHaveFeatures">7. What feature or improvement would make this significantly more valuable to you?</label>
           <textarea id="mustHaveFeatures" name="mustHaveFeatures" required></textarea>
         </div>
 
         <div class="form-group">
-          <label for="pilotInterest" data-i18n="form.pilotInterest">Would you recommend a pilot, partnership, or investor conversation?</label>
-          <textarea id="pilotInterest" name="pilotInterest" required></textarea>
+          <label for="visitorName">8. Name?</label>
+          <input type="text" id="visitorName" name="visitorName" required>
         </div>
+
+        <div class="form-group">
+          <label for="visitorEmail">9. Email adress?</label>
+          <input type="email" id="visitorEmail" name="visitorEmail" required>
+        </div>
+
+        <p class="feedback-thank-you">Thank you for taking the time to share your feedback. Your answers help shape the future of BaloWaci.</p>
 
         <button type="submit" class="btn-primary" data-i18n="form.submit">Submit Feedback</button>
         <div class="form-status" id="formStatus"></div>
@@ -2669,20 +2655,21 @@
       formStatus.className = 'form-status info';
       formStatus.textContent = t('form.submitting');
 
-      const visitorName = document.getElementById('visitorName').value;
-      const visitorEmail = document.getElementById('visitorEmail').value;
-      const visitorPhone = document.getElementById('visitorPhone').value;
-      const impression = document.getElementById('impression').value;
-      const unique = document.getElementById('unique').value;
-      const interests = document.getElementById('interests').value;
-      const thoughts = document.getElementById('thoughts').value;
-      const targetCustomer = document.getElementById('targetCustomer').value;
-      const problemSolved = document.getElementById('problemSolved').value;
-      const willingnessToPay = document.getElementById('willingnessToPay').value;
-      const watchValueEstimate = document.getElementById('watchValueEstimate').value;
-      const adoptionBarriers = document.getElementById('adoptionBarriers').value;
-      const mustHaveFeatures = document.getElementById('mustHaveFeatures').value;
-      const pilotInterest = document.getElementById('pilotInterest').value;
+      const getValue = (id) => document.getElementById(id)?.value || '';
+      const visitorName = getValue('visitorName');
+      const visitorEmail = getValue('visitorEmail');
+      const visitorPhone = getValue('visitorPhone');
+      const impression = getValue('impression');
+      const unique = getValue('unique');
+      const interests = getValue('interests');
+      const thoughts = getValue('thoughts');
+      const targetCustomer = getValue('targetCustomer');
+      const problemSolved = getValue('problemSolved');
+      const willingnessToPay = getValue('willingnessToPay');
+      const watchValueEstimate = getValue('watchValueEstimate');
+      const adoptionBarriers = getValue('adoptionBarriers');
+      const mustHaveFeatures = getValue('mustHaveFeatures');
+      const pilotInterest = getValue('pilotInterest');
 
       try {
         const response = await fetch(`${API_BASE_URL}/feedback/submit`, {
