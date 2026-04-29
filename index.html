@@ -3117,6 +3117,13 @@
       return Math.atan2(point.y - point.cy, point.x - point.cx);
     }
 
+    function isHomeSectionActive() {
+      const hero = document.getElementById('hero');
+      if (!hero) return false;
+      const rect = hero.getBoundingClientRect();
+      return rect.top <= window.innerHeight * 0.35 && rect.bottom >= window.innerHeight * 0.35;
+    }
+
     function drawCenteredText(ctx, text, x, y, maxWidth, lineHeight = 14) {
       const words = text.split(' ');
       let line = '';
@@ -3572,7 +3579,7 @@
           index = itemIndex;
         }
       });
-      if (index === 0 && state.selectedIndex === 0) return true;
+      if (index === 0 && isHomeSectionActive()) return true;
       state.selectedIndex = index;
       state.targetRotation = -index * segment;
       snapHomeWatchNav(true);
