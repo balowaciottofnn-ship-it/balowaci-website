@@ -176,10 +176,21 @@
       aspect-ratio: 1;
       margin: 0 auto;
       border-radius: 50%;
+      --solar-core: 0.08;
+      --solar-aura: 0.16;
+      --solar-shadow: 0.24;
+      --solar-blur: 34px;
+      --solar-shadow-alpha: 0.14;
+      --solar-inset-blur: 32px;
+      --solar-inset-alpha: 0.07;
       background:
-        radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.08), transparent 62%),
-        radial-gradient(circle at 50% 50%, rgba(123, 44, 255, 0.16), transparent 72%);
-      box-shadow: 0 0 34px rgba(212, 175, 55, 0.24);
+        radial-gradient(circle at 50% 50%, rgba(255, 215, 0, var(--solar-core)), transparent 58%),
+        radial-gradient(circle at 50% 50%, rgba(255, 132, 24, var(--solar-aura)), transparent 70%),
+        radial-gradient(circle at 50% 50%, rgba(123, 44, 255, 0.1), transparent 78%);
+      box-shadow:
+        0 0 var(--solar-blur) rgba(255, 196, 54, var(--solar-shadow-alpha)),
+        inset 0 0 var(--solar-inset-blur) rgba(255, 215, 0, var(--solar-inset-alpha));
+      transition: box-shadow 0.8s ease, background 0.8s ease;
     }
 
     #homeWatchNav {
@@ -2742,6 +2753,35 @@
       return parts.find((part) => part.type === 'timeZoneName')?.value || timezone;
     }
 
+    function smoothStep(edge0, edge1, value) {
+      const x = Math.min(Math.max((value - edge0) / (edge1 - edge0), 0), 1);
+      return x * x * (3 - 2 * x);
+    }
+
+    function getLocalSolarIntensity(date = new Date()) {
+      const hour = date.getHours() + date.getMinutes() / 60 + date.getSeconds() / 3600;
+      const sunrise = 6;
+      const solarNoon = 12;
+      const sunset = 18;
+      const dawn = smoothStep(5, sunrise + 1, hour);
+      const dusk = 1 - smoothStep(sunset - 1, 20, hour);
+      const daylight = Math.max(0, Math.min(dawn, dusk));
+      const noonPeak = 0.55 + 0.45 * Math.cos(((hour - solarNoon) / 6) * Math.PI / 2);
+      return Math.max(0, Math.min(daylight * noonPeak, 1));
+    }
+
+    function updateHomeWatchSolarStyle(intensity) {
+      const shell = document.querySelector('.home-watch-shell');
+      if (!shell) return;
+      shell.style.setProperty('--solar-core', (0.02 + intensity * 0.24).toFixed(3));
+      shell.style.setProperty('--solar-aura', (0.03 + intensity * 0.28).toFixed(3));
+      shell.style.setProperty('--solar-shadow', intensity.toFixed(3));
+      shell.style.setProperty('--solar-blur', `${(14 + intensity * 52).toFixed(1)}px`);
+      shell.style.setProperty('--solar-shadow-alpha', (0.03 + intensity * 0.44).toFixed(3));
+      shell.style.setProperty('--solar-inset-blur', `${(20 + intensity * 40).toFixed(1)}px`);
+      shell.style.setProperty('--solar-inset-alpha', (0.02 + intensity * 0.18).toFixed(3));
+    }
+
     function normalizeRadians(angle) {
       const full = Math.PI * 2;
       return ((angle % full) + full) % full;
@@ -2807,6 +2847,8 @@
       const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
       const minutes = now.getMinutes() + seconds / 60;
       const hours = (now.getHours() % 12) + minutes / 60;
+      const solarIntensity = getLocalSolarIntensity(now);
+      updateHomeWatchSolarStyle(solarIntensity);
 
       state.rotation += shortestAngleDelta(state.rotation, state.targetRotation) * 0.16;
 
@@ -2814,21 +2856,40 @@
       ctx.save();
       ctx.translate(cx, cy);
 
-      const glow = ctx.createRadialGradient(0, 0, faceRadius * 0.45, 0, 0, radius * 1.08);
-      glow.addColorStop(0, 'rgba(212, 175, 55, 0.2)');
-      glow.addColorStop(0.65, 'rgba(123, 44, 255, 0.12)');
+      const glow = ctx.createRadialGradient(0, 0, faceRadius * 0.32, 0, 0, radius * 1.12);
+      glow.addColorStop(0, `rgba(255, 236, 142, ${0.03 + solarIntensity * 0.32})`);
+      glow.addColorStop(0.48, `rgba(255, 191, 36, ${solarIntensity * 0.24})`);
+      glow.addColorStop(0.72, `rgba(255, 111, 24, ${solarIntensity * 0.12})`);
+      glow.addColorStop(0.88, `rgba(123, 44, 255, ${0.04 + solarIntensity * 0.06})`);
       glow.addColorStop(1, 'rgba(0, 0, 0, 0)');
       ctx.fillStyle = glow;
       ctx.beginPath();
-      ctx.arc(0, 0, radius * 1.08, 0, Math.PI * 2);
+      ctx.arc(0, 0, radius * 1.12, 0, Math.PI * 2);
       ctx.fill();
+
+      if (solarIntensity > 0.04) {
+        ctx.save();
+        ctx.globalAlpha = solarIntensity * 0.55;
+        for (let i = 0; i < 48; i += 1) {
+          const angle = (i / 48) * Math.PI * 2 + seconds * 0.002;
+          const inner = radius * (0.99 + (i % 2) * 0.02);
+          const outer = radius * (1.1 + (i % 3) * 0.035);
+          ctx.beginPath();
+          ctx.moveTo(Math.cos(angle) * inner, Math.sin(angle) * inner);
+          ctx.lineTo(Math.cos(angle) * outer, Math.sin(angle) * outer);
+          ctx.strokeStyle = i % 2 === 0 ? 'rgba(255, 215, 0, 0.55)' : 'rgba(255, 132, 24, 0.32)';
+          ctx.lineWidth = i % 5 === 0 ? 1.7 : 0.8;
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
 
       ctx.beginPath();
       ctx.arc(0, 0, radius, 0, Math.PI * 2);
       ctx.fillStyle = '#141112';
       ctx.fill();
       ctx.lineWidth = 2;
-      ctx.strokeStyle = 'rgba(212, 175, 55, 0.78)';
+      ctx.strokeStyle = `rgba(212, 175, 55, ${0.34 + solarIntensity * 0.48})`;
       ctx.stroke();
 
       homeWatchNavItems.forEach((item, index) => {
