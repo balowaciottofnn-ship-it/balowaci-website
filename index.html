@@ -1467,7 +1467,7 @@
         font-size: clamp(1.05rem, 2.55vw, 1.9rem);
         letter-spacing: 0;
         opacity: 0.88;
-        z-index: 0;
+        z-index: 3;
       }
 
       body .watch-side-word.balo {
@@ -1488,6 +1488,27 @@
 
       body .watch-side-word {
         font-size: clamp(0.95rem, 2.25vw, 1.55rem);
+      }
+    }
+
+    @media (min-width: 769px) and (max-width: 1180px) and (orientation: landscape) {
+      body .site-corner-logo {
+        top: 12px;
+        left: 12px;
+        height: 52px;
+        padding: 5px 10px 5px 5px;
+        gap: 7px;
+      }
+
+      body .site-corner-logo img {
+        width: 42px;
+        height: 42px;
+        flex-basis: 42px;
+      }
+
+      body .site-corner-logo span {
+        font-size: 0.9rem;
+        letter-spacing: 0;
       }
     }
 
@@ -2981,6 +3002,7 @@
       dragMoved: false,
       startAngle: 0,
       startRotation: 0,
+      activePointerId: null,
       lastTouchSelectionAt: 0,
       dpr: 1
     };
@@ -3639,52 +3661,35 @@
       homeWatchState.ctx = canvas.getContext('2d');
       resizeHomeWatchNav();
 
-      canvas.addEventListener('mousedown', (event) => {
+      function beginWatchInteraction(event) {
+        event.preventDefault?.();
         homeWatchState.dragging = true;
         homeWatchState.dragMoved = false;
+        homeWatchState.activePointerId = event.pointerId ?? null;
         homeWatchState.startAngle = getPointerAngle(event, canvas);
-        homeWatchState.startRotation = homeWatchState.targetRotation;
+        homeWatchState.startRotation = homeWatchState.rotation;
         canvas.classList.add('dragging');
-      });
-
-      canvas.addEventListener('touchstart', (event) => {
-        homeWatchState.dragging = true;
-        homeWatchState.dragMoved = false;
-        homeWatchState.startAngle = getPointerAngle(event, canvas);
-        homeWatchState.startRotation = homeWatchState.targetRotation;
-        canvas.classList.add('dragging');
-      }, { passive: true });
-
-      window.addEventListener('mousemove', (event) => {
-        if (!homeWatchState.dragging) return;
-        const delta = getPointerAngle(event, canvas) - homeWatchState.startAngle;
-        if (Math.abs(delta) > 0.03) homeWatchState.dragMoved = true;
-        homeWatchState.targetRotation = homeWatchState.startRotation + delta;
-        homeWatchState.rotation = homeWatchState.targetRotation;
-      });
-
-      window.addEventListener('touchmove', (event) => {
-        if (!homeWatchState.dragging) return;
-        const delta = getPointerAngle(event, canvas) - homeWatchState.startAngle;
-        if (Math.abs(delta) > 0.03) homeWatchState.dragMoved = true;
-        homeWatchState.targetRotation = homeWatchState.startRotation + delta;
-        homeWatchState.rotation = homeWatchState.targetRotation;
-      }, { passive: true });
-
-      window.addEventListener('mouseup', (event) => {
-        if (!homeWatchState.dragging) return;
-        homeWatchState.dragging = false;
-        canvas.classList.remove('dragging');
-        if (homeWatchState.dragMoved) {
-          snapHomeWatchNav(true);
-        } else {
-          selectHomeWatchNavFromPoint(event);
+        if (event.pointerId !== undefined && canvas.setPointerCapture) {
+          canvas.setPointerCapture(event.pointerId);
         }
-      });
+      }
 
-      window.addEventListener('touchend', (event) => {
+      function moveWatchInteraction(event) {
         if (!homeWatchState.dragging) return;
+        if (event.pointerId !== undefined && homeWatchState.activePointerId !== event.pointerId) return;
+        event.preventDefault?.();
+        const delta = getPointerAngle(event, canvas) - homeWatchState.startAngle;
+        if (Math.abs(delta) > 0.03) homeWatchState.dragMoved = true;
+        homeWatchState.targetRotation = homeWatchState.startRotation + delta;
+        homeWatchState.rotation = homeWatchState.targetRotation;
+      }
+
+      function endWatchInteraction(event) {
+        if (!homeWatchState.dragging) return;
+        if (event.pointerId !== undefined && homeWatchState.activePointerId !== event.pointerId) return;
+        event.preventDefault?.();
         homeWatchState.dragging = false;
+        homeWatchState.activePointerId = null;
         canvas.classList.remove('dragging');
         homeWatchState.lastTouchSelectionAt = Date.now();
         if (homeWatchState.dragMoved) {
@@ -3692,10 +3697,32 @@
         } else {
           selectHomeWatchNavFromPoint(event);
         }
-      });
+        if (event.pointerId !== undefined && canvas.releasePointerCapture) {
+          try {
+            canvas.releasePointerCapture(event.pointerId);
+          } catch (error) {
+            // Pointer capture can already be released by Safari during gesture cancellation.
+          }
+        }
+      }
+
+      if (window.PointerEvent) {
+        canvas.addEventListener('pointerdown', beginWatchInteraction);
+        canvas.addEventListener('pointermove', moveWatchInteraction);
+        canvas.addEventListener('pointerup', endWatchInteraction);
+        canvas.addEventListener('pointercancel', endWatchInteraction);
+      } else {
+        canvas.addEventListener('mousedown', beginWatchInteraction);
+        canvas.addEventListener('touchstart', beginWatchInteraction, { passive: false });
+        window.addEventListener('mousemove', moveWatchInteraction);
+        window.addEventListener('touchmove', moveWatchInteraction, { passive: false });
+        window.addEventListener('mouseup', endWatchInteraction);
+        window.addEventListener('touchend', endWatchInteraction, { passive: false });
+        window.addEventListener('touchcancel', endWatchInteraction, { passive: false });
+      }
 
       canvas.addEventListener('click', (event) => {
-        if (Date.now() - homeWatchState.lastTouchSelectionAt < 500) return;
+        if (Date.now() - homeWatchState.lastTouchSelectionAt < 900) return;
         if (!homeWatchState.dragMoved) selectHomeWatchNavFromPoint(event);
       });
 
