@@ -1396,6 +1396,32 @@
       margin: 0 auto;
     }
 
+    body .watch-side-word {
+      position: absolute;
+      top: 50%;
+      z-index: 1;
+      transform: translateY(-50%);
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.2rem, 9vw, 9rem);
+      line-height: 1;
+      letter-spacing: 0.06em;
+      pointer-events: none;
+      user-select: none;
+      opacity: 0.72;
+    }
+
+    body .watch-side-word.balo {
+      left: clamp(24px, 6vw, 120px);
+      color: #c884ff;
+      text-shadow: 0 0 20px rgba(200, 132, 255, 0.36);
+    }
+
+    body .watch-side-word.waci {
+      right: clamp(24px, 6vw, 120px);
+      color: #f5d061;
+      text-shadow: 0 0 20px rgba(245, 208, 97, 0.34);
+    }
+
     body .home-watch-readout,
     body .home-watch-hint,
     body .luxury-hero .luxury-kicker,
@@ -1441,6 +1467,22 @@
       body .home-watch-shell {
         width: min(94vmin, 620px);
       }
+
+      body .watch-side-word {
+        top: auto;
+        bottom: 6vh;
+        transform: none;
+        font-size: clamp(2.3rem, 13vw, 4rem);
+        opacity: 0.58;
+      }
+
+      body .watch-side-word.balo {
+        left: 24px;
+      }
+
+      body .watch-side-word.waci {
+        right: 24px;
+      }
     }
   </style>
 </head>
@@ -1469,6 +1511,7 @@
 
   <!-- Hero Section -->
   <section class="hero luxury-hero" id="hero">
+    <span class="watch-side-word balo" aria-hidden="true">Balo</span>
     <div class="home-watch-nav" aria-label="Interactive BaloWaci section navigator">
       <div class="home-watch-shell">
         <canvas id="homeWatchNav" width="720" height="720"></canvas>
@@ -1477,6 +1520,7 @@
       <span id="homeWatchRegion" class="sr-only">Chicago, US</span>
       <span id="homeWatchSection" class="sr-only">Home</span>
     </div>
+    <span class="watch-side-word waci" aria-hidden="true">Waci</span>
   </section>
 
   <section id="watch-showcase" class="watch-showcase">
