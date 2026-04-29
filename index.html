@@ -1424,18 +1424,32 @@
     }
 
     @media (max-width: 1180px) {
+      body .home-watch-shell {
+        width: min(72vmin, 640px);
+      }
+
       body .watch-side-word {
-        font-size: clamp(2.6rem, 7vw, 5rem);
+        font-size: clamp(2.2rem, 5.4vw, 4.2rem);
         letter-spacing: 0.03em;
-        opacity: 0.56;
+        opacity: 0.7;
       }
 
       body .watch-side-word.balo {
-        left: 18px;
+        left: 16px;
       }
 
       body .watch-side-word.waci {
-        right: 18px;
+        right: 16px;
+      }
+    }
+
+    @media (min-width: 769px) and (max-width: 980px) {
+      body .home-watch-shell {
+        width: min(68vmin, 560px);
+      }
+
+      body .watch-side-word {
+        font-size: clamp(1.8rem, 4.8vw, 3rem);
       }
     }
 
@@ -2894,6 +2908,9 @@
       { key: 'nav.feedback', target: '#feedback', region: 'Honolulu, US', timezone: 'Pacific/Honolulu' }
     ];
 
+    const realGlobeImage = new Image();
+    realGlobeImage.src = 'real%20globe.jpg';
+
     const homeWatchState = {
       canvas: null,
       ctx: null,
@@ -3151,6 +3168,29 @@
       ctx.arc(0, 0, mapRadius, 0, Math.PI * 2);
       ctx.clip();
 
+      if (realGlobeImage.complete && realGlobeImage.naturalWidth) {
+        const sourceSize = Math.min(realGlobeImage.naturalWidth * 0.91, realGlobeImage.naturalHeight * 0.75);
+        const sourceX = realGlobeImage.naturalWidth * 0.035;
+        const sourceY = realGlobeImage.naturalHeight * 0.015;
+        ctx.drawImage(
+          realGlobeImage,
+          sourceX,
+          sourceY,
+          sourceSize,
+          sourceSize,
+          -mapRadius,
+          -mapRadius,
+          mapRadius * 2,
+          mapRadius * 2
+        );
+
+        const globePolish = ctx.createRadialGradient(-mapRadius * 0.22, -mapRadius * 0.3, 0, 0, 0, mapRadius);
+        globePolish.addColorStop(0, 'rgba(255, 255, 255, 0.2)');
+        globePolish.addColorStop(0.48, 'rgba(255, 255, 255, 0.02)');
+        globePolish.addColorStop(1, 'rgba(3, 12, 25, 0.22)');
+        ctx.fillStyle = globePolish;
+        ctx.fillRect(-mapRadius, -mapRadius, mapRadius * 2, mapRadius * 2);
+      } else {
       const ocean = ctx.createRadialGradient(-mapRadius * 0.3, -mapRadius * 0.25, 0, 0, 0, mapRadius);
       ocean.addColorStop(0, '#dceff0');
       ocean.addColorStop(0.42, '#a8cfd5');
@@ -3212,6 +3252,7 @@
       ctx.strokeStyle = 'rgba(68, 110, 64, 0.62)';
       ctx.lineWidth = 0.9;
       worldLandmasses.forEach((landmass) => drawWorldLandmass(ctx, landmass, centerLon, mapRadius));
+      }
 
       ctx.save();
       ctx.globalCompositeOperation = 'multiply';
