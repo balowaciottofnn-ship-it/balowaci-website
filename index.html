@@ -2845,7 +2845,7 @@
     }
 
     function drawLiveWorldMap(ctx, faceRadius, selectedItem, now) {
-      const mapRadius = faceRadius * 0.72;
+      const mapRadius = faceRadius * 0.76;
       const scaleX = mapRadius;
       const scaleY = mapRadius * 0.58;
       const dayOffset = ((now.getUTCHours() + now.getUTCMinutes() / 60) / 24) * Math.PI * 2;
@@ -2855,39 +2855,49 @@
       ctx.arc(0, 0, mapRadius, 0, Math.PI * 2);
       ctx.clip();
 
-      const ocean = ctx.createLinearGradient(0, -mapRadius, 0, mapRadius);
-      ocean.addColorStop(0, '#112139');
-      ocean.addColorStop(0.5, '#173c60');
-      ocean.addColorStop(1, '#09111f');
+      const ocean = ctx.createRadialGradient(-mapRadius * 0.26, -mapRadius * 0.22, 0, 0, 0, mapRadius);
+      ocean.addColorStop(0, '#d7ecf6');
+      ocean.addColorStop(0.46, '#93c3d8');
+      ocean.addColorStop(0.74, '#5f95b5');
+      ocean.addColorStop(1, '#294764');
       ctx.fillStyle = ocean;
       ctx.fillRect(-mapRadius, -mapRadius, mapRadius * 2, mapRadius * 2);
+
+      ctx.fillStyle = 'rgba(174, 198, 115, 0.28)';
+      ctx.fillRect(-mapRadius, -mapRadius * 0.22, mapRadius * 2, mapRadius * 0.44);
 
       ctx.save();
       ctx.translate(Math.sin(dayOffset) * mapRadius * 0.26, 0);
       const daylight = ctx.createRadialGradient(0, 0, mapRadius * 0.08, 0, 0, mapRadius * 1.15);
-      daylight.addColorStop(0, 'rgba(255, 224, 124, 0.42)');
-      daylight.addColorStop(0.55, 'rgba(255, 184, 55, 0.14)');
+      daylight.addColorStop(0, 'rgba(255, 236, 142, 0.28)');
+      daylight.addColorStop(0.55, 'rgba(255, 210, 92, 0.1)');
       daylight.addColorStop(1, 'rgba(0, 0, 0, 0)');
       ctx.fillStyle = daylight;
       ctx.fillRect(-mapRadius * 1.25, -mapRadius, mapRadius * 2.5, mapRadius * 2);
       ctx.restore();
 
-      ctx.fillStyle = 'rgba(232, 208, 144, 0.84)';
-      ctx.strokeStyle = 'rgba(20, 16, 12, 0.28)';
+      ctx.fillStyle = 'rgba(151, 181, 92, 0.78)';
+      ctx.strokeStyle = 'rgba(75, 107, 64, 0.38)';
       ctx.lineWidth = 1;
-      drawMapBlob(ctx, [[-0.86,-0.18],[-0.72,-0.48],[-0.5,-0.43],[-0.38,-0.2],[-0.48,0.02],[-0.38,0.24],[-0.5,0.52],[-0.72,0.34],[-0.9,0.04]], scaleX, scaleY);
-      drawMapBlob(ctx, [[-0.32,-0.5],[-0.1,-0.42],[0.05,-0.2],[-0.02,0.04],[0.1,0.28],[0.02,0.56],[-0.16,0.5],[-0.24,0.18],[-0.38,0.0]], scaleX, scaleY);
-      drawMapBlob(ctx, [[0.08,-0.46],[0.45,-0.52],[0.82,-0.34],[0.9,-0.08],[0.7,0.06],[0.54,0.22],[0.28,0.12],[0.18,-0.08],[-0.02,-0.2]], scaleX, scaleY);
-      drawMapBlob(ctx, [[0.48,0.3],[0.68,0.25],[0.82,0.48],[0.72,0.68],[0.54,0.6]], scaleX, scaleY);
+      drawMapBlob(ctx, [[-0.92,-0.28],[-0.76,-0.52],[-0.52,-0.46],[-0.36,-0.25],[-0.46,-0.04],[-0.34,0.15],[-0.42,0.38],[-0.58,0.56],[-0.75,0.32],[-0.9,0.05]], scaleX, scaleY);
+      drawMapBlob(ctx, [[-0.32,-0.54],[-0.08,-0.47],[0.05,-0.24],[0.0,0.02],[0.13,0.24],[0.04,0.56],[-0.13,0.5],[-0.2,0.18],[-0.36,0.0]], scaleX, scaleY);
+      drawMapBlob(ctx, [[0.03,-0.48],[0.28,-0.52],[0.58,-0.42],[0.88,-0.26],[0.92,-0.04],[0.68,0.08],[0.52,0.25],[0.27,0.13],[0.17,-0.08],[-0.03,-0.2]], scaleX, scaleY);
+      drawMapBlob(ctx, [[0.47,0.28],[0.68,0.24],[0.83,0.48],[0.72,0.7],[0.54,0.58]], scaleX, scaleY);
+      drawMapBlob(ctx, [[-0.18,0.72],[0.08,0.69],[0.28,0.74],[0.04,0.8]], scaleX, scaleY);
 
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.34)';
-      ctx.fillRect(-mapRadius, -mapRadius, mapRadius * (0.85 + Math.sin(dayOffset) * 0.28), mapRadius * 2);
+      const nightX = -mapRadius + mapRadius * (0.85 + Math.sin(dayOffset) * 0.28);
+      const night = ctx.createLinearGradient(nightX - mapRadius * 0.38, 0, nightX + mapRadius * 0.38, 0);
+      night.addColorStop(0, 'rgba(18, 20, 34, 0.56)');
+      night.addColorStop(0.48, 'rgba(18, 20, 34, 0.34)');
+      night.addColorStop(1, 'rgba(18, 20, 34, 0)');
+      ctx.fillStyle = night;
+      ctx.fillRect(-mapRadius, -mapRadius, mapRadius * 2, mapRadius * 2);
 
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
-      ctx.lineWidth = 0.8;
-      for (let i = -2; i <= 2; i += 1) {
+      ctx.strokeStyle = 'rgba(55, 96, 116, 0.24)';
+      ctx.lineWidth = 0.7;
+      for (let i = -3; i <= 3; i += 1) {
         ctx.beginPath();
-        ctx.ellipse(0, 0, mapRadius, mapRadius * (0.18 + i * 0.09 + 0.36), 0, 0, Math.PI * 2);
+        ctx.ellipse(0, 0, mapRadius, mapRadius * (0.12 + Math.abs(i) * 0.11), 0, 0, Math.PI * 2);
         ctx.stroke();
       }
       for (let i = -3; i <= 3; i += 1) {
@@ -2895,6 +2905,13 @@
         ctx.ellipse(0, 0, mapRadius * (0.16 + Math.abs(i) * 0.13), mapRadius, 0, 0, Math.PI * 2);
         ctx.stroke();
       }
+
+      ctx.beginPath();
+      ctx.moveTo(-mapRadius, 0);
+      ctx.lineTo(mapRadius, 0);
+      ctx.strokeStyle = 'rgba(84, 125, 75, 0.38)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
 
       const regionPoints = {
         'America/Chicago': [-0.54, -0.1],
@@ -2910,19 +2927,22 @@
       const [rx, ry] = regionPoints[selectedItem.timezone] || [0, 0];
       const pulse = 0.75 + Math.sin(now.getTime() / 420) * 0.25;
       ctx.beginPath();
-      ctx.arc(rx * scaleX, ry * scaleY, 5 + pulse * 4, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(123, 44, 255, 0.34)';
+      ctx.arc(rx * scaleX, ry * scaleY, 6 + pulse * 5, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255, 132, 24, 0.26)';
       ctx.fill();
       ctx.beginPath();
-      ctx.arc(rx * scaleX, ry * scaleY, 3.5, 0, Math.PI * 2);
-      ctx.fillStyle = '#f5d061';
+      ctx.arc(rx * scaleX, ry * scaleY, 4, 0, Math.PI * 2);
+      ctx.fillStyle = '#ff8a2a';
       ctx.fill();
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = '#f5d061';
+      ctx.stroke();
 
       ctx.restore();
 
       ctx.beginPath();
       ctx.arc(0, 0, mapRadius, 0, Math.PI * 2);
-      ctx.strokeStyle = 'rgba(212, 175, 55, 0.52)';
+      ctx.strokeStyle = 'rgba(212, 175, 55, 0.45)';
       ctx.lineWidth = 1.4;
       ctx.stroke();
     }
