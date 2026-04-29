@@ -3218,6 +3218,7 @@
       const index = ((Math.round(-state.targetRotation / segment) % homeWatchNavItems.length) + homeWatchNavItems.length) % homeWatchNavItems.length;
       state.selectedIndex = index;
       state.targetRotation = -index * segment;
+      state.rotation = state.targetRotation;
       updateSectionTimeContexts();
 
       if (shouldNavigate) {
@@ -3236,7 +3237,7 @@
       if (distance < inner || distance > outer) return false;
 
       const segment = (Math.PI * 2) / homeWatchNavItems.length;
-      const angle = normalizeRadians(Math.atan2(point.y - point.cy, point.x - point.cx) + Math.PI / 2 - state.targetRotation);
+      const angle = normalizeRadians(Math.atan2(point.y - point.cy, point.x - point.cx) + Math.PI / 2 - state.rotation);
       const index = Math.round(angle / segment) % homeWatchNavItems.length;
       state.selectedIndex = index;
       state.targetRotation = -index * segment;
@@ -3306,6 +3307,7 @@
         const delta = getPointerAngle(event, canvas) - homeWatchState.startAngle;
         if (Math.abs(delta) > 0.03) homeWatchState.dragMoved = true;
         homeWatchState.targetRotation = homeWatchState.startRotation + delta;
+        homeWatchState.rotation = homeWatchState.targetRotation;
       });
 
       window.addEventListener('touchmove', (event) => {
@@ -3313,6 +3315,7 @@
         const delta = getPointerAngle(event, canvas) - homeWatchState.startAngle;
         if (Math.abs(delta) > 0.03) homeWatchState.dragMoved = true;
         homeWatchState.targetRotation = homeWatchState.startRotation + delta;
+        homeWatchState.rotation = homeWatchState.targetRotation;
       }, { passive: true });
 
       window.addEventListener('mouseup', (event) => {
