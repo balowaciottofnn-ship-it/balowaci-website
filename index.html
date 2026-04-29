@@ -3020,11 +3020,63 @@
       ctx.stroke();
     }
 
+    function normalizeLongitude(value) {
+      return ((value + 540) % 360) - 180;
+    }
+
+    function projectGlobePoint(lon, lat, centerLon, mapRadius) {
+      const relativeLon = normalizeLongitude(lon - centerLon);
+      return {
+        x: (relativeLon / 180) * mapRadius * 1.05,
+        y: (-lat / 90) * mapRadius * 0.72
+      };
+    }
+
+    function drawWorldLandmass(ctx, points, centerLon, mapRadius) {
+      ctx.beginPath();
+      points.forEach(([lon, lat], index) => {
+        const point = projectGlobePoint(lon, lat, centerLon, mapRadius);
+        if (index === 0) {
+          ctx.moveTo(point.x, point.y);
+        } else {
+          ctx.lineTo(point.x, point.y);
+        }
+      });
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+    }
+
     function drawLiveWorldMap(ctx, faceRadius, selectedItem, now) {
       const mapRadius = faceRadius * 0.76;
-      const scaleX = mapRadius;
-      const scaleY = mapRadius * 0.58;
-      const dayOffset = ((now.getUTCHours() + now.getUTCMinutes() / 60) / 24) * Math.PI * 2;
+      const utcHours = now.getUTCHours() + now.getUTCMinutes() / 60 + now.getUTCSeconds() / 3600;
+      const sunLongitude = normalizeLongitude(180 - utcHours * 15);
+      const regionPoints = {
+        'America/Chicago': { lon: -93.6, lat: 41.7 },
+        'America/New_York': { lon: -74, lat: 40.7 },
+        'Europe/London': { lon: -0.1, lat: 51.5 },
+        'Africa/Kinshasa': { lon: 15.3, lat: -4.3 },
+        'Africa/Maputo': { lon: 32.6, lat: -25.9 },
+        'Asia/Dubai': { lon: 55.3, lat: 25.2 },
+        'America/Chicago-case': { lon: -91.5, lat: 41.7 },
+        'Asia/Tokyo': { lon: 139.7, lat: 35.7 },
+        'America/Sao_Paulo': { lon: -46.6, lat: -23.6 },
+        'Pacific/Honolulu': { lon: -157.8, lat: 21.3 }
+      };
+      const selectedPoint = regionPoints[selectedItem.timezone] || regionPoints['America/Chicago'];
+      const centerLon = selectedPoint.lon;
+      const worldLandmasses = [
+        [[-168,72],[-140,70],[-122,56],[-105,54],[-83,49],[-61,47],[-52,58],[-70,72],[-102,74],[-132,73]],
+        [[-133,54],[-122,49],[-124,39],[-117,32],[-106,23],[-98,19],[-90,19],[-83,26],[-75,35],[-68,45],[-89,50],[-108,49]],
+        [[-82,12],[-74,8],[-66,2],[-58,-10],[-50,-22],[-54,-36],[-65,-55],[-72,-44],[-76,-24],[-81,-8]],
+        [[-18,36],[-6,43],[18,44],[32,36],[37,20],[51,12],[43,-8],[34,-22],[30,-34],[20,-35],[12,-18],[2,4],[-8,12],[-17,25]],
+        [[-10,36],[10,58],[34,66],[58,58],[76,48],[98,54],[128,48],[146,38],[132,22],[106,14],[88,22],[72,18],[59,8],[45,12],[35,30],[18,36]],
+        [[68,8],[80,24],[90,20],[92,10],[82,6],[76,-4],[72,-12],[66,-2]],
+        [[100,6],[112,18],[122,8],[118,-6],[106,-8]],
+        [[112,-12],[135,-10],[153,-24],[146,-39],[126,-35],[114,-24]],
+        [[-52,72],[-35,74],[-22,68],[-37,61],[-49,64]],
+        [[-180,-62],[-120,-68],[-40,-66],[35,-69],[112,-65],[180,-62],[180,-76],[-180,-76]]
+      ];
 
       ctx.save();
       ctx.beginPath();
@@ -3039,34 +3091,21 @@
       ctx.fillStyle = ocean;
       ctx.fillRect(-mapRadius, -mapRadius, mapRadius * 2, mapRadius * 2);
 
-      ctx.fillStyle = 'rgba(174, 198, 115, 0.28)';
-      ctx.fillRect(-mapRadius, -mapRadius * 0.22, mapRadius * 2, mapRadius * 0.44);
+      const latitudeShade = ctx.createLinearGradient(0, -mapRadius, 0, mapRadius);
+      latitudeShade.addColorStop(0, 'rgba(255, 255, 255, 0.18)');
+      latitudeShade.addColorStop(0.24, 'rgba(176, 212, 156, 0.14)');
+      latitudeShade.addColorStop(0.5, 'rgba(174, 198, 115, 0.2)');
+      latitudeShade.addColorStop(0.78, 'rgba(176, 212, 156, 0.12)');
+      latitudeShade.addColorStop(1, 'rgba(255, 255, 255, 0.12)');
+      ctx.fillStyle = latitudeShade;
+      ctx.fillRect(-mapRadius, -mapRadius, mapRadius * 2, mapRadius * 2);
 
-      ctx.save();
-      ctx.translate(Math.sin(dayOffset) * mapRadius * 0.26, 0);
-      const daylight = ctx.createRadialGradient(0, 0, mapRadius * 0.08, 0, 0, mapRadius * 1.15);
-      daylight.addColorStop(0, 'rgba(255, 236, 142, 0.28)');
-      daylight.addColorStop(0.55, 'rgba(255, 210, 92, 0.1)');
+      const sunPoint = projectGlobePoint(sunLongitude, 0, centerLon, mapRadius);
+      const daylight = ctx.createRadialGradient(sunPoint.x, sunPoint.y, mapRadius * 0.08, sunPoint.x, sunPoint.y, mapRadius * 1.05);
+      daylight.addColorStop(0, 'rgba(255, 236, 142, 0.34)');
+      daylight.addColorStop(0.52, 'rgba(255, 210, 92, 0.13)');
       daylight.addColorStop(1, 'rgba(0, 0, 0, 0)');
       ctx.fillStyle = daylight;
-      ctx.fillRect(-mapRadius * 1.25, -mapRadius, mapRadius * 2.5, mapRadius * 2);
-      ctx.restore();
-
-      ctx.fillStyle = 'rgba(151, 181, 92, 0.78)';
-      ctx.strokeStyle = 'rgba(75, 107, 64, 0.38)';
-      ctx.lineWidth = 1;
-      drawMapBlob(ctx, [[-0.92,-0.28],[-0.76,-0.52],[-0.52,-0.46],[-0.36,-0.25],[-0.46,-0.04],[-0.34,0.15],[-0.42,0.38],[-0.58,0.56],[-0.75,0.32],[-0.9,0.05]], scaleX, scaleY);
-      drawMapBlob(ctx, [[-0.32,-0.54],[-0.08,-0.47],[0.05,-0.24],[0.0,0.02],[0.13,0.24],[0.04,0.56],[-0.13,0.5],[-0.2,0.18],[-0.36,0.0]], scaleX, scaleY);
-      drawMapBlob(ctx, [[0.03,-0.48],[0.28,-0.52],[0.58,-0.42],[0.88,-0.26],[0.92,-0.04],[0.68,0.08],[0.52,0.25],[0.27,0.13],[0.17,-0.08],[-0.03,-0.2]], scaleX, scaleY);
-      drawMapBlob(ctx, [[0.47,0.28],[0.68,0.24],[0.83,0.48],[0.72,0.7],[0.54,0.58]], scaleX, scaleY);
-      drawMapBlob(ctx, [[-0.18,0.72],[0.08,0.69],[0.28,0.74],[0.04,0.8]], scaleX, scaleY);
-
-      const nightX = -mapRadius + mapRadius * (0.85 + Math.sin(dayOffset) * 0.28);
-      const night = ctx.createLinearGradient(nightX - mapRadius * 0.38, 0, nightX + mapRadius * 0.38, 0);
-      night.addColorStop(0, 'rgba(18, 20, 34, 0.56)');
-      night.addColorStop(0.48, 'rgba(18, 20, 34, 0.34)');
-      night.addColorStop(1, 'rgba(18, 20, 34, 0)');
-      ctx.fillStyle = night;
       ctx.fillRect(-mapRadius, -mapRadius, mapRadius * 2, mapRadius * 2);
 
       ctx.strokeStyle = 'rgba(55, 96, 116, 0.24)';
@@ -3089,25 +3128,30 @@
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      const regionPoints = {
-        'America/Chicago': [-0.54, -0.1],
-        'America/New_York': [-0.43, -0.12],
-        'Europe/London': [-0.06, -0.28],
-        'Africa/Kinshasa': [0.08, 0.16],
-        'Africa/Maputo': [0.18, 0.42],
-        'Asia/Dubai': [0.34, -0.02],
-        'Asia/Tokyo': [0.78, -0.12],
-        'America/Sao_Paulo': [-0.34, 0.46],
-        'Pacific/Honolulu': [-0.9, 0.02]
-      };
-      const [rx, ry] = regionPoints[selectedItem.timezone] || [0, 0];
+      ctx.fillStyle = 'rgba(139, 171, 84, 0.9)';
+      ctx.strokeStyle = 'rgba(45, 86, 57, 0.58)';
+      ctx.lineWidth = 0.9;
+      worldLandmasses.forEach((landmass) => drawWorldLandmass(ctx, landmass, centerLon, mapRadius));
+
+      ctx.save();
+      ctx.globalCompositeOperation = 'multiply';
+      const nightShade = ctx.createRadialGradient(sunPoint.x, sunPoint.y, mapRadius * 0.3, sunPoint.x, sunPoint.y, mapRadius * 1.7);
+      nightShade.addColorStop(0, 'rgba(255, 255, 255, 0)');
+      nightShade.addColorStop(0.48, 'rgba(18, 20, 34, 0.1)');
+      nightShade.addColorStop(0.76, 'rgba(18, 20, 34, 0.46)');
+      nightShade.addColorStop(1, 'rgba(18, 20, 34, 0.72)');
+      ctx.fillStyle = nightShade;
+      ctx.fillRect(-mapRadius, -mapRadius, mapRadius * 2, mapRadius * 2);
+      ctx.restore();
+
+      const regionPoint = projectGlobePoint(selectedPoint.lon, selectedPoint.lat, centerLon, mapRadius);
       const pulse = 0.75 + Math.sin(now.getTime() / 420) * 0.25;
       ctx.beginPath();
-      ctx.arc(rx * scaleX, ry * scaleY, 6 + pulse * 5, 0, Math.PI * 2);
+      ctx.arc(regionPoint.x, regionPoint.y, 6 + pulse * 5, 0, Math.PI * 2);
       ctx.fillStyle = 'rgba(255, 132, 24, 0.26)';
       ctx.fill();
       ctx.beginPath();
-      ctx.arc(rx * scaleX, ry * scaleY, 4, 0, Math.PI * 2);
+      ctx.arc(regionPoint.x, regionPoint.y, 4, 0, Math.PI * 2);
       ctx.fillStyle = '#ff8a2a';
       ctx.fill();
       ctx.lineWidth = 1.5;
