@@ -3064,18 +3064,19 @@
         'Pacific/Honolulu': { lon: -157.8, lat: 21.3 }
       };
       const selectedPoint = regionPoints[selectedItem.timezone] || regionPoints['America/Chicago'];
-      const centerLon = selectedPoint.lon;
+      const centerLon = 20;
       const worldLandmasses = [
-        [[-168,72],[-140,70],[-122,56],[-105,54],[-83,49],[-61,47],[-52,58],[-70,72],[-102,74],[-132,73]],
-        [[-133,54],[-122,49],[-124,39],[-117,32],[-106,23],[-98,19],[-90,19],[-83,26],[-75,35],[-68,45],[-89,50],[-108,49]],
-        [[-82,12],[-74,8],[-66,2],[-58,-10],[-50,-22],[-54,-36],[-65,-55],[-72,-44],[-76,-24],[-81,-8]],
-        [[-18,36],[-6,43],[18,44],[32,36],[37,20],[51,12],[43,-8],[34,-22],[30,-34],[20,-35],[12,-18],[2,4],[-8,12],[-17,25]],
-        [[-10,36],[10,58],[34,66],[58,58],[76,48],[98,54],[128,48],[146,38],[132,22],[106,14],[88,22],[72,18],[59,8],[45,12],[35,30],[18,36]],
-        [[68,8],[80,24],[90,20],[92,10],[82,6],[76,-4],[72,-12],[66,-2]],
-        [[100,6],[112,18],[122,8],[118,-6],[106,-8]],
-        [[112,-12],[135,-10],[153,-24],[146,-39],[126,-35],[114,-24]],
-        [[-52,72],[-35,74],[-22,68],[-37,61],[-49,64]],
-        [[-180,-62],[-120,-68],[-40,-66],[35,-69],[112,-65],[180,-62],[180,-76],[-180,-76]]
+        [[-168,72],[-148,70],[-132,61],[-124,50],[-112,49],[-96,56],[-78,52],[-62,48],[-54,58],[-36,72],[-58,80],[-96,78],[-132,74]],
+        [[-130,54],[-123,47],[-124,38],[-116,31],[-108,24],[-99,19],[-90,19],[-84,25],[-76,31],[-70,42],[-82,49],[-99,50],[-115,48]],
+        [[-83,13],[-74,9],[-66,4],[-58,-6],[-50,-18],[-46,-30],[-54,-43],[-66,-55],[-72,-44],[-75,-29],[-80,-15]],
+        [[-18,36],[-6,43],[10,45],[25,38],[33,31],[36,17],[46,9],[51,-4],[43,-15],[36,-25],[31,-34],[20,-35],[12,-23],[3,-8],[-6,5],[-15,20]],
+        [[-10,36],[5,52],[22,60],[42,66],[60,58],[78,51],[96,54],[118,49],[142,40],[156,26],[142,12],[124,9],[105,18],[88,23],[72,17],[58,8],[46,20],[34,31],[18,37]],
+        [[40,31],[50,28],[59,22],[56,15],[45,13],[36,20]],
+        [[68,8],[78,23],[88,21],[92,13],[86,7],[78,-4],[70,-10],[64,0]],
+        [[96,6],[108,17],[120,10],[116,-4],[104,-8]],
+        [[112,-12],[132,-11],[153,-25],[146,-39],[126,-35],[114,-24]],
+        [[-52,72],[-35,74],[-23,68],[-36,61],[-50,63]],
+        [[-180,-62],[-132,-68],[-70,-66],[-8,-70],[54,-67],[112,-64],[180,-62],[180,-78],[-180,-78]]
       ];
 
       ctx.save();
@@ -3083,13 +3084,23 @@
       ctx.arc(0, 0, mapRadius, 0, Math.PI * 2);
       ctx.clip();
 
-      const ocean = ctx.createRadialGradient(-mapRadius * 0.26, -mapRadius * 0.22, 0, 0, 0, mapRadius);
-      ocean.addColorStop(0, '#d7ecf6');
-      ocean.addColorStop(0.46, '#93c3d8');
-      ocean.addColorStop(0.74, '#5f95b5');
-      ocean.addColorStop(1, '#294764');
+      const ocean = ctx.createRadialGradient(-mapRadius * 0.3, -mapRadius * 0.25, 0, 0, 0, mapRadius);
+      ocean.addColorStop(0, '#dceff0');
+      ocean.addColorStop(0.42, '#a8cfd5');
+      ocean.addColorStop(0.72, '#79a9bc');
+      ocean.addColorStop(1, '#31536f');
       ctx.fillStyle = ocean;
       ctx.fillRect(-mapRadius, -mapRadius, mapRadius * 2, mapRadius * 2);
+
+      const bandTop = projectGlobePoint(centerLon, 24, centerLon, mapRadius).y;
+      const bandMiddle = projectGlobePoint(centerLon, -2, centerLon, mapRadius).y;
+      const bandBottom = projectGlobePoint(centerLon, -55, centerLon, mapRadius).y;
+      ctx.fillStyle = 'rgba(151, 181, 92, 0.34)';
+      ctx.fillRect(-mapRadius, bandTop, mapRadius * 2, mapRadius * 0.18);
+      ctx.fillStyle = 'rgba(151, 181, 92, 0.42)';
+      ctx.fillRect(-mapRadius, bandMiddle, mapRadius * 2, mapRadius * 0.26);
+      ctx.fillStyle = 'rgba(151, 181, 92, 0.28)';
+      ctx.fillRect(-mapRadius, bandBottom, mapRadius * 2, mapRadius * 0.13);
 
       const latitudeShade = ctx.createLinearGradient(0, -mapRadius, 0, mapRadius);
       latitudeShade.addColorStop(0, 'rgba(255, 255, 255, 0.18)');
@@ -3108,28 +3119,30 @@
       ctx.fillStyle = daylight;
       ctx.fillRect(-mapRadius, -mapRadius, mapRadius * 2, mapRadius * 2);
 
-      ctx.strokeStyle = 'rgba(55, 96, 116, 0.24)';
-      ctx.lineWidth = 0.7;
-      for (let i = -3; i <= 3; i += 1) {
+      ctx.strokeStyle = 'rgba(45, 86, 100, 0.24)';
+      ctx.lineWidth = 0.65;
+      for (let i = -4; i <= 4; i += 1) {
         ctx.beginPath();
-        ctx.ellipse(0, 0, mapRadius, mapRadius * (0.12 + Math.abs(i) * 0.11), 0, 0, Math.PI * 2);
+        const y = (i / 5) * mapRadius * 0.72;
+        const width = mapRadius * Math.sqrt(Math.max(0.18, 1 - (y / (mapRadius * 0.9)) ** 2));
+        ctx.ellipse(0, y, width, mapRadius * 0.08, 0, 0, Math.PI * 2);
         ctx.stroke();
       }
-      for (let i = -3; i <= 3; i += 1) {
+      for (let i = -4; i <= 4; i += 1) {
         ctx.beginPath();
-        ctx.ellipse(0, 0, mapRadius * (0.16 + Math.abs(i) * 0.13), mapRadius, 0, 0, Math.PI * 2);
+        ctx.ellipse((i / 5) * mapRadius * 0.72, 0, mapRadius * 0.12, mapRadius, 0, 0, Math.PI * 2);
         ctx.stroke();
       }
 
       ctx.beginPath();
       ctx.moveTo(-mapRadius, 0);
       ctx.lineTo(mapRadius, 0);
-      ctx.strokeStyle = 'rgba(84, 125, 75, 0.38)';
-      ctx.lineWidth = 2;
+      ctx.strokeStyle = 'rgba(84, 125, 75, 0.42)';
+      ctx.lineWidth = 1.6;
       ctx.stroke();
 
-      ctx.fillStyle = 'rgba(139, 171, 84, 0.9)';
-      ctx.strokeStyle = 'rgba(45, 86, 57, 0.58)';
+      ctx.fillStyle = 'rgba(143, 174, 86, 0.84)';
+      ctx.strokeStyle = 'rgba(68, 110, 64, 0.62)';
       ctx.lineWidth = 0.9;
       worldLandmasses.forEach((landmass) => drawWorldLandmass(ctx, landmass, centerLon, mapRadius));
 
@@ -3143,6 +3156,14 @@
       ctx.fillStyle = nightShade;
       ctx.fillRect(-mapRadius, -mapRadius, mapRadius * 2, mapRadius * 2);
       ctx.restore();
+
+      ctx.beginPath();
+      ctx.arc(sunPoint.x, sunPoint.y, mapRadius * 0.04, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255, 207, 55, 0.9)';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255, 242, 168, 0.72)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
 
       const regionPoint = projectGlobePoint(selectedPoint.lon, selectedPoint.lat, centerLon, mapRadius);
       const pulse = 0.75 + Math.sin(now.getTime() / 420) * 0.25;
