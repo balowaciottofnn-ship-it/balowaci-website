@@ -2828,6 +2828,105 @@
       });
     }
 
+    function drawMapBlob(ctx, points, scaleX, scaleY) {
+      ctx.beginPath();
+      points.forEach(([x, y], index) => {
+        const px = x * scaleX;
+        const py = y * scaleY;
+        if (index === 0) {
+          ctx.moveTo(px, py);
+        } else {
+          ctx.lineTo(px, py);
+        }
+      });
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+    }
+
+    function drawLiveWorldMap(ctx, faceRadius, selectedItem, now) {
+      const mapRadius = faceRadius * 0.72;
+      const scaleX = mapRadius;
+      const scaleY = mapRadius * 0.58;
+      const dayOffset = ((now.getUTCHours() + now.getUTCMinutes() / 60) / 24) * Math.PI * 2;
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(0, 0, mapRadius, 0, Math.PI * 2);
+      ctx.clip();
+
+      const ocean = ctx.createLinearGradient(0, -mapRadius, 0, mapRadius);
+      ocean.addColorStop(0, '#112139');
+      ocean.addColorStop(0.5, '#173c60');
+      ocean.addColorStop(1, '#09111f');
+      ctx.fillStyle = ocean;
+      ctx.fillRect(-mapRadius, -mapRadius, mapRadius * 2, mapRadius * 2);
+
+      ctx.save();
+      ctx.translate(Math.sin(dayOffset) * mapRadius * 0.26, 0);
+      const daylight = ctx.createRadialGradient(0, 0, mapRadius * 0.08, 0, 0, mapRadius * 1.15);
+      daylight.addColorStop(0, 'rgba(255, 224, 124, 0.42)');
+      daylight.addColorStop(0.55, 'rgba(255, 184, 55, 0.14)');
+      daylight.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = daylight;
+      ctx.fillRect(-mapRadius * 1.25, -mapRadius, mapRadius * 2.5, mapRadius * 2);
+      ctx.restore();
+
+      ctx.fillStyle = 'rgba(232, 208, 144, 0.84)';
+      ctx.strokeStyle = 'rgba(20, 16, 12, 0.28)';
+      ctx.lineWidth = 1;
+      drawMapBlob(ctx, [[-0.86,-0.18],[-0.72,-0.48],[-0.5,-0.43],[-0.38,-0.2],[-0.48,0.02],[-0.38,0.24],[-0.5,0.52],[-0.72,0.34],[-0.9,0.04]], scaleX, scaleY);
+      drawMapBlob(ctx, [[-0.32,-0.5],[-0.1,-0.42],[0.05,-0.2],[-0.02,0.04],[0.1,0.28],[0.02,0.56],[-0.16,0.5],[-0.24,0.18],[-0.38,0.0]], scaleX, scaleY);
+      drawMapBlob(ctx, [[0.08,-0.46],[0.45,-0.52],[0.82,-0.34],[0.9,-0.08],[0.7,0.06],[0.54,0.22],[0.28,0.12],[0.18,-0.08],[-0.02,-0.2]], scaleX, scaleY);
+      drawMapBlob(ctx, [[0.48,0.3],[0.68,0.25],[0.82,0.48],[0.72,0.68],[0.54,0.6]], scaleX, scaleY);
+
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.34)';
+      ctx.fillRect(-mapRadius, -mapRadius, mapRadius * (0.85 + Math.sin(dayOffset) * 0.28), mapRadius * 2);
+
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+      ctx.lineWidth = 0.8;
+      for (let i = -2; i <= 2; i += 1) {
+        ctx.beginPath();
+        ctx.ellipse(0, 0, mapRadius, mapRadius * (0.18 + i * 0.09 + 0.36), 0, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+      for (let i = -3; i <= 3; i += 1) {
+        ctx.beginPath();
+        ctx.ellipse(0, 0, mapRadius * (0.16 + Math.abs(i) * 0.13), mapRadius, 0, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+
+      const regionPoints = {
+        'America/Chicago': [-0.54, -0.1],
+        'America/New_York': [-0.43, -0.12],
+        'Europe/London': [-0.06, -0.28],
+        'Africa/Kinshasa': [0.08, 0.16],
+        'Africa/Maputo': [0.18, 0.42],
+        'Asia/Dubai': [0.34, -0.02],
+        'Asia/Tokyo': [0.78, -0.12],
+        'America/Sao_Paulo': [-0.34, 0.46],
+        'Pacific/Honolulu': [-0.9, 0.02]
+      };
+      const [rx, ry] = regionPoints[selectedItem.timezone] || [0, 0];
+      const pulse = 0.75 + Math.sin(now.getTime() / 420) * 0.25;
+      ctx.beginPath();
+      ctx.arc(rx * scaleX, ry * scaleY, 5 + pulse * 4, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(123, 44, 255, 0.34)';
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(rx * scaleX, ry * scaleY, 3.5, 0, Math.PI * 2);
+      ctx.fillStyle = '#f5d061';
+      ctx.fill();
+
+      ctx.restore();
+
+      ctx.beginPath();
+      ctx.arc(0, 0, mapRadius, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(212, 175, 55, 0.52)';
+      ctx.lineWidth = 1.4;
+      ctx.stroke();
+    }
+
     function drawHomeWatchNav() {
       const state = homeWatchState;
       if (!state.canvas || !state.ctx) return;
@@ -2952,13 +3051,8 @@
       ctx.lineWidth = 1.5;
       ctx.stroke();
 
-      ctx.font = `600 ${Math.max(16, size * 0.035)}px Playfair Display, serif`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillStyle = '#6f2aa8';
-      ctx.fillText('Balo', -faceRadius * 0.34, 0);
-      ctx.fillStyle = '#b79518';
-      ctx.fillText('Waci', faceRadius * 0.34, 0);
+      const selectedItem = homeWatchNavItems[state.selectedIndex];
+      drawLiveWorldMap(ctx, faceRadius, selectedItem, now);
 
       function drawHand(value, length, color, lineWidth) {
         const angle = -Math.PI / 2 + value * Math.PI * 2;
@@ -2992,7 +3086,6 @@
 
       const timeElement = document.getElementById('homeWatchTime');
       const sectionElement = document.getElementById('homeWatchSection');
-      const selectedItem = homeWatchNavItems[state.selectedIndex];
       const regionElement = document.getElementById('homeWatchRegion');
       if (timeElement) timeElement.textContent = formatRegionTime(selectedItem.timezone);
       if (regionElement) regionElement.textContent = `${selectedItem.region} · ${formatTimezoneName(selectedItem.timezone)}`;
