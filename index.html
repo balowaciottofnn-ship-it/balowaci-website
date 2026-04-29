@@ -1455,17 +1455,18 @@
 
     @media (min-width: 769px) and (max-width: 1180px) and (orientation: landscape) {
       body .luxury-hero {
-        padding-left: clamp(120px, 17vw, 190px);
-        padding-right: clamp(120px, 17vw, 190px);
+        padding-left: clamp(78px, 12vw, 132px);
+        padding-right: clamp(78px, 12vw, 132px);
       }
 
       body .home-watch-shell {
-        width: min(54vmin, 460px);
+        width: min(50vmin, 420px);
       }
 
       body .watch-side-word {
-        font-size: clamp(1.35rem, 3vw, 2.35rem);
-        opacity: 0.84;
+        font-size: clamp(1.05rem, 2.55vw, 1.9rem);
+        letter-spacing: 0;
+        opacity: 0.88;
         z-index: 0;
       }
 
@@ -1477,6 +1478,16 @@
       body .watch-side-word.waci {
         right: 10px;
         text-align: right;
+      }
+    }
+
+    @media (min-width: 769px) and (max-width: 1180px) and (orientation: landscape) and (max-height: 760px) {
+      body .home-watch-shell {
+        width: min(46vmin, 380px);
+      }
+
+      body .watch-side-word {
+        font-size: clamp(0.95rem, 2.25vw, 1.55rem);
       }
     }
 
@@ -2970,6 +2981,7 @@
       dragMoved: false,
       startAngle: 0,
       startRotation: 0,
+      lastTouchSelectionAt: 0,
       dpr: 1
     };
 
@@ -3102,7 +3114,7 @@
     }
 
     function getCanvasPoint(event, canvas) {
-      const source = event.touches ? event.touches[0] : event;
+      const source = event.touches?.[0] || event.changedTouches?.[0] || event;
       const rect = canvas.getBoundingClientRect();
       return {
         x: source.clientX - rect.left,
@@ -3670,14 +3682,20 @@
         }
       });
 
-      window.addEventListener('touchend', () => {
+      window.addEventListener('touchend', (event) => {
         if (!homeWatchState.dragging) return;
         homeWatchState.dragging = false;
         canvas.classList.remove('dragging');
-        snapHomeWatchNav(homeWatchState.dragMoved);
+        homeWatchState.lastTouchSelectionAt = Date.now();
+        if (homeWatchState.dragMoved) {
+          snapHomeWatchNav(true);
+        } else {
+          selectHomeWatchNavFromPoint(event);
+        }
       });
 
       canvas.addEventListener('click', (event) => {
+        if (Date.now() - homeWatchState.lastTouchSelectionAt < 500) return;
         if (!homeWatchState.dragMoved) selectHomeWatchNavFromPoint(event);
       });
 
