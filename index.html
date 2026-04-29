@@ -1453,6 +1453,52 @@
       }
     }
 
+    @media (min-width: 769px) and (max-width: 1180px) and (orientation: landscape) {
+      body .luxury-hero {
+        padding-left: 108px;
+        padding-right: 108px;
+      }
+
+      body .home-watch-shell {
+        width: min(58vmin, 500px);
+      }
+
+      body .watch-side-word {
+        font-size: clamp(1.45rem, 3.5vw, 2.7rem);
+        opacity: 0.78;
+      }
+
+      body .watch-side-word.balo {
+        left: 14px;
+      }
+
+      body .watch-side-word.waci {
+        right: 14px;
+      }
+    }
+
+    @media (max-width: 920px) and (orientation: landscape) {
+      body .site-corner-logo {
+        height: 54px;
+        padding: 5px 11px 5px 5px;
+      }
+
+      body .site-corner-logo img {
+        width: 44px;
+        height: 44px;
+        flex-basis: 44px;
+      }
+
+      body .site-corner-logo span {
+        font-size: 0.95rem;
+      }
+
+      body .site-language-control .language-select {
+        min-width: 104px;
+        padding: 9px 10px;
+      }
+    }
+
     body .home-watch-readout,
     body .home-watch-hint,
     body .luxury-hero .luxury-kicker,
@@ -3512,8 +3558,17 @@
       if (distance < inner || distance > outer) return false;
 
       const segment = (Math.PI * 2) / homeWatchNavItems.length;
-      const angle = normalizeRadians(Math.atan2(point.y - point.cy, point.x - point.cx) + Math.PI / 2 - state.rotation);
-      const index = Math.round(angle / segment) % homeWatchNavItems.length;
+      const clickAngle = Math.atan2(point.y - point.cy, point.x - point.cx);
+      let index = 0;
+      let closestDistance = Infinity;
+      homeWatchNavItems.forEach((item, itemIndex) => {
+        const itemAngle = -Math.PI / 2 + itemIndex * segment + state.rotation;
+        const angularDistance = Math.abs(shortestAngleDelta(itemAngle, clickAngle));
+        if (angularDistance < closestDistance) {
+          closestDistance = angularDistance;
+          index = itemIndex;
+        }
+      });
       state.selectedIndex = index;
       state.targetRotation = -index * segment;
       snapHomeWatchNav(true);
