@@ -212,6 +212,10 @@
       font-weight: 400;
     }
 
+    .home-watch-region {
+      color: rgba(212, 175, 55, 0.8);
+    }
+
     .home-watch-hint {
       margin: 12px auto 0;
       color: rgba(212, 175, 55, 0.68);
@@ -1193,12 +1197,14 @@
 
     .product-vision-section,
     .product-demo-section,
+    .case-study-section,
     .final-cta-section {
       background: linear-gradient(180deg, rgba(0, 0, 0, 0.2), rgba(18, 0, 32, 0.66));
     }
 
     .vision-grid,
-    .demo-grid {
+    .demo-grid,
+    .case-study-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
       gap: 18px;
@@ -1207,7 +1213,8 @@
     }
 
     .vision-item,
-    .demo-card {
+    .demo-card,
+    .case-study-card {
       border: 1px solid rgba(212, 175, 55, 0.42);
       border-radius: 8px;
       background: rgba(0, 0, 0, 0.42);
@@ -1216,7 +1223,8 @@
     }
 
     .vision-item h3,
-    .demo-card h3 {
+    .demo-card h3,
+    .case-study-card h3 {
       color: #b266ff;
       font-size: 1.08rem;
       margin-bottom: 10px;
@@ -1225,12 +1233,40 @@
     }
 
     .vision-item p,
-    .demo-card p {
+    .demo-card p,
+    .case-study-card p {
       max-width: none;
       margin: 0;
       color: #fff1a8;
       font-size: 1rem;
       line-height: 1.65;
+    }
+
+    .section-time-context {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 0 auto 22px;
+      padding: 10px 14px;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.38);
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .section-time-context strong {
+      color: #f5d061;
+      font-weight: 400;
+    }
+
+    .section-time-context.active {
+      border-color: rgba(245, 208, 97, 0.82);
+      box-shadow: 0 0 18px rgba(212, 175, 55, 0.18);
     }
 
     .demo-card .luxury-btn {
@@ -1284,6 +1320,7 @@
       <div class="home-watch-readout" aria-live="polite">
         <span data-i18n="homeWatch.time">Local Time</span>
         <strong id="homeWatchTime">--:--:--</strong>
+        <span class="home-watch-region" id="homeWatchRegion">Chicago, US</span>
         <span id="homeWatchSection">Home</span>
       </div>
       <p class="home-watch-hint" data-i18n="homeWatch.hint">Drag or click the watch bezel to navigate</p>
@@ -1440,6 +1477,30 @@
         <article class="vision-item">
           <h3 data-i18n="vision.futureTitle">Future Model Vision</h3>
           <p data-i18n="vision.futureBody">A physical watch line, digital app, licensing model, and immersive learning interface.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="case-study" class="case-study-section">
+    <div class="container">
+      <h2 data-i18n="case.title">UX Case Study</h2>
+      <p class="journey-intro" data-i18n="case.body">
+        BaloWaci turns navigation into a time experience. The watch is not decoration; it is the main control, the clock, and the product story in one interface.
+      </p>
+
+      <div class="case-study-grid">
+        <article class="case-study-card">
+          <h3 data-i18n="case.challengeTitle">Challenge</h3>
+          <p data-i18n="case.challengeBody">Most websites separate navigation from meaning. BaloWaci needed a way to guide visitors while proving the idea of regional time, cultural reading, and circular interaction immediately.</p>
+        </article>
+        <article class="case-study-card">
+          <h3 data-i18n="case.decisionsTitle">Decisions</h3>
+          <p data-i18n="case.decisionsBody">Each watch title became a destination, region, and live time zone. Rotating the bezel creates a clear cause-and-effect pattern: choose a marker, see the local time, then enter the section.</p>
+        </article>
+        <article class="case-study-card">
+          <h3 data-i18n="case.outcomeTitle">Outcome</h3>
+          <p data-i18n="case.outcomeBody">The homepage now teaches the product through use. Visitors understand the system by moving through it, not by reading a long explanation first.</p>
         </article>
       </div>
     </div>
@@ -2056,6 +2117,14 @@
         'showcase.title': 'Crafted to Redefine Time.',
         'showcase.text': 'A symbolic luxury timepiece designed to unite standard time, military time, cultural time, and rotational interpretation into one visual system.',
         'showcase.button': 'Experience Live Watch',
+        'case.title': 'UX Case Study',
+        'case.body': 'BaloWaci turns navigation into a time experience. The watch is not decoration; it is the main control, the clock, and the product story in one interface.',
+        'case.challengeTitle': 'Challenge',
+        'case.challengeBody': 'Most websites separate navigation from meaning. BaloWaci needed a way to guide visitors while proving the idea of regional time, cultural reading, and circular interaction immediately.',
+        'case.decisionsTitle': 'Decisions',
+        'case.decisionsBody': 'Each watch title became a destination, region, and live time zone. Rotating the bezel creates a clear cause-and-effect pattern: choose a marker, see the local time, then enter the section.',
+        'case.outcomeTitle': 'Outcome',
+        'case.outcomeBody': 'The homepage now teaches the product through use. Visitors understand the system by moving through it, not by reading a long explanation first.',
         'gallery.origin': 'Origin Sketch: First circular dial exploration, establishing the center point and radial time marks.',
         'gallery.mode': 'Mode Comparison: Separate analog studies for cultural, standard, and military time interpretations.',
         'gallery.trilayer': 'Tri-Layer Concept: Early move toward combining multiple time systems into one readable face.',
@@ -2096,6 +2165,14 @@
         'showcase.title': 'Creado para Redefinir el Tiempo.',
         'showcase.text': 'Un reloj simbólico de lujo diseñado para unir el tiempo estándar, el tiempo militar, el tiempo cultural y la interpretación rotacional en un solo sistema visual.',
         'showcase.button': 'Experimentar el Reloj en Vivo',
+        'case.title': 'Caso de Estudio UX',
+        'case.body': 'BaloWaci convierte la navegación en una experiencia de tiempo. El reloj no es decoración; es el control principal, el reloj y la historia del producto en una sola interfaz.',
+        'case.challengeTitle': 'Desafío',
+        'case.challengeBody': 'La mayoría de los sitios web separan la navegación del significado. BaloWaci necesitaba guiar a los visitantes mientras demostraba de inmediato la idea de tiempo regional, lectura cultural e interacción circular.',
+        'case.decisionsTitle': 'Decisiones',
+        'case.decisionsBody': 'Cada título del reloj se convirtió en un destino, una región y una zona horaria en vivo. Rotar el bisel crea una relación clara de causa y efecto: elegir un marcador, ver la hora local y entrar a la sección.',
+        'case.outcomeTitle': 'Resultado',
+        'case.outcomeBody': 'La página de inicio ahora enseña el producto mediante el uso. Los visitantes entienden el sistema moviéndose a través de él, no leyendo primero una explicación larga.',
         'gallery.origin': 'Boceto de Origen: Primera exploración de una esfera circular, estableciendo el punto central y las marcas radiales de tiempo.',
         'gallery.mode': 'Comparación de Modos: Estudios analógicos separados para interpretaciones culturales, estándar y militares del tiempo.',
         'gallery.trilayer': 'Concepto de Tres Capas: Primer paso hacia la combinación de varios sistemas de tiempo en una sola esfera legible.',
@@ -2136,6 +2213,14 @@
         'showcase.title': 'Criado para Redefinir o Tempo.',
         'showcase.text': 'Um relógio simbólico de luxo projetado para unir tempo padrão, tempo militar, tempo cultural e interpretação rotacional em um único sistema visual.',
         'showcase.button': 'Experimentar o Relógio ao Vivo',
+        'case.title': 'Estudo de Caso UX',
+        'case.body': 'BaloWaci transforma a navegação em uma experiência de tempo. O relógio não é decoração; ele é o controle principal, o relógio e a história do produto em uma única interface.',
+        'case.challengeTitle': 'Desafio',
+        'case.challengeBody': 'A maioria dos sites separa navegação de significado. BaloWaci precisava guiar visitantes enquanto provava imediatamente a ideia de tempo regional, leitura cultural e interação circular.',
+        'case.decisionsTitle': 'Decisões',
+        'case.decisionsBody': 'Cada título do relógio se tornou um destino, uma região e um fuso horário ao vivo. Girar o aro cria uma relação clara de causa e efeito: escolher um marcador, ver a hora local e entrar na seção.',
+        'case.outcomeTitle': 'Resultado',
+        'case.outcomeBody': 'A página inicial agora ensina o produto pelo uso. Os visitantes entendem o sistema ao se moverem por ele, não lendo primeiro uma explicação longa.',
         'gallery.origin': 'Esboço de Origem: Primeira exploração de mostrador circular, definindo o ponto central e as marcações radiais de tempo.',
         'gallery.mode': 'Comparação de Modos: Estudos analógicos separados para interpretações cultural, padrão e militar do tempo.',
         'gallery.trilayer': 'Conceito de Três Camadas: Primeiro movimento para combinar vários sistemas de tempo em um único mostrador legível.',
@@ -2337,14 +2422,16 @@
     }
 
     const homeWatchNavItems = [
-      { key: 'nav.home', target: '#hero' },
-      { key: 'nav.about', target: '#about' },
-      { key: 'nav.how', target: '#how' },
-      { key: 'nav.founder', target: '#founder' },
-      { key: 'nav.journey', target: '#journey' },
-      { key: 'nav.productJourney', target: '#product-journey' },
-      { key: 'nav.liveWatch', target: '#product-demos' },
-      { key: 'nav.feedback', target: '#feedback' }
+      { key: 'nav.home', target: '#hero', region: 'Chicago, US', timezone: 'America/Chicago' },
+      { key: 'nav.about', target: '#about', region: 'New York, US', timezone: 'America/New_York' },
+      { key: 'nav.how', target: '#how', region: 'London, UK', timezone: 'Europe/London' },
+      { key: 'nav.founder', target: '#founder', region: 'Kinshasa, DRC', timezone: 'Africa/Kinshasa' },
+      { key: 'nav.journey', target: '#journey', region: 'Maputo, Mozambique', timezone: 'Africa/Maputo' },
+      { key: 'vision.title', target: '#product-vision', region: 'Dubai, UAE', timezone: 'Asia/Dubai' },
+      { key: 'case.title', target: '#case-study', region: 'Iowa City, US', timezone: 'America/Chicago' },
+      { key: 'nav.productJourney', target: '#product-journey', region: 'Tokyo, Japan', timezone: 'Asia/Tokyo' },
+      { key: 'nav.liveWatch', target: '#product-demos', region: 'São Paulo, Brazil', timezone: 'America/Sao_Paulo' },
+      { key: 'nav.feedback', target: '#feedback', region: 'Honolulu, US', timezone: 'Pacific/Honolulu' }
     ];
 
     const homeWatchState = {
@@ -2359,6 +2446,23 @@
       startRotation: 0,
       dpr: 1
     };
+
+    function formatRegionTime(timezone) {
+      return new Date().toLocaleTimeString([], {
+        timeZone: timezone,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      });
+    }
+
+    function formatTimezoneName(timezone) {
+      const parts = new Intl.DateTimeFormat([], {
+        timeZone: timezone,
+        timeZoneName: 'short'
+      }).formatToParts(new Date());
+      return parts.find((part) => part.type === 'timeZoneName')?.value || timezone;
+    }
 
     function normalizeRadians(angle) {
       const full = Math.PI * 2;
@@ -2472,7 +2576,10 @@
         ctx.font = `${active ? 600 : 400} ${Math.max(11, size * 0.021)}px Inter, sans-serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        drawCenteredText(ctx, t(item.key), 0, 0, radius * 0.22);
+        drawCenteredText(ctx, t(item.key), 0, -7, radius * 0.22);
+        ctx.fillStyle = active ? 'rgba(255, 255, 255, 0.86)' : 'rgba(212, 175, 55, 0.56)';
+        ctx.font = `400 ${Math.max(9, size * 0.016)}px Inter, sans-serif`;
+        drawCenteredText(ctx, formatRegionTime(item.timezone), 0, 16, radius * 0.2);
         ctx.restore();
       });
 
@@ -2546,8 +2653,13 @@
 
       const timeElement = document.getElementById('homeWatchTime');
       const sectionElement = document.getElementById('homeWatchSection');
-      if (timeElement) timeElement.textContent = now.toLocaleTimeString();
-      if (sectionElement) sectionElement.textContent = t(homeWatchNavItems[state.selectedIndex].key);
+      const selectedItem = homeWatchNavItems[state.selectedIndex];
+      const regionElement = document.getElementById('homeWatchRegion');
+      if (timeElement) timeElement.textContent = formatRegionTime(selectedItem.timezone);
+      if (regionElement) regionElement.textContent = `${selectedItem.region} · ${formatTimezoneName(selectedItem.timezone)}`;
+      if (sectionElement) sectionElement.textContent = t(selectedItem.key);
+
+      updateSectionTimeContexts();
 
       requestAnimationFrame(drawHomeWatchNav);
     }
@@ -2568,6 +2680,7 @@
       const index = ((Math.round(-state.targetRotation / segment) % homeWatchNavItems.length) + homeWatchNavItems.length) % homeWatchNavItems.length;
       state.selectedIndex = index;
       state.targetRotation = -index * segment;
+      updateSectionTimeContexts();
 
       if (shouldNavigate) {
         const target = document.querySelector(homeWatchNavItems[index].target);
@@ -2591,6 +2704,40 @@
       state.targetRotation = -index * segment;
       snapHomeWatchNav(true);
       return true;
+    }
+
+    function initializeSectionTimeContexts() {
+      homeWatchNavItems.forEach((item) => {
+        const section = document.querySelector(item.target);
+        if (!section || section.querySelector('.section-time-context')) return;
+        const container = section.querySelector('.container') || section;
+        const heading = container.querySelector('h1, h2');
+        const context = document.createElement('div');
+        context.className = 'section-time-context';
+        context.dataset.timeContext = item.target;
+        if (heading && heading.nextSibling) {
+          heading.parentNode.insertBefore(context, heading.nextSibling);
+        } else if (heading) {
+          heading.parentNode.appendChild(context);
+        } else {
+          container.prepend(context);
+        }
+      });
+      updateSectionTimeContexts();
+    }
+
+    function updateSectionTimeContexts() {
+      homeWatchNavItems.forEach((item) => {
+        const context = document.querySelector(`[data-time-context="${item.target}"]`);
+        if (!context) return;
+        const isActive = homeWatchNavItems[homeWatchState.selectedIndex]?.target === item.target;
+        context.innerHTML = `
+          <span>${item.region}</span>
+          <strong>${formatRegionTime(item.timezone)}</strong>
+          <span>${formatTimezoneName(item.timezone)}</span>
+        `;
+        context.classList.toggle('active', isActive);
+      });
     }
 
     function initializeHomeWatchNav() {
@@ -2667,6 +2814,7 @@
         });
       }
       initializeStars();
+      initializeSectionTimeContexts();
       initializeHomeWatchNav();
       startTimeRefresh();
       document.getElementById('feedbackForm').addEventListener('submit', handleFeedbackSubmit);
