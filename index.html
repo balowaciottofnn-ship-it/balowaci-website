@@ -1455,25 +1455,28 @@
 
     @media (min-width: 769px) and (max-width: 1180px) and (orientation: landscape) {
       body .luxury-hero {
-        padding-left: 108px;
-        padding-right: 108px;
+        padding-left: clamp(120px, 17vw, 190px);
+        padding-right: clamp(120px, 17vw, 190px);
       }
 
       body .home-watch-shell {
-        width: min(58vmin, 500px);
+        width: min(54vmin, 460px);
       }
 
       body .watch-side-word {
-        font-size: clamp(1.45rem, 3.5vw, 2.7rem);
-        opacity: 0.78;
+        font-size: clamp(1.35rem, 3vw, 2.35rem);
+        opacity: 0.84;
+        z-index: 0;
       }
 
       body .watch-side-word.balo {
-        left: 14px;
+        left: 10px;
+        text-align: left;
       }
 
       body .watch-side-word.waci {
-        right: 14px;
+        right: 10px;
+        text-align: right;
       }
     }
 
