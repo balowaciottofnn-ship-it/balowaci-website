@@ -1408,6 +1408,7 @@
       pointer-events: none;
       user-select: none;
       opacity: 0.72;
+      white-space: nowrap;
     }
 
     body .watch-side-word.balo {
@@ -1420,6 +1421,22 @@
       right: clamp(24px, 6vw, 120px);
       color: #f5d061;
       text-shadow: 0 0 20px rgba(245, 208, 97, 0.34);
+    }
+
+    @media (max-width: 1180px) {
+      body .watch-side-word {
+        font-size: clamp(2.6rem, 7vw, 5rem);
+        letter-spacing: 0.03em;
+        opacity: 0.56;
+      }
+
+      body .watch-side-word.balo {
+        left: 18px;
+      }
+
+      body .watch-side-word.waci {
+        right: 18px;
+      }
     }
 
     body .home-watch-readout,
@@ -1470,18 +1487,19 @@
 
       body .watch-side-word {
         top: auto;
-        bottom: 6vh;
+        bottom: calc(18px + env(safe-area-inset-bottom));
         transform: none;
-        font-size: clamp(2.3rem, 13vw, 4rem);
-        opacity: 0.58;
+        font-size: clamp(1.8rem, 10vw, 3rem);
+        letter-spacing: 0.02em;
+        opacity: 0.64;
       }
 
       body .watch-side-word.balo {
-        left: 24px;
+        left: 16px;
       }
 
       body .watch-side-word.waci {
-        right: 24px;
+        right: 16px;
       }
     }
   </style>
@@ -3033,7 +3051,7 @@
       return Math.atan2(point.y - point.cy, point.x - point.cx);
     }
 
-    function drawCenteredText(ctx, text, x, y, maxWidth) {
+    function drawCenteredText(ctx, text, x, y, maxWidth, lineHeight = 14) {
       const words = text.split(' ');
       let line = '';
       const lines = [];
@@ -3047,10 +3065,10 @@
         }
       });
       lines.push(line);
-      const lineHeight = 14;
       lines.forEach((item, index) => {
         ctx.fillText(item, x, y + (index - (lines.length - 1) / 2) * lineHeight);
       });
+      return lines.length;
     }
 
     function drawMapBlob(ctx, points, scaleX, scaleY) {
@@ -3321,13 +3339,13 @@
         ctx.translate(Math.cos(angle) * labelRadius, Math.sin(angle) * labelRadius);
         ctx.rotate(angle + Math.PI / 2);
         ctx.fillStyle = active ? '#f5d061' : 'rgba(255, 255, 255, 0.72)';
-        ctx.font = `${active ? 600 : 400} ${Math.max(11, size * 0.021)}px Inter, sans-serif`;
+        ctx.font = `${active ? 600 : 400} ${Math.max(9, size * 0.018)}px Inter, sans-serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        drawCenteredText(ctx, t(item.key), 0, -7, radius * 0.22);
+        drawCenteredText(ctx, t(item.key), 0, -19, radius * 0.28, 12);
         ctx.fillStyle = active ? 'rgba(255, 255, 255, 0.86)' : 'rgba(212, 175, 55, 0.56)';
-        ctx.font = `400 ${Math.max(9, size * 0.016)}px Inter, sans-serif`;
-        drawCenteredText(ctx, formatRegionTime(item.timezone), 0, 16, radius * 0.2);
+        ctx.font = `400 ${Math.max(8, size * 0.014)}px Inter, sans-serif`;
+        drawCenteredText(ctx, formatRegionTime(item.timezone), 0, 23, radius * 0.28, 10);
         ctx.restore();
       });
 
