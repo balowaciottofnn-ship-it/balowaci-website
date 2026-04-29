@@ -1464,7 +1464,10 @@
       }
 
       body .watch-side-word {
-        font-size: clamp(1.05rem, 2.55vw, 1.9rem);
+        top: auto;
+        bottom: calc(16px + env(safe-area-inset-bottom));
+        transform: none;
+        font-size: clamp(1.35rem, 3.2vw, 2.4rem);
         letter-spacing: 0;
         opacity: 0.88;
         z-index: 3;
@@ -1487,7 +1490,7 @@
       }
 
       body .watch-side-word {
-        font-size: clamp(0.95rem, 2.25vw, 1.55rem);
+        font-size: clamp(1.1rem, 2.7vw, 1.9rem);
       }
     }
 
