@@ -1331,6 +1331,112 @@
       gap: 16px;
       margin-top: 32px;
     }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    body .site-corner-logo {
+      width: auto;
+      height: 72px;
+      min-width: 0;
+      gap: 12px;
+      padding: 7px 18px 7px 7px;
+      border-radius: 999px;
+      text-decoration: none;
+    }
+
+    body .site-corner-logo img {
+      width: 58px;
+      height: 58px;
+      flex: 0 0 58px;
+    }
+
+    body .site-corner-logo span {
+      color: #f5d061;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.32rem;
+      letter-spacing: 1px;
+      text-shadow: 0 0 10px rgba(245, 208, 97, 0.25);
+    }
+
+    body .luxury-hero {
+      min-height: 100vh;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 48%, rgba(212, 175, 55, 0.16), transparent 36%),
+        radial-gradient(circle at 50% 55%, rgba(178, 102, 255, 0.12), transparent 48%);
+    }
+
+    body .home-watch-nav {
+      width: min(94vmin, 920px);
+      margin: 0 auto;
+    }
+
+    body .home-watch-shell {
+      width: min(90vmin, 880px);
+      max-width: calc(100vw - 32px);
+      margin: 0 auto;
+    }
+
+    body .home-watch-readout,
+    body .home-watch-hint,
+    body .luxury-hero .luxury-kicker,
+    body .luxury-hero .luxury-title,
+    body .luxury-hero .luxury-subtitle,
+    body .luxury-hero .hero-actions {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      body .site-corner-logo {
+        top: 14px;
+        left: 14px;
+        height: 58px;
+        padding: 6px 12px 6px 6px;
+        gap: 8px;
+      }
+
+      body .site-corner-logo img {
+        width: 46px;
+        height: 46px;
+        flex-basis: 46px;
+      }
+
+      body .site-corner-logo span {
+        font-size: 1rem;
+      }
+
+      body .site-language-control {
+        top: 14px;
+        right: 14px;
+      }
+
+      body .site-language-control .language-select {
+        min-width: 112px;
+        padding: 10px 12px;
+      }
+
+      body .home-watch-nav {
+        width: min(96vmin, 620px);
+      }
+
+      body .home-watch-shell {
+        width: min(94vmin, 620px);
+      }
+    }
   </style>
 </head>
 <body>
@@ -1341,6 +1447,7 @@
 
   <a class="site-corner-logo" href="#hero" aria-label="BaloWaci home">
     <img src="assets/balogo-circle.png" alt="BaloWaci logo">
+    <span>BaloWaci</span>
   </a>
 
   <div class="site-language-control">
@@ -1361,26 +1468,9 @@
       <div class="home-watch-shell">
         <canvas id="homeWatchNav" width="720" height="720"></canvas>
       </div>
-      <div class="home-watch-readout" aria-live="polite">
-        <span data-i18n="homeWatch.time">Local Time</span>
-        <strong id="homeWatchTime">--:--:--</strong>
-        <span class="home-watch-region" id="homeWatchRegion">Chicago, US</span>
-        <span id="homeWatchSection">Home</span>
-      </div>
-      <p class="home-watch-hint" data-i18n="homeWatch.hint">Drag or click the watch bezel to navigate</p>
-    </div>
-
-    <p class="luxury-kicker" data-i18n="hero.kicker">A Unified Time Interpretation System</p>
-
-    <h1 class="luxury-title">Balo<span>Waci</span></h1>
-
-    <p class="luxury-subtitle" data-i18n="hero.luxurySubtitle">
-      Where cultural time, modern time, and symbolic design move together as one.
-    </p>
-
-    <div class="hero-actions">
-      <a href="#founder" class="luxury-btn primary" data-i18n="hero.discover">Discover the Vision</a>
-      <a href="#product-demos" class="luxury-btn secondary" data-i18n="hero.viewTimepiece">View the Timepiece</a>
+      <span id="homeWatchTime" class="sr-only">--:--:--</span>
+      <span id="homeWatchRegion" class="sr-only">Chicago, US</span>
+      <span id="homeWatchSection" class="sr-only">Home</span>
     </div>
   </section>
 
