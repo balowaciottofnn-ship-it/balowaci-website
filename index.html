@@ -1492,7 +1492,11 @@
       <div class="case-study-grid">
         <article class="case-study-card">
           <h3 data-i18n="case.challengeTitle">Challenge</h3>
-          <p data-i18n="case.challengeBody">Most websites separate navigation from meaning. BaloWaci needed a way to guide visitors while proving the idea of regional time, cultural reading, and circular interaction immediately.</p>
+          <p data-i18n="case.challengeBody">Traditional interfaces separate navigation from meaning, forcing users to learn structure before understanding context. I designed BaloWaci to unify navigation, time interpretation, and storytelling into a single interactive system.</p>
+        </article>
+        <article class="case-study-card">
+          <h3 data-i18n="case.feedbackTitle">Feedback & Iteration</h3>
+          <p data-i18n="case.feedbackBody">Initial feedback from users showed confusion around interpreting multiple time systems at once. This led me to simplify visual hierarchy and guide interaction through motion.</p>
         </article>
         <article class="case-study-card">
           <h3 data-i18n="case.decisionsTitle">Decisions</h3>
@@ -1500,7 +1504,11 @@
         </article>
         <article class="case-study-card">
           <h3 data-i18n="case.outcomeTitle">Outcome</h3>
-          <p data-i18n="case.outcomeBody">The homepage now teaches the product through use. Visitors understand the system by moving through it, not by reading a long explanation first.</p>
+          <p data-i18n="case.outcomeBody">Users were able to navigate and understand the system without reading instructions first, validating the watch as both interface and storytelling mechanism.</p>
+        </article>
+        <article class="case-study-card">
+          <h3 data-i18n="case.philosophyTitle">Design Philosophy</h3>
+          <p data-i18n="case.philosophyBody">I design systems where interaction carries meaning. Instead of separating function and story, I aim to merge them into a single intuitive experience.</p>
         </article>
       </div>
     </div>
@@ -2460,6 +2468,69 @@
     };
 
     Object.entries(completionTranslationUpdates).forEach(([language, entries]) => {
+      Object.assign(translations[language], entries);
+    });
+
+    const caseStudyTranslationUpdates = {
+      en: {
+        'case.challengeBody': 'Traditional interfaces separate navigation from meaning, forcing users to learn structure before understanding context. I designed BaloWaci to unify navigation, time interpretation, and storytelling into a single interactive system.',
+        'case.feedbackTitle': 'Feedback & Iteration',
+        'case.feedbackBody': 'Initial feedback from users showed confusion around interpreting multiple time systems at once. This led me to simplify visual hierarchy and guide interaction through motion.',
+        'case.outcomeBody': 'Users were able to navigate and understand the system without reading instructions first, validating the watch as both interface and storytelling mechanism.',
+        'case.philosophyTitle': 'Design Philosophy',
+        'case.philosophyBody': 'I design systems where interaction carries meaning. Instead of separating function and story, I aim to merge them into a single intuitive experience.'
+      },
+      sw: {
+        'case.challengeBody': 'Violesura vya kawaida hutenganisha urambazaji na maana, na kumlazimisha mtumiaji ajifunze muundo kabla ya kuelewa muktadha. Niliunda BaloWaci kuunganisha urambazaji, tafsiri ya wakati, na usimulizi kuwa mfumo mmoja shirikishi.',
+        'case.feedbackTitle': 'Maoni na Uboreshaji',
+        'case.feedbackBody': 'Maoni ya awali kutoka kwa watumiaji yalionyesha mkanganyiko katika kutafsiri mifumo mingi ya wakati kwa wakati mmoja. Hilo liliniongoza kurahisisha mpangilio wa kuona na kuongoza mwingiliano kupitia mwendo.',
+        'case.outcomeBody': 'Watumiaji waliweza kusafiri na kuelewa mfumo bila kusoma maelekezo kwanza, jambo lililothibitisha saa kama kiolesura na njia ya kusimulia hadithi.',
+        'case.philosophyTitle': 'Falsafa ya Ubunifu',
+        'case.philosophyBody': 'Ninabuni mifumo ambayo mwingiliano hubeba maana. Badala ya kutenganisha kazi na hadithi, ninalenga kuziunganisha kuwa uzoefu mmoja rahisi kueleweka.'
+      },
+      es: {
+        'case.challengeBody': 'Las interfaces tradicionales separan la navegación del significado, obligando a los usuarios a aprender la estructura antes de comprender el contexto. Diseñé BaloWaci para unificar navegación, interpretación del tiempo y narrativa en un solo sistema interactivo.',
+        'case.feedbackTitle': 'Feedback e Iteración',
+        'case.feedbackBody': 'Los primeros comentarios de usuarios mostraron confusión al interpretar varios sistemas de tiempo a la vez. Esto me llevó a simplificar la jerarquía visual y guiar la interacción mediante movimiento.',
+        'case.outcomeBody': 'Los usuarios pudieron navegar y comprender el sistema sin leer instrucciones primero, validando el reloj como interfaz y mecanismo narrativo.',
+        'case.philosophyTitle': 'Filosofía de Diseño',
+        'case.philosophyBody': 'Diseño sistemas donde la interacción transmite significado. En lugar de separar función e historia, busco unirlas en una experiencia intuitiva.'
+      },
+      pt: {
+        'case.challengeBody': 'Interfaces tradicionais separam navegação de significado, forçando usuários a aprender a estrutura antes de entender o contexto. Eu projetei a BaloWaci para unificar navegação, interpretação do tempo e narrativa em um único sistema interativo.',
+        'case.feedbackTitle': 'Feedback e Iteração',
+        'case.feedbackBody': 'O feedback inicial dos usuários mostrou confusão ao interpretar vários sistemas de tempo ao mesmo tempo. Isso me levou a simplificar a hierarquia visual e guiar a interação por meio do movimento.',
+        'case.outcomeBody': 'Os usuários conseguiram navegar e entender o sistema sem ler instruções primeiro, validando o relógio como interface e mecanismo de narrativa.',
+        'case.philosophyTitle': 'Filosofia de Design',
+        'case.philosophyBody': 'Eu desenho sistemas em que a interação carrega significado. Em vez de separar função e história, busco uni-las em uma experiência intuitiva.'
+      },
+      fr: {
+        'case.challengeBody': 'Les interfaces traditionnelles séparent la navigation du sens, obligeant les utilisateurs à apprendre la structure avant de comprendre le contexte. J’ai conçu BaloWaci pour unifier navigation, interprétation du temps et narration dans un seul système interactif.',
+        'case.feedbackTitle': 'Retours et Itération',
+        'case.feedbackBody': 'Les premiers retours utilisateurs ont montré une confusion dans l’interprétation simultanée de plusieurs systèmes de temps. Cela m’a conduit à simplifier la hiérarchie visuelle et à guider l’interaction par le mouvement.',
+        'case.outcomeBody': 'Les utilisateurs ont pu naviguer et comprendre le système sans lire d’instructions au préalable, validant la montre comme interface et mécanisme narratif.',
+        'case.philosophyTitle': 'Philosophie de Design',
+        'case.philosophyBody': 'Je conçois des systèmes où l’interaction porte du sens. Plutôt que de séparer fonction et récit, je cherche à les fusionner en une expérience intuitive.'
+      },
+      zh: {
+        'case.challengeBody': '传统界面把导航和意义分开，迫使用户先学习结构，再理解上下文。我设计 BaloWaci，是为了把导航、时间解释和叙事统一到一个互动系统中。',
+        'case.feedbackTitle': '反馈与迭代',
+        'case.feedbackBody': '早期用户反馈显示，同时解释多个时间系统会造成困惑。这促使我简化视觉层级，并通过运动来引导交互。',
+        'case.outcomeBody': '用户无需先阅读说明，就能够导航并理解系统，这验证了手表既可以作为界面，也可以作为叙事机制。',
+        'case.philosophyTitle': '设计理念',
+        'case.philosophyBody': '我设计的是让交互本身承载意义的系统。与其把功能和故事分开，我更希望把它们合并成一个直观体验。'
+      },
+      ar: {
+        'case.challengeBody': 'تفصل الواجهات التقليدية بين التنقل والمعنى، مما يجبر المستخدمين على تعلم البنية قبل فهم السياق. صممت BaloWaci لتوحيد التنقل وتفسير الوقت والسرد داخل نظام تفاعلي واحد.',
+        'case.feedbackTitle': 'الملاحظات والتكرار',
+        'case.feedbackBody': 'أظهرت الملاحظات الأولية من المستخدمين وجود ارتباك عند تفسير عدة أنظمة زمنية في الوقت نفسه. دفعني ذلك إلى تبسيط التسلسل البصري وتوجيه التفاعل عبر الحركة.',
+        'case.outcomeBody': 'تمكن المستخدمون من التنقل وفهم النظام دون قراءة التعليمات أولًا، مما أكد أن الساعة تعمل كواجهة وآلية سرد في الوقت نفسه.',
+        'case.philosophyTitle': 'فلسفة التصميم',
+        'case.philosophyBody': 'أصمم أنظمة يحمل فيها التفاعل معنى. بدلًا من فصل الوظيفة عن القصة، أسعى إلى دمجهما في تجربة واحدة بديهية.'
+      }
+    };
+
+    Object.entries(caseStudyTranslationUpdates).forEach(([language, entries]) => {
       Object.assign(translations[language], entries);
     });
 
