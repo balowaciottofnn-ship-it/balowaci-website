@@ -1425,13 +1425,13 @@
 
     @media (max-width: 1180px) {
       body .home-watch-shell {
-        width: min(72vmin, 640px);
+        width: min(66vmin, 600px);
       }
 
       body .watch-side-word {
-        font-size: clamp(2.2rem, 5.4vw, 4.2rem);
+        font-size: clamp(1.9rem, 4.8vw, 3.6rem);
         letter-spacing: 0.03em;
-        opacity: 0.7;
+        opacity: 0.74;
       }
 
       body .watch-side-word.balo {
@@ -1445,11 +1445,11 @@
 
     @media (min-width: 769px) and (max-width: 980px) {
       body .home-watch-shell {
-        width: min(68vmin, 560px);
+        width: min(60vmin, 520px);
       }
 
       body .watch-side-word {
-        font-size: clamp(1.8rem, 4.8vw, 3rem);
+        font-size: clamp(1.6rem, 4.2vw, 2.6rem);
       }
     }
 
@@ -1503,7 +1503,7 @@
         top: auto;
         bottom: calc(18px + env(safe-area-inset-bottom));
         transform: none;
-        font-size: clamp(1.8rem, 10vw, 3rem);
+        font-size: clamp(1.35rem, 8vw, 2.45rem);
         letter-spacing: 0.02em;
         opacity: 0.64;
       }
@@ -2908,8 +2908,8 @@
       { key: 'nav.feedback', target: '#feedback', region: 'Honolulu, US', timezone: 'Pacific/Honolulu' }
     ];
 
-    const realGlobeImage = new Image();
-    realGlobeImage.src = 'assets/real-globe.jpg';
+    const earthTextureImage = new Image();
+    earthTextureImage.src = 'assets/earth-texture.jpg';
 
     const homeWatchState = {
       canvas: null,
@@ -3131,6 +3131,38 @@
       ctx.stroke();
     }
 
+    function drawEarthTextureGlobe(ctx, image, mapRadius, centerLon) {
+      const width = image.naturalWidth;
+      const height = image.naturalHeight;
+      const left = Math.floor(-mapRadius);
+      const right = Math.ceil(mapRadius);
+
+      ctx.save();
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+
+      for (let x = left; x <= right; x += 1) {
+        const nx = x / mapRadius;
+        if (Math.abs(nx) > 1) continue;
+        const visibleHeight = Math.sqrt(1 - nx * nx) * mapRadius * 2;
+        const dLon = Math.asin(nx) * 180 / Math.PI;
+        const lon = normalizeLongitude(centerLon + dLon);
+        let sourceX = ((lon + 180) / 360) * width;
+        sourceX = Math.max(0, Math.min(width - 1, sourceX));
+        ctx.drawImage(image, sourceX, 0, 1, height, x, -visibleHeight / 2, 1.25, visibleHeight);
+      }
+
+      const atmosphere = ctx.createRadialGradient(-mapRadius * 0.28, -mapRadius * 0.3, 0, 0, 0, mapRadius);
+      atmosphere.addColorStop(0, 'rgba(255, 255, 255, 0.22)');
+      atmosphere.addColorStop(0.45, 'rgba(255, 255, 255, 0.02)');
+      atmosphere.addColorStop(0.82, 'rgba(8, 20, 36, 0.08)');
+      atmosphere.addColorStop(1, 'rgba(5, 13, 28, 0.48)');
+      ctx.fillStyle = atmosphere;
+      ctx.fillRect(-mapRadius, -mapRadius, mapRadius * 2, mapRadius * 2);
+
+      ctx.restore();
+    }
+
     function drawLiveWorldMap(ctx, faceRadius, selectedItem, now) {
       const mapRadius = faceRadius * 0.76;
       const utcHours = now.getUTCHours() + now.getUTCMinutes() / 60 + now.getUTCSeconds() / 3600;
@@ -3148,7 +3180,7 @@
         'Pacific/Honolulu': { lon: -157.8, lat: 21.3 }
       };
       const selectedPoint = regionPoints[selectedItem.timezone] || regionPoints['America/Chicago'];
-      const centerLon = 20;
+      const centerLon = selectedPoint.lon;
       const worldLandmasses = [
         [[-168,72],[-148,70],[-132,61],[-124,50],[-112,49],[-96,56],[-78,52],[-62,48],[-54,58],[-36,72],[-58,80],[-96,78],[-132,74]],
         [[-130,54],[-123,47],[-124,38],[-116,31],[-108,24],[-99,19],[-90,19],[-84,25],[-76,31],[-70,42],[-82,49],[-99,50],[-115,48]],
@@ -3168,28 +3200,8 @@
       ctx.arc(0, 0, mapRadius, 0, Math.PI * 2);
       ctx.clip();
 
-      if (realGlobeImage.complete && realGlobeImage.naturalWidth) {
-        const sourceSize = Math.min(realGlobeImage.naturalWidth * 0.91, realGlobeImage.naturalHeight * 0.75);
-        const sourceX = realGlobeImage.naturalWidth * 0.035;
-        const sourceY = realGlobeImage.naturalHeight * 0.015;
-        ctx.drawImage(
-          realGlobeImage,
-          sourceX,
-          sourceY,
-          sourceSize,
-          sourceSize,
-          -mapRadius,
-          -mapRadius,
-          mapRadius * 2,
-          mapRadius * 2
-        );
-
-        const globePolish = ctx.createRadialGradient(-mapRadius * 0.22, -mapRadius * 0.3, 0, 0, 0, mapRadius);
-        globePolish.addColorStop(0, 'rgba(255, 255, 255, 0.2)');
-        globePolish.addColorStop(0.48, 'rgba(255, 255, 255, 0.02)');
-        globePolish.addColorStop(1, 'rgba(3, 12, 25, 0.22)');
-        ctx.fillStyle = globePolish;
-        ctx.fillRect(-mapRadius, -mapRadius, mapRadius * 2, mapRadius * 2);
+      if (earthTextureImage.complete && earthTextureImage.naturalWidth) {
+        drawEarthTextureGlobe(ctx, earthTextureImage, mapRadius, centerLon);
       } else {
       const ocean = ctx.createRadialGradient(-mapRadius * 0.3, -mapRadius * 0.25, 0, 0, 0, mapRadius);
       ocean.addColorStop(0, '#dceff0');
