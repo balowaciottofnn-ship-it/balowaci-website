@@ -55,6 +55,8 @@
       height: 100%;
       pointer-events: none;
       z-index: 0;
+      opacity: var(--stars-opacity, 1);
+      transition: opacity 1.2s ease;
     }
 
     .star {
@@ -92,6 +94,25 @@
     @keyframes twinkle {
       0%, 100% { opacity: 0.3; transform: scale(0.8); }
       50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    .moon-stage {
+      position: fixed;
+      top: 96px;
+      right: 34px;
+      width: 86px;
+      height: 86px;
+      pointer-events: none;
+      z-index: 1;
+      opacity: var(--moon-opacity, 0);
+      filter: drop-shadow(0 0 18px rgba(226, 213, 178, var(--moon-glow, 0.2)));
+      transition: opacity 1.2s ease, filter 1.2s ease;
+    }
+
+    #moonCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
     }
 
     .container {
@@ -1305,6 +1326,9 @@
 </head>
 <body>
   <div class="stars-container" id="starsContainer"></div>
+  <div class="moon-stage" id="moonStage" aria-hidden="true">
+    <canvas id="moonCanvas" width="172" height="172"></canvas>
+  </div>
 
   <a class="site-corner-logo" href="#hero" aria-label="BaloWaci home">
     <img src="assets/balogo-circle.png" alt="BaloWaci logo">
@@ -2573,6 +2597,7 @@
     // Initialize stars background
     function initializeStars() {
       const container = document.getElementById('starsContainer');
+      if (!container || container.children.length) return;
       const starCount = 40;
 
       for (let i = 0; i < starCount; i++) {
@@ -2584,6 +2609,8 @@
         star.style.animationDelay = Math.random() * 4 + 's';
         container.appendChild(star);
       }
+      updateEnvironmentalSky();
+      setInterval(updateEnvironmentalSky, 60000);
     }
 
     // Fetch and display live time interpretation
@@ -2768,6 +2795,78 @@
       const daylight = Math.max(0, Math.min(dawn, dusk));
       const noonPeak = 0.55 + 0.45 * Math.cos(((hour - solarNoon) / 6) * Math.PI / 2);
       return Math.max(0, Math.min(daylight * noonPeak, 1));
+    }
+
+    function getLocalNightIntensity(date = new Date()) {
+      const hour = date.getHours() + date.getMinutes() / 60 + date.getSeconds() / 3600;
+      const evening = smoothStep(18.2, 20.3, hour);
+      const morning = 1 - smoothStep(4.8, 6.8, hour);
+      return hour >= 12 ? evening : morning;
+    }
+
+    function getMoonPhase(date = new Date()) {
+      const knownNewMoon = Date.UTC(2000, 0, 6, 18, 14);
+      const lunarMonth = 29.530588853 * 24 * 60 * 60 * 1000;
+      return (((date.getTime() - knownNewMoon) % lunarMonth) + lunarMonth) % lunarMonth / lunarMonth;
+    }
+
+    function drawMoonPhase(phase, nightIntensity) {
+      const canvas = document.getElementById('moonCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const size = canvas.width;
+      const cx = size / 2;
+      const cy = size / 2;
+      const radius = size * 0.36;
+      const waxing = phase < 0.5;
+      const illumination = phase <= 0.5 ? phase * 2 : (1 - phase) * 2;
+      const shadowWidth = radius * 2 * (1 - illumination);
+
+      ctx.clearRect(0, 0, size, size);
+      ctx.save();
+      ctx.globalAlpha = 0.9 * nightIntensity;
+
+      const glow = ctx.createRadialGradient(cx, cy, radius * 0.2, cx, cy, radius * 1.9);
+      glow.addColorStop(0, 'rgba(235, 225, 194, 0.32)');
+      glow.addColorStop(1, 'rgba(235, 225, 194, 0)');
+      ctx.fillStyle = glow;
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius * 1.9, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+      ctx.fillStyle = '#e6dcc2';
+      ctx.fill();
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+      ctx.clip();
+      ctx.fillStyle = '#211c22';
+      ctx.fillRect(cx - radius, cy - radius, radius * 2, radius * 2);
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.beginPath();
+      ctx.ellipse(cx + (waxing ? shadowWidth / 2 : -shadowWidth / 2), cy, Math.max(1, radius - shadowWidth / 2), radius, 0, 0, Math.PI * 2);
+      ctx.fillStyle = '#000';
+      ctx.fill();
+      ctx.restore();
+
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(245, 208, 97, 0.34)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function updateEnvironmentalSky() {
+      const now = new Date();
+      const nightIntensity = getLocalNightIntensity(now);
+      document.documentElement.style.setProperty('--stars-opacity', nightIntensity.toFixed(3));
+      document.documentElement.style.setProperty('--moon-opacity', (nightIntensity * 0.9).toFixed(3));
+      document.documentElement.style.setProperty('--moon-glow', (0.12 + nightIntensity * 0.45).toFixed(3));
+      drawMoonPhase(getMoonPhase(now), nightIntensity);
     }
 
     function updateHomeWatchSolarStyle(intensity) {
