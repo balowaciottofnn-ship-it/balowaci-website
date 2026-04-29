@@ -3569,6 +3569,7 @@
           index = itemIndex;
         }
       });
+      if (index === 0 && state.selectedIndex === 0) return true;
       state.selectedIndex = index;
       state.targetRotation = -index * segment;
       snapHomeWatchNav(true);
