@@ -1,0 +1,15 @@
+{
+  "appId": "com.balowaci.app",
+  "appName": "BaloWaci",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1600,
+      "backgroundColor": "#090812",
+      "showSpinner": false
+    }
+  }
+}

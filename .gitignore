@@ -7,6 +7,7 @@ server.out
 npm-debug.log
 dist/
 build/
+www/
 .vscode/
 .idea/
 *.swp
