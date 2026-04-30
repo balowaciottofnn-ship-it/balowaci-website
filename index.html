@@ -1471,12 +1471,14 @@
       }
 
       body .watch-side-word.balo {
-        left: 10px;
+        left: 0;
+        transform: translate(-8px, -50%);
         text-align: left;
       }
 
       body .watch-side-word.waci {
-        right: 10px;
+        right: 0;
+        transform: translate(8px, -50%);
         text-align: right;
       }
     }
@@ -1974,7 +1976,7 @@
         </div>
 
         <div class="form-group">
-          <label for="interests">3. What part of the experience was confusing or difficult?</label>
+          <label for="interests">3. What part of the experience felt most interesting or valuable?</label>
           <textarea id="interests" name="interests" required></textarea>
         </div>
 
@@ -2910,6 +2912,14 @@
       const getValue = (id) => document.getElementById(id)?.value || '';
       const visitorName = getValue('visitorName');
       const visitorEmail = getValue('visitorEmail');
+      const feedbackKey = `balowaciFeedbackSubmitted:${visitorEmail.trim().toLowerCase()}`;
+      if (visitorEmail && localStorage.getItem(feedbackKey)) {
+        formStatus.className = 'form-status error';
+        formStatus.textContent = 'You have already submitted feedback with this email. Thank you for helping shape BaloWaci.';
+        submitButton.disabled = false;
+        submitButton.textContent = submitLabel;
+        return;
+      }
       const visitorPhone = getValue('visitorPhone');
       const impression = getValue('impression');
       const unique = getValue('unique');
@@ -2950,6 +2960,9 @@
         const result = await response.json();
 
         if (result.success) {
+          if (visitorEmail) {
+            localStorage.setItem(feedbackKey, 'true');
+          }
           formStatus.className = 'form-status success';
           formStatus.textContent = t('form.success');
           form.reset();
@@ -3176,6 +3189,20 @@
         ctx.fillText(item, x, y + (index - (lines.length - 1) / 2) * lineHeight);
       });
       return lines.length;
+    }
+
+    function drawWatchNavLabel(ctx, item, isActive, radius, size) {
+      ctx.fillStyle = isActive ? '#f5d061' : 'rgba(255, 255, 255, 0.72)';
+      ctx.font = `${isActive ? 600 : 400} ${Math.max(8, size * 0.016)}px Inter, sans-serif`;
+      const sectionLines = drawCenteredText(ctx, t(item.key), 0, -24, radius * 0.3, 11);
+      const sectionHeight = Math.max(1, sectionLines) * 11;
+      const detailsY = -24 + sectionHeight / 2 + 12;
+      ctx.fillStyle = isActive ? 'rgba(255, 255, 255, 0.88)' : 'rgba(212, 175, 55, 0.64)';
+      ctx.font = `400 ${Math.max(7, size * 0.0125)}px Inter, sans-serif`;
+      drawCenteredText(ctx, item.region, 0, detailsY, radius * 0.31, 9);
+      ctx.fillStyle = isActive ? '#f5d061' : 'rgba(255, 255, 255, 0.62)';
+      ctx.font = `400 ${Math.max(7, size * 0.012)}px Inter, sans-serif`;
+      drawCenteredText(ctx, formatRegionTime(item.timezone), 0, detailsY + 15, radius * 0.3, 9);
     }
 
     function drawMapBlob(ctx, points, scaleX, scaleY) {
@@ -3481,14 +3508,9 @@
         ctx.save();
         ctx.translate(Math.cos(angle) * labelRadius, Math.sin(angle) * labelRadius);
         ctx.rotate(angle + Math.PI / 2);
-        ctx.fillStyle = active ? '#f5d061' : 'rgba(255, 255, 255, 0.72)';
-        ctx.font = `${active ? 600 : 400} ${Math.max(9, size * 0.018)}px Inter, sans-serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        drawCenteredText(ctx, t(item.key), 0, -19, radius * 0.28, 12);
-        ctx.fillStyle = active ? 'rgba(255, 255, 255, 0.86)' : 'rgba(212, 175, 55, 0.56)';
-        ctx.font = `400 ${Math.max(8, size * 0.014)}px Inter, sans-serif`;
-        drawCenteredText(ctx, formatRegionTime(item.timezone), 0, 23, radius * 0.28, 10);
+        drawWatchNavLabel(ctx, item, active, radius, size);
         ctx.restore();
       });
 
