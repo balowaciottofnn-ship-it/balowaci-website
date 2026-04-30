@@ -1,0 +1,54 @@
+{
+  "name": "BaloWaci",
+  "short_name": "BaloWaci",
+  "description": "A unified time interpretation system with a live watch, global time navigation, cultural time, and symbolic design.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#090812",
+  "theme_color": "#090812",
+  "categories": ["education", "productivity", "lifestyle"],
+  "icons": [
+    {
+      "src": "assets/balowaci-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/balowaci-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Live Watch",
+      "short_name": "Watch",
+      "description": "Open the BaloWaci live watch navigator.",
+      "url": "/#hero",
+      "icons": [
+        {
+          "src": "assets/balowaci-icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Feedback",
+      "short_name": "Feedback",
+      "description": "Share feedback on the BaloWaci prototype.",
+      "url": "/#feedback",
+      "icons": [
+        {
+          "src": "assets/balowaci-icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ]
+}

@@ -4,6 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BaloWaci - A Unified Time Interpretation System</title>
+  <meta name="theme-color" content="#090812">
+  <meta name="description" content="BaloWaci is a unified time interpretation system with a live watch, global time navigation, cultural time, and symbolic design.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="BaloWaci">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="assets/balogo-circle.png">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@300;400&display=swap" rel="stylesheet">
   <style>
     * {
@@ -987,12 +994,42 @@
 
     .site-language-control {
       right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    .site-language-control .language-select {
+    .site-language-control .language-select,
+    .install-app-button {
       min-width: 132px;
       padding: 12px 14px;
       background: rgba(0, 0, 0, 0.82);
+    }
+
+    .install-app-button {
+      display: none;
+      border: 1px solid #d4af37;
+      border-radius: 4px;
+      color: #d4af37;
+      cursor: pointer;
+      font: inherit;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      min-width: 116px;
+      transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+    }
+
+    .install-app-button.available {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .install-app-button:hover,
+    .install-app-button:focus-visible {
+      background: #d4af37;
+      color: #090812;
+      transform: translateY(-2px);
     }
 
     html[dir="rtl"] .time-row,
@@ -1093,7 +1130,8 @@
         right: 14px;
       }
 
-      .site-language-control .language-select {
+      .site-language-control .language-select,
+      .install-app-button {
         min-width: 112px;
         padding: 10px 12px;
       }
@@ -1595,7 +1633,8 @@
         font-size: 0.95rem;
       }
 
-      body .site-language-control .language-select {
+      body .site-language-control .language-select,
+      body .install-app-button {
         min-width: 104px;
         padding: 9px 10px;
       }
@@ -1632,6 +1671,11 @@
       body .site-language-control {
         top: 14px;
         right: 14px;
+      }
+
+      body .install-app-button {
+        min-width: 96px;
+        font-size: 0.72rem;
       }
 
       body .site-language-control .language-select {
@@ -1681,6 +1725,7 @@
   </a>
 
   <div class="site-language-control">
+    <button class="install-app-button" id="installAppButton" type="button">Install App</button>
     <select id="languageSelect" class="language-select" aria-label="Language">
       <option value="en">English</option>
       <option value="sw">Swahili</option>
@@ -4070,9 +4115,41 @@
       requestAnimationFrame(drawHomeWatchNav);
     }
 
+    let deferredInstallPrompt = null;
+
+    function initializePwaInstall() {
+      const installButton = document.getElementById('installAppButton');
+
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js').catch((error) => {
+          console.warn('BaloWaci service worker registration failed:', error);
+        });
+      }
+
+      window.addEventListener('beforeinstallprompt', (event) => {
+        event.preventDefault();
+        deferredInstallPrompt = event;
+        installButton?.classList.add('available');
+      });
+
+      installButton?.addEventListener('click', async () => {
+        if (!deferredInstallPrompt) return;
+        deferredInstallPrompt.prompt();
+        await deferredInstallPrompt.userChoice;
+        deferredInstallPrompt = null;
+        installButton.classList.remove('available');
+      });
+
+      window.addEventListener('appinstalled', () => {
+        deferredInstallPrompt = null;
+        installButton?.classList.remove('available');
+      });
+    }
+
     // Initialize on page load
     document.addEventListener('DOMContentLoaded', () => {
       applyLanguage(currentLanguage);
+      initializePwaInstall();
       const languageSelect = document.getElementById('languageSelect');
       if (languageSelect) {
         languageSelect.addEventListener('change', (event) => {
