@@ -20,7 +20,19 @@
 7. Upload the release to Google Play Console.
 
 Current local build note:
-The Android project has been generated and synced, but `android\gradlew.bat assembleDebug` cannot build on this machine yet because Java/JDK is not currently available in PATH.
+The Android project has been generated and synced. A debug APK build succeeded after pointing `JAVA_HOME` to Android Studio's bundled JDK.
+
+Debug APK path:
+`android\app\build\outputs\apk\debug\app-debug.apk`
+
+Local debug build command:
+```powershell
+$env:JAVA_HOME='C:\Program Files\Android\Android Studio\jbr'
+$env:ANDROID_HOME="$env:LOCALAPPDATA\Android\Sdk"
+$env:Path="$env:JAVA_HOME\bin;$env:ANDROID_HOME\platform-tools;$env:Path"
+cd android
+.\gradlew.bat assembleDebug
+```
 
 ## iOS Next Steps
 
