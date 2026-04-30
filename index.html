@@ -1969,51 +1969,51 @@
       
       <form class="feedback-form" id="feedbackForm">
         <div class="form-group">
-          <label for="impression">1. What do you think BaloWaci does after using it?</label>
+          <label for="impression" data-i18n="form.q1">1. What do you think BaloWaci does after using it?</label>
           <textarea id="impression" name="impression" required></textarea>
         </div>
 
         <div class="form-group">
-          <label for="unique">2. What part of the experience was confusing or difficult?</label>
+          <label for="unique" data-i18n="form.q2">2. What part of the experience was confusing or difficult?</label>
           <textarea id="unique" name="unique" required></textarea>
         </div>
 
         <div class="form-group">
-          <label for="interests">3. What part of the experience felt most interesting or valuable?</label>
+          <label for="interests" data-i18n="form.q3">3. What part of the experience felt most interesting or valuable?</label>
           <textarea id="interests" name="interests" required></textarea>
         </div>
 
         <div class="form-group">
-          <label for="thoughts">4. How do you think BaloWaci could be useful in real life?</label>
+          <label for="thoughts" data-i18n="form.q4">4. How do you think BaloWaci could be useful in real life?</label>
           <textarea id="thoughts" name="thoughts" required></textarea>
         </div>
 
         <div class="form-group">
-          <label for="watchValueEstimate">5. If this existed as a product (app or watch), what price range would feel reasonable to you?</label>
+          <label for="watchValueEstimate" data-i18n="form.q5">5. If this existed as a product (app or watch), what price range would feel reasonable to you?</label>
           <textarea id="watchValueEstimate" name="watchValueEstimate" required></textarea>
         </div>
 
         <div class="form-group">
-          <label for="willingnessToPay">6. Would you use this system again or replace your current way of telling time? Why or why not?</label>
+          <label for="willingnessToPay" data-i18n="form.q6">6. Would you use this system again or replace your current way of telling time? Why or why not?</label>
           <textarea id="willingnessToPay" name="willingnessToPay" required></textarea>
         </div>
 
         <div class="form-group">
-          <label for="mustHaveFeatures">7. What feature or improvement would make this significantly more valuable to you?</label>
+          <label for="mustHaveFeatures" data-i18n="form.q7">7. What feature or improvement would make this significantly more valuable to you?</label>
           <textarea id="mustHaveFeatures" name="mustHaveFeatures" required></textarea>
         </div>
 
         <div class="form-group">
-          <label for="visitorName">8. Name?</label>
+          <label for="visitorName" data-i18n="form.q8">8. Name?</label>
           <input type="text" id="visitorName" name="visitorName" required>
         </div>
 
         <div class="form-group">
-          <label for="visitorEmail">9. Email adress?</label>
+          <label for="visitorEmail" data-i18n="form.q9">9. Email adress?</label>
           <input type="email" id="visitorEmail" name="visitorEmail" required>
         </div>
 
-        <p class="feedback-thank-you">Thank you for taking the time to share your feedback. Your answers help shape the future of BaloWaci.</p>
+        <p class="feedback-thank-you" data-i18n="form.thankYou">Thank you for taking the time to share your feedback. Your answers help shape the future of BaloWaci.</p>
 
         <button type="submit" class="btn-primary" data-i18n="form.submit">Submit Feedback</button>
         <div class="form-status" id="formStatus"></div>
@@ -2388,6 +2388,104 @@
     };
 
     Object.entries(translationUpdates).forEach(([language, entries]) => {
+      Object.assign(translations[language], entries);
+    });
+
+    const feedbackQuestionTranslationUpdates = {
+      en: {
+        'form.q1': '1. What do you think BaloWaci does after using it?',
+        'form.q2': '2. What part of the experience was confusing or difficult?',
+        'form.q3': '3. What part of the experience felt most interesting or valuable?',
+        'form.q4': '4. How do you think BaloWaci could be useful in real life?',
+        'form.q5': '5. If this existed as a product (app or watch), what price range would feel reasonable to you?',
+        'form.q6': '6. Would you use this system again or replace your current way of telling time? Why or why not?',
+        'form.q7': '7. What feature or improvement would make this significantly more valuable to you?',
+        'form.q8': '8. Name?',
+        'form.q9': '9. Email adress?',
+        'form.thankYou': 'Thank you for taking the time to share your feedback. Your answers help shape the future of BaloWaci.',
+        'form.duplicate': 'You have already submitted feedback with this email. Thank you for helping shape BaloWaci.'
+      },
+      sw: {
+        'form.q1': '1. Unafikiri BaloWaci hufanya nini baada ya kuitumia?',
+        'form.q2': '2. Ni sehemu gani ya uzoefu ilikuchanganya au ilikuwa ngumu?',
+        'form.q3': '3. Ni sehemu gani ya uzoefu iliyoonekana ya kuvutia au yenye thamani zaidi?',
+        'form.q4': '4. Unafikiri BaloWaci inaweza kuwa na manufaa gani katika maisha halisi?',
+        'form.q5': '5. Kama hii ingekuwa bidhaa (programu au saa), bei gani ingeonekana kuwa ya kawaida kwako?',
+        'form.q6': '6. Je, ungeutumia mfumo huu tena au kuchukua nafasi ya njia yako ya sasa ya kusoma wakati? Kwa nini au kwa nini hapana?',
+        'form.q7': '7. Ni kipengele au uboreshaji gani ungefanya hii iwe na thamani zaidi kwako?',
+        'form.q8': '8. Jina?',
+        'form.q9': '9. Anwani ya barua pepe?',
+        'form.thankYou': 'Asante kwa kuchukua muda kushiriki maoni yako. Majibu yako yanasaidia kuunda mustakabali wa BaloWaci.',
+        'form.duplicate': 'Tayari umetuma maoni kwa barua pepe hii. Asante kwa kusaidia kuunda BaloWaci.'
+      },
+      es: {
+        'form.q1': '1. ¿Qué crees que hace BaloWaci después de usarlo?',
+        'form.q2': '2. ¿Qué parte de la experiencia fue confusa o difícil?',
+        'form.q3': '3. ¿Qué parte de la experiencia te pareció más interesante o valiosa?',
+        'form.q4': '4. ¿Cómo crees que BaloWaci podría ser útil en la vida real?',
+        'form.q5': '5. Si esto existiera como producto (app o reloj), ¿qué rango de precio te parecería razonable?',
+        'form.q6': '6. ¿Usarías este sistema otra vez o reemplazarías tu forma actual de leer la hora? ¿Por qué sí o por qué no?',
+        'form.q7': '7. ¿Qué función o mejora haría que esto fuera mucho más valioso para ti?',
+        'form.q8': '8. ¿Nombre?',
+        'form.q9': '9. ¿Correo electrónico?',
+        'form.thankYou': 'Gracias por tomarte el tiempo de compartir tus comentarios. Tus respuestas ayudan a dar forma al futuro de BaloWaci.',
+        'form.duplicate': 'Ya enviaste comentarios con este correo electrónico. Gracias por ayudar a dar forma a BaloWaci.'
+      },
+      pt: {
+        'form.q1': '1. O que você acha que o BaloWaci faz depois de usá-lo?',
+        'form.q2': '2. Que parte da experiência foi confusa ou difícil?',
+        'form.q3': '3. Que parte da experiência pareceu mais interessante ou valiosa?',
+        'form.q4': '4. Como você acha que o BaloWaci poderia ser útil na vida real?',
+        'form.q5': '5. Se isso existisse como produto (app ou relógio), qual faixa de preço pareceria razoável para você?',
+        'form.q6': '6. Você usaria este sistema novamente ou substituiria sua forma atual de ver as horas? Por quê?',
+        'form.q7': '7. Que recurso ou melhoria tornaria isso significativamente mais valioso para você?',
+        'form.q8': '8. Nome?',
+        'form.q9': '9. Endereço de e-mail?',
+        'form.thankYou': 'Obrigado por dedicar seu tempo para compartilhar seu feedback. Suas respostas ajudam a moldar o futuro da BaloWaci.',
+        'form.duplicate': 'Você já enviou feedback com este e-mail. Obrigado por ajudar a moldar a BaloWaci.'
+      },
+      fr: {
+        'form.q1': '1. Selon vous, que fait BaloWaci après l’avoir utilisé ?',
+        'form.q2': '2. Quelle partie de l’expérience était confuse ou difficile ?',
+        'form.q3': '3. Quelle partie de l’expérience vous a semblé la plus intéressante ou précieuse ?',
+        'form.q4': '4. Comment pensez-vous que BaloWaci pourrait être utile dans la vie réelle ?',
+        'form.q5': '5. Si cela existait comme produit (application ou montre), quelle fourchette de prix vous semblerait raisonnable ?',
+        'form.q6': '6. Utiliseriez-vous ce système à nouveau ou remplaceriez-vous votre façon actuelle de lire l’heure ? Pourquoi ?',
+        'form.q7': '7. Quelle fonctionnalité ou amélioration rendrait cela beaucoup plus précieux pour vous ?',
+        'form.q8': '8. Nom ?',
+        'form.q9': '9. Adresse e-mail ?',
+        'form.thankYou': 'Merci d’avoir pris le temps de partager votre avis. Vos réponses aident à façonner l’avenir de BaloWaci.',
+        'form.duplicate': 'Vous avez déjà envoyé un avis avec cette adresse e-mail. Merci d’aider à façonner BaloWaci.'
+      },
+      zh: {
+        'form.q1': '1. 使用后，你认为 BaloWaci 是做什么的？',
+        'form.q2': '2. 体验中哪个部分让你感到困惑或困难？',
+        'form.q3': '3. 体验中哪个部分让你觉得最有趣或最有价值？',
+        'form.q4': '4. 你认为 BaloWaci 在现实生活中可以如何发挥作用？',
+        'form.q5': '5. 如果它作为产品（应用或手表）存在，你觉得什么价格范围比较合理？',
+        'form.q6': '6. 你会再次使用这个系统，或用它替代你现在看时间的方式吗？为什么？',
+        'form.q7': '7. 什么功能或改进会让它对你更有价值？',
+        'form.q8': '8. 姓名？',
+        'form.q9': '9. 电子邮箱？',
+        'form.thankYou': '感谢你花时间分享反馈。你的回答将帮助塑造 BaloWaci 的未来。',
+        'form.duplicate': '你已经使用这个电子邮箱提交过反馈。感谢你帮助塑造 BaloWaci。'
+      },
+      ar: {
+        'form.q1': '1. ما الذي تعتقد أن BaloWaci يفعله بعد استخدامه؟',
+        'form.q2': '2. أي جزء من التجربة كان مربكًا أو صعبًا؟',
+        'form.q3': '3. أي جزء من التجربة بدا الأكثر إثارة للاهتمام أو القيمة؟',
+        'form.q4': '4. كيف تعتقد أن BaloWaci يمكن أن يكون مفيدًا في الحياة الواقعية؟',
+        'form.q5': '5. إذا كان هذا منتجًا (تطبيقًا أو ساعة)، فما نطاق السعر الذي يبدو مناسبًا لك؟',
+        'form.q6': '6. هل ستستخدم هذا النظام مرة أخرى أو تستبدل طريقتك الحالية لمعرفة الوقت؟ ولماذا؟',
+        'form.q7': '7. ما الميزة أو التحسين الذي سيجعل هذا أكثر قيمة بالنسبة لك؟',
+        'form.q8': '8. الاسم؟',
+        'form.q9': '9. البريد الإلكتروني؟',
+        'form.thankYou': 'شكرًا لك على تخصيص الوقت لمشاركة ملاحظاتك. تساعد إجاباتك في تشكيل مستقبل BaloWaci.',
+        'form.duplicate': 'لقد أرسلت ملاحظاتك بالفعل باستخدام هذا البريد الإلكتروني. شكرًا لمساعدتك في تشكيل BaloWaci.'
+      }
+    };
+
+    Object.entries(feedbackQuestionTranslationUpdates).forEach(([language, entries]) => {
       Object.assign(translations[language], entries);
     });
 
@@ -2918,7 +3016,7 @@
       const feedbackKey = `balowaciFeedbackSubmitted:${visitorEmail.trim().toLowerCase()}`;
       if (visitorEmail && localStorage.getItem(feedbackKey)) {
         formStatus.className = 'form-status error';
-        formStatus.textContent = 'You have already submitted feedback with this email. Thank you for helping shape BaloWaci.';
+        formStatus.textContent = t('form.duplicate');
         submitButton.disabled = false;
         submitButton.textContent = submitLabel;
         return;
