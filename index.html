@@ -3004,6 +3004,8 @@
 
     const earthTextureImage = new Image();
     earthTextureImage.src = 'assets/earth-texture.jpg';
+    const moonTextureImage = new Image();
+    moonTextureImage.src = 'assets/moon-texture.jpg';
 
     const homeWatchState = {
       canvas: null,
@@ -3067,6 +3069,26 @@
       return (((date.getTime() - knownNewMoon) % lunarMonth) + lunarMonth) % lunarMonth / lunarMonth;
     }
 
+    function drawMoonTextureDisc(ctx, image, cx, cy, radius, alpha = 1) {
+      const width = image.naturalWidth;
+      const height = image.naturalHeight;
+      const left = Math.floor(cx - radius);
+      const right = Math.ceil(cx + radius);
+
+      ctx.save();
+      ctx.globalAlpha *= alpha;
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+      for (let x = left; x <= right; x += 1) {
+        const nx = (x - cx) / radius;
+        if (Math.abs(nx) > 1) continue;
+        const visibleHeight = Math.sqrt(1 - nx * nx) * radius * 2;
+        const sourceX = ((Math.asin(nx) / Math.PI) + 0.5) * width;
+        ctx.drawImage(image, sourceX, 0, 1, height, x, cy - visibleHeight / 2, 1.2, visibleHeight);
+      }
+      ctx.restore();
+    }
+
     function drawMoonPhase(phase, nightIntensity) {
       const canvas = document.getElementById('moonCanvas');
       if (!canvas) return;
@@ -3076,8 +3098,8 @@
       const cy = size / 2;
       const radius = size * 0.36;
       const waxing = phase < 0.5;
-      const illumination = phase <= 0.5 ? phase * 2 : (1 - phase) * 2;
-      const shadowWidth = radius * 2 * (1 - illumination);
+      const illumination = (1 - Math.cos(phase * Math.PI * 2)) / 2;
+      const litSide = waxing ? 1 : -1;
 
       ctx.clearRect(0, 0, size, size);
       ctx.save();
@@ -3091,22 +3113,48 @@
       ctx.arc(cx, cy, radius * 1.9, 0, Math.PI * 2);
       ctx.fill();
 
-      ctx.beginPath();
-      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-      ctx.fillStyle = '#e6dcc2';
-      ctx.fill();
-
       ctx.save();
       ctx.beginPath();
       ctx.arc(cx, cy, radius, 0, Math.PI * 2);
       ctx.clip();
-      ctx.fillStyle = '#211c22';
+
+      if (moonTextureImage.complete && moonTextureImage.naturalWidth) {
+        drawMoonTextureDisc(ctx, moonTextureImage, cx, cy, radius, 0.46);
+        drawMoonTextureDisc(ctx, moonTextureImage, cx, cy, radius, 0.58 + illumination * 0.42);
+      } else {
+        const fallback = ctx.createRadialGradient(cx - radius * 0.28, cy - radius * 0.32, 0, cx, cy, radius);
+        fallback.addColorStop(0, '#f1eee2');
+        fallback.addColorStop(0.55, '#b9b5aa');
+        fallback.addColorStop(1, '#6f6d68');
+        ctx.fillStyle = fallback;
+        ctx.fillRect(cx - radius, cy - radius, radius * 2, radius * 2);
+      }
+
+      const shadowAlpha = Math.min(0.94, 0.08 + (1 - illumination) * 0.86);
+      const shadow = ctx.createLinearGradient(
+        cx + litSide * radius * 0.5,
+        cy,
+        cx - litSide * radius * 0.92,
+        cy
+      );
+      shadow.addColorStop(0, `rgba(10, 9, 13, ${Math.max(0.02, shadowAlpha - 0.5)})`);
+      shadow.addColorStop(0.42, `rgba(10, 9, 13, ${shadowAlpha * 0.64})`);
+      shadow.addColorStop(1, `rgba(10, 9, 13, ${shadowAlpha})`);
+      ctx.fillStyle = shadow;
       ctx.fillRect(cx - radius, cy - radius, radius * 2, radius * 2);
-      ctx.globalCompositeOperation = 'destination-out';
-      ctx.beginPath();
-      ctx.ellipse(cx + (waxing ? shadowWidth / 2 : -shadowWidth / 2), cy, Math.max(1, radius - shadowWidth / 2), radius, 0, 0, Math.PI * 2);
-      ctx.fillStyle = '#000';
-      ctx.fill();
+
+      const terminator = ctx.createLinearGradient(
+        cx - litSide * radius * 0.08,
+        cy,
+        cx + litSide * radius * 0.3,
+        cy
+      );
+      terminator.addColorStop(0, 'rgba(255, 255, 255, 0)');
+      terminator.addColorStop(0.55, `rgba(255, 255, 255, ${0.08 + illumination * 0.12})`);
+      terminator.addColorStop(1, 'rgba(255, 255, 255, 0)');
+      ctx.fillStyle = terminator;
+      ctx.fillRect(cx - radius, cy - radius, radius * 2, radius * 2);
+
       ctx.restore();
 
       ctx.beginPath();
@@ -3766,6 +3814,9 @@
       initializeSectionTimeContexts();
       if (earthTextureImage.decode) {
         earthTextureImage.decode().catch(() => {});
+      }
+      if (moonTextureImage.decode) {
+        moonTextureImage.decode().finally(updateEnvironmentalSky);
       }
       initializeHomeWatchNav();
       startTimeRefresh();
