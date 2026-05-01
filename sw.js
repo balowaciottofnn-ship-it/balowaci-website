@@ -2,7 +2,10 @@ const CACHE_NAME = 'balowaci-pwa-v1';
 const APP_SHELL = [
   '/',
   '/index.html',
+  '/manifest.json',
   '/manifest.webmanifest',
+  '/icons/icon-192.png',
+  '/icons/icon-512.png',
   '/assets/balogo-circle.png',
   '/assets/balowaci-icon-192.png',
   '/assets/balowaci-icon-512.png',
