@@ -832,6 +832,18 @@
       margin-right: auto;
     }
 
+    .feedback-progress {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid rgba(212, 175, 55, 0.38);
+      border-radius: 999px;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
     .form-group {
       width: 100%;
     }
@@ -1389,13 +1401,16 @@
     .product-vision-section,
     .product-demo-section,
     .case-study-section,
+    .daily-ritual-section,
+    .premium-access-section,
     .final-cta-section {
       background: linear-gradient(180deg, rgba(0, 0, 0, 0.2), rgba(18, 0, 32, 0.66));
     }
 
     .vision-grid,
     .demo-grid,
-    .case-study-grid {
+    .case-study-grid,
+    .premium-mode-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
       gap: 18px;
@@ -1405,7 +1420,8 @@
 
     .vision-item,
     .demo-card,
-    .case-study-card {
+    .case-study-card,
+    .premium-mode-card {
       border: 1px solid rgba(212, 175, 55, 0.42);
       border-radius: 8px;
       background: rgba(0, 0, 0, 0.42);
@@ -1415,7 +1431,8 @@
 
     .vision-item h3,
     .demo-card h3,
-    .case-study-card h3 {
+    .case-study-card h3,
+    .premium-mode-card h3 {
       color: #b266ff;
       font-size: 1.08rem;
       margin-bottom: 10px;
@@ -1425,12 +1442,109 @@
 
     .vision-item p,
     .demo-card p,
-    .case-study-card p {
+    .case-study-card p,
+    .premium-mode-card p {
       max-width: none;
       margin: 0;
       color: #fff1a8;
       font-size: 1rem;
       line-height: 1.65;
+    }
+
+    .daily-ritual-card,
+    .premium-access-card {
+      max-width: 920px;
+      margin: 0 auto;
+      border: 1px solid rgba(212, 175, 55, 0.44);
+      border-radius: 8px;
+      background:
+        radial-gradient(circle at top, rgba(212, 175, 55, 0.12), transparent 42%),
+        rgba(0, 0, 0, 0.5);
+      padding: clamp(28px, 6vw, 54px);
+      box-shadow: 0 0 32px rgba(178, 102, 255, 0.11);
+    }
+
+    .daily-kicker,
+    .premium-kicker {
+      color: #d4af37;
+      font-size: 0.78rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .daily-reading {
+      max-width: 760px;
+      margin: 24px auto 0;
+      color: #fff1a8;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.45rem, 3vw, 2.15rem);
+      line-height: 1.55;
+    }
+
+    .daily-meta {
+      display: inline-flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 26px;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .theme-controls {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 30px auto 0;
+    }
+
+    .theme-button {
+      min-height: 42px;
+      padding: 10px 18px;
+      border: 1px solid rgba(212, 175, 55, 0.56);
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.24);
+      color: #d4af37;
+      font: inherit;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .theme-button:hover,
+    .theme-button.active {
+      background: #d4af37;
+      color: #080711;
+      box-shadow: 0 0 18px rgba(212, 175, 55, 0.24);
+    }
+
+    .save-view-status {
+      min-height: 24px;
+      margin-top: 18px;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 0.9rem;
+    }
+
+    body[data-theme="purple-night"] {
+      background: radial-gradient(circle at center, #2b0052 0%, #120020 45%, #000 100%);
+    }
+
+    body[data-theme="solar-dawn"] {
+      background: radial-gradient(circle at 50% 18%, rgba(212, 175, 55, 0.22), transparent 34%), linear-gradient(180deg, #120914 0%, #050304 100%);
+    }
+
+    body[data-theme="moon-phase"] {
+      background: radial-gradient(circle at 50% 18%, rgba(198, 212, 226, 0.16), transparent 34%), linear-gradient(180deg, #07111f 0%, #020407 100%);
+    }
+
+    body[data-theme="cultural-compass"] {
+      background: radial-gradient(circle at 50% 18%, rgba(178, 102, 255, 0.16), transparent 32%), radial-gradient(circle at center, #201000 0%, #070100 62%, #000 100%);
     }
 
     .section-time-context {
@@ -1809,6 +1923,21 @@
     <span class="watch-side-word waci" aria-hidden="true">Waci</span>
   </section>
 
+  <section id="daily-ritual" class="daily-ritual-section">
+    <div class="container">
+      <div class="daily-ritual-card">
+        <p class="daily-kicker" data-i18n="daily.kicker">Today on BaloWaci</p>
+        <h2 data-i18n="daily.title">Your Daily Time Reading</h2>
+        <p id="dailyReading" class="daily-reading" data-i18n="daily.fallback">Time is opening a quiet window. Pause, choose your direction, and move with intention.</p>
+        <div class="daily-meta">
+          <span id="dailySunState">Solar State</span>
+          <span id="dailyMoonState">Moon Phase</span>
+          <span id="dailyLocalTime">--:--</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section id="watch-showcase" class="watch-showcase">
     <div class="showcase-inner">
       <p class="showcase-kicker" data-i18n="showcase.kicker">BaloWaci Concept Timepiece</p>
@@ -2004,6 +2133,48 @@
     </div>
   </section>
 
+  <section id="premium-access" class="premium-access-section">
+    <div class="container">
+      <div class="premium-access-card">
+        <p class="premium-kicker" data-i18n="premium.kicker">Premium Direction</p>
+        <h2 data-i18n="premium.title">Unlock Deeper Time Modes</h2>
+        <p data-i18n="premium.body">BaloWaci Premium will feel like opening new layers of the watch: personal regions, cultural readings, saved views, and collectible watchface themes.</p>
+
+        <div class="premium-mode-grid">
+          <article class="premium-mode-card">
+            <h3 data-i18n="premium.standardTitle">Standard Mode</h3>
+            <p data-i18n="premium.standardBody">The free public experience: live watch navigation, global time, and core product story.</p>
+          </article>
+          <article class="premium-mode-card">
+            <h3 data-i18n="premium.culturalTitle">Cultural Mode</h3>
+            <p data-i18n="premium.culturalBody">A deeper layer for cultural interpretation, daily readings, and symbolic time meaning.</p>
+          </article>
+          <article class="premium-mode-card">
+            <h3 data-i18n="premium.worldTitle">World Mode</h3>
+            <p data-i18n="premium.worldBody">Save favorite regions and return to a personal global time view.</p>
+          </article>
+          <article class="premium-mode-card">
+            <h3 data-i18n="premium.collectorTitle">Collector Themes</h3>
+            <p data-i18n="premium.collectorBody">Switch between luxury watchface moods designed for day, night, moon, and compass experiences.</p>
+          </article>
+        </div>
+
+        <div class="theme-controls" aria-label="BaloWaci theme controls">
+          <button type="button" class="theme-button" data-theme-option="purple-night" data-i18n="theme.purple">Purple Night</button>
+          <button type="button" class="theme-button" data-theme-option="solar-dawn" data-i18n="theme.solar">Solar Dawn</button>
+          <button type="button" class="theme-button" data-theme-option="moon-phase" data-i18n="theme.moon">Moon Phase</button>
+          <button type="button" class="theme-button" data-theme-option="cultural-compass" data-i18n="theme.compass">Cultural Compass</button>
+        </div>
+
+        <div class="final-cta-actions">
+          <button type="button" id="saveTimeView" class="luxury-btn primary" data-i18n="premium.save">Save My Time View</button>
+          <a class="luxury-btn secondary" href="#join" data-i18n="premium.waitlist">Join Premium Waitlist</a>
+        </div>
+        <p id="saveViewStatus" class="save-view-status" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>
+
   <!-- Product Journey Section -->
   <section id="product-journey">
     <div class="container">
@@ -2136,6 +2307,8 @@
       <p data-i18n="feedback.body">Help us understand your perspective on BaloWaci. Your insights will shape the future of this unified time system.</p>
       
       <form class="feedback-form" id="feedbackForm">
+        <div id="feedbackProgress" class="feedback-progress" data-i18n="feedback.progress">Question 0 of 9</div>
+
         <div class="form-group">
           <label for="impression" data-i18n="form.q1">1. What do you think BaloWaci does after using it?</label>
           <textarea id="impression" name="impression" required></textarea>
@@ -3079,6 +3252,91 @@
       Object.assign(translations[language], entries);
     });
 
+    const premiumExperienceTranslations = {
+      en: {
+        'daily.kicker': 'Today on BaloWaci',
+        'daily.title': 'Your Daily Time Reading',
+        'daily.fallback': 'Time is opening a quiet window. Pause, choose your direction, and move with intention.',
+        'daily.sun.day': 'Daylight',
+        'daily.sun.night': 'Night',
+        'daily.sun.dawn': 'Dawn / Dusk',
+        'daily.moon.new': 'New Moon',
+        'daily.moon.waxing': 'Waxing Moon',
+        'daily.moon.full': 'Full Moon',
+        'daily.moon.waning': 'Waning Moon',
+        'daily.reading.morning': 'A building hour. Start with clarity, then let the system carry your direction.',
+        'daily.reading.day': 'A movement hour. Modern time moves forward; cultural time asks you to stay aware of meaning.',
+        'daily.reading.evening': 'A transition hour. Let the day close slowly and choose what deserves your attention next.',
+        'daily.reading.night': 'A quiet hour. The watch turns inward, asking you to protect focus before the next cycle begins.',
+        'premium.kicker': 'Premium Direction',
+        'premium.title': 'Unlock Deeper Time Modes',
+        'premium.body': 'BaloWaci Premium will feel like opening new layers of the watch: personal regions, cultural readings, saved views, and collectible watchface themes.',
+        'premium.standardTitle': 'Standard Mode',
+        'premium.standardBody': 'The free public experience: live watch navigation, global time, and core product story.',
+        'premium.culturalTitle': 'Cultural Mode',
+        'premium.culturalBody': 'A deeper layer for cultural interpretation, daily readings, and symbolic time meaning.',
+        'premium.worldTitle': 'World Mode',
+        'premium.worldBody': 'Save favorite regions and return to a personal global time view.',
+        'premium.collectorTitle': 'Collector Themes',
+        'premium.collectorBody': 'Switch between luxury watchface moods designed for day, night, moon, and compass experiences.',
+        'premium.save': 'Save My Time View',
+        'premium.waitlist': 'Join Premium Waitlist',
+        'premium.saved': 'Your BaloWaci view is saved on this device.',
+        'theme.purple': 'Purple Night',
+        'theme.solar': 'Solar Dawn',
+        'theme.moon': 'Moon Phase',
+        'theme.compass': 'Cultural Compass',
+        'feedback.progress': 'Question {count} of 9'
+      },
+      sw: {
+        'daily.kicker': 'Leo kwenye BaloWaci', 'daily.title': 'Usomaji Wako wa Wakati wa Leo', 'daily.fallback': 'Wakati unafungua nafasi tulivu. Simama, chagua mwelekeo, na songa kwa nia.', 'premium.kicker': 'Mwelekeo wa Premium', 'premium.title': 'Fungua Njia za Kina za Wakati', 'premium.body': 'BaloWaci Premium itafungua tabaka mpya: maeneo binafsi, usomaji wa kitamaduni, mitazamo iliyohifadhiwa, na mandhari za saa.', 'premium.standardTitle': 'Njia ya Kawaida', 'premium.standardBody': 'Uzoefu wa bure: urambazaji wa saa hai, wakati wa dunia, na hadithi kuu ya bidhaa.', 'premium.culturalTitle': 'Njia ya Kitamaduni', 'premium.culturalBody': 'Tabaka la kina la tafsiri ya kitamaduni, usomaji wa kila siku, na maana ya ishara.', 'premium.worldTitle': 'Njia ya Dunia', 'premium.worldBody': 'Hifadhi maeneo unayopenda na urudi kwenye mtazamo wako wa wakati wa dunia.', 'premium.collectorTitle': 'Mandhari za Mkusanyaji', 'premium.collectorBody': 'Badilisha hisia za saa kwa mchana, usiku, mwezi, na dira.', 'premium.save': 'Hifadhi Mtazamo Wangu', 'premium.waitlist': 'Jiunge na Orodha ya Premium', 'premium.saved': 'Mtazamo wako wa BaloWaci umehifadhiwa kwenye kifaa hiki.', 'theme.purple': 'Usiku wa Zambarau', 'theme.solar': 'Alfajiri ya Jua', 'theme.moon': 'Awamu ya Mwezi', 'theme.compass': 'Dira ya Kitamaduni', 'feedback.progress': 'Swali {count} kati ya 9'
+      },
+      es: {
+        'daily.kicker': 'Hoy en BaloWaci', 'daily.title': 'Tu Lectura Diaria del Tiempo', 'daily.fallback': 'El tiempo abre una ventana tranquila. Pausa, elige tu dirección y avanza con intención.', 'premium.kicker': 'Dirección Premium', 'premium.title': 'Desbloquea Modos de Tiempo Más Profundos', 'premium.body': 'BaloWaci Premium se sentirá como abrir nuevas capas del reloj: regiones personales, lecturas culturales, vistas guardadas y temas coleccionables.', 'premium.standardTitle': 'Modo Estándar', 'premium.standardBody': 'La experiencia pública gratuita: navegación con reloj vivo, tiempo global e historia central del producto.', 'premium.culturalTitle': 'Modo Cultural', 'premium.culturalBody': 'Una capa más profunda para interpretación cultural, lecturas diarias y significado simbólico del tiempo.', 'premium.worldTitle': 'Modo Mundo', 'premium.worldBody': 'Guarda regiones favoritas y vuelve a una vista personal del tiempo global.', 'premium.collectorTitle': 'Temas de Colección', 'premium.collectorBody': 'Cambia entre estilos de reloj para día, noche, luna y brújula.', 'premium.save': 'Guardar Mi Vista', 'premium.waitlist': 'Unirme a Premium', 'premium.saved': 'Tu vista de BaloWaci se guardó en este dispositivo.', 'theme.purple': 'Noche Púrpura', 'theme.solar': 'Amanecer Solar', 'theme.moon': 'Fase Lunar', 'theme.compass': 'Brújula Cultural', 'feedback.progress': 'Pregunta {count} de 9'
+      },
+      pt: {
+        'daily.kicker': 'Hoje na BaloWaci', 'daily.title': 'Sua Leitura Diária do Tempo', 'daily.fallback': 'O tempo abre uma janela silenciosa. Pause, escolha sua direção e avance com intenção.', 'premium.kicker': 'Direção Premium', 'premium.title': 'Desbloqueie Modos Mais Profundos de Tempo', 'premium.body': 'BaloWaci Premium parecerá abrir novas camadas do relógio: regiões pessoais, leituras culturais, visualizações salvas e temas colecionáveis.', 'premium.standardTitle': 'Modo Padrão', 'premium.standardBody': 'A experiência pública gratuita: navegação pelo relógio vivo, tempo global e história central do produto.', 'premium.culturalTitle': 'Modo Cultural', 'premium.culturalBody': 'Uma camada mais profunda para interpretação cultural, leituras diárias e significado simbólico do tempo.', 'premium.worldTitle': 'Modo Mundo', 'premium.worldBody': 'Salve regiões favoritas e volte para uma visão pessoal do tempo global.', 'premium.collectorTitle': 'Temas de Colecionador', 'premium.collectorBody': 'Alterne entre estilos de relógio para dia, noite, lua e bússola.', 'premium.save': 'Salvar Minha Visão', 'premium.waitlist': 'Entrar na Lista Premium', 'premium.saved': 'Sua visão da BaloWaci foi salva neste dispositivo.', 'theme.purple': 'Noite Roxa', 'theme.solar': 'Amanhecer Solar', 'theme.moon': 'Fase da Lua', 'theme.compass': 'Bússola Cultural', 'feedback.progress': 'Pergunta {count} de 9'
+      },
+      fr: {
+        'daily.kicker': 'Aujourd’hui sur BaloWaci', 'daily.title': 'Votre Lecture Quotidienne du Temps', 'daily.fallback': 'Le temps ouvre une fenêtre calme. Faites une pause, choisissez votre direction et avancez avec intention.', 'premium.kicker': 'Direction Premium', 'premium.title': 'Déverrouillez des Modes de Temps Plus Profonds', 'premium.body': 'BaloWaci Premium donnera accès à de nouvelles couches de la montre : régions personnelles, lectures culturelles, vues sauvegardées et thèmes de collection.', 'premium.standardTitle': 'Mode Standard', 'premium.standardBody': 'L’expérience publique gratuite : navigation par montre vivante, temps mondial et récit central du produit.', 'premium.culturalTitle': 'Mode Culturel', 'premium.culturalBody': 'Une couche plus profonde pour l’interprétation culturelle, les lectures quotidiennes et le sens symbolique du temps.', 'premium.worldTitle': 'Mode Monde', 'premium.worldBody': 'Enregistrez vos régions favorites et retrouvez votre vue personnelle du temps mondial.', 'premium.collectorTitle': 'Thèmes Collection', 'premium.collectorBody': 'Changez entre des ambiances de montre pour le jour, la nuit, la lune et la boussole.', 'premium.save': 'Sauvegarder Ma Vue', 'premium.waitlist': 'Rejoindre Premium', 'premium.saved': 'Votre vue BaloWaci est sauvegardée sur cet appareil.', 'theme.purple': 'Nuit Violette', 'theme.solar': 'Aube Solaire', 'theme.moon': 'Phase Lunaire', 'theme.compass': 'Boussole Culturelle', 'feedback.progress': 'Question {count} sur 9'
+      },
+      zh: {
+        'daily.kicker': '今日 BaloWaci', 'daily.title': '你的每日时间解读', 'daily.fallback': '时间正在打开一个安静的窗口。暂停，选择方向，然后有意识地前进。', 'premium.kicker': '高级方向', 'premium.title': '解锁更深层的时间模式', 'premium.body': 'BaloWaci Premium 将打开手表的新层次：个人地区、文化解读、保存视图和收藏主题。', 'premium.standardTitle': '标准模式', 'premium.standardBody': '免费公开体验：实时手表导航、全球时间和核心产品故事。', 'premium.culturalTitle': '文化模式', 'premium.culturalBody': '更深入的文化解释、每日解读和象征性时间意义。', 'premium.worldTitle': '世界模式', 'premium.worldBody': '保存喜爱的地区，并返回个人全球时间视图。', 'premium.collectorTitle': '收藏主题', 'premium.collectorBody': '切换日间、夜晚、月相和指南针风格的高级表盘。', 'premium.save': '保存我的时间视图', 'premium.waitlist': '加入高级候补名单', 'premium.saved': '你的 BaloWaci 视图已保存在此设备上。', 'theme.purple': '紫色之夜', 'theme.solar': '太阳黎明', 'theme.moon': '月相', 'theme.compass': '文化指南针', 'feedback.progress': '第 {count} / 9 题'
+      },
+      ar: {
+        'daily.kicker': 'اليوم في BaloWaci', 'daily.title': 'قراءتك اليومية للوقت', 'daily.fallback': 'يفتح الوقت نافذة هادئة. توقّف، اختر اتجاهك، وتحرك بقصد.', 'premium.kicker': 'اتجاه Premium', 'premium.title': 'افتح أوضاعًا أعمق للوقت', 'premium.body': 'سيشعر BaloWaci Premium كأنه يفتح طبقات جديدة من الساعة: مناطق شخصية، قراءات ثقافية، مشاهد محفوظة، وسمات قابلة للجمع.', 'premium.standardTitle': 'الوضع القياسي', 'premium.standardBody': 'التجربة المجانية العامة: تنقل الساعة الحية، الوقت العالمي، وقصة المنتج الأساسية.', 'premium.culturalTitle': 'الوضع الثقافي', 'premium.culturalBody': 'طبقة أعمق للتفسير الثقافي والقراءات اليومية والمعنى الرمزي للوقت.', 'premium.worldTitle': 'وضع العالم', 'premium.worldBody': 'احفظ المناطق المفضلة وعد إلى عرضك الشخصي للوقت العالمي.', 'premium.collectorTitle': 'سمات المقتنين', 'premium.collectorBody': 'بدّل بين أجواء فاخرة لليوم والليل والقمر والبوصلة.', 'premium.save': 'احفظ عرض الوقت', 'premium.waitlist': 'انضم إلى قائمة Premium', 'premium.saved': 'تم حفظ عرض BaloWaci على هذا الجهاز.', 'theme.purple': 'ليلة بنفسجية', 'theme.solar': 'فجر شمسي', 'theme.moon': 'طور القمر', 'theme.compass': 'بوصلة ثقافية', 'feedback.progress': 'السؤال {count} من 9'
+      }
+    };
+
+    Object.entries(premiumExperienceTranslations).forEach(([language, entries]) => {
+      Object.assign(translations[language], entries);
+    });
+
+    const dailyStateTranslationUpdates = {
+      sw: {
+        'daily.sun.day': 'Mchana', 'daily.sun.night': 'Usiku', 'daily.sun.dawn': 'Alfajiri / Jioni', 'daily.moon.new': 'Mwezi Mpya', 'daily.moon.waxing': 'Mwezi Unaokua', 'daily.moon.full': 'Mwezi Kamili', 'daily.moon.waning': 'Mwezi Unaopungua', 'daily.reading.morning': 'Saa ya kujenga. Anza kwa uwazi, kisha acha mfumo ubebe mwelekeo wako.', 'daily.reading.day': 'Saa ya mwendo. Wakati wa kisasa unasonga mbele; wakati wa kitamaduni unakuomba ukae na maana.', 'daily.reading.evening': 'Saa ya mpito. Funga siku taratibu na chagua kinachostahili umakini wako.', 'daily.reading.night': 'Saa tulivu. Saa inageuka ndani, ikiomba ulinde umakini kabla ya mzunguko mpya.'
+      },
+      es: {
+        'daily.sun.day': 'Luz del día', 'daily.sun.night': 'Noche', 'daily.sun.dawn': 'Amanecer / Atardecer', 'daily.moon.new': 'Luna Nueva', 'daily.moon.waxing': 'Luna Creciente', 'daily.moon.full': 'Luna Llena', 'daily.moon.waning': 'Luna Menguante', 'daily.reading.morning': 'Una hora de construcción. Empieza con claridad y deja que el sistema guíe tu dirección.', 'daily.reading.day': 'Una hora de movimiento. El tiempo moderno avanza; el tiempo cultural te pide notar el significado.', 'daily.reading.evening': 'Una hora de transición. Cierra el día lentamente y elige qué merece tu atención.', 'daily.reading.night': 'Una hora silenciosa. El reloj mira hacia adentro y te pide proteger tu enfoque.'
+      },
+      pt: {
+        'daily.sun.day': 'Luz do dia', 'daily.sun.night': 'Noite', 'daily.sun.dawn': 'Amanhecer / Anoitecer', 'daily.moon.new': 'Lua Nova', 'daily.moon.waxing': 'Lua Crescente', 'daily.moon.full': 'Lua Cheia', 'daily.moon.waning': 'Lua Minguante', 'daily.reading.morning': 'Uma hora de construção. Comece com clareza e deixe o sistema carregar sua direção.', 'daily.reading.day': 'Uma hora de movimento. O tempo moderno avança; o tempo cultural pede consciência de significado.', 'daily.reading.evening': 'Uma hora de transição. Feche o dia devagar e escolha o que merece sua atenção.', 'daily.reading.night': 'Uma hora silenciosa. O relógio se volta para dentro e pede que você proteja o foco.'
+      },
+      fr: {
+        'daily.sun.day': 'Lumière du jour', 'daily.sun.night': 'Nuit', 'daily.sun.dawn': 'Aube / Crépuscule', 'daily.moon.new': 'Nouvelle Lune', 'daily.moon.waxing': 'Lune Croissante', 'daily.moon.full': 'Pleine Lune', 'daily.moon.waning': 'Lune Décroissante', 'daily.reading.morning': 'Une heure de construction. Commencez avec clarté et laissez le système porter votre direction.', 'daily.reading.day': 'Une heure de mouvement. Le temps moderne avance; le temps culturel invite à rester conscient du sens.', 'daily.reading.evening': 'Une heure de transition. Fermez la journée lentement et choisissez ce qui mérite votre attention.', 'daily.reading.night': 'Une heure calme. La montre se tourne vers l’intérieur et protège votre concentration.'
+      },
+      zh: {
+        'daily.sun.day': '白昼', 'daily.sun.night': '夜晚', 'daily.sun.dawn': '黎明 / 黄昏', 'daily.moon.new': '新月', 'daily.moon.waxing': '盈月', 'daily.moon.full': '满月', 'daily.moon.waning': '亏月', 'daily.reading.morning': '这是建立清晰方向的时刻。先清楚开始，再让系统带动你的方向。', 'daily.reading.day': '这是行动的时刻。现代时间向前，文化时间提醒你保留意义。', 'daily.reading.evening': '这是过渡的时刻。让一天慢慢收束，选择真正值得关注的事。', 'daily.reading.night': '这是安静的时刻。手表向内转动，提醒你守住专注。'
+      },
+      ar: {
+        'daily.sun.day': 'ضوء النهار', 'daily.sun.night': 'الليل', 'daily.sun.dawn': 'الفجر / الغسق', 'daily.moon.new': 'قمر جديد', 'daily.moon.waxing': 'قمر متزايد', 'daily.moon.full': 'بدر', 'daily.moon.waning': 'قمر متناقص', 'daily.reading.morning': 'ساعة بناء. ابدأ بوضوح، ثم دع النظام يحمل اتجاهك.', 'daily.reading.day': 'ساعة حركة. الوقت الحديث يتقدم، والوقت الثقافي يطلب منك الانتباه للمعنى.', 'daily.reading.evening': 'ساعة انتقال. أغلق اليوم ببطء واختر ما يستحق انتباهك.', 'daily.reading.night': 'ساعة هادئة. تتجه الساعة إلى الداخل وتطلب منك حماية تركيزك.'
+      }
+    };
+
+    Object.entries(dailyStateTranslationUpdates).forEach(([language, entries]) => {
+      Object.assign(translations[language], entries);
+    });
+
     function t(key) {
       return translations[currentLanguage]?.[key] || translations.en[key] || key;
     }
@@ -3102,6 +3360,8 @@
       if (languageSelect) {
         languageSelect.value = currentLanguage;
       }
+      updateDailyRitual();
+      updateFeedbackProgress();
     }
 
     // Initialize stars background
@@ -3238,6 +3498,7 @@
           formStatus.className = 'form-status success';
           formStatus.textContent = t('form.success');
           form.reset();
+          updateFeedbackProgress();
           setTimeout(() => {
             formStatus.style.display = 'none';
           }, 5000);
@@ -3259,6 +3520,93 @@
     function startTimeRefresh() {
       loadTimeInterpretation();
       setInterval(loadTimeInterpretation, 10000);
+    }
+
+    function getMoonPhaseLabel(phase) {
+      if (phase < 0.08 || phase > 0.92) return t('daily.moon.new');
+      if (phase < 0.42) return t('daily.moon.waxing');
+      if (phase < 0.58) return t('daily.moon.full');
+      return t('daily.moon.waning');
+    }
+
+    function updateDailyRitual() {
+      const reading = document.getElementById('dailyReading');
+      if (!reading) return;
+      const now = new Date();
+      const hour = now.getHours();
+      const solar = getLocalSolarIntensity(now);
+      const phase = getMoonPhase(now);
+      let readingKey = 'daily.reading.day';
+      if (hour < 5 || hour >= 22) {
+        readingKey = 'daily.reading.night';
+      } else if (hour < 11) {
+        readingKey = 'daily.reading.morning';
+      } else if (hour >= 17) {
+        readingKey = 'daily.reading.evening';
+      }
+      const sunLabel = solar < 0.08 ? t('daily.sun.night') : (solar > 0.38 ? t('daily.sun.day') : t('daily.sun.dawn'));
+      reading.textContent = t(readingKey);
+      const sunState = document.getElementById('dailySunState');
+      const moonState = document.getElementById('dailyMoonState');
+      const localTime = document.getElementById('dailyLocalTime');
+      if (sunState) sunState.textContent = sunLabel;
+      if (moonState) moonState.textContent = getMoonPhaseLabel(phase);
+      if (localTime) localTime.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function applyBaloWaciTheme(theme) {
+      const nextTheme = theme || 'purple-night';
+      document.body.dataset.theme = nextTheme;
+      localStorage.setItem('balowaciTheme', nextTheme);
+      document.querySelectorAll('[data-theme-option]').forEach((button) => {
+        button.classList.toggle('active', button.dataset.themeOption === nextTheme);
+      });
+    }
+
+    function restoreSavedTimeView() {
+      const savedTheme = localStorage.getItem('balowaciTheme') || 'purple-night';
+      applyBaloWaciTheme(savedTheme);
+      const savedIndex = Number(localStorage.getItem('balowaciSavedWatchIndex'));
+      if (Number.isInteger(savedIndex) && savedIndex >= 0 && savedIndex < homeWatchNavItems.length) {
+        const segment = (Math.PI * 2) / homeWatchNavItems.length;
+        homeWatchState.selectedIndex = savedIndex;
+        homeWatchState.rotation = -savedIndex * segment;
+        homeWatchState.targetRotation = homeWatchState.rotation;
+      }
+    }
+
+    function initializePremiumExperience() {
+      restoreSavedTimeView();
+      document.querySelectorAll('[data-theme-option]').forEach((button) => {
+        button.addEventListener('click', () => {
+          applyBaloWaciTheme(button.dataset.themeOption);
+        });
+      });
+      const saveButton = document.getElementById('saveTimeView');
+      const saveStatus = document.getElementById('saveViewStatus');
+      saveButton?.addEventListener('click', () => {
+        localStorage.setItem('balowaciSavedWatchIndex', String(homeWatchState.selectedIndex));
+        localStorage.setItem('balowaciLanguage', currentLanguage);
+        if (saveStatus) saveStatus.textContent = t('premium.saved');
+      });
+      updateDailyRitual();
+      setInterval(updateDailyRitual, 60000);
+    }
+
+    function updateFeedbackProgress() {
+      const progress = document.getElementById('feedbackProgress');
+      const form = document.getElementById('feedbackForm');
+      if (!progress || !form) return;
+      const fields = Array.from(form.querySelectorAll('textarea[required], input[required]'));
+      const completed = fields.filter((field) => field.value.trim()).length;
+      progress.textContent = t('feedback.progress').replace('{count}', String(completed));
+    }
+
+    function initializeFeedbackProgress() {
+      const form = document.getElementById('feedbackForm');
+      if (!form) return;
+      form.addEventListener('input', updateFeedbackProgress);
+      updateFeedbackProgress();
     }
 
     const homeWatchNavItems = [
@@ -4227,8 +4575,10 @@
       if (moonTextureImage.decode) {
         moonTextureImage.decode().finally(updateEnvironmentalSky);
       }
+      initializePremiumExperience();
       initializeHomeWatchNav();
       startTimeRefresh();
+      initializeFeedbackProgress();
       document.getElementById('feedbackForm').addEventListener('submit', handleFeedbackSubmit);
     });
   </script>
