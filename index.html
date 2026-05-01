@@ -4115,56 +4115,42 @@
       ctx.restore();
     }
 
-    function drawWatchLedLights(ctx, radius, faceRadius, now, beatAmount, rotation) {
-      const ledColors = ['#f5d061', '#b266ff', '#4fd7ff', '#ff7a2f', '#ffffff'];
+    function drawWatchSurfaceGlow(ctx, radius, now, beatAmount, rotation, mode = 'back') {
       const time = now.getTime();
+      const slowHue = (time * (mode === 'back' ? 0.012 : 0.026) + rotation * 38) % 360;
+      const fastHue = (time * (mode === 'back' ? 0.035 : 0.052) - rotation * 56) % 360;
+      const pulse = 0.5 + 0.5 * Math.sin(time * (mode === 'back' ? 0.0012 : 0.0021));
+      const outer = mode === 'back' ? radius * 1.13 : radius * 1.03;
+      const inner = mode === 'back' ? radius * 0.72 : radius * 0.78;
+      const lineWidth = Math.max(8, radius * (mode === 'back' ? 0.1 : 0.075));
 
       ctx.save();
       ctx.globalCompositeOperation = 'lighter';
+      ctx.lineCap = 'round';
+      ctx.shadowBlur = radius * (mode === 'back' ? 0.16 : 0.12);
 
-      for (let i = 0; i < 36; i += 1) {
-        const angle = -Math.PI / 2 + (i / 36) * Math.PI * 2 + rotation * 0.18 + time * 0.00018;
-        const pulse = 0.5 + 0.5 * Math.sin(time * 0.004 + i * 0.7);
-        const color = ledColors[i % ledColors.length];
-        const ledRadius = radius * (1.025 + pulse * 0.018);
-        const size = 2.4 + pulse * 2 + beatAmount * 2.6;
-        const x = Math.cos(angle) * ledRadius;
-        const y = Math.sin(angle) * ledRadius;
-        const glow = ctx.createRadialGradient(x, y, 0, x, y, size * 5.8);
-        glow.addColorStop(0, color);
-        glow.addColorStop(0.22, `${color}bb`);
-        glow.addColorStop(1, `${color}00`);
-        ctx.fillStyle = glow;
+      for (let i = 0; i < 4; i += 1) {
+        const start = -Math.PI / 2 + rotation * (mode === 'back' ? 0.28 : -0.36) + i * Math.PI / 2 + time * (mode === 'back' ? 0.00022 : -0.00034);
+        const end = start + Math.PI * (0.55 + pulse * 0.18);
+        const hue = i % 2 === 0 ? slowHue + i * 38 : fastHue + i * 48;
         ctx.beginPath();
-        ctx.arc(x, y, size * 5.8, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = color;
-        ctx.beginPath();
-        ctx.arc(x, y, size, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.arc(0, 0, outer - i * radius * 0.022, start, end);
+        ctx.strokeStyle = `hsla(${hue}, 95%, ${mode === 'back' ? 62 : 58}%, ${0.18 + pulse * 0.24 + beatAmount * 0.18})`;
+        ctx.lineWidth = lineWidth * (1 - i * 0.12);
+        ctx.shadowColor = `hsla(${hue}, 95%, 60%, ${0.55 + beatAmount * 0.25})`;
+        ctx.stroke();
       }
 
-      for (let i = 0; i < 24; i += 1) {
-        const angle = -Math.PI / 2 + (i / 24) * Math.PI * 2 - rotation * 0.28 - time * 0.00024;
-        const pulse = 0.52 + 0.48 * Math.sin(time * 0.005 + i);
-        const color = ledColors[(i + 2) % ledColors.length];
-        const ledRadius = faceRadius * (1.015 + pulse * 0.014);
-        const size = 2 + pulse * 1.6 + beatAmount * 2;
-        const x = Math.cos(angle) * ledRadius;
-        const y = Math.sin(angle) * ledRadius;
-        const glow = ctx.createRadialGradient(x, y, 0, x, y, size * 5);
-        glow.addColorStop(0, color);
-        glow.addColorStop(0.32, `${color}aa`);
-        glow.addColorStop(1, `${color}00`);
-        ctx.fillStyle = glow;
-        ctx.beginPath();
-        ctx.arc(x, y, size * 5, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = color;
-        ctx.beginPath();
-        ctx.arc(x, y, size, 0, Math.PI * 2);
-        ctx.fill();
-      }
+      const wash = ctx.createRadialGradient(0, 0, inner, 0, 0, outer * 1.08);
+      wash.addColorStop(0, `hsla(${slowHue}, 96%, 62%, 0)`);
+      wash.addColorStop(0.48, `hsla(${slowHue}, 96%, 62%, ${0.04 + pulse * 0.08 + beatAmount * 0.04})`);
+      wash.addColorStop(0.76, `hsla(${fastHue}, 96%, 60%, ${0.08 + pulse * 0.11 + beatAmount * 0.06})`);
+      wash.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = wash;
+      ctx.beginPath();
+      ctx.arc(0, 0, outer * 1.08, 0, Math.PI * 2);
+      ctx.arc(0, 0, inner, 0, Math.PI * 2, true);
+      ctx.fill();
 
       ctx.restore();
     }
@@ -4401,7 +4387,7 @@
       ctx.arc(0, 0, radius * 1.12, 0, Math.PI * 2);
       ctx.fill();
 
-      drawWatchLedLights(ctx, radius, faceRadius, now, beatAmount, state.rotation);
+      drawWatchSurfaceGlow(ctx, radius, now, beatAmount, state.rotation, 'back');
 
       if (solarIntensity > 0.04) {
         ctx.save();
@@ -4475,8 +4461,8 @@
       ctx.arc(0, 0, faceRadius, 0, Math.PI * 2);
       ctx.fillStyle = faceGradient;
       ctx.fill();
-      drawWatchLedLights(ctx, radius * 0.72, faceRadius, now, beatAmount * 0.7, -state.rotation);
       ctx.lineWidth = 3;
+      drawWatchSurfaceGlow(ctx, faceRadius, now, beatAmount * 0.7, -state.rotation, 'ring');
       ctx.strokeStyle = '#d4af37';
       ctx.stroke();
 
