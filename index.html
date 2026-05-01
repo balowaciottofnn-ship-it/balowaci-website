@@ -1403,6 +1403,7 @@
     .case-study-section,
     .daily-ritual-section,
     .premium-access-section,
+    .monetization-section,
     .final-cta-section {
       background: linear-gradient(180deg, rgba(0, 0, 0, 0.2), rgba(18, 0, 32, 0.66));
     }
@@ -1410,7 +1411,8 @@
     .vision-grid,
     .demo-grid,
     .case-study-grid,
-    .premium-mode-grid {
+    .premium-mode-grid,
+    .pricing-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
       gap: 18px;
@@ -1421,7 +1423,8 @@
     .vision-item,
     .demo-card,
     .case-study-card,
-    .premium-mode-card {
+    .premium-mode-card,
+    .pricing-card {
       border: 1px solid rgba(212, 175, 55, 0.42);
       border-radius: 8px;
       background: rgba(0, 0, 0, 0.42);
@@ -1432,7 +1435,8 @@
     .vision-item h3,
     .demo-card h3,
     .case-study-card h3,
-    .premium-mode-card h3 {
+    .premium-mode-card h3,
+    .pricing-card h3 {
       color: #b266ff;
       font-size: 1.08rem;
       margin-bottom: 10px;
@@ -1443,7 +1447,8 @@
     .vision-item p,
     .demo-card p,
     .case-study-card p,
-    .premium-mode-card p {
+    .premium-mode-card p,
+    .pricing-card p {
       max-width: none;
       margin: 0;
       color: #fff1a8;
@@ -1452,7 +1457,8 @@
     }
 
     .daily-ritual-card,
-    .premium-access-card {
+    .premium-access-card,
+    .monetization-card {
       max-width: 920px;
       margin: 0 auto;
       border: 1px solid rgba(212, 175, 55, 0.44);
@@ -1465,7 +1471,8 @@
     }
 
     .daily-kicker,
-    .premium-kicker {
+    .premium-kicker,
+    .monetization-kicker {
       color: #d4af37;
       font-size: 0.78rem;
       letter-spacing: 0.24em;
@@ -1529,6 +1536,56 @@
       margin-top: 18px;
       color: rgba(255, 255, 255, 0.78);
       font-size: 0.9rem;
+    }
+
+    .pricing-card.featured {
+      border-color: rgba(245, 208, 97, 0.82);
+      background:
+        radial-gradient(circle at top, rgba(212, 175, 55, 0.14), transparent 44%),
+        rgba(0, 0, 0, 0.52);
+      box-shadow: 0 0 28px rgba(212, 175, 55, 0.14);
+    }
+
+    .price {
+      display: block;
+      margin: 14px 0 12px;
+      color: #f5d061;
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      line-height: 1;
+    }
+
+    .pricing-card ul {
+      margin: 18px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .pricing-card li {
+      position: relative;
+      margin: 10px 0;
+      padding-left: 18px;
+      color: rgba(255, 255, 255, 0.78);
+      line-height: 1.55;
+    }
+
+    .pricing-card li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.7em;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #d4af37;
+    }
+
+    .pricing-note {
+      max-width: 760px;
+      margin: 28px auto 0;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.95rem;
+      line-height: 1.7;
     }
 
     body[data-theme="purple-night"] {
@@ -2171,6 +2228,58 @@
           <a class="luxury-btn secondary" href="#join" data-i18n="premium.waitlist">Join Premium Waitlist</a>
         </div>
         <p id="saveViewStatus" class="save-view-status" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="monetization" class="monetization-section">
+    <div class="container">
+      <div class="monetization-card">
+        <p class="monetization-kicker" data-i18n="money.kicker">Digital Prototype Access</p>
+        <h2 data-i18n="money.title">A Sellable BaloWaci Experience</h2>
+        <p data-i18n="money.body">The public website introduces the invention. Premium access turns BaloWaci into a personal time system people can return to, save, customize, and support early.</p>
+
+        <div class="pricing-grid">
+          <article class="pricing-card">
+            <h3 data-i18n="money.freeTitle">Public Prototype</h3>
+            <span class="price" data-i18n="money.freePrice">Free</span>
+            <p data-i18n="money.freeBody">Designed for discovery, sharing, and first-time understanding.</p>
+            <ul>
+              <li data-i18n="money.freeOne">Live watch navigation</li>
+              <li data-i18n="money.freeTwo">Core story and case study</li>
+              <li data-i18n="money.freeThree">Feedback contribution</li>
+            </ul>
+          </article>
+
+          <article class="pricing-card featured">
+            <h3 data-i18n="money.founderTitle">Founding Digital Pass</h3>
+            <span class="price" data-i18n="money.founderPrice">$29</span>
+            <p data-i18n="money.founderBody">Best first offer for early supporters while the product is still growing.</p>
+            <ul>
+              <li data-i18n="money.founderOne">Premium theme previews</li>
+              <li data-i18n="money.founderTwo">Saved personal time view</li>
+              <li data-i18n="money.founderThree">Early feature voting</li>
+            </ul>
+          </article>
+
+          <article class="pricing-card">
+            <h3 data-i18n="money.premiumTitle">BaloWaci Premium</h3>
+            <span class="price" data-i18n="money.premiumPrice">$4.99/mo</span>
+            <p data-i18n="money.premiumBody">A future subscription for users who want BaloWaci as a daily time companion.</p>
+            <ul>
+              <li data-i18n="money.premiumOne">Daily cultural time readings</li>
+              <li data-i18n="money.premiumTwo">Favorite regions and modes</li>
+              <li data-i18n="money.premiumThree">Collector watchface themes</li>
+            </ul>
+          </article>
+        </div>
+
+        <p class="pricing-note" data-i18n="money.note">Next payment step: connect Stripe, PayPal, or Gumroad so these buttons can become real checkout links.</p>
+
+        <div class="final-cta-actions">
+          <a class="luxury-btn primary" href="mailto:balowaci.ottofnn@gmail.com?subject=BaloWaci%20Founding%20Digital%20Pass" data-i18n="money.reserve">Reserve Founding Access</a>
+          <a class="luxury-btn secondary" href="#feedback" data-i18n="money.validate">Give Product Feedback</a>
+        </div>
       </div>
     </div>
   </section>
@@ -3286,6 +3395,30 @@
         'theme.solar': 'Solar Dawn',
         'theme.moon': 'Moon Phase',
         'theme.compass': 'Cultural Compass',
+        'money.kicker': 'Digital Prototype Access',
+        'money.title': 'A Sellable BaloWaci Experience',
+        'money.body': 'The public website introduces the invention. Premium access turns BaloWaci into a personal time system people can return to, save, customize, and support early.',
+        'money.freeTitle': 'Public Prototype',
+        'money.freePrice': 'Free',
+        'money.freeBody': 'Designed for discovery, sharing, and first-time understanding.',
+        'money.freeOne': 'Live watch navigation',
+        'money.freeTwo': 'Core story and case study',
+        'money.freeThree': 'Feedback contribution',
+        'money.founderTitle': 'Founding Digital Pass',
+        'money.founderPrice': '$29',
+        'money.founderBody': 'Best first offer for early supporters while the product is still growing.',
+        'money.founderOne': 'Premium theme previews',
+        'money.founderTwo': 'Saved personal time view',
+        'money.founderThree': 'Early feature voting',
+        'money.premiumTitle': 'BaloWaci Premium',
+        'money.premiumPrice': '$4.99/mo',
+        'money.premiumBody': 'A future subscription for users who want BaloWaci as a daily time companion.',
+        'money.premiumOne': 'Daily cultural time readings',
+        'money.premiumTwo': 'Favorite regions and modes',
+        'money.premiumThree': 'Collector watchface themes',
+        'money.note': 'Next payment step: connect Stripe, PayPal, or Gumroad so these buttons can become real checkout links.',
+        'money.reserve': 'Reserve Founding Access',
+        'money.validate': 'Give Product Feedback',
         'feedback.progress': 'Question {count} of 9'
       },
       sw: {
@@ -3334,6 +3467,31 @@
     };
 
     Object.entries(dailyStateTranslationUpdates).forEach(([language, entries]) => {
+      Object.assign(translations[language], entries);
+    });
+
+    const monetizationTranslationUpdates = {
+      sw: {
+        'money.kicker': 'Ufikiaji wa Mfano wa Kidijitali', 'money.title': 'Uzoefu wa BaloWaci Unaoweza Kuuzwa', 'money.body': 'Tovuti ya umma hutambulisha uvumbuzi. Ufikiaji wa premium hugeuza BaloWaci kuwa mfumo binafsi wa wakati ambao watu wanaweza kurudi, kuhifadhi, kubinafsisha, na kuunga mkono mapema.', 'money.freeTitle': 'Mfano wa Umma', 'money.freePrice': 'Bure', 'money.freeBody': 'Kwa ugunduzi, kushiriki, na kuelewa mara ya kwanza.', 'money.founderTitle': 'Pasi ya Kidijitali ya Mwanzilishi', 'money.founderPrice': '$29', 'money.founderBody': 'Ofa bora ya kwanza kwa wanaounga mkono mapema.', 'money.premiumTitle': 'BaloWaci Premium', 'money.premiumPrice': '$4.99/mwezi', 'money.premiumBody': 'Usajili wa baadaye kwa wanaotaka BaloWaci kama mwenzi wa kila siku.', 'money.note': 'Hatua inayofuata: unganisha Stripe, PayPal, au Gumroad ili vitufe viwe checkout halisi.', 'money.reserve': 'Hifadhi Ufikiaji wa Mwanzilishi', 'money.validate': 'Toa Maoni ya Bidhaa'
+      },
+      es: {
+        'money.kicker': 'Acceso al Prototipo Digital', 'money.title': 'Una Experiencia BaloWaci Vendible', 'money.body': 'El sitio público presenta la invención. El acceso premium convierte BaloWaci en un sistema personal de tiempo al que las personas pueden volver, guardar, personalizar y apoyar temprano.', 'money.freeTitle': 'Prototipo Público', 'money.freePrice': 'Gratis', 'money.freeBody': 'Diseñado para descubrir, compartir y comprender por primera vez.', 'money.founderTitle': 'Pase Digital Fundador', 'money.founderPrice': '$29', 'money.founderBody': 'La mejor primera oferta para seguidores tempranos.', 'money.premiumTitle': 'BaloWaci Premium', 'money.premiumPrice': '$4.99/mes', 'money.premiumBody': 'Una futura suscripción para usar BaloWaci como compañero diario de tiempo.', 'money.note': 'Siguiente paso de pago: conectar Stripe, PayPal o Gumroad para convertir los botones en checkout real.', 'money.reserve': 'Reservar Acceso Fundador', 'money.validate': 'Dar Feedback del Producto'
+      },
+      pt: {
+        'money.kicker': 'Acesso ao Protótipo Digital', 'money.title': 'Uma Experiência BaloWaci Vendável', 'money.body': 'O site público apresenta a invenção. O acesso premium transforma a BaloWaci em um sistema pessoal de tempo para voltar, salvar, personalizar e apoiar cedo.', 'money.freeTitle': 'Protótipo Público', 'money.freePrice': 'Grátis', 'money.freeBody': 'Projetado para descoberta, compartilhamento e primeira compreensão.', 'money.founderTitle': 'Passe Digital Fundador', 'money.founderPrice': '$29', 'money.founderBody': 'A melhor primeira oferta para apoiadores iniciais.', 'money.premiumTitle': 'BaloWaci Premium', 'money.premiumPrice': '$4,99/mês', 'money.premiumBody': 'Uma assinatura futura para quem quer a BaloWaci como companheira diária de tempo.', 'money.note': 'Próximo passo de pagamento: conectar Stripe, PayPal ou Gumroad para transformar os botões em checkout real.', 'money.reserve': 'Reservar Acesso Fundador', 'money.validate': 'Dar Feedback do Produto'
+      },
+      fr: {
+        'money.kicker': 'Accès au Prototype Numérique', 'money.title': 'Une Expérience BaloWaci Vendable', 'money.body': 'Le site public présente l’invention. L’accès premium transforme BaloWaci en système personnel du temps que les utilisateurs peuvent retrouver, sauvegarder, personnaliser et soutenir tôt.', 'money.freeTitle': 'Prototype Public', 'money.freePrice': 'Gratuit', 'money.freeBody': 'Conçu pour découvrir, partager et comprendre rapidement.', 'money.founderTitle': 'Pass Numérique Fondateur', 'money.founderPrice': '$29', 'money.founderBody': 'La meilleure première offre pour les premiers soutiens.', 'money.premiumTitle': 'BaloWaci Premium', 'money.premiumPrice': '$4.99/mois', 'money.premiumBody': 'Un futur abonnement pour utiliser BaloWaci comme compagnon quotidien du temps.', 'money.note': 'Prochaine étape paiement : connecter Stripe, PayPal ou Gumroad pour créer de vrais liens de paiement.', 'money.reserve': 'Réserver l’Accès Fondateur', 'money.validate': 'Donner un Avis Produit'
+      },
+      zh: {
+        'money.kicker': '数字原型访问', 'money.title': '可销售的 BaloWaci 体验', 'money.body': '公开视频展示发明。高级访问把 BaloWaci 变成可返回、保存、定制并早期支持的个人时间系统。', 'money.freeTitle': '公开原型', 'money.freePrice': '免费', 'money.freeBody': '用于发现、分享和首次理解。', 'money.founderTitle': '创始数字通行证', 'money.founderPrice': '$29', 'money.founderBody': '面向早期支持者的第一阶段优惠。', 'money.premiumTitle': 'BaloWaci Premium', 'money.premiumPrice': '$4.99/月', 'money.premiumBody': '未来订阅版，让 BaloWaci 成为每日时间伙伴。', 'money.note': '下一步：连接 Stripe、PayPal 或 Gumroad，让按钮成为真实支付链接。', 'money.reserve': '预留创始访问', 'money.validate': '提供产品反馈'
+      },
+      ar: {
+        'money.kicker': 'وصول النموذج الرقمي', 'money.title': 'تجربة BaloWaci قابلة للبيع', 'money.body': 'يعرّف الموقع العام بالاختراع. يحوّل الوصول المميز BaloWaci إلى نظام وقت شخصي يمكن العودة إليه وحفظه وتخصيصه ودعمه مبكرًا.', 'money.freeTitle': 'النموذج العام', 'money.freePrice': 'مجاني', 'money.freeBody': 'مصمم للاكتشاف والمشاركة والفهم الأول.', 'money.founderTitle': 'تصريح المؤسس الرقمي', 'money.founderPrice': '$29', 'money.founderBody': 'أفضل عرض أول للداعمين الأوائل.', 'money.premiumTitle': 'BaloWaci Premium', 'money.premiumPrice': '$4.99/شهر', 'money.premiumBody': 'اشتراك مستقبلي لمن يريد BaloWaci كرفيق يومي للوقت.', 'money.note': 'الخطوة التالية للدفع: ربط Stripe أو PayPal أو Gumroad لتحويل الأزرار إلى دفع حقيقي.', 'money.reserve': 'احجز وصول المؤسس', 'money.validate': 'قدّم ملاحظات المنتج'
+      }
+    };
+
+    Object.entries(monetizationTranslationUpdates).forEach(([language, entries]) => {
       Object.assign(translations[language], entries);
     });
 
