@@ -4115,6 +4115,60 @@
       ctx.restore();
     }
 
+    function drawWatchLedLights(ctx, radius, faceRadius, now, beatAmount, rotation) {
+      const ledColors = ['#f5d061', '#b266ff', '#4fd7ff', '#ff7a2f', '#ffffff'];
+      const time = now.getTime();
+
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+
+      for (let i = 0; i < 36; i += 1) {
+        const angle = -Math.PI / 2 + (i / 36) * Math.PI * 2 + rotation * 0.18 + time * 0.00018;
+        const pulse = 0.5 + 0.5 * Math.sin(time * 0.004 + i * 0.7);
+        const color = ledColors[i % ledColors.length];
+        const ledRadius = radius * (1.025 + pulse * 0.018);
+        const size = 2.4 + pulse * 2 + beatAmount * 2.6;
+        const x = Math.cos(angle) * ledRadius;
+        const y = Math.sin(angle) * ledRadius;
+        const glow = ctx.createRadialGradient(x, y, 0, x, y, size * 5.8);
+        glow.addColorStop(0, color);
+        glow.addColorStop(0.22, `${color}bb`);
+        glow.addColorStop(1, `${color}00`);
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(x, y, size * 5.8, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.arc(x, y, size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      for (let i = 0; i < 24; i += 1) {
+        const angle = -Math.PI / 2 + (i / 24) * Math.PI * 2 - rotation * 0.28 - time * 0.00024;
+        const pulse = 0.52 + 0.48 * Math.sin(time * 0.005 + i);
+        const color = ledColors[(i + 2) % ledColors.length];
+        const ledRadius = faceRadius * (1.015 + pulse * 0.014);
+        const size = 2 + pulse * 1.6 + beatAmount * 2;
+        const x = Math.cos(angle) * ledRadius;
+        const y = Math.sin(angle) * ledRadius;
+        const glow = ctx.createRadialGradient(x, y, 0, x, y, size * 5);
+        glow.addColorStop(0, color);
+        glow.addColorStop(0.32, `${color}aa`);
+        glow.addColorStop(1, `${color}00`);
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(x, y, size * 5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.arc(x, y, size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.restore();
+    }
+
     function drawMapBlob(ctx, points, scaleX, scaleY) {
       ctx.beginPath();
       points.forEach(([x, y], index) => {
@@ -4347,6 +4401,8 @@
       ctx.arc(0, 0, radius * 1.12, 0, Math.PI * 2);
       ctx.fill();
 
+      drawWatchLedLights(ctx, radius, faceRadius, now, beatAmount, state.rotation);
+
       if (solarIntensity > 0.04) {
         ctx.save();
         ctx.globalAlpha = solarIntensity * 0.55;
@@ -4419,6 +4475,7 @@
       ctx.arc(0, 0, faceRadius, 0, Math.PI * 2);
       ctx.fillStyle = faceGradient;
       ctx.fill();
+      drawWatchLedLights(ctx, radius * 0.72, faceRadius, now, beatAmount * 0.7, -state.rotation);
       ctx.lineWidth = 3;
       ctx.strokeStyle = '#d4af37';
       ctx.stroke();
