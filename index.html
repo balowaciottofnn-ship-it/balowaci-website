@@ -2324,7 +2324,7 @@
         'form.name': 'Tu nombre', 'form.email': 'Correo electrónico', 'form.phone': 'Número de teléfono', 'form.impression': '¿Cuál es tu primera impresión?', 'form.unique': '¿Se siente único?', 'form.interests': '¿Qué te interesa más?', 'form.thoughts': '¿Alguna idea sobre la trayectoria o el fundador?', 'form.targetCustomer': '¿Quién crees que se beneficiaría más de BaloWaci?', 'form.problemSolved': '¿Qué problema o necesidad real podría resolver BaloWaci?', 'form.willingnessToPay': '¿Tú o una organización pagarían por acceso, licencia o implementación?', 'form.watchValueEstimate': '¿Cuál debería ser el precio inicial ideal de BaloWaci y cuánto podrían valer sus primeras piezas?', 'form.adoptionBarriers': '¿Qué podría impedir que personas u organizaciones lo adopten?', 'form.mustHaveFeatures': '¿Qué función, integración o prueba lo haría más valioso?', 'form.pilotInterest': '¿Recomendarías una prueba piloto, asociación o conversación con inversionistas?', 'form.submit': 'Enviar Comentarios', 'form.success': '¡Gracias! Tus comentarios se enviaron correctamente.', 'form.submitError': 'No se pudieron enviar los comentarios', 'form.backendError': 'Error: No se pudieron enviar los comentarios. Asegúrate de que el backend esté funcionando.', 'footer.rights': '© 2026 BaloWaci. Un Sistema Unificado de Interpretación del Tiempo. Todos los derechos reservados.'
       },
       pt: {
-        'nav.home': 'Início', 'nav.about': 'Sobre', 'nav.how': 'Como Funciona', 'nav.founder': 'Fundador', 'nav.journey': 'Jornada', 'nav.productJourney': 'Jornada do Produto', 'nav.liveWheel': 'Roda ao Vivo', 'nav.liveWatch': 'Relógio ao Vivo', 'nav.feedback': 'Feedback',
+        'nav.home': 'Início', 'nav.about': 'Sobre', 'nav.how': 'Como Funciona', 'nav.founder': 'Fundador', 'nav.journey': 'Jornada', 'nav.productJourney': 'Jornada do Produto', 'nav.liveWheel': 'Roda ao Vivo', 'nav.liveWatch': 'Relógio ao Vivo', 'nav.feedback': 'Comentários',
         'hero.subtitle': 'Um Sistema Unificado de Interpretação do Tempo', 'hero.explore': 'Explorar o Sistema', 'hero.openWheel': 'Abrir Roda ao Vivo', 'hero.openWatch': 'Abrir Relógio ao Vivo',
         'about.title': 'Sobre BaloWaci', 'about.body': 'BaloWaci reinventa o tempo por meio de múltiplas interpretações: padrão, militar, cultural e rotacional, dentro de um sistema unificado.',
         'time.title': 'Interpretação do Tempo ao Vivo', 'time.heading': 'Hora Atual nos Modos BaloWaci', 'time.loading': 'Carregando interpretações...', 'time.standard': 'Hora padrão:', 'time.military': 'Hora militar:', 'time.cultural': 'Hora cultural:', 'time.rotational': 'Hora rotacional:', 'time.updated': 'Atualizado:', 'time.failed': 'Falha ao carregar interpretações do tempo', 'time.apiError': 'Não foi possível conectar à API. Verifique se o backend está em execução.',
@@ -3120,6 +3120,8 @@
         container.appendChild(star);
       }
       updateEnvironmentalSky();
+      window.addEventListener('scroll', updateEnvironmentalSky, { passive: true });
+      window.addEventListener('resize', updateEnvironmentalSky);
       setInterval(updateEnvironmentalSky, 60000);
     }
 
@@ -3441,14 +3443,17 @@
       const now = new Date();
       const nightIntensity = getLocalNightIntensity(now);
       const solarIntensity = getLocalSolarIntensity(now);
+      const homeVisible = isHomeSectionActive();
+      const visibleNightIntensity = homeVisible ? nightIntensity : 0;
+      const visibleSolarIntensity = homeVisible ? solarIntensity : 0;
       document.documentElement.style.setProperty('--stars-opacity', nightIntensity.toFixed(3));
-      document.documentElement.style.setProperty('--moon-opacity', (nightIntensity * 0.9).toFixed(3));
-      document.documentElement.style.setProperty('--moon-glow', (0.12 + nightIntensity * 0.45).toFixed(3));
-      document.documentElement.style.setProperty('--sun-opacity', Math.min(solarIntensity * 1.05, 1).toFixed(3));
-      document.documentElement.style.setProperty('--sun-glow', (0.15 + solarIntensity * 0.58).toFixed(3));
-      document.documentElement.style.setProperty('--sun-scale', (0.86 + solarIntensity * 0.18).toFixed(3));
-      document.documentElement.style.setProperty('--sun-rise', `${(18 - solarIntensity * 18).toFixed(1)}px`);
-      drawMoonPhase(getMoonPhase(now), nightIntensity);
+      document.documentElement.style.setProperty('--moon-opacity', (visibleNightIntensity * 0.9).toFixed(3));
+      document.documentElement.style.setProperty('--moon-glow', (0.12 + visibleNightIntensity * 0.45).toFixed(3));
+      document.documentElement.style.setProperty('--sun-opacity', Math.min(visibleSolarIntensity * 1.05, 1).toFixed(3));
+      document.documentElement.style.setProperty('--sun-glow', (0.15 + visibleSolarIntensity * 0.58).toFixed(3));
+      document.documentElement.style.setProperty('--sun-scale', (0.86 + visibleSolarIntensity * 0.18).toFixed(3));
+      document.documentElement.style.setProperty('--sun-rise', `${(18 - visibleSolarIntensity * 18).toFixed(1)}px`);
+      drawMoonPhase(getMoonPhase(now), visibleNightIntensity);
     }
 
     function updateHomeWatchSolarStyle(intensity) {
@@ -3720,66 +3725,27 @@
       if (earthTextureImage.complete && earthTextureImage.naturalWidth) {
         drawEarthTextureGlobe(ctx, earthTextureImage, mapRadius, centerLon);
       } else {
-      const ocean = ctx.createRadialGradient(-mapRadius * 0.3, -mapRadius * 0.25, 0, 0, 0, mapRadius);
-      ocean.addColorStop(0, '#dceff0');
-      ocean.addColorStop(0.42, '#a8cfd5');
-      ocean.addColorStop(0.72, '#79a9bc');
-      ocean.addColorStop(1, '#31536f');
-      ctx.fillStyle = ocean;
-      ctx.fillRect(-mapRadius, -mapRadius, mapRadius * 2, mapRadius * 2);
+        const loadingOcean = ctx.createRadialGradient(-mapRadius * 0.28, -mapRadius * 0.3, 0, 0, 0, mapRadius);
+        loadingOcean.addColorStop(0, '#8fc1d0');
+        loadingOcean.addColorStop(0.48, '#426f88');
+        loadingOcean.addColorStop(1, '#102338');
+        ctx.fillStyle = loadingOcean;
+        ctx.fillRect(-mapRadius, -mapRadius, mapRadius * 2, mapRadius * 2);
 
-      const bandTop = projectGlobePoint(centerLon, 24, centerLon, mapRadius).y;
-      const bandMiddle = projectGlobePoint(centerLon, -2, centerLon, mapRadius).y;
-      const bandBottom = projectGlobePoint(centerLon, -55, centerLon, mapRadius).y;
-      ctx.fillStyle = 'rgba(151, 181, 92, 0.34)';
-      ctx.fillRect(-mapRadius, bandTop, mapRadius * 2, mapRadius * 0.18);
-      ctx.fillStyle = 'rgba(151, 181, 92, 0.42)';
-      ctx.fillRect(-mapRadius, bandMiddle, mapRadius * 2, mapRadius * 0.26);
-      ctx.fillStyle = 'rgba(151, 181, 92, 0.28)';
-      ctx.fillRect(-mapRadius, bandBottom, mapRadius * 2, mapRadius * 0.13);
-
-      const latitudeShade = ctx.createLinearGradient(0, -mapRadius, 0, mapRadius);
-      latitudeShade.addColorStop(0, 'rgba(255, 255, 255, 0.18)');
-      latitudeShade.addColorStop(0.24, 'rgba(176, 212, 156, 0.14)');
-      latitudeShade.addColorStop(0.5, 'rgba(174, 198, 115, 0.2)');
-      latitudeShade.addColorStop(0.78, 'rgba(176, 212, 156, 0.12)');
-      latitudeShade.addColorStop(1, 'rgba(255, 255, 255, 0.12)');
-      ctx.fillStyle = latitudeShade;
-      ctx.fillRect(-mapRadius, -mapRadius, mapRadius * 2, mapRadius * 2);
-
-      const daylight = ctx.createRadialGradient(sunPoint.x, sunPoint.y, mapRadius * 0.08, sunPoint.x, sunPoint.y, mapRadius * 1.05);
-      daylight.addColorStop(0, 'rgba(255, 236, 142, 0.34)');
-      daylight.addColorStop(0.52, 'rgba(255, 210, 92, 0.13)');
-      daylight.addColorStop(1, 'rgba(0, 0, 0, 0)');
-      ctx.fillStyle = daylight;
-      ctx.fillRect(-mapRadius, -mapRadius, mapRadius * 2, mapRadius * 2);
-
-      ctx.strokeStyle = 'rgba(45, 86, 100, 0.24)';
-      ctx.lineWidth = 0.65;
-      for (let i = -4; i <= 4; i += 1) {
-        ctx.beginPath();
-        const y = (i / 5) * mapRadius * 0.72;
-        const width = mapRadius * Math.sqrt(Math.max(0.18, 1 - (y / (mapRadius * 0.9)) ** 2));
-        ctx.ellipse(0, y, width, mapRadius * 0.08, 0, 0, Math.PI * 2);
-        ctx.stroke();
-      }
-      for (let i = -4; i <= 4; i += 1) {
-        ctx.beginPath();
-        ctx.ellipse((i / 5) * mapRadius * 0.72, 0, mapRadius * 0.12, mapRadius, 0, 0, Math.PI * 2);
-        ctx.stroke();
-      }
-
-      ctx.beginPath();
-      ctx.moveTo(-mapRadius, 0);
-      ctx.lineTo(mapRadius, 0);
-      ctx.strokeStyle = 'rgba(84, 125, 75, 0.42)';
-      ctx.lineWidth = 1.6;
-      ctx.stroke();
-
-      ctx.fillStyle = 'rgba(143, 174, 86, 0.84)';
-      ctx.strokeStyle = 'rgba(68, 110, 64, 0.62)';
-      ctx.lineWidth = 0.9;
-      worldLandmasses.forEach((landmass) => drawWorldLandmass(ctx, landmass, centerLon, mapRadius));
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+        ctx.lineWidth = 0.6;
+        for (let i = -4; i <= 4; i += 1) {
+          ctx.beginPath();
+          const y = (i / 5) * mapRadius * 0.72;
+          const width = mapRadius * Math.sqrt(Math.max(0.18, 1 - (y / (mapRadius * 0.9)) ** 2));
+          ctx.ellipse(0, y, width, mapRadius * 0.08, 0, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+        for (let i = -4; i <= 4; i += 1) {
+          ctx.beginPath();
+          ctx.ellipse((i / 5) * mapRadius * 0.72, 0, mapRadius * 0.12, mapRadius, 0, 0, Math.PI * 2);
+          ctx.stroke();
+        }
       }
 
       ctx.save();
