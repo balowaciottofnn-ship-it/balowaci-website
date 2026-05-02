@@ -1509,6 +1509,71 @@
       margin: 30px auto 0;
     }
 
+    .ritual-settings {
+      margin-top: 34px;
+      padding: 22px;
+      border: 1px solid rgba(212, 175, 55, 0.34);
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.28);
+      text-align: left;
+    }
+
+    .ritual-settings h3 {
+      color: #b266ff;
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .ritual-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 14px;
+      align-items: end;
+    }
+
+    .ritual-control {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 0.86rem;
+    }
+
+    .ritual-control.inline {
+      flex-direction: row;
+      align-items: center;
+      gap: 10px;
+      min-height: 42px;
+    }
+
+    .ritual-control input[type="checkbox"] {
+      width: auto;
+      accent-color: #d4af37;
+    }
+
+    .ritual-control select,
+    .ritual-control input[type="range"],
+    .ritual-control input[type="file"] {
+      width: 100%;
+      min-height: 42px;
+      border: 1px solid rgba(212, 175, 55, 0.52);
+      background: rgba(0, 0, 0, 0.58);
+      color: #d4af37;
+      border-radius: 4px;
+      padding: 8px 10px;
+      font: inherit;
+    }
+
+    .ritual-note {
+      max-width: none;
+      margin: 14px 0 0;
+      color: rgba(255, 255, 255, 0.64);
+      font-size: 0.86rem;
+      line-height: 1.6;
+    }
+
     .theme-button {
       min-height: 42px;
       padding: 10px 18px;
@@ -1602,6 +1667,18 @@
 
     body[data-theme="cultural-compass"] {
       background: radial-gradient(circle at 50% 18%, rgba(178, 102, 255, 0.16), transparent 32%), radial-gradient(circle at center, #201000 0%, #070100 62%, #000 100%);
+    }
+
+    body[data-visual="future"] {
+      background:
+        radial-gradient(circle at 50% 18%, rgba(79, 215, 255, 0.18), transparent 32%),
+        radial-gradient(circle at center, #111047 0%, #03040f 58%, #000 100%);
+    }
+
+    body[data-visual="past"] {
+      background:
+        radial-gradient(circle at 50% 18%, rgba(245, 208, 97, 0.15), transparent 34%),
+        radial-gradient(circle at center, #2b1204 0%, #090301 60%, #000 100%);
     }
 
     .section-time-context {
@@ -2223,6 +2300,46 @@
           <button type="button" class="theme-button" data-theme-option="cultural-compass" data-i18n="theme.compass">Cultural Compass</button>
         </div>
 
+        <div class="ritual-settings" aria-label="Minute ritual settings">
+          <h3 data-i18n="ritual.title">Minute Ritual</h3>
+          <div class="ritual-grid">
+            <label class="ritual-control inline">
+              <input type="checkbox" id="ritualVibrate">
+              <span data-i18n="ritual.vibrate">Vibrate when the watch breathes</span>
+            </label>
+            <label class="ritual-control inline">
+              <input type="checkbox" id="ritualSound">
+              <span data-i18n="ritual.sound">Play sound when the watch breathes</span>
+            </label>
+            <label class="ritual-control">
+              <span data-i18n="ritual.soundChoice">Ritual sound</span>
+              <select id="ritualSoundChoice">
+                <option value="soft" data-i18n="ritual.soft">Soft Chime</option>
+                <option value="bell" data-i18n="ritual.bell">Deep Bell</option>
+                <option value="pulse" data-i18n="ritual.pulse">Ambient Pulse</option>
+                <option value="custom" data-i18n="ritual.custom">Custom Upload</option>
+              </select>
+            </label>
+            <label class="ritual-control">
+              <span data-i18n="ritual.volume">Volume</span>
+              <input type="range" id="ritualVolume" min="0" max="1" step="0.05" value="0.45">
+            </label>
+            <label class="ritual-control">
+              <span data-i18n="ritual.upload">Upload short sound</span>
+              <input type="file" id="ritualUpload" accept="audio/*">
+            </label>
+            <label class="ritual-control">
+              <span data-i18n="ritual.visual">Visual interpretation</span>
+              <select id="ritualVisualMode">
+                <option value="present" data-i18n="ritual.present">Present Time</option>
+                <option value="future" data-i18n="ritual.future">Future Journey</option>
+                <option value="past" data-i18n="ritual.past">Past Journey</option>
+              </select>
+            </label>
+          </div>
+          <p class="ritual-note" data-i18n="ritual.note">Sound starts after a user enables it. Custom sounds should be short, like a chime or 1-10 second ritual tone.</p>
+        </div>
+
         <div class="final-cta-actions">
           <button type="button" id="saveTimeView" class="luxury-btn primary" data-i18n="premium.save">Save My Time View</button>
           <a class="luxury-btn secondary" href="#join" data-i18n="premium.waitlist">Join Premium Waitlist</a>
@@ -2495,6 +2612,7 @@
       : (window.location.protocol === 'capacitor:' || window.location.hostname === 'localhost' ? PRODUCTION_API_URL : '/api');
     const defaultLanguage = 'en';
     let currentLanguage = localStorage.getItem('balowaciLanguage') || defaultLanguage;
+    let ritualAudioContext = null;
 
     const translations = {
       en: {
@@ -3395,6 +3513,21 @@
         'theme.solar': 'Solar Dawn',
         'theme.moon': 'Moon Phase',
         'theme.compass': 'Cultural Compass',
+        'ritual.title': 'Minute Ritual',
+        'ritual.vibrate': 'Vibrate when the watch breathes',
+        'ritual.sound': 'Play sound when the watch breathes',
+        'ritual.soundChoice': 'Ritual sound',
+        'ritual.soft': 'Soft Chime',
+        'ritual.bell': 'Deep Bell',
+        'ritual.pulse': 'Ambient Pulse',
+        'ritual.custom': 'Custom Upload',
+        'ritual.volume': 'Volume',
+        'ritual.upload': 'Upload short sound',
+        'ritual.visual': 'Visual interpretation',
+        'ritual.present': 'Present Time',
+        'ritual.future': 'Future Journey',
+        'ritual.past': 'Past Journey',
+        'ritual.note': 'Sound starts after a user enables it. Custom sounds should be short, like a chime or 1-10 second ritual tone.',
         'money.kicker': 'Digital Prototype Access',
         'money.title': 'A Sellable BaloWaci Experience',
         'money.body': 'The public website introduces the invention. Premium access turns BaloWaci into a personal time system people can return to, save, customize, and support early.',
@@ -3721,6 +3854,91 @@
       });
     }
 
+    function getRitualSettings() {
+      return {
+        vibrate: localStorage.getItem('balowaciRitualVibrate') === 'true',
+        sound: localStorage.getItem('balowaciRitualSound') === 'true',
+        soundChoice: localStorage.getItem('balowaciRitualSoundChoice') || 'soft',
+        volume: Number(localStorage.getItem('balowaciRitualVolume') || '0.45'),
+        visualMode: localStorage.getItem('balowaciVisualMode') || 'present',
+        customSound: localStorage.getItem('balowaciRitualCustomSound') || ''
+      };
+    }
+
+    function applyVisualMode(mode) {
+      const visualMode = ['present', 'future', 'past'].includes(mode) ? mode : 'present';
+      document.body.dataset.visual = visualMode;
+      localStorage.setItem('balowaciVisualMode', visualMode);
+      const visualSelect = document.getElementById('ritualVisualMode');
+      if (visualSelect) visualSelect.value = visualMode;
+    }
+
+    function syncRitualControls() {
+      const settings = getRitualSettings();
+      const vibrate = document.getElementById('ritualVibrate');
+      const sound = document.getElementById('ritualSound');
+      const soundChoice = document.getElementById('ritualSoundChoice');
+      const volume = document.getElementById('ritualVolume');
+      if (vibrate) vibrate.checked = settings.vibrate;
+      if (sound) sound.checked = settings.sound;
+      if (soundChoice) soundChoice.value = settings.soundChoice;
+      if (volume) volume.value = String(settings.volume);
+      applyVisualMode(settings.visualMode);
+    }
+
+    function ensureRitualAudioContext() {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextClass) return null;
+      if (!ritualAudioContext) ritualAudioContext = new AudioContextClass();
+      if (ritualAudioContext.state === 'suspended') ritualAudioContext.resume().catch(() => {});
+      return ritualAudioContext;
+    }
+
+    function playBuiltInRitualSound(choice, volume) {
+      const audioContext = ensureRitualAudioContext();
+      if (!audioContext) return;
+      const now = audioContext.currentTime;
+      const gain = audioContext.createGain();
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(Math.max(0.001, volume), now + 0.03);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + (choice === 'bell' ? 1.35 : 0.72));
+      gain.connect(audioContext.destination);
+
+      const notes = choice === 'bell'
+        ? [196, 392]
+        : choice === 'pulse'
+          ? [110, 165, 220]
+          : [523.25, 659.25];
+      notes.forEach((frequency, index) => {
+        const oscillator = audioContext.createOscillator();
+        oscillator.type = choice === 'pulse' ? 'sine' : 'triangle';
+        oscillator.frequency.setValueAtTime(frequency, now + index * 0.05);
+        oscillator.connect(gain);
+        oscillator.start(now + index * 0.05);
+        oscillator.stop(now + (choice === 'bell' ? 1.4 : 0.78));
+      });
+    }
+
+    function playCustomRitualSound(volume) {
+      const settings = getRitualSettings();
+      if (!settings.customSound) return false;
+      const audio = new Audio(settings.customSound);
+      audio.volume = Math.min(Math.max(volume, 0), 1);
+      audio.play().catch(() => {});
+      return true;
+    }
+
+    function triggerMinuteRitual() {
+      const settings = getRitualSettings();
+      if (settings.vibrate && navigator.vibrate) {
+        navigator.vibrate(settings.visualMode === 'future' ? [35, 30, 65] : settings.visualMode === 'past' ? [90] : [55]);
+      }
+      if (!settings.sound) return;
+      const volume = Math.min(Math.max(settings.volume, 0), 1);
+      if (settings.soundChoice === 'custom' && playCustomRitualSound(volume)) return;
+      playBuiltInRitualSound(settings.soundChoice, volume);
+    }
+
     function restoreSavedTimeView() {
       const savedTheme = localStorage.getItem('balowaciTheme') || 'purple-night';
       applyBaloWaciTheme(savedTheme);
@@ -3735,6 +3953,7 @@
 
     function initializePremiumExperience() {
       restoreSavedTimeView();
+      syncRitualControls();
       document.querySelectorAll('[data-theme-option]').forEach((button) => {
         button.addEventListener('click', () => {
           applyBaloWaciTheme(button.dataset.themeOption);
@@ -3746,6 +3965,44 @@
         localStorage.setItem('balowaciSavedWatchIndex', String(homeWatchState.selectedIndex));
         localStorage.setItem('balowaciLanguage', currentLanguage);
         if (saveStatus) saveStatus.textContent = t('premium.saved');
+      });
+      document.getElementById('ritualVibrate')?.addEventListener('change', (event) => {
+        localStorage.setItem('balowaciRitualVibrate', String(event.target.checked));
+      });
+      document.getElementById('ritualSound')?.addEventListener('change', (event) => {
+        localStorage.setItem('balowaciRitualSound', String(event.target.checked));
+        if (event.target.checked) ensureRitualAudioContext();
+      });
+      document.getElementById('ritualSoundChoice')?.addEventListener('change', (event) => {
+        localStorage.setItem('balowaciRitualSoundChoice', event.target.value);
+        ensureRitualAudioContext();
+      });
+      document.getElementById('ritualVolume')?.addEventListener('input', (event) => {
+        localStorage.setItem('balowaciRitualVolume', event.target.value);
+      });
+      document.getElementById('ritualVisualMode')?.addEventListener('change', (event) => {
+        applyVisualMode(event.target.value);
+      });
+      document.getElementById('ritualUpload')?.addEventListener('change', (event) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+        if (file.size > 2500000) {
+          if (saveStatus) saveStatus.textContent = 'Please choose a shorter sound under 2.5 MB.';
+          event.target.value = '';
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = () => {
+          try {
+            localStorage.setItem('balowaciRitualCustomSound', String(reader.result));
+            localStorage.setItem('balowaciRitualSoundChoice', 'custom');
+            syncRitualControls();
+            if (saveStatus) saveStatus.textContent = 'Custom ritual sound saved on this device.';
+          } catch (error) {
+            if (saveStatus) saveStatus.textContent = 'This sound is too large to save on this device.';
+          }
+        };
+        reader.readAsDataURL(file);
       });
       updateDailyRitual();
       setInterval(updateDailyRitual, 60000);
@@ -4117,8 +4374,10 @@
 
     function drawWatchSurfaceGlow(ctx, radius, now, beatAmount, rotation, mode = 'back') {
       const time = now.getTime();
-      const slowHue = (time * (mode === 'back' ? 0.012 : 0.026) + rotation * 38) % 360;
-      const fastHue = (time * (mode === 'back' ? 0.035 : 0.052) - rotation * 56) % 360;
+      const visualMode = document.body.dataset.visual || 'present';
+      const hueBase = visualMode === 'future' ? 188 : visualMode === 'past' ? 32 : 270;
+      const slowHue = (hueBase + time * (mode === 'back' ? 0.012 : 0.026) + rotation * 38) % 360;
+      const fastHue = (hueBase + 74 + time * (mode === 'back' ? 0.035 : 0.052) - rotation * 56) % 360;
       const pulse = 0.5 + 0.5 * Math.sin(time * (mode === 'back' ? 0.0012 : 0.0021));
       const outer = mode === 'back' ? radius * 1.13 : radius * 1.03;
       const inner = mode === 'back' ? radius * 0.72 : radius * 0.78;
@@ -4361,6 +4620,7 @@
       } else if (currentMinute !== state.lastMinute) {
         state.lastMinute = currentMinute;
         state.minuteBeatStart = now.getTime();
+        triggerMinuteRitual();
       }
       const beatElapsed = now.getTime() - state.minuteBeatStart;
       const beatProgress = Math.min(Math.max(beatElapsed / 1200, 0), 1);
