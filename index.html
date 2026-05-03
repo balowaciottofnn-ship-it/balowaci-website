@@ -4904,23 +4904,18 @@
       ctx.save();
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.52)';
-      ctx.strokeStyle = 'rgba(212, 175, 55, 0.48)';
-      ctx.lineWidth = 1;
-      const panelWidth = faceRadius * 1.24;
-      const panelHeight = faceRadius * 0.26;
-      const panelY = faceRadius * 0.47;
-      ctx.beginPath();
-      ctx.roundRect(-panelWidth / 2, panelY, panelWidth, panelHeight, 8);
-      ctx.fill();
-      ctx.stroke();
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.86)';
+      ctx.shadowBlur = 8;
+      ctx.shadowOffsetY = 2;
+      const readoutWidth = faceRadius * 1.28;
+      const readoutY = faceRadius * 0.56;
       ctx.fillStyle = '#4fd7ff';
       ctx.font = `700 ${Math.max(8, size * 0.014)}px Inter, sans-serif`;
-      drawCenteredText(ctx, selectedCountry.country, 0, panelY + panelHeight * 0.33, panelWidth * 0.86, 10);
+      drawCenteredText(ctx, selectedCountry.country, 0, readoutY, readoutWidth, 10);
       ctx.fillStyle = '#f5d061';
       ctx.font = `500 ${Math.max(7, size * 0.012)}px Inter, sans-serif`;
       const countryLine = `${formatRegionTime(selectedCountry.timezone)} · ${formatTimeDifference(selectedCountry.timezone, now)}`;
-      drawCenteredText(ctx, countryLine, 0, panelY + panelHeight * 0.68, panelWidth * 0.9, 9);
+      drawCenteredText(ctx, countryLine, 0, readoutY + 16, readoutWidth, 9);
       ctx.restore();
 
       function drawHand(value, length, color, lineWidth) {
