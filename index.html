@@ -1771,6 +1771,58 @@
       text-shadow: 0 0 10px rgba(245, 208, 97, 0.25);
     }
 
+    body .site-corner-logo.hour-heartbeat,
+    body .watch-side-word.hour-heartbeat {
+      animation: hourHeartbeat 0.78s ease-in-out 0s 5;
+    }
+
+    .hourly-quote {
+      position: fixed;
+      left: 50%;
+      bottom: 34px;
+      z-index: 120;
+      width: min(680px, calc(100vw - 32px));
+      padding: 18px 24px;
+      border: 1px solid rgba(212, 175, 55, 0.64);
+      border-radius: 8px;
+      background:
+        radial-gradient(circle at top, rgba(178, 102, 255, 0.16), transparent 58%),
+        rgba(0, 0, 0, 0.78);
+      color: #fff1a8;
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1rem, 2.2vw, 1.35rem);
+      line-height: 1.55;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, 16px) scale(0.98);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+      box-shadow: 0 0 28px rgba(212, 175, 55, 0.16);
+    }
+
+    .hourly-quote.visible {
+      opacity: 1;
+      transform: translate(-50%, 0) scale(1);
+    }
+
+    @keyframes hourHeartbeat {
+      0%, 100% { transform: translateY(-50%) scale(1); filter: drop-shadow(0 0 0 rgba(212, 175, 55, 0)); }
+      25% { transform: translateY(-50%) scale(1.055); filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.52)); }
+      42% { transform: translateY(-50%) scale(0.985); }
+      64% { transform: translateY(-50%) scale(1.035); filter: drop-shadow(0 0 18px rgba(178, 102, 255, 0.42)); }
+    }
+
+    body .site-corner-logo.hour-heartbeat {
+      animation-name: hourHeartbeatLogo;
+    }
+
+    @keyframes hourHeartbeatLogo {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(212, 175, 55, 0)); }
+      25% { transform: scale(1.055); filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.52)); }
+      42% { transform: scale(0.985); }
+      64% { transform: scale(1.035); filter: drop-shadow(0 0 18px rgba(178, 102, 255, 0.42)); }
+    }
+
     body .luxury-hero {
       min-height: 100vh;
       padding: 0;
@@ -2056,6 +2108,8 @@
     </div>
     <span class="watch-side-word waci" aria-hidden="true">Waci</span>
   </section>
+
+  <div id="hourlyQuote" class="hourly-quote" aria-live="polite"></div>
 
   <section id="daily-ritual" class="daily-ritual-section">
     <div class="container">
@@ -4037,6 +4091,32 @@
       { key: 'nav.feedback', target: '#feedback', region: 'Honolulu, US', timezone: 'Pacific/Honolulu' }
     ];
 
+    const balowaciHourQuotes = [
+      'BaloWaci turns every hour into a doorway between where you are and where time is moving.',
+      'Time is not only counted; in BaloWaci, it is interpreted, felt, and navigated.',
+      'Every rotation is a reminder that the world is moving with you.',
+      'BaloWaci connects cultures by letting time speak in more than one direction.',
+      'The watch breathes because time is alive.',
+      'A new hour is not just a number; it is a new position in the story.',
+      'BaloWaci makes the world feel close enough to rotate in your hand.',
+      'Modern time tells you when. Cultural time asks you what it means.',
+      'The future and the past meet at the center of the watch.',
+      'Every country carries a rhythm. BaloWaci lets those rhythms share one face.'
+    ];
+
+    const worldCountries = [
+      ['Afghanistan','Asia/Kabul'],['Albania','Europe/Tirane'],['Algeria','Africa/Algiers'],['Andorra','Europe/Andorra'],['Angola','Africa/Luanda'],['Antigua and Barbuda','America/Antigua'],['Argentina','America/Argentina/Buenos_Aires'],['Armenia','Asia/Yerevan'],['Australia','Australia/Sydney'],['Austria','Europe/Vienna'],['Azerbaijan','Asia/Baku'],['Bahamas','America/Nassau'],['Bahrain','Asia/Bahrain'],['Bangladesh','Asia/Dhaka'],['Barbados','America/Barbados'],['Belarus','Europe/Minsk'],['Belgium','Europe/Brussels'],['Belize','America/Belize'],['Benin','Africa/Porto-Novo'],['Bhutan','Asia/Thimphu'],
+      ['Bolivia','America/La_Paz'],['Bosnia and Herzegovina','Europe/Sarajevo'],['Botswana','Africa/Gaborone'],['Brazil','America/Sao_Paulo'],['Brunei','Asia/Brunei'],['Bulgaria','Europe/Sofia'],['Burkina Faso','Africa/Ouagadougou'],['Burundi','Africa/Bujumbura'],['Cabo Verde','Atlantic/Cape_Verde'],['Cambodia','Asia/Phnom_Penh'],['Cameroon','Africa/Douala'],['Canada','America/Toronto'],['Central African Republic','Africa/Bangui'],['Chad','Africa/Ndjamena'],['Chile','America/Santiago'],['China','Asia/Shanghai'],['Colombia','America/Bogota'],['Comoros','Indian/Comoro'],['Congo','Africa/Brazzaville'],['Costa Rica','America/Costa_Rica'],
+      ['Cote dIvoire','Africa/Abidjan'],['Croatia','Europe/Zagreb'],['Cuba','America/Havana'],['Cyprus','Asia/Nicosia'],['Czechia','Europe/Prague'],['Democratic Republic of the Congo','Africa/Kinshasa'],['Denmark','Europe/Copenhagen'],['Djibouti','Africa/Djibouti'],['Dominica','America/Dominica'],['Dominican Republic','America/Santo_Domingo'],['Ecuador','America/Guayaquil'],['Egypt','Africa/Cairo'],['El Salvador','America/El_Salvador'],['Equatorial Guinea','Africa/Malabo'],['Eritrea','Africa/Asmara'],['Estonia','Europe/Tallinn'],['Eswatini','Africa/Mbabane'],['Ethiopia','Africa/Addis_Ababa'],['Fiji','Pacific/Fiji'],['Finland','Europe/Helsinki'],
+      ['France','Europe/Paris'],['Gabon','Africa/Libreville'],['Gambia','Africa/Banjul'],['Georgia','Asia/Tbilisi'],['Germany','Europe/Berlin'],['Ghana','Africa/Accra'],['Greece','Europe/Athens'],['Grenada','America/Grenada'],['Guatemala','America/Guatemala'],['Guinea','Africa/Conakry'],['Guinea-Bissau','Africa/Bissau'],['Guyana','America/Guyana'],['Haiti','America/Port-au-Prince'],['Honduras','America/Tegucigalpa'],['Hungary','Europe/Budapest'],['Iceland','Atlantic/Reykjavik'],['India','Asia/Kolkata'],['Indonesia','Asia/Jakarta'],['Iran','Asia/Tehran'],['Iraq','Asia/Baghdad'],
+      ['Ireland','Europe/Dublin'],['Israel','Asia/Jerusalem'],['Italy','Europe/Rome'],['Jamaica','America/Jamaica'],['Japan','Asia/Tokyo'],['Jordan','Asia/Amman'],['Kazakhstan','Asia/Almaty'],['Kenya','Africa/Nairobi'],['Kiribati','Pacific/Tarawa'],['Kuwait','Asia/Kuwait'],['Kyrgyzstan','Asia/Bishkek'],['Laos','Asia/Vientiane'],['Latvia','Europe/Riga'],['Lebanon','Asia/Beirut'],['Lesotho','Africa/Maseru'],['Liberia','Africa/Monrovia'],['Libya','Africa/Tripoli'],['Liechtenstein','Europe/Vaduz'],['Lithuania','Europe/Vilnius'],['Luxembourg','Europe/Luxembourg'],
+      ['Madagascar','Indian/Antananarivo'],['Malawi','Africa/Blantyre'],['Malaysia','Asia/Kuala_Lumpur'],['Maldives','Indian/Maldives'],['Mali','Africa/Bamako'],['Malta','Europe/Malta'],['Marshall Islands','Pacific/Majuro'],['Mauritania','Africa/Nouakchott'],['Mauritius','Indian/Mauritius'],['Mexico','America/Mexico_City'],['Micronesia','Pacific/Chuuk'],['Moldova','Europe/Chisinau'],['Monaco','Europe/Monaco'],['Mongolia','Asia/Ulaanbaatar'],['Montenegro','Europe/Podgorica'],['Morocco','Africa/Casablanca'],['Mozambique','Africa/Maputo'],['Myanmar','Asia/Yangon'],['Namibia','Africa/Windhoek'],['Nauru','Pacific/Nauru'],
+      ['Nepal','Asia/Kathmandu'],['Netherlands','Europe/Amsterdam'],['New Zealand','Pacific/Auckland'],['Nicaragua','America/Managua'],['Niger','Africa/Niamey'],['Nigeria','Africa/Lagos'],['North Korea','Asia/Pyongyang'],['North Macedonia','Europe/Skopje'],['Norway','Europe/Oslo'],['Oman','Asia/Muscat'],['Pakistan','Asia/Karachi'],['Palau','Pacific/Palau'],['Panama','America/Panama'],['Papua New Guinea','Pacific/Port_Moresby'],['Paraguay','America/Asuncion'],['Peru','America/Lima'],['Philippines','Asia/Manila'],['Poland','Europe/Warsaw'],['Portugal','Europe/Lisbon'],['Qatar','Asia/Qatar'],
+      ['Romania','Europe/Bucharest'],['Russia','Europe/Moscow'],['Rwanda','Africa/Kigali'],['Saint Kitts and Nevis','America/St_Kitts'],['Saint Lucia','America/St_Lucia'],['Saint Vincent and the Grenadines','America/St_Vincent'],['Samoa','Pacific/Apia'],['San Marino','Europe/San_Marino'],['Sao Tome and Principe','Africa/Sao_Tome'],['Saudi Arabia','Asia/Riyadh'],['Senegal','Africa/Dakar'],['Serbia','Europe/Belgrade'],['Seychelles','Indian/Mahe'],['Sierra Leone','Africa/Freetown'],['Singapore','Asia/Singapore'],['Slovakia','Europe/Bratislava'],['Slovenia','Europe/Ljubljana'],['Solomon Islands','Pacific/Guadalcanal'],['Somalia','Africa/Mogadishu'],['South Africa','Africa/Johannesburg'],
+      ['South Korea','Asia/Seoul'],['South Sudan','Africa/Juba'],['Spain','Europe/Madrid'],['Sri Lanka','Asia/Colombo'],['Sudan','Africa/Khartoum'],['Suriname','America/Paramaribo'],['Sweden','Europe/Stockholm'],['Switzerland','Europe/Zurich'],['Syria','Asia/Damascus'],['Tajikistan','Asia/Dushanbe'],['Tanzania','Africa/Dar_es_Salaam'],['Thailand','Asia/Bangkok'],['Timor-Leste','Asia/Dili'],['Togo','Africa/Lome'],['Tonga','Pacific/Tongatapu'],['Trinidad and Tobago','America/Port_of_Spain'],['Tunisia','Africa/Tunis'],['Turkey','Europe/Istanbul'],['Turkmenistan','Asia/Ashgabat'],['Tuvalu','Pacific/Funafuti'],
+      ['Uganda','Africa/Kampala'],['Ukraine','Europe/Kyiv'],['United Arab Emirates','Asia/Dubai'],['United Kingdom','Europe/London'],['United States','America/New_York'],['Uruguay','America/Montevideo'],['Uzbekistan','Asia/Tashkent'],['Vanuatu','Pacific/Efate'],['Vatican City','Europe/Vatican'],['Venezuela','America/Caracas'],['Vietnam','Asia/Ho_Chi_Minh'],['Yemen','Asia/Aden'],['Zambia','Africa/Lusaka'],['Zimbabwe','Africa/Harare'],['Palestine','Asia/Gaza']
+    ];
+
     const earthTextureImage = new Image();
     earthTextureImage.src = 'assets/earth-texture.jpg';
     const moonTextureImage = new Image();
@@ -4055,7 +4135,10 @@
       activePointerId: null,
       lastTouchSelectionAt: 0,
       lastMinute: null,
+      lastHour: null,
       minuteBeatStart: 0,
+      hourBeatStart: 0,
+      quoteTimeout: null,
       dpr: 1
     };
 
@@ -4074,6 +4157,72 @@
         timeZoneName: 'short'
       }).formatToParts(new Date());
       return parts.find((part) => part.type === 'timeZoneName')?.value || timezone;
+    }
+
+    function getTimezoneOffsetMinutes(timezone, date = new Date()) {
+      try {
+        const parts = new Intl.DateTimeFormat('en-US', {
+          timeZone: timezone,
+          hour12: false,
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit'
+        }).formatToParts(date).reduce((acc, part) => {
+          if (part.type !== 'literal') acc[part.type] = part.value;
+          return acc;
+        }, {});
+        const asUtc = Date.UTC(Number(parts.year), Number(parts.month) - 1, Number(parts.day), Number(parts.hour), Number(parts.minute), Number(parts.second));
+        return Math.round((asUtc - date.getTime()) / 60000);
+      } catch (error) {
+        return 0;
+      }
+    }
+
+    function formatTimeDifference(timezone, date = new Date()) {
+      const localOffset = getTimezoneOffsetMinutes(Intl.DateTimeFormat().resolvedOptions().timeZone, date);
+      const targetOffset = getTimezoneOffsetMinutes(timezone, date);
+      const diffMinutes = targetOffset - localOffset;
+      if (diffMinutes === 0) return 'same time';
+      const sign = diffMinutes > 0 ? '+' : '-';
+      const absolute = Math.abs(diffMinutes);
+      const hours = Math.floor(absolute / 60);
+      const minutes = absolute % 60;
+      return `${sign}${hours}${minutes ? `:${String(minutes).padStart(2, '0')}` : ''} from you`;
+    }
+
+    function getCountryForWatch(index, rotation) {
+      const segment = (Math.PI * 2) / homeWatchNavItems.length;
+      const rotationSteps = Math.floor(normalizeRadians(-rotation + index * segment) / (Math.PI * 2) * worldCountries.length);
+      const countryIndex = ((index * 19 + rotationSteps) % worldCountries.length + worldCountries.length) % worldCountries.length;
+      const [country, timezone] = worldCountries[countryIndex];
+      return { country, timezone, index: countryIndex };
+    }
+
+    function triggerHourlyBaloWaciQuote(now = new Date()) {
+      const quoteElement = document.getElementById('hourlyQuote');
+      const quote = balowaciHourQuotes[now.getHours() % balowaciHourQuotes.length];
+      if (quoteElement) {
+        quoteElement.textContent = quote;
+        quoteElement.classList.add('visible');
+        clearTimeout(homeWatchState.quoteTimeout);
+        homeWatchState.quoteTimeout = setTimeout(() => {
+          quoteElement.classList.remove('visible');
+        }, 24000);
+      }
+
+      document.querySelectorAll('.site-corner-logo, .watch-side-word').forEach((element) => {
+        element.classList.remove('hour-heartbeat');
+        void element.offsetWidth;
+        element.classList.add('hour-heartbeat');
+        setTimeout(() => element.classList.remove('hour-heartbeat'), 4300);
+      });
+
+      if (navigator.vibrate) {
+        navigator.vibrate([80, 45, 120, 45, 80]);
+      }
     }
 
     function smoothStep(edge0, edge1, value) {
@@ -4284,7 +4433,7 @@
       return lines.length;
     }
 
-    function drawWatchNavLabel(ctx, item, isActive, radius, size) {
+    function drawWatchNavLabel(ctx, item, isActive, radius, size, countryInfo) {
       ctx.fillStyle = isActive ? '#f5d061' : 'rgba(255, 255, 255, 0.72)';
       ctx.font = `${isActive ? 600 : 400} ${Math.max(8, size * 0.016)}px Inter, sans-serif`;
       const sectionLines = drawCenteredText(ctx, t(item.key), 0, -24, radius * 0.3, 11);
@@ -4296,6 +4445,11 @@
       ctx.fillStyle = isActive ? '#f5d061' : 'rgba(255, 255, 255, 0.62)';
       ctx.font = `400 ${Math.max(7, size * 0.012)}px Inter, sans-serif`;
       drawCenteredText(ctx, formatRegionTime(item.timezone), 0, detailsY + 15, radius * 0.3, 9);
+      if (isActive && countryInfo) {
+        ctx.fillStyle = '#4fd7ff';
+        ctx.font = `600 ${Math.max(7, size * 0.0115)}px Inter, sans-serif`;
+        drawCenteredText(ctx, countryInfo.country, 0, detailsY + 31, radius * 0.33, 9);
+      }
     }
 
     function drawOrbitalCompassScale(ctx, radius, size, rotation) {
@@ -4615,6 +4769,7 @@
       const minutes = now.getMinutes() + seconds / 60;
       const hours = (now.getHours() % 12) + minutes / 60;
       const currentMinute = now.getMinutes();
+      const currentHour = now.getHours();
       if (state.lastMinute === null) {
         state.lastMinute = currentMinute;
       } else if (currentMinute !== state.lastMinute) {
@@ -4622,9 +4777,19 @@
         state.minuteBeatStart = now.getTime();
         triggerMinuteRitual();
       }
+      if (state.lastHour === null) {
+        state.lastHour = currentHour;
+      } else if (currentHour !== state.lastHour) {
+        state.lastHour = currentHour;
+        state.hourBeatStart = now.getTime();
+        triggerHourlyBaloWaciQuote(now);
+      }
       const beatElapsed = now.getTime() - state.minuteBeatStart;
       const beatProgress = Math.min(Math.max(beatElapsed / 1200, 0), 1);
       const beatAmount = beatElapsed < 1200 ? Math.sin(beatProgress * Math.PI) : 0;
+      const hourBeatElapsed = now.getTime() - state.hourBeatStart;
+      const hourBeatProgress = Math.min(Math.max(hourBeatElapsed / 2600, 0), 1);
+      const hourBeatAmount = hourBeatElapsed < 2600 ? Math.sin(hourBeatProgress * Math.PI) : 0;
       const solarIntensity = getLocalSolarIntensity(now);
       updateHomeWatchSolarStyle(solarIntensity);
 
@@ -4634,7 +4799,7 @@
       ctx.save();
       ctx.translate(cx, cy);
       const breathScale = 1 + beatAmount * 0.025;
-      ctx.scale(breathScale, breathScale);
+      ctx.scale(breathScale + hourBeatAmount * 0.018, breathScale + hourBeatAmount * 0.018);
 
       const glow = ctx.createRadialGradient(0, 0, faceRadius * 0.32, 0, 0, radius * 1.12);
       glow.addColorStop(0, `rgba(255, 236, 142, ${0.03 + solarIntensity * 0.32 + beatAmount * 0.12})`);
@@ -4697,7 +4862,7 @@
         ctx.rotate(angle + Math.PI / 2);
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        drawWatchNavLabel(ctx, item, active, radius, size);
+        drawWatchNavLabel(ctx, item, active, radius, size, getCountryForWatch(index, state.rotation));
         ctx.restore();
       });
 
@@ -4733,7 +4898,30 @@
       ctx.stroke();
 
       const selectedItem = homeWatchNavItems[state.selectedIndex];
+      const selectedCountry = getCountryForWatch(state.selectedIndex, state.rotation);
       drawLiveWorldMap(ctx, faceRadius, selectedItem, now);
+
+      ctx.save();
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.52)';
+      ctx.strokeStyle = 'rgba(212, 175, 55, 0.48)';
+      ctx.lineWidth = 1;
+      const panelWidth = faceRadius * 1.24;
+      const panelHeight = faceRadius * 0.26;
+      const panelY = faceRadius * 0.47;
+      ctx.beginPath();
+      ctx.roundRect(-panelWidth / 2, panelY, panelWidth, panelHeight, 8);
+      ctx.fill();
+      ctx.stroke();
+      ctx.fillStyle = '#4fd7ff';
+      ctx.font = `700 ${Math.max(8, size * 0.014)}px Inter, sans-serif`;
+      drawCenteredText(ctx, selectedCountry.country, 0, panelY + panelHeight * 0.33, panelWidth * 0.86, 10);
+      ctx.fillStyle = '#f5d061';
+      ctx.font = `500 ${Math.max(7, size * 0.012)}px Inter, sans-serif`;
+      const countryLine = `${formatRegionTime(selectedCountry.timezone)} · ${formatTimeDifference(selectedCountry.timezone, now)}`;
+      drawCenteredText(ctx, countryLine, 0, panelY + panelHeight * 0.68, panelWidth * 0.9, 9);
+      ctx.restore();
 
       function drawHand(value, length, color, lineWidth) {
         const angle = -Math.PI / 2 + value * Math.PI * 2;
