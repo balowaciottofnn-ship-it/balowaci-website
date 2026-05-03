@@ -1779,7 +1779,7 @@
     .hourly-quote {
       position: fixed;
       left: 50%;
-      bottom: 34px;
+      top: 126px;
       z-index: 120;
       width: min(680px, calc(100vw - 32px));
       padding: 18px 24px;
@@ -1795,7 +1795,7 @@
       line-height: 1.55;
       opacity: 0;
       pointer-events: none;
-      transform: translate(-50%, 16px) scale(0.98);
+      transform: translate(-50%, -16px) scale(0.98);
       transition: opacity 0.7s ease, transform 0.7s ease;
       box-shadow: 0 0 28px rgba(212, 175, 55, 0.16);
     }
@@ -2028,6 +2028,13 @@
       body .site-language-control .language-select {
         min-width: 112px;
         padding: 10px 12px;
+      }
+
+      body .hourly-quote {
+        top: 92px;
+        width: min(560px, calc(100vw - 28px));
+        padding: 14px 18px;
+        font-size: clamp(0.9rem, 3.2vw, 1.05rem);
       }
 
       body .home-watch-nav {
@@ -3682,6 +3689,97 @@
       Object.assign(translations[language], entries);
     });
 
+    const hourlyQuoteTranslationUpdates = {
+      en: {
+        'hour.quote.0': 'BaloWaci turns every hour into a doorway between where you are and where time is moving.',
+        'hour.quote.1': 'Time is not only counted; in BaloWaci, it is interpreted, felt, and navigated.',
+        'hour.quote.2': 'Every rotation is a reminder that the world is moving with you.',
+        'hour.quote.3': 'BaloWaci connects cultures by letting time speak in more than one direction.',
+        'hour.quote.4': 'The watch breathes because time is alive.',
+        'hour.quote.5': 'A new hour is not just a number; it is a new position in the story.',
+        'hour.quote.6': 'BaloWaci makes the world feel close enough to rotate in your hand.',
+        'hour.quote.7': 'Modern time tells you when. Cultural time asks you what it means.',
+        'hour.quote.8': 'The future and the past meet at the center of the watch.',
+        'hour.quote.9': 'Every country carries a rhythm. BaloWaci lets those rhythms share one face.'
+      },
+      sw: {
+        'hour.quote.0': 'BaloWaci hubadilisha kila saa kuwa mlango kati ya ulipo na mahali wakati unasonga.',
+        'hour.quote.1': 'Wakati hauhesabiwi tu; ndani ya BaloWaci, unatafsiriwa, unasikika, na unaongozwa.',
+        'hour.quote.2': 'Kila mzunguko hukumbusha kwamba dunia inasonga pamoja nawe.',
+        'hour.quote.3': 'BaloWaci huunganisha tamaduni kwa kuruhusu wakati kuzungumza katika mwelekeo zaidi ya mmoja.',
+        'hour.quote.4': 'Saa inapumua kwa sababu wakati uko hai.',
+        'hour.quote.5': 'Saa mpya si nambari tu; ni nafasi mpya ndani ya simulizi.',
+        'hour.quote.6': 'BaloWaci hufanya dunia ihisi karibu kiasi cha kuizungusha mkononi mwako.',
+        'hour.quote.7': 'Wakati wa kisasa hukuambia lini. Wakati wa kitamaduni huuliza maana yake.',
+        'hour.quote.8': 'Mustakabali na zamani hukutana katikati ya saa.',
+        'hour.quote.9': 'Kila nchi ina mpigo wake. BaloWaci huruhusu mipigo hiyo kushiriki uso mmoja.'
+      },
+      es: {
+        'hour.quote.0': 'BaloWaci convierte cada hora en una puerta entre donde estas y hacia donde se mueve el tiempo.',
+        'hour.quote.1': 'El tiempo no solo se cuenta; en BaloWaci se interpreta, se siente y se navega.',
+        'hour.quote.2': 'Cada rotacion recuerda que el mundo se mueve contigo.',
+        'hour.quote.3': 'BaloWaci conecta culturas dejando que el tiempo hable en mas de una direccion.',
+        'hour.quote.4': 'El reloj respira porque el tiempo esta vivo.',
+        'hour.quote.5': 'Una nueva hora no es solo un numero; es una nueva posicion en la historia.',
+        'hour.quote.6': 'BaloWaci hace que el mundo se sienta lo bastante cerca como para girarlo en tu mano.',
+        'hour.quote.7': 'El tiempo moderno te dice cuando. El tiempo cultural pregunta que significa.',
+        'hour.quote.8': 'El futuro y el pasado se encuentran en el centro del reloj.',
+        'hour.quote.9': 'Cada pais lleva un ritmo. BaloWaci permite que esos ritmos compartan una sola cara.'
+      },
+      pt: {
+        'hour.quote.0': 'BaloWaci transforma cada hora em uma porta entre onde voce esta e para onde o tempo se move.',
+        'hour.quote.1': 'O tempo nao e apenas contado; no BaloWaci, ele e interpretado, sentido e navegado.',
+        'hour.quote.2': 'Cada rotacao lembra que o mundo se move com voce.',
+        'hour.quote.3': 'BaloWaci conecta culturas ao deixar o tempo falar em mais de uma direcao.',
+        'hour.quote.4': 'O relogio respira porque o tempo esta vivo.',
+        'hour.quote.5': 'Uma nova hora nao e apenas um numero; e uma nova posicao na historia.',
+        'hour.quote.6': 'BaloWaci faz o mundo parecer perto o suficiente para girar na sua mao.',
+        'hour.quote.7': 'O tempo moderno diz quando. O tempo cultural pergunta o que significa.',
+        'hour.quote.8': 'O futuro e o passado se encontram no centro do relogio.',
+        'hour.quote.9': 'Cada pais carrega um ritmo. BaloWaci permite que esses ritmos compartilhem uma so face.'
+      },
+      fr: {
+        'hour.quote.0': 'BaloWaci transforme chaque heure en porte entre votre position et le mouvement du temps.',
+        'hour.quote.1': 'Le temps ne se compte pas seulement; dans BaloWaci, il se lit, se ressent et se navigue.',
+        'hour.quote.2': 'Chaque rotation rappelle que le monde avance avec vous.',
+        'hour.quote.3': 'BaloWaci relie les cultures en laissant le temps parler dans plusieurs directions.',
+        'hour.quote.4': 'La montre respire parce que le temps est vivant.',
+        'hour.quote.5': 'Une nouvelle heure n est pas seulement un nombre; c est une nouvelle position dans le recit.',
+        'hour.quote.6': 'BaloWaci rend le monde assez proche pour tourner dans votre main.',
+        'hour.quote.7': 'Le temps moderne dit quand. Le temps culturel demande ce que cela signifie.',
+        'hour.quote.8': 'Le futur et le passe se rencontrent au centre de la montre.',
+        'hour.quote.9': 'Chaque pays porte un rythme. BaloWaci permet a ces rythmes de partager un meme visage.'
+      },
+      zh: {
+        'hour.quote.0': 'BaloWaci 把每一个小时变成一道门，连接你所在的位置与时间正在前进的方向。',
+        'hour.quote.1': '时间不只是被计算；在 BaloWaci 中，它被解读、被感受、也被导航。',
+        'hour.quote.2': '每一次旋转都提醒你，世界正与你一起移动。',
+        'hour.quote.3': 'BaloWaci 让时间从多个方向发声，从而连接不同文化。',
+        'hour.quote.4': '这只表会呼吸，因为时间本身是活的。',
+        'hour.quote.5': '新的小时不只是一个数字；它是故事中的一个新位置。',
+        'hour.quote.6': 'BaloWaci 让世界近得仿佛可以在手中旋转。',
+        'hour.quote.7': '现代时间告诉你何时。文化时间追问它意味着什么。',
+        'hour.quote.8': '未来与过去在表盘中心相遇。',
+        'hour.quote.9': '每个国家都有自己的节奏。BaloWaci 让这些节奏共享同一张表盘。'
+      },
+      ar: {
+        'hour.quote.0': 'يحوّل BaloWaci كل ساعة إلى بوابة بين مكانك واتجاه حركة الزمن.',
+        'hour.quote.1': 'الوقت لا يُحسب فقط؛ في BaloWaci يُفسَّر ويُشعَر به ويُستكشف.',
+        'hour.quote.2': 'كل دوران يذكّرك بأن العالم يتحرك معك.',
+        'hour.quote.3': 'يربط BaloWaci الثقافات عندما يسمح للوقت أن يتحدث بأكثر من اتجاه.',
+        'hour.quote.4': 'الساعة تتنفس لأن الزمن حي.',
+        'hour.quote.5': 'الساعة الجديدة ليست رقماً فقط؛ إنها موقع جديد داخل القصة.',
+        'hour.quote.6': 'يجعل BaloWaci العالم قريباً بما يكفي لتديره بيدك.',
+        'hour.quote.7': 'الوقت الحديث يخبرك متى. والوقت الثقافي يسأل ماذا يعني ذلك.',
+        'hour.quote.8': 'يلتقي المستقبل والماضي في مركز الساعة.',
+        'hour.quote.9': 'كل بلد يحمل إيقاعاً. يتيح BaloWaci لتلك الإيقاعات أن تشترك في وجه واحد.'
+      }
+    };
+
+    Object.entries(hourlyQuoteTranslationUpdates).forEach(([language, entries]) => {
+      Object.assign(translations[language], entries);
+    });
+
     function t(key) {
       return translations[currentLanguage]?.[key] || translations.en[key] || key;
     }
@@ -3704,6 +3802,10 @@
       const languageSelect = document.getElementById('languageSelect');
       if (languageSelect) {
         languageSelect.value = currentLanguage;
+      }
+      const quoteElement = document.getElementById('hourlyQuote');
+      if (quoteElement?.classList.contains('visible') && homeWatchState.lastQuoteIndex !== null) {
+        quoteElement.textContent = t(`hour.quote.${homeWatchState.lastQuoteIndex}`);
       }
       updateDailyRitual();
       updateFeedbackProgress();
@@ -4091,18 +4193,7 @@
       { key: 'nav.feedback', target: '#feedback', region: 'Honolulu, US', timezone: 'Pacific/Honolulu' }
     ];
 
-    const balowaciHourQuotes = [
-      'BaloWaci turns every hour into a doorway between where you are and where time is moving.',
-      'Time is not only counted; in BaloWaci, it is interpreted, felt, and navigated.',
-      'Every rotation is a reminder that the world is moving with you.',
-      'BaloWaci connects cultures by letting time speak in more than one direction.',
-      'The watch breathes because time is alive.',
-      'A new hour is not just a number; it is a new position in the story.',
-      'BaloWaci makes the world feel close enough to rotate in your hand.',
-      'Modern time tells you when. Cultural time asks you what it means.',
-      'The future and the past meet at the center of the watch.',
-      'Every country carries a rhythm. BaloWaci lets those rhythms share one face.'
-    ];
+    const balowaciHourQuoteCount = 10;
 
     const worldCountries = [
       ['Afghanistan','Asia/Kabul'],['Albania','Europe/Tirane'],['Algeria','Africa/Algiers'],['Andorra','Europe/Andorra'],['Angola','Africa/Luanda'],['Antigua and Barbuda','America/Antigua'],['Argentina','America/Argentina/Buenos_Aires'],['Armenia','Asia/Yerevan'],['Australia','Australia/Sydney'],['Austria','Europe/Vienna'],['Azerbaijan','Asia/Baku'],['Bahamas','America/Nassau'],['Bahrain','Asia/Bahrain'],['Bangladesh','Asia/Dhaka'],['Barbados','America/Barbados'],['Belarus','Europe/Minsk'],['Belgium','Europe/Brussels'],['Belize','America/Belize'],['Benin','Africa/Porto-Novo'],['Bhutan','Asia/Thimphu'],
@@ -4136,6 +4227,7 @@
       lastTouchSelectionAt: 0,
       lastMinute: null,
       lastHour: null,
+      lastQuoteIndex: null,
       minuteBeatStart: 0,
       hourBeatStart: 0,
       quoteTimeout: null,
@@ -4203,9 +4295,10 @@
 
     function triggerHourlyBaloWaciQuote(now = new Date()) {
       const quoteElement = document.getElementById('hourlyQuote');
-      const quote = balowaciHourQuotes[now.getHours() % balowaciHourQuotes.length];
+      const quoteIndex = now.getHours() % balowaciHourQuoteCount;
       if (quoteElement) {
-        quoteElement.textContent = quote;
+        homeWatchState.lastQuoteIndex = quoteIndex;
+        quoteElement.textContent = t(`hour.quote.${quoteIndex}`);
         quoteElement.classList.add('visible');
         clearTimeout(homeWatchState.quoteTimeout);
         homeWatchState.quoteTimeout = setTimeout(() => {
