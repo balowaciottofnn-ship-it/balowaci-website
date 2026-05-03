@@ -4098,6 +4098,7 @@
     function restoreSavedTimeView() {
       const savedTheme = localStorage.getItem('balowaciTheme') || 'purple-night';
       applyBaloWaciTheme(savedTheme);
+      restoreCountryRotation();
       const savedIndex = Number(localStorage.getItem('balowaciSavedWatchIndex'));
       if (Number.isInteger(savedIndex) && savedIndex >= 0 && savedIndex < homeWatchNavItems.length) {
         const segment = (Math.PI * 2) / homeWatchNavItems.length;
@@ -4228,11 +4229,44 @@
       lastMinute: null,
       lastHour: null,
       lastQuoteIndex: null,
+      selectedCountryIndex: 0,
+      countryCursor: 0,
       minuteBeatStart: 0,
       hourBeatStart: 0,
       quoteTimeout: null,
       dpr: 1
     };
+
+    function normalizeCountryIndex(index) {
+      return ((index % worldCountries.length) + worldCountries.length) % worldCountries.length;
+    }
+
+    function getCountryByIndex(index) {
+      const countryIndex = normalizeCountryIndex(index);
+      const [country, timezone] = worldCountries[countryIndex];
+      return { country, timezone, index: countryIndex };
+    }
+
+    function restoreCountryRotation() {
+      const savedCountryIndex = Number(localStorage.getItem('balowaciSelectedCountryIndex'));
+      const savedCursor = Number(localStorage.getItem('balowaciCountryCursor'));
+      if (Number.isInteger(savedCountryIndex)) {
+        homeWatchState.selectedCountryIndex = normalizeCountryIndex(savedCountryIndex);
+      }
+      if (Number.isInteger(savedCursor)) {
+        homeWatchState.countryCursor = normalizeCountryIndex(savedCursor);
+      } else {
+        homeWatchState.countryCursor = homeWatchState.selectedCountryIndex;
+      }
+    }
+
+    function advanceWatchCountry() {
+      homeWatchState.countryCursor = normalizeCountryIndex(homeWatchState.countryCursor + 1);
+      homeWatchState.selectedCountryIndex = homeWatchState.countryCursor;
+      localStorage.setItem('balowaciCountryCursor', String(homeWatchState.countryCursor));
+      localStorage.setItem('balowaciSelectedCountryIndex', String(homeWatchState.selectedCountryIndex));
+      return getCountryByIndex(homeWatchState.selectedCountryIndex);
+    }
 
     function formatRegionTime(timezone) {
       return new Date().toLocaleTimeString([], {
@@ -4289,8 +4323,7 @@
       const segment = (Math.PI * 2) / homeWatchNavItems.length;
       const rotationSteps = Math.floor(normalizeRadians(-rotation + index * segment) / (Math.PI * 2) * worldCountries.length);
       const countryIndex = ((index * 19 + rotationSteps) % worldCountries.length + worldCountries.length) % worldCountries.length;
-      const [country, timezone] = worldCountries[countryIndex];
-      return { country, timezone, index: countryIndex };
+      return getCountryByIndex(countryIndex);
     }
 
     function triggerHourlyBaloWaciQuote(now = new Date()) {
@@ -4991,7 +5024,7 @@
       ctx.stroke();
 
       const selectedItem = homeWatchNavItems[state.selectedIndex];
-      const selectedCountry = getCountryForWatch(state.selectedIndex, state.rotation);
+      const selectedCountry = getCountryByIndex(state.selectedCountryIndex);
       drawLiveWorldMap(ctx, faceRadius, selectedItem, now);
 
       ctx.save();
@@ -5082,6 +5115,7 @@
       updateSectionTimeContexts();
 
       if (shouldNavigate) {
+        advanceWatchCountry();
         const target = document.querySelector(homeWatchNavItems[index].target);
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
