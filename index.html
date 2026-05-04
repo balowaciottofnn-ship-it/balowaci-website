@@ -70,18 +70,30 @@
       position: absolute;
       width: 3px;
       height: 3px;
-      background: #d4af37;
+      background: var(--star-color, #d4af37);
       border-radius: 50%;
       animation: twinkle 4s infinite ease-in-out;
       opacity: 0.8;
+      box-shadow: 0 0 10px var(--star-glow, rgba(212, 175, 55, 0.72));
     }
 
     .star::before,
     .star::after {
       content: '';
       position: absolute;
-      background: #d4af37;
+      background: var(--star-color, #d4af37);
       opacity: 0.6;
+      box-shadow: 0 0 10px var(--star-glow, rgba(212, 175, 55, 0.72));
+    }
+
+    .star.left-star {
+      --star-color: #b266ff;
+      --star-glow: rgba(178, 102, 255, 0.82);
+    }
+
+    .star.right-star {
+      --star-color: #f5d061;
+      --star-glow: rgba(245, 208, 97, 0.82);
     }
 
     .star::before {
@@ -1778,10 +1790,10 @@
 
     .hourly-quote {
       position: fixed;
-      left: 50%;
+      left: clamp(188px, 28vw, 430px);
       top: 126px;
       z-index: 120;
-      width: min(680px, calc(100vw - 32px));
+      width: min(520px, calc(50vw - 64px));
       padding: 18px 24px;
       border: 1px solid rgba(212, 175, 55, 0.64);
       border-radius: 8px;
@@ -1795,14 +1807,14 @@
       line-height: 1.55;
       opacity: 0;
       pointer-events: none;
-      transform: translate(-50%, -16px) scale(0.98);
+      transform: translateY(-16px) scale(0.98);
       transition: opacity 0.7s ease, transform 0.7s ease;
       box-shadow: 0 0 28px rgba(212, 175, 55, 0.16);
     }
 
     .hourly-quote.visible {
       opacity: 1;
-      transform: translate(-50%, 0) scale(1);
+      transform: translateY(0) scale(1);
     }
 
     @keyframes hourHeartbeat {
@@ -2032,9 +2044,15 @@
 
       body .hourly-quote {
         top: 92px;
+        left: 50%;
         width: min(560px, calc(100vw - 28px));
         padding: 14px 18px;
         font-size: clamp(0.9rem, 3.2vw, 1.05rem);
+        transform: translate(-50%, -16px) scale(0.98);
+      }
+
+      body .hourly-quote.visible {
+        transform: translate(-50%, 0) scale(1);
       }
 
       body .home-watch-nav {
@@ -3819,9 +3837,10 @@
 
       for (let i = 0; i < starCount; i++) {
         const star = document.createElement('div');
-        star.className = 'star';
+        const leftPosition = Math.random() * 100;
+        star.className = `star ${leftPosition < 50 ? 'left-star' : 'right-star'}`;
         star.style.top = Math.random() * 100 + '%';
-        star.style.left = Math.random() * 100 + '%';
+        star.style.left = leftPosition + '%';
         star.style.animationDuration = (Math.random() * 3 + 3) + 's';
         star.style.animationDelay = Math.random() * 4 + 's';
         container.appendChild(star);
@@ -4317,6 +4336,19 @@
       const hours = Math.floor(absolute / 60);
       const minutes = absolute % 60;
       return `${sign}${hours}${minutes ? `:${String(minutes).padStart(2, '0')}` : ''} from you`;
+    }
+
+    function getTimeDifferenceHierarchy(timezone, date = new Date()) {
+      const localOffset = getTimezoneOffsetMinutes(Intl.DateTimeFormat().resolvedOptions().timeZone, date);
+      const targetOffset = getTimezoneOffsetMinutes(timezone, date);
+      const diffMinutes = targetOffset - localOffset;
+      if (diffMinutes < 0) {
+        return { label: 'BEHIND', color: '#ff3b3b', diffMinutes };
+      }
+      if (diffMinutes === 0) {
+        return { label: 'ALIGNED', color: '#f5d061', diffMinutes };
+      }
+      return { label: 'AHEAD', color: '#31d67b', diffMinutes };
     }
 
     function getCountryForWatch(index, rotation) {
@@ -5035,13 +5067,34 @@
       ctx.shadowOffsetY = 2;
       const readoutWidth = faceRadius * 1.28;
       const readoutY = faceRadius * 0.56;
-      ctx.fillStyle = '#4fd7ff';
+      const hierarchy = getTimeDifferenceHierarchy(selectedCountry.timezone, now);
+      ctx.fillStyle = '#c884ff';
       ctx.font = `700 ${Math.max(8, size * 0.014)}px Inter, sans-serif`;
       drawCenteredText(ctx, selectedCountry.country, 0, readoutY, readoutWidth, 10);
-      ctx.fillStyle = '#f5d061';
+      ctx.fillStyle = '#ff3b3b';
       ctx.font = `500 ${Math.max(7, size * 0.012)}px Inter, sans-serif`;
       const countryLine = `${formatRegionTime(selectedCountry.timezone)} · ${formatTimeDifference(selectedCountry.timezone, now)}`;
       drawCenteredText(ctx, countryLine, 0, readoutY + 16, readoutWidth, 9);
+      ctx.fillStyle = hierarchy.color;
+      ctx.shadowColor = hierarchy.color;
+      ctx.shadowBlur = 10;
+      ctx.font = `700 ${Math.max(6, size * 0.0095)}px Inter, sans-serif`;
+      drawCenteredText(ctx, hierarchy.label, 0, readoutY + 30, readoutWidth * 0.75, 7);
+
+      const hierarchyY = readoutY + 43;
+      const hierarchyGap = Math.max(10, faceRadius * 0.12);
+      [
+        { key: 'BEHIND', color: '#ff3b3b' },
+        { key: 'ALIGNED', color: '#f5d061' },
+        { key: 'AHEAD', color: '#31d67b' }
+      ].forEach((item, itemIndex) => {
+        ctx.beginPath();
+        ctx.arc((itemIndex - 1) * hierarchyGap, hierarchyY, item.key === hierarchy.label ? 4.2 : 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = item.color;
+        ctx.globalAlpha = item.key === hierarchy.label ? 1 : 0.36;
+        ctx.fill();
+      });
+      ctx.globalAlpha = 1;
       ctx.restore();
 
       function drawHand(value, length, color, lineWidth) {
