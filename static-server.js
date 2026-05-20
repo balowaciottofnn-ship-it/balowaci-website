@@ -37,9 +37,16 @@ http.createServer((req, res) => {
       return;
     }
 
-    res.writeHead(200, {
-      'Content-Type': types[path.extname(filePath).toLowerCase()] || 'application/octet-stream'
-    });
+    const extension = path.extname(filePath).toLowerCase();
+    const headers = {
+      'Content-Type': types[extension] || 'application/octet-stream'
+    };
+
+    if (extension === '.html' || path.basename(filePath) === 'sw.js') {
+      headers['Cache-Control'] = 'no-cache';
+    }
+
+    res.writeHead(200, headers);
     res.end(data);
   });
 }).listen(port, () => {

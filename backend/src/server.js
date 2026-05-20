@@ -34,16 +34,32 @@ function requireAdmin(req, res, next) {
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.get('/sw.js', (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.sendFile(path.join(projectRoot, 'sw.js'));
+});
+app.get('/manifest.json', (req, res) => {
+  res.setHeader('Cache-Control', 'no-cache');
+  res.sendFile(path.join(projectRoot, 'manifest.json'));
+});
+app.get('/manifest.webmanifest', (req, res) => {
+  res.setHeader('Cache-Control', 'no-cache');
+  res.sendFile(path.join(projectRoot, 'manifest.webmanifest'));
+});
 app.use('/assets', express.static(path.join(projectRoot, 'assets')));
+app.use('/icons', express.static(path.join(projectRoot, 'icons')));
 app.use('/interfaces', express.static(path.join(projectRoot, 'interfaces')));
+app.use('/legal', express.static(path.join(projectRoot, 'legal')));
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 // Routes
 const timeRoutes = require('./routes/time');
 const feedbackRoutes = require('./routes/feedback');
 const healthRoutes = require('./routes/health');
+const weatherRoutes = require('./routes/weather');
 
 app.use('/api/time', timeRoutes);
+app.use('/api/weather', weatherRoutes);
 app.use('/api/feedback/all', requireAdmin);
 app.use('/api/feedback/stats', requireAdmin);
 app.use('/api/feedback/export.csv', requireAdmin);
@@ -51,6 +67,7 @@ app.use('/api/feedback', feedbackRoutes);
 app.use('/api/health', healthRoutes);
 
 app.get('/', (req, res) => {
+  res.setHeader('Cache-Control', 'no-cache');
   res.sendFile(path.join(projectRoot, 'index.html'));
 });
 
