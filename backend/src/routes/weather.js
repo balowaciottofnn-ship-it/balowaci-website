@@ -5,7 +5,7 @@ const router = express.Router();
 
 function fetchOpenWeather(lat, lon, apiKey) {
   return new Promise((resolve, reject) => {
-    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}&units=metric&appid=${encodeURIComponent(apiKey)}`;
+    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}&units=imperial&appid=${encodeURIComponent(apiKey)}`;
     https.get(url, (res) => {
       let body = '';
       res.on('data', (chunk) => { body += chunk; });
@@ -48,6 +48,7 @@ router.get('/', async (req, res, next) => {
     res.json({
       locationName: weatherData.name || 'Local area',
       temperature: weatherData.main?.temp ?? null,
+      temperatureUnit: 'F',
       feelsLike: weatherData.main?.feels_like ?? null,
       humidity: weatherData.main?.humidity ?? null,
       condition: weather.main,
