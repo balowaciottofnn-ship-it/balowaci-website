@@ -258,54 +258,9 @@
     }
 
     .weather-overlay.weather-clear {
-      opacity: 1;
-      background: radial-gradient(circle at 50% 8%, rgba(255, 255, 210, 0.24), transparent 14%),
-                  linear-gradient(180deg, rgba(255, 243, 205, 0.22), rgba(13, 19, 33, 0.06));
+      opacity: 0;
+      background: none;
       overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding-top: 8%;
-    }
-
-    .weather-overlay .sun {
-      position: relative;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, rgba(255, 255, 180, 0.88), rgba(255, 215, 0, 0.72));
-      box-shadow: 0 0 38px rgba(255, 215, 0, 0.62),
-                  0 0 68px rgba(255, 180, 0, 0.32),
-                  inset -8px -8px 16px rgba(139, 69, 19, 0.18);
-      animation: sunPulseGlow 4s ease-in-out infinite;
-    }
-
-    .weather-overlay .sun::before,
-    .weather-overlay .sun::after {
-      content: '';
-      position: absolute;
-      border-radius: 50%;
-      animation: sunRayRotate 24s linear infinite;
-    }
-
-    .weather-overlay .sun::before {
-      inset: -18px;
-      border: 2px solid rgba(255, 215, 0, 0.32);
-    }
-
-    .weather-overlay .sun::after {
-      inset: -24px;
-      border: 1px solid rgba(255, 215, 0, 0.18);
-    }
-
-    @keyframes sunPulseGlow {
-      0%, 100% { box-shadow: 0 0 38px rgba(255, 215, 0, 0.62), 0 0 68px rgba(255, 180, 0, 0.32), inset -8px -8px 16px rgba(139, 69, 19, 0.18); }
-      50% { box-shadow: 0 0 48px rgba(255, 215, 0, 0.72), 0 0 88px rgba(255, 180, 0, 0.42), inset -8px -8px 16px rgba(139, 69, 19, 0.22); }
-    }
-
-    @keyframes sunRayRotate {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
     }
 
     .weather-overlay.weather-snow {
@@ -320,7 +275,6 @@
       width: 2px;
       height: 18px;
       background: rgba(255, 255, 255, 0.78);
-      filter: blur(0.6px);
       transform: translateY(-100%) rotate(12deg);
       border-radius: 1px;
       animation-name: rainFall;
@@ -348,7 +302,6 @@
       height: 12%;
       background: rgba(255, 255, 255, 0.18);
       border-radius: 50px;
-      filter: blur(1.4px);
       box-shadow: 0 0 40px rgba(255, 255, 255, 0.14);
       animation: cloudDrift 38s linear infinite;
     }
@@ -372,7 +325,6 @@
       height: 6px;
       background: rgba(255, 255, 255, 0.84);
       border-radius: 50%;
-      filter: blur(0.2px);
       opacity: 0.86;
       animation-name: snowFall;
       animation-iteration-count: infinite;
@@ -487,19 +439,8 @@
       margin: 0 auto;
       border-radius: 50%;
       --solar-core: 0.08;
-      --solar-aura: 0.16;
-      --solar-shadow: 0.24;
-      --solar-blur: 34px;
-      --solar-shadow-alpha: 0.14;
-      --solar-inset-blur: 32px;
-      --solar-inset-alpha: 0.07;
-      background:
-        radial-gradient(circle at 50% 50%, rgba(255, 215, 0, var(--solar-core)), transparent 58%),
-        radial-gradient(circle at 50% 50%, rgba(255, 132, 24, var(--solar-aura)), transparent 70%),
-        radial-gradient(circle at 50% 50%, rgba(123, 44, 255, 0.1), transparent 78%);
-      box-shadow:
-        0 0 var(--solar-blur) rgba(255, 196, 54, var(--solar-shadow-alpha)),
-        inset 0 0 var(--solar-inset-blur) rgba(255, 215, 0, var(--solar-inset-alpha));
+      background: none;
+      box-shadow: none;
       transition: box-shadow 0.8s ease, background 0.8s ease;
     }
 
@@ -625,8 +566,7 @@
       width: 280px;
       height: 280px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(212, 175, 55, 0.22), transparent 65%);
-      filter: blur(8px);
+      background: none;
     }
 
     .watch-body {
@@ -4797,16 +4737,6 @@
       return 'clear';
     }
 
-    function createSun() {
-      const overlay = document.getElementById('weatherOverlay');
-      if (!overlay) return;
-      overlay.innerHTML = '';
-
-      const sun = document.createElement('span');
-      sun.className = 'sun';
-      overlay.appendChild(sun);
-    }
-
     function createRainDrops(count = 40) {
       const overlay = document.getElementById('weatherOverlay');
       if (!overlay) return;
@@ -4894,7 +4824,7 @@
       } else if (category === 'clouds') {
         createClouds();
       } else if (category === 'clear') {
-        createSun();
+        overlay.innerHTML = '';
       } else {
         overlay.innerHTML = '';
       }
@@ -5273,13 +5203,7 @@
     function updateHomeWatchSolarStyle(intensity) {
       const shell = document.querySelector('.home-watch-shell');
       if (!shell) return;
-      shell.style.setProperty('--solar-core', (0.02 + intensity * 0.24).toFixed(3));
-      shell.style.setProperty('--solar-aura', (0.03 + intensity * 0.28).toFixed(3));
-      shell.style.setProperty('--solar-shadow', intensity.toFixed(3));
-      shell.style.setProperty('--solar-blur', `${(14 + intensity * 52).toFixed(1)}px`);
-      shell.style.setProperty('--solar-shadow-alpha', (0.03 + intensity * 0.44).toFixed(3));
-      shell.style.setProperty('--solar-inset-blur', `${(20 + intensity * 40).toFixed(1)}px`);
-      shell.style.setProperty('--solar-inset-alpha', (0.02 + intensity * 0.18).toFixed(3));
+      shell.style.removeProperty('--solar-core');
     }
 
     function normalizeRadians(angle) {
@@ -5703,35 +5627,7 @@
       const breathScale = 1 + beatAmount * 0.025;
       ctx.scale(breathScale + hourBeatAmount * 0.018, breathScale + hourBeatAmount * 0.018);
 
-      const glow = ctx.createRadialGradient(0, 0, faceRadius * 0.32, 0, 0, radius * 1.12);
-      glow.addColorStop(0, `rgba(255, 236, 142, ${0.03 + solarIntensity * 0.32 + beatAmount * 0.12})`);
-      glow.addColorStop(0.48, `rgba(255, 191, 36, ${solarIntensity * 0.24 + beatAmount * 0.08})`);
-      glow.addColorStop(0.72, `rgba(255, 111, 24, ${solarIntensity * 0.12 + beatAmount * 0.04})`);
-      glow.addColorStop(0.88, `rgba(123, 44, 255, ${0.04 + solarIntensity * 0.06})`);
-      glow.addColorStop(1, 'rgba(0, 0, 0, 0)');
-      ctx.fillStyle = glow;
-      ctx.beginPath();
-      ctx.arc(0, 0, radius * 1.12, 0, Math.PI * 2);
-      ctx.fill();
-
       drawWatchSurfaceGlow(ctx, radius, now, beatAmount, state.rotation, 'back');
-
-      if (solarIntensity > 0.04) {
-        ctx.save();
-        ctx.globalAlpha = solarIntensity * 0.55;
-        for (let i = 0; i < 48; i += 1) {
-          const angle = (i / 48) * Math.PI * 2 + seconds * 0.002;
-          const inner = radius * (0.99 + (i % 2) * 0.02);
-          const outer = radius * (1.1 + (i % 3) * 0.035);
-          ctx.beginPath();
-          ctx.moveTo(Math.cos(angle) * inner, Math.sin(angle) * inner);
-          ctx.lineTo(Math.cos(angle) * outer, Math.sin(angle) * outer);
-          ctx.strokeStyle = i % 2 === 0 ? 'rgba(255, 215, 0, 0.55)' : 'rgba(255, 132, 24, 0.32)';
-          ctx.lineWidth = i % 5 === 0 ? 1.7 : 0.8;
-          ctx.stroke();
-        }
-        ctx.restore();
-      }
 
       ctx.beginPath();
       ctx.arc(0, 0, radius, 0, Math.PI * 2);
