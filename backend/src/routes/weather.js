@@ -3,6 +3,24 @@ const https = require('https');
 
 const router = express.Router();
 
+function getDisplayLocationName(lat, lon, fallbackName) {
+  const latitude = Number(lat);
+  const longitude = Number(lon);
+
+  if (Number.isFinite(latitude) && Number.isFinite(longitude)) {
+    const isBettendorfArea = latitude >= 41.42
+      && latitude <= 41.62
+      && longitude >= -90.62
+      && longitude <= -90.38;
+
+    if (isBettendorfArea) {
+      return 'Bettendorf';
+    }
+  }
+
+  return fallbackName || 'Local area';
+}
+
 function fetchOpenWeather(lat, lon, apiKey) {
   return new Promise((resolve, reject) => {
     const url = `https://api.openweathermap.org/data/2.5/weather?lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}&units=imperial&appid=${encodeURIComponent(apiKey)}`;
@@ -46,7 +64,7 @@ router.get('/', async (req, res, next) => {
     }
 
     res.json({
-      locationName: weatherData.name || 'Local area',
+      locationName: getDisplayLocationName(lat, lon, weatherData.name),
       temperature: weatherData.main?.temp ?? null,
       temperatureUnit: 'F',
       feelsLike: weatherData.main?.feels_like ?? null,
