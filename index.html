@@ -4917,6 +4917,10 @@
       lastQuoteIndex: null,
       selectedCountryIndex: 0,
       countryCursor: 0,
+      globeLongitudeDrift: 0,
+      globeLatitudeDrift: 0,
+      lastFrameTime: 0,
+      lastInteractionAt: 0,
       minuteBeatStart: 0,
       hourBeatStart: 0,
       quoteTimeout: null,
@@ -5414,18 +5418,18 @@
       return ((value + 540) % 360) - 180;
     }
 
-    function projectGlobePoint(lon, lat, centerLon, mapRadius) {
+    function projectGlobePoint(lon, lat, centerLon, mapRadius, centerLat = 0) {
       const relativeLon = normalizeLongitude(lon - centerLon);
       return {
         x: (relativeLon / 180) * mapRadius * 1.05,
-        y: (-lat / 90) * mapRadius * 0.72
+        y: (-(lat - centerLat) / 90) * mapRadius * 0.72
       };
     }
 
-    function drawWorldLandmass(ctx, points, centerLon, mapRadius) {
+    function drawWorldLandmass(ctx, points, centerLon, mapRadius, centerLat = 0) {
       ctx.beginPath();
       points.forEach(([lon, lat], index) => {
-        const point = projectGlobePoint(lon, lat, centerLon, mapRadius);
+        const point = projectGlobePoint(lon, lat, centerLon, mapRadius, centerLat);
         if (index === 0) {
           ctx.moveTo(point.x, point.y);
         } else {
@@ -5437,11 +5441,12 @@
       ctx.stroke();
     }
 
-    function drawEarthTextureGlobe(ctx, image, mapRadius, centerLon) {
+    function drawEarthTextureGlobe(ctx, image, mapRadius, centerLon, centerLat = 0) {
       const width = image.naturalWidth;
       const height = image.naturalHeight;
       const left = Math.floor(-mapRadius);
       const right = Math.ceil(mapRadius);
+      const verticalOffset = (centerLat / 90) * mapRadius * 0.72;
 
       ctx.save();
       ctx.imageSmoothingEnabled = true;
@@ -5455,7 +5460,7 @@
         const lon = normalizeLongitude(centerLon + dLon);
         let sourceX = ((lon + 180) / 360) * width;
         sourceX = Math.max(0, Math.min(width - 1, sourceX));
-        ctx.drawImage(image, sourceX, 0, 1, height, x, -visibleHeight / 2, 1.25, visibleHeight);
+        ctx.drawImage(image, sourceX, 0, 1, height, x, -visibleHeight / 2 + verticalOffset, 1.25, visibleHeight);
       }
 
       const atmosphere = ctx.createRadialGradient(-mapRadius * 0.28, -mapRadius * 0.3, 0, 0, 0, mapRadius);
@@ -5469,7 +5474,7 @@
       ctx.restore();
     }
 
-    function drawLiveWorldMap(ctx, faceRadius, selectedItem, now) {
+    function drawLiveWorldMap(ctx, faceRadius, selectedItem, now, globeLongitudeDrift = 0, globeLatitudeDrift = 0) {
       const mapRadius = faceRadius * 0.76;
       const utcHours = now.getUTCHours() + now.getUTCMinutes() / 60 + now.getUTCSeconds() / 3600;
       const sunLongitude = normalizeLongitude(180 - utcHours * 15);
@@ -5486,8 +5491,9 @@
         'Pacific/Honolulu': { lon: -157.8, lat: 21.3 }
       };
       const selectedPoint = regionPoints[selectedItem.timezone] || regionPoints['America/Chicago'];
-      const centerLon = selectedPoint.lon;
-      const sunPoint = projectGlobePoint(sunLongitude, 0, centerLon, mapRadius);
+      const centerLon = normalizeLongitude(selectedPoint.lon + globeLongitudeDrift);
+      const centerLat = globeLatitudeDrift;
+      const sunPoint = projectGlobePoint(sunLongitude, 0, centerLon, mapRadius, centerLat);
       const worldLandmasses = [
         [[-168,72],[-148,70],[-132,61],[-124,50],[-112,49],[-96,56],[-78,52],[-62,48],[-54,58],[-36,72],[-58,80],[-96,78],[-132,74]],
         [[-130,54],[-123,47],[-124,38],[-116,31],[-108,24],[-99,19],[-90,19],[-84,25],[-76,31],[-70,42],[-82,49],[-99,50],[-115,48]],
@@ -5508,7 +5514,7 @@
       ctx.clip();
 
       if (earthTextureImage.complete && earthTextureImage.naturalWidth) {
-        drawEarthTextureGlobe(ctx, earthTextureImage, mapRadius, centerLon);
+        drawEarthTextureGlobe(ctx, earthTextureImage, mapRadius, centerLon, centerLat);
       } else {
         const loadingOcean = ctx.createRadialGradient(-mapRadius * 0.28, -mapRadius * 0.3, 0, 0, 0, mapRadius);
         loadingOcean.addColorStop(0, '#8fc1d0');
@@ -5552,7 +5558,7 @@
       ctx.lineWidth = 1;
       ctx.stroke();
 
-      const regionPoint = projectGlobePoint(selectedPoint.lon, selectedPoint.lat, centerLon, mapRadius);
+      const regionPoint = projectGlobePoint(selectedPoint.lon, selectedPoint.lat, centerLon, mapRadius, centerLat);
       const pulse = 0.75 + Math.sin(now.getTime() / 420) * 0.25;
       ctx.beginPath();
       ctx.arc(regionPoint.x, regionPoint.y, 6 + pulse * 5, 0, Math.PI * 2);
@@ -5596,6 +5602,16 @@
       const hours = (now.getHours() % 12) + minutes / 60;
       const currentMinute = now.getMinutes();
       const currentHour = now.getHours();
+      const frameTime = now.getTime();
+      const elapsedSeconds = state.lastFrameTime
+        ? Math.min((frameTime - state.lastFrameTime) / 1000, 0.08)
+        : 0;
+      state.lastFrameTime = frameTime;
+      const idleForMs = frameTime - state.lastInteractionAt;
+      if (!state.dragging && isHomeSectionActive() && idleForMs > 3000) {
+        state.globeLongitudeDrift = normalizeLongitude(state.globeLongitudeDrift + elapsedSeconds * 2.4);
+        state.globeLatitudeDrift = Math.sin(frameTime * 0.000075) * 18;
+      }
       if (state.lastMinute === null) {
         state.lastMinute = currentMinute;
       } else if (currentMinute !== state.lastMinute) {
@@ -5697,7 +5713,7 @@
 
       const selectedItem = homeWatchNavItems[state.selectedIndex];
       const selectedCountry = getCountryByIndex(state.selectedCountryIndex);
-      drawLiveWorldMap(ctx, faceRadius, selectedItem, now);
+      drawLiveWorldMap(ctx, faceRadius, selectedItem, now, state.globeLongitudeDrift, state.globeLatitudeDrift);
 
       ctx.save();
       ctx.textAlign = 'center';
@@ -5788,6 +5804,10 @@
       requestAnimationFrame(drawHomeWatchNav);
     }
 
+    function markHomeWatchInteraction() {
+      homeWatchState.lastInteractionAt = Date.now();
+    }
+
     function resizeHomeWatchNav() {
       const state = homeWatchState;
       if (!state.canvas) return;
@@ -5800,6 +5820,7 @@
 
     function snapHomeWatchNav(shouldNavigate = false) {
       const state = homeWatchState;
+      markHomeWatchInteraction();
       const segment = (Math.PI * 2) / homeWatchNavItems.length;
       const index = ((Math.round(-state.targetRotation / segment) % homeWatchNavItems.length) + homeWatchNavItems.length) % homeWatchNavItems.length;
       state.selectedIndex = index;
@@ -5816,6 +5837,7 @@
 
     function selectHomeWatchNavFromPoint(event) {
       const state = homeWatchState;
+      markHomeWatchInteraction();
       const canvas = state.canvas;
       const point = getCanvasPoint(event, canvas);
       const distance = Math.hypot(point.x - point.cx, point.y - point.cy);
@@ -5885,6 +5907,7 @@
 
       function beginWatchInteraction(event) {
         event.preventDefault?.();
+        markHomeWatchInteraction();
         homeWatchState.dragging = true;
         homeWatchState.dragMoved = false;
         homeWatchState.activePointerId = event.pointerId ?? null;
@@ -5900,6 +5923,7 @@
         if (!homeWatchState.dragging) return;
         if (event.pointerId !== undefined && homeWatchState.activePointerId !== event.pointerId) return;
         event.preventDefault?.();
+        markHomeWatchInteraction();
         const delta = getPointerAngle(event, canvas) - homeWatchState.startAngle;
         if (Math.abs(delta) > 0.03) homeWatchState.dragMoved = true;
         homeWatchState.targetRotation = homeWatchState.startRotation + delta;
@@ -5910,6 +5934,7 @@
         if (!homeWatchState.dragging) return;
         if (event.pointerId !== undefined && homeWatchState.activePointerId !== event.pointerId) return;
         event.preventDefault?.();
+        markHomeWatchInteraction();
         homeWatchState.dragging = false;
         homeWatchState.activePointerId = null;
         canvas.classList.remove('dragging');
@@ -5944,6 +5969,7 @@
       }
 
       canvas.addEventListener('click', (event) => {
+        markHomeWatchInteraction();
         if (Date.now() - homeWatchState.lastTouchSelectionAt < 900) return;
         if (!homeWatchState.dragMoved) selectHomeWatchNavFromPoint(event);
       });
