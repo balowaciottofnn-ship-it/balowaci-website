@@ -207,8 +207,7 @@
       opacity: 0;
       overflow: hidden;
       background:
-        radial-gradient(circle at 50% 12%, rgba(255, 190, 58, 0.22), transparent 24%),
-        linear-gradient(to bottom, rgba(255, 72, 0, 0.2), rgba(255, 146, 24, 0.08) 42%, rgba(9, 0, 0, 0.12) 100%);
+        linear-gradient(to bottom, rgba(255, 72, 0, 0.12), rgba(255, 146, 24, 0.06) 36%, rgba(9, 0, 0, 0.1) 100%);
       mix-blend-mode: screen;
       transition: opacity 0.45s ease;
     }
@@ -222,37 +221,36 @@
     .minute-fire-overlay::after {
       content: '';
       position: absolute;
-      inset: -35% 0 0;
+      inset: -30% 0 0;
       background:
-        linear-gradient(to bottom, transparent 0 8%, rgba(255, 246, 164, 0.96) 9% 11%, rgba(255, 122, 24, 0.9) 12% 25%, rgba(255, 42, 0, 0.48) 26% 42%, transparent 43%),
-        linear-gradient(to bottom, transparent 0 16%, rgba(255, 215, 78, 0.88) 17% 19%, rgba(255, 88, 0, 0.82) 20% 35%, rgba(255, 38, 0, 0.36) 36% 50%, transparent 51%),
-        linear-gradient(to bottom, transparent 0 4%, rgba(255, 249, 188, 0.9) 5% 7%, rgba(255, 99, 0, 0.86) 8% 22%, rgba(255, 41, 0, 0.42) 23% 38%, transparent 39%);
-      background-size: 34px 168px, 52px 224px, 76px 196px;
-      background-position: 0 -180px, 20px -260px, 44px -210px;
-      filter: blur(0.6px) saturate(1.45);
-      animation: fireRainFall 0.34s linear infinite;
+        linear-gradient(to bottom, transparent 0 6px, rgba(255, 250, 184, 0.96) 7px 10px, rgba(255, 151, 24, 0.92) 11px 30px, rgba(255, 53, 0, 0.62) 31px 52px, transparent 53px 86px),
+        linear-gradient(to bottom, transparent 0 18px, rgba(255, 221, 86, 0.9) 19px 22px, rgba(255, 99, 0, 0.86) 23px 46px, rgba(255, 40, 0, 0.5) 47px 68px, transparent 69px 112px),
+        linear-gradient(to bottom, transparent 0 2px, rgba(255, 244, 142, 0.88) 3px 5px, rgba(255, 117, 0, 0.82) 6px 25px, rgba(255, 43, 0, 0.44) 26px 44px, transparent 45px 92px);
+      background-size: 12px 86px, 18px 112px, 26px 92px;
+      background-position: 0 -86px, 6px -112px, 14px -92px;
+      filter: blur(0.35px) saturate(1.5);
+      animation: fireRainFall 0.22s linear infinite;
     }
 
     .minute-fire-overlay::after {
-      opacity: 0.7;
-      background-size: 48px 188px, 66px 240px, 92px 212px;
-      background-position: 14px -220px, 48px -280px, 70px -240px;
-      filter: blur(3px) saturate(1.7);
-      animation-duration: 0.46s;
-      animation-delay: -0.18s;
+      opacity: 0.46;
+      background-size: 10px 96px, 15px 128px, 22px 108px;
+      background-position: 4px -96px, 10px -128px, 18px -108px;
+      filter: blur(1.6px) saturate(1.7);
+      animation-duration: 0.3s;
+      animation-delay: -0.12s;
     }
 
     .minute-fire-sparks {
       position: absolute;
       inset: 0;
       background-image:
-        radial-gradient(circle, rgba(255, 244, 154, 0.95) 0 1px, transparent 2px),
-        radial-gradient(circle, rgba(255, 89, 0, 0.86) 0 1.5px, transparent 3px),
-        linear-gradient(to bottom, transparent 0 28%, rgba(255, 221, 82, 0.82) 29% 31%, rgba(255, 65, 0, 0.72) 32% 48%, transparent 49%);
-      background-size: 42px 72px, 68px 118px, 38px 150px;
-      background-position: 0 -80px, 26px -120px, 12px -160px;
+        linear-gradient(to bottom, transparent 0 12px, rgba(255, 239, 126, 0.82) 13px 15px, rgba(255, 67, 0, 0.68) 16px 40px, transparent 41px 72px),
+        linear-gradient(to bottom, transparent 0 4px, rgba(255, 179, 38, 0.7) 5px 7px, rgba(255, 54, 0, 0.56) 8px 32px, transparent 33px 68px);
+      background-size: 9px 72px, 14px 68px;
+      background-position: 2px -72px, 8px -68px;
       opacity: 0;
-      animation: fireRainSparks 0.28s linear infinite;
+      animation: fireRainSparks 0.18s linear infinite;
     }
 
     .minute-fire-overlay.active .minute-fire-sparks {
@@ -267,13 +265,13 @@
     }
 
     @keyframes fireRainFall {
-      from { background-position: 0 -180px, 20px -260px, 44px -210px; }
-      to { background-position: 0 180px, 20px 260px, 44px 210px; }
+      from { background-position: 0 -86px, 6px -112px, 14px -92px; }
+      to { background-position: 0 86px, 6px 112px, 14px 92px; }
     }
 
     @keyframes fireRainSparks {
-      from { background-position: 0 -80px, 26px -120px, 12px -160px; }
-      to { background-position: 0 80px, 26px 120px, 12px 160px; }
+      from { background-position: 2px -72px, 8px -68px; }
+      to { background-position: 2px 72px, 8px 68px; }
     }
 
     .container {
