@@ -3,18 +3,24 @@ const https = require('https');
 
 const router = express.Router();
 
+const IOWA_CITY_LOCATION = {
+  name: 'Iowa City',
+  latitude: 41.6611,
+  longitude: -91.5302
+};
+
 function getDisplayLocationName(lat, lon, fallbackName) {
   const latitude = Number(lat);
   const longitude = Number(lon);
 
   if (Number.isFinite(latitude) && Number.isFinite(longitude)) {
-    const isBettendorfArea = latitude >= 41.42
-      && latitude <= 41.62
-      && longitude >= -90.62
-      && longitude <= -90.38;
+    const isIowaCityArea = latitude >= 41.55
+      && latitude <= 41.82
+      && longitude >= -91.72
+      && longitude <= -91.40;
 
-    if (isBettendorfArea) {
-      return 'Bettendorf';
+    if (isIowaCityArea) {
+      return IOWA_CITY_LOCATION.name;
     }
   }
 
