@@ -199,6 +199,90 @@
       50% { transform: scale(1.06); opacity: 1; }
     }
 
+    .minute-fire-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 80;
+      opacity: 0;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 74%, rgba(255, 225, 96, 0.24), transparent 16%),
+        radial-gradient(circle at 18% 92%, rgba(255, 84, 0, 0.32), transparent 22%),
+        radial-gradient(circle at 82% 90%, rgba(255, 111, 0, 0.3), transparent 24%),
+        linear-gradient(to top, rgba(255, 54, 0, 0.32), rgba(255, 150, 0, 0.12) 28%, rgba(7, 0, 0, 0) 62%);
+      mix-blend-mode: screen;
+      transition: opacity 0.45s ease;
+    }
+
+    .minute-fire-overlay.active {
+      opacity: 1;
+      animation: fireFlash 5s ease forwards;
+    }
+
+    .minute-fire-overlay::before,
+    .minute-fire-overlay::after {
+      content: '';
+      position: absolute;
+      left: -8%;
+      right: -8%;
+      bottom: -18%;
+      height: 58%;
+      background:
+        radial-gradient(ellipse at 8% 92%, rgba(255, 225, 70, 0.92) 0 6%, rgba(255, 98, 0, 0.72) 11%, transparent 24%),
+        radial-gradient(ellipse at 22% 86%, rgba(255, 242, 130, 0.88) 0 7%, rgba(255, 82, 0, 0.76) 13%, transparent 26%),
+        radial-gradient(ellipse at 39% 94%, rgba(255, 214, 65, 0.9) 0 8%, rgba(255, 69, 0, 0.74) 14%, transparent 28%),
+        radial-gradient(ellipse at 56% 88%, rgba(255, 244, 152, 0.84) 0 7%, rgba(255, 93, 0, 0.72) 13%, transparent 27%),
+        radial-gradient(ellipse at 73% 92%, rgba(255, 219, 82, 0.9) 0 7%, rgba(255, 70, 0, 0.76) 13%, transparent 27%),
+        radial-gradient(ellipse at 91% 86%, rgba(255, 241, 124, 0.86) 0 6%, rgba(255, 91, 0, 0.72) 12%, transparent 25%);
+      filter: blur(2px) saturate(1.2);
+      transform-origin: center bottom;
+      animation: flameRise 0.74s ease-in-out infinite alternate;
+    }
+
+    .minute-fire-overlay::after {
+      bottom: -24%;
+      height: 66%;
+      opacity: 0.72;
+      filter: blur(7px) saturate(1.4);
+      animation-duration: 1.05s;
+      animation-delay: -0.34s;
+    }
+
+    .minute-fire-sparks {
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle, rgba(255, 239, 143, 0.95) 0 1px, transparent 2px),
+        radial-gradient(circle, rgba(255, 116, 24, 0.86) 0 1px, transparent 2px),
+        radial-gradient(circle, rgba(255, 210, 72, 0.78) 0 1.5px, transparent 2.5px);
+      background-size: 76px 92px, 112px 140px, 148px 118px;
+      background-position: 0 100%, 34px 90%, 82px 100%;
+      opacity: 0;
+      animation: sparkLift 1.15s linear infinite;
+    }
+
+    .minute-fire-overlay.active .minute-fire-sparks {
+      opacity: 0.86;
+    }
+
+    @keyframes fireFlash {
+      0% { opacity: 0; }
+      8% { opacity: 1; }
+      84% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    @keyframes flameRise {
+      from { transform: translateY(2%) scaleX(1); }
+      to { transform: translateY(-7%) scaleX(1.04); }
+    }
+
+    @keyframes sparkLift {
+      from { background-position: 0 110%, 34px 105%, 82px 112%; }
+      to { background-position: 18px -20%, 8px -18%, 122px -22%; }
+    }
+
     .container {
       max-width: 1200px;
       margin: 0 auto;
@@ -2369,6 +2453,9 @@
 </head>
 <body>
   <div class="stars-container" id="starsContainer"></div>
+  <div class="minute-fire-overlay" id="minuteFireOverlay" aria-hidden="true">
+    <span class="minute-fire-sparks"></span>
+  </div>
   <div class="moon-stage" id="moonStage" aria-hidden="true">
     <canvas id="moonCanvas" width="172" height="172"></canvas>
   </div>
@@ -4564,6 +4651,17 @@
     }
 
     function triggerMinuteRitual() {
+      const fireOverlay = document.getElementById('minuteFireOverlay');
+      if (fireOverlay) {
+        fireOverlay.classList.remove('active');
+        void fireOverlay.offsetWidth;
+        fireOverlay.classList.add('active');
+        clearTimeout(homeWatchState.fireTimeout);
+        homeWatchState.fireTimeout = setTimeout(() => {
+          fireOverlay.classList.remove('active');
+        }, 5000);
+      }
+
       const settings = getRitualSettings();
       if (settings.vibrate && navigator.vibrate) {
         navigator.vibrate(settings.visualMode === 'future' ? [35, 30, 65] : settings.visualMode === 'past' ? [90] : [55]);
@@ -4952,6 +5050,7 @@
       minuteBeatStart: 0,
       hourBeatStart: 0,
       quoteTimeout: null,
+      fireTimeout: null,
       dpr: 1
     };
 
