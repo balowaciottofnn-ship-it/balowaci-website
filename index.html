@@ -206,8 +206,7 @@
       z-index: 80;
       opacity: 0;
       overflow: hidden;
-      background:
-        linear-gradient(to bottom, rgba(255, 72, 0, 0.12), rgba(255, 146, 24, 0.06) 36%, rgba(9, 0, 0, 0.1) 100%);
+      background: rgba(255, 80, 0, 0.06);
       mix-blend-mode: screen;
       transition: opacity 0.45s ease;
     }
@@ -217,44 +216,21 @@
       animation: fireFlash 5s ease forwards;
     }
 
-    .minute-fire-overlay::before,
-    .minute-fire-overlay::after {
-      content: '';
+    .minute-fire-drop {
       position: absolute;
-      inset: -30% 0 0;
+      top: -12vh;
+      width: 2px;
+      height: 28px;
+      border-radius: 999px;
       background:
-        linear-gradient(to bottom, transparent 0 6px, rgba(255, 250, 184, 0.96) 7px 10px, rgba(255, 151, 24, 0.92) 11px 30px, rgba(255, 53, 0, 0.62) 31px 52px, transparent 53px 86px),
-        linear-gradient(to bottom, transparent 0 18px, rgba(255, 221, 86, 0.9) 19px 22px, rgba(255, 99, 0, 0.86) 23px 46px, rgba(255, 40, 0, 0.5) 47px 68px, transparent 69px 112px),
-        linear-gradient(to bottom, transparent 0 2px, rgba(255, 244, 142, 0.88) 3px 5px, rgba(255, 117, 0, 0.82) 6px 25px, rgba(255, 43, 0, 0.44) 26px 44px, transparent 45px 92px);
-      background-size: 12px 86px, 18px 112px, 26px 92px;
-      background-position: 0 -86px, 6px -112px, 14px -92px;
-      filter: blur(0.35px) saturate(1.5);
-      animation: fireRainFall 0.22s linear infinite;
-    }
-
-    .minute-fire-overlay::after {
-      opacity: 0.46;
-      background-size: 10px 96px, 15px 128px, 22px 108px;
-      background-position: 4px -96px, 10px -128px, 18px -108px;
-      filter: blur(1.6px) saturate(1.7);
-      animation-duration: 0.3s;
-      animation-delay: -0.12s;
-    }
-
-    .minute-fire-sparks {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(to bottom, transparent 0 12px, rgba(255, 239, 126, 0.82) 13px 15px, rgba(255, 67, 0, 0.68) 16px 40px, transparent 41px 72px),
-        linear-gradient(to bottom, transparent 0 4px, rgba(255, 179, 38, 0.7) 5px 7px, rgba(255, 54, 0, 0.56) 8px 32px, transparent 33px 68px);
-      background-size: 9px 72px, 14px 68px;
-      background-position: 2px -72px, 8px -68px;
-      opacity: 0;
-      animation: fireRainSparks 0.18s linear infinite;
-    }
-
-    .minute-fire-overlay.active .minute-fire-sparks {
-      opacity: 0.86;
+        linear-gradient(to bottom, rgba(255, 252, 199, 0), rgba(255, 239, 118, 0.9) 18%, rgba(255, 123, 24, 0.74) 58%, rgba(255, 54, 0, 0));
+      box-shadow:
+        0 0 7px rgba(255, 149, 0, 0.68),
+        0 0 14px rgba(255, 54, 0, 0.28);
+      opacity: 0.72;
+      animation-name: minuteFireRainFall;
+      animation-iteration-count: infinite;
+      animation-timing-function: linear;
     }
 
     @keyframes fireFlash {
@@ -264,14 +240,8 @@
       100% { opacity: 0; }
     }
 
-    @keyframes fireRainFall {
-      from { background-position: 0 -86px, 6px -112px, 14px -92px; }
-      to { background-position: 0 86px, 6px 112px, 14px 92px; }
-    }
-
-    @keyframes fireRainSparks {
-      from { background-position: 2px -72px, 8px -68px; }
-      to { background-position: 2px 72px, 8px 68px; }
+    @keyframes minuteFireRainFall {
+      to { transform: translateY(124vh); opacity: 0; }
     }
 
     .container {
@@ -2444,9 +2414,7 @@
 </head>
 <body>
   <div class="stars-container" id="starsContainer"></div>
-  <div class="minute-fire-overlay" id="minuteFireOverlay" aria-hidden="true">
-    <span class="minute-fire-sparks"></span>
-  </div>
+  <div class="minute-fire-overlay" id="minuteFireOverlay" aria-hidden="true"></div>
   <div class="moon-stage" id="moonStage" aria-hidden="true">
     <canvas id="moonCanvas" width="172" height="172"></canvas>
   </div>
@@ -4645,11 +4613,24 @@
       const fireOverlay = document.getElementById('minuteFireOverlay');
       if (fireOverlay) {
         fireOverlay.classList.remove('active');
+        fireOverlay.innerHTML = '';
+        for (let i = 0; i < 72; i += 1) {
+          const drop = document.createElement('span');
+          drop.className = 'minute-fire-drop';
+          drop.style.left = `${Math.random() * 100}%`;
+          drop.style.height = `${18 + Math.random() * 24}px`;
+          drop.style.width = `${1 + Math.random() * 1.4}px`;
+          drop.style.opacity = String(0.38 + Math.random() * 0.38);
+          drop.style.animationDuration = `${0.85 + Math.random() * 0.95}s`;
+          drop.style.animationDelay = `${-Math.random() * 1.8}s`;
+          fireOverlay.appendChild(drop);
+        }
         void fireOverlay.offsetWidth;
         fireOverlay.classList.add('active');
         clearTimeout(homeWatchState.fireTimeout);
         homeWatchState.fireTimeout = setTimeout(() => {
           fireOverlay.classList.remove('active');
+          fireOverlay.innerHTML = '';
         }, 5000);
       }
 
