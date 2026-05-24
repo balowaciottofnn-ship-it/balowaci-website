@@ -4784,34 +4784,9 @@
       currentCoords: null,
       lastUpdate: 0,
       nextRefreshMs: 10 * 60 * 1000,
+      watchId: null,
       activeCondition: 'clear'
     };
-    const defaultWeatherLocation = {
-      name: 'Iowa City',
-      lat: 41.6611,
-      lon: -91.5302
-    };
-
-    function isIowaCityArea(lat, lon) {
-      const latitude = Number(lat);
-      const longitude = Number(lon);
-      return Number.isFinite(latitude)
-        && Number.isFinite(longitude)
-        && latitude >= 41.5
-        && latitude <= 41.85
-        && longitude >= -91.75
-        && longitude <= -91.35;
-    }
-
-    function getWeatherDisplayLocationName(locationName, lat, lon) {
-      const normalizedName = String(locationName || '').toLowerCase();
-      if (isIowaCityArea(lat, lon)
-        || normalizedName.includes('baculis')
-        || normalizedName.includes('iowa city')) {
-        return defaultWeatherLocation.name;
-      }
-      return locationName || 'your area';
-    }
 
     function getWeatherCategory(weatherId, main) {
       if (typeof weatherId === 'number') {
@@ -4930,7 +4905,7 @@
         ? `${Math.round(weatherData.temperature)}°${unit}`
         : '';
       const description = weatherData.description || weatherData.condition || 'Clear skies';
-      const locationName = getWeatherDisplayLocationName(weatherData.locationName, lat, lon);
+      const locationName = weatherData.locationName || 'your area';
 
       setWeatherStatusText(`${description.charAt(0).toUpperCase() + description.slice(1)} in ${locationName}${temperature ? ` · ${temperature}` : ''}`, category);
     }
@@ -4971,8 +4946,7 @@
 
     function requestLocalWeather() {
       if (!('geolocation' in navigator)) {
-        setWeatherStatusText(`Using ${defaultWeatherLocation.name} weather.`);
-        refreshWeatherForLocation(defaultWeatherLocation.lat, defaultWeatherLocation.lon);
+        setWeatherStatusText('Location is not available on this device.');
         return;
       }
 
@@ -4982,20 +4956,24 @@
           refreshWeatherForLocation(position.coords.latitude, position.coords.longitude);
         },
         () => {
-          setWeatherStatusText(`Using ${defaultWeatherLocation.name} weather.`);
-          refreshWeatherForLocation(defaultWeatherLocation.lat, defaultWeatherLocation.lon);
+          setWeatherStatusText('Location permission denied. Weather sync needs your current location.');
         },
-        { enableHighAccuracy: true, maximumAge: 1000 * 60 * 5, timeout: 10000 }
+        { enableHighAccuracy: true, maximumAge: 0, timeout: 15000 }
       );
     }
 
     function initializeWeatherSync() {
       requestLocalWeather();
-      setInterval(() => {
-        if (weatherState.currentCoords) {
-          refreshWeatherForLocation(weatherState.currentCoords.lat, weatherState.currentCoords.lon);
-        }
-      }, weatherState.nextRefreshMs);
+      if ('geolocation' in navigator && typeof navigator.geolocation.watchPosition === 'function') {
+        weatherState.watchId = navigator.geolocation.watchPosition(
+          (position) => {
+            refreshWeatherForLocation(position.coords.latitude, position.coords.longitude);
+          },
+          () => {},
+          { enableHighAccuracy: true, maximumAge: 0, timeout: 15000 }
+        );
+      }
+      setInterval(requestLocalWeather, weatherState.nextRefreshMs);
     }
 
     const homeWatchState = {
