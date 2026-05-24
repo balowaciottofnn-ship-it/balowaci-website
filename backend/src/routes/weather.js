@@ -4,6 +4,20 @@ const https = require('https');
 const router = express.Router();
 
 function getDisplayLocationName(lat, lon, fallbackName) {
+  const latitude = Number(lat);
+  const longitude = Number(lon);
+
+  if (Number.isFinite(latitude) && Number.isFinite(longitude)) {
+    const isIowaCityArea = latitude >= 41.55
+      && latitude <= 41.82
+      && longitude >= -91.72
+      && longitude <= -91.40;
+
+    if (isIowaCityArea) {
+      return 'Iowa City';
+    }
+  }
+
   return fallbackName || 'Local area';
 }
 
