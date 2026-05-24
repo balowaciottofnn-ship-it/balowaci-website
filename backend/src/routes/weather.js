@@ -3,27 +3,34 @@ const https = require('https');
 
 const router = express.Router();
 
-function getDisplayLocationName(lat, lon, fallbackName) {
+function isIowaCityArea(lat, lon) {
   const latitude = Number(lat);
   const longitude = Number(lon);
 
-  if (Number.isFinite(latitude) && Number.isFinite(longitude)) {
-    const isIowaCityArea = latitude >= 41.55
-      && latitude <= 41.82
-      && longitude >= -91.72
-      && longitude <= -91.40;
+  return Number.isFinite(latitude)
+    && Number.isFinite(longitude)
+    && latitude >= 41.55
+    && latitude <= 41.82
+    && longitude >= -91.72
+    && longitude <= -91.40;
+}
 
-    if (isIowaCityArea) {
-      return 'Iowa City';
-    }
+function cleanDisplayLocationName(lat, lon, geocodedLocation, fallbackName) {
+  if (isIowaCityArea(lat, lon)) {
+    return 'Iowa City';
+  }
+
+  if (geocodedLocation?.name) {
+    return geocodedLocation.state
+      ? `${geocodedLocation.name}, ${geocodedLocation.state}`
+      : geocodedLocation.name;
   }
 
   return fallbackName || 'Local area';
 }
 
-function fetchOpenWeather(lat, lon, apiKey) {
+function fetchJson(url, errorLabel) {
   return new Promise((resolve, reject) => {
-    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}&units=imperial&appid=${encodeURIComponent(apiKey)}`;
     https.get(url, (res) => {
       let body = '';
       res.on('data', (chunk) => { body += chunk; });
@@ -31,17 +38,28 @@ function fetchOpenWeather(lat, lon, apiKey) {
         try {
           const data = JSON.parse(body);
           if (res.statusCode >= 400) {
-            return reject(new Error(data.message || `Weather API error ${res.statusCode}`));
+            return reject(new Error(data.message || `${errorLabel} error ${res.statusCode}`));
           }
           resolve(data);
         } catch (error) {
-          reject(new Error('Unable to parse weather response')); 
+          reject(new Error(`Unable to parse ${errorLabel} response`)); 
         }
       });
     }).on('error', (err) => {
       reject(err);
     });
   });
+}
+
+function fetchOpenWeather(lat, lon, apiKey) {
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}&units=imperial&appid=${encodeURIComponent(apiKey)}`;
+  return fetchJson(url, 'weather service');
+}
+
+async function fetchReverseGeocode(lat, lon, apiKey) {
+  const url = `https://api.openweathermap.org/geo/1.0/reverse?lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}&limit=1&appid=${encodeURIComponent(apiKey)}`;
+  const data = await fetchJson(url, 'reverse geocoding service');
+  return Array.isArray(data) ? data[0] : null;
 }
 
 router.get('/', async (req, res, next) => {
@@ -56,7 +74,10 @@ router.get('/', async (req, res, next) => {
   }
 
   try {
-    const weatherData = await fetchOpenWeather(lat, lon, apiKey);
+    const [weatherData, geocodedLocation] = await Promise.all([
+      fetchOpenWeather(lat, lon, apiKey),
+      fetchReverseGeocode(lat, lon, apiKey).catch(() => null)
+    ]);
     const weather = Array.isArray(weatherData.weather) ? weatherData.weather[0] : null;
 
     if (!weather) {
@@ -64,7 +85,7 @@ router.get('/', async (req, res, next) => {
     }
 
     res.json({
-      locationName: getDisplayLocationName(lat, lon, weatherData.name),
+      locationName: cleanDisplayLocationName(lat, lon, geocodedLocation, weatherData.name),
       temperature: weatherData.main?.temp ?? null,
       temperatureUnit: 'F',
       feelsLike: weatherData.main?.feels_like ?? null,
