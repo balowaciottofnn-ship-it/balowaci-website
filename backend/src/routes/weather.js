@@ -3,27 +3,15 @@ const https = require('https');
 
 const router = express.Router();
 
-function isIowaCityArea(lat, lon) {
-  const latitude = Number(lat);
-  const longitude = Number(lon);
-
-  return Number.isFinite(latitude)
-    && Number.isFinite(longitude)
-    && latitude >= 41.55
-    && latitude <= 41.82
-    && longitude >= -91.72
-    && longitude <= -91.40;
-}
-
 function cleanDisplayLocationName(lat, lon, geocodedLocation, fallbackName) {
-  if (isIowaCityArea(lat, lon)) {
-    return 'Iowa City';
-  }
-
   if (geocodedLocation?.name) {
     return geocodedLocation.state
       ? `${geocodedLocation.name}, ${geocodedLocation.state}`
       : geocodedLocation.name;
+  }
+
+  if (typeof fallbackName === 'string' && fallbackName.toLowerCase().includes('baculis')) {
+    return 'Iowa City';
   }
 
   return fallbackName || 'Local area';
