@@ -70,12 +70,12 @@
       position: fixed;
       inset: 0;
       pointer-events: none;
-      z-index: 0;
+      z-index: 1;
       opacity: var(--day-sky-opacity, 0);
       overflow: hidden;
       background:
-        radial-gradient(circle at 78% 18%, rgba(255, 220, 118, 0.24), transparent 22%),
-        linear-gradient(180deg, rgba(60, 116, 158, 0.42), rgba(146, 185, 204, 0.22) 45%, transparent 78%);
+        radial-gradient(circle at 78% 18%, rgba(255, 220, 118, 0.34), transparent 24%),
+        linear-gradient(180deg, rgba(64, 132, 185, 0.56), rgba(160, 203, 222, 0.32) 48%, transparent 82%);
       transition: opacity 1.2s ease;
     }
 
@@ -92,8 +92,8 @@
         radial-gradient(ellipse at 42% 38%, rgba(255, 247, 218, 0.82), transparent 38%),
         radial-gradient(ellipse at 68% 56%, rgba(232, 244, 250, 0.62), transparent 44%),
         rgba(255, 255, 255, 0.18);
-      filter: blur(9px);
-      opacity: 0.72;
+      filter: blur(6px);
+      opacity: 0.88;
       transform: translateX(-30vw);
       animation: livingDayClouds 42s linear infinite;
     }
@@ -107,7 +107,7 @@
       top: 31%;
       left: -38%;
       width: clamp(220px, 35vw, 560px);
-      opacity: 0.46;
+      opacity: 0.62;
       animation-duration: 58s;
       animation-delay: -18s;
     }
@@ -123,7 +123,7 @@
       top: 48%;
       left: -42%;
       width: clamp(160px, 24vw, 420px);
-      opacity: 0.36;
+      opacity: 0.52;
       animation-duration: 64s;
       animation-delay: -30s;
     }
@@ -190,7 +190,7 @@
       width: clamp(118px, 13vw, 178px);
       height: clamp(118px, 13vw, 178px);
       pointer-events: none;
-      z-index: 1;
+      z-index: 2;
       opacity: var(--moon-opacity, 0);
       border-radius: 50%;
       overflow: visible;
@@ -230,7 +230,7 @@
       width: clamp(174px, 19vw, 288px);
       height: clamp(174px, 19vw, 288px);
       pointer-events: none;
-      z-index: 1;
+      z-index: 2;
       opacity: var(--sun-opacity, 0);
       transform: translateY(var(--sun-rise, 16px)) scale(var(--sun-scale, 0.92));
       transition: opacity 1.2s ease, transform 1.2s ease, filter 1.2s ease;
