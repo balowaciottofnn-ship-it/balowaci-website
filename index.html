@@ -74,8 +74,8 @@
       opacity: var(--day-sky-opacity, 0);
       overflow: hidden;
       background:
-        radial-gradient(circle at 50% 16%, rgba(255, 246, 199, 0.24), transparent 24%),
-        linear-gradient(180deg, rgba(86, 146, 184, 0.3), rgba(172, 210, 226, 0.16) 42%, transparent 72%);
+        radial-gradient(circle at 52% 18%, rgba(255, 255, 255, 0.42), transparent 18%),
+        linear-gradient(180deg, rgba(0, 136, 244, 0.78) 0%, rgba(45, 166, 255, 0.72) 34%, rgba(123, 204, 255, 0.42) 66%, transparent 88%);
       transition: opacity 1.2s ease;
     }
 
@@ -88,50 +88,71 @@
       height: clamp(62px, 9vw, 126px);
       border-radius: 999px;
       background:
-        radial-gradient(ellipse at 16% 54%, rgba(255, 255, 255, 0.72), transparent 42%),
-        radial-gradient(ellipse at 42% 38%, rgba(255, 247, 218, 0.82), transparent 38%),
-        radial-gradient(ellipse at 68% 56%, rgba(232, 244, 250, 0.62), transparent 44%),
-        rgba(255, 255, 255, 0.18);
-      filter: blur(6px);
-      opacity: 0.88;
+        radial-gradient(ellipse at 12% 60%, rgba(255, 255, 255, 0.96), transparent 38%),
+        radial-gradient(ellipse at 30% 34%, rgba(255, 255, 255, 0.98), transparent 35%),
+        radial-gradient(ellipse at 52% 54%, rgba(255, 255, 255, 0.92), transparent 42%),
+        radial-gradient(ellipse at 76% 42%, rgba(255, 255, 255, 0.86), transparent 36%),
+        radial-gradient(ellipse at 92% 64%, rgba(224, 241, 252, 0.78), transparent 38%);
+      filter: drop-shadow(0 12px 18px rgba(27, 92, 139, 0.14)) blur(1.4px);
+      opacity: 0.96;
       transform: translateX(-30vw);
       animation: livingDayClouds 42s linear infinite;
     }
 
     .day-sky::before {
-      top: clamp(92px, 13vh, 150px);
-      left: -18%;
+      top: clamp(86px, 12vh, 142px);
+      left: -16%;
     }
 
     .day-sky::after {
-      top: clamp(150px, 21vh, 240px);
-      left: -34%;
+      top: clamp(146px, 20vh, 232px);
+      left: -30%;
       width: clamp(260px, 42vw, 680px);
-      opacity: 0.66;
-      animation-duration: 58s;
+      opacity: 0.82;
+      animation-duration: 62s;
       animation-delay: -18s;
     }
 
     .day-cloud.one {
-      top: clamp(118px, 17vh, 190px);
-      left: -26%;
-      animation-duration: 50s;
+      top: clamp(108px, 16vh, 176px);
+      left: -24%;
+      animation-duration: 54s;
       animation-delay: -8s;
     }
 
     .day-cloud.two {
-      top: clamp(210px, 29vh, 310px);
-      left: -42%;
-      width: clamp(190px, 29vw, 460px);
-      opacity: 0.56;
-      animation-duration: 64s;
+      top: clamp(210px, 30vh, 330px);
+      left: -34%;
+      width: clamp(240px, 38vw, 620px);
+      opacity: 0.86;
+      animation-duration: 74s;
       animation-delay: -30s;
+    }
+
+    .day-cloud.three {
+      top: clamp(58px, 8vh, 104px);
+      left: -42%;
+      width: clamp(170px, 25vw, 390px);
+      height: clamp(48px, 7vw, 96px);
+      opacity: 0.8;
+      animation-duration: 46s;
+      animation-delay: -22s;
+    }
+
+    .day-cloud.four {
+      top: clamp(270px, 38vh, 420px);
+      left: -50%;
+      width: clamp(300px, 48vw, 760px);
+      height: clamp(72px, 10vw, 138px);
+      opacity: 0.74;
+      animation-duration: 88s;
+      animation-delay: -54s;
     }
 
     @keyframes livingDayClouds {
       0% { transform: translateX(-18vw) translateY(0) scale(0.94); }
-      50% { transform: translateX(48vw) translateY(-12px) scale(1.04); }
-      100% { transform: translateX(116vw) translateY(4px) scale(0.98); }
+      50% { transform: translateX(48vw) translateY(-8px) scale(1.03); }
+      100% { transform: translateX(116vw) translateY(3px) scale(0.98); }
     }
 
     .star {
@@ -2775,6 +2796,8 @@
   <div class="day-sky" id="daySky" aria-hidden="true">
     <span class="day-cloud one"></span>
     <span class="day-cloud two"></span>
+    <span class="day-cloud three"></span>
+    <span class="day-cloud four"></span>
   </div>
   <div class="minute-fire-overlay" id="minuteFireOverlay" aria-hidden="true"></div>
   <div class="moon-stage" id="moonStage" aria-hidden="true">
