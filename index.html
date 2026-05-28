@@ -187,12 +187,12 @@
 
     .leopard-silhouette {
       position: absolute;
-      left: -24vw;
+      right: -44vw;
       top: clamp(170px, 32vh, 360px);
       width: clamp(280px, 38vw, 620px);
       height: auto;
       opacity: 0;
-      transform: translateX(0) scale(0.95);
+      transform: translateX(0) scaleX(-1) scale(0.95);
       filter:
         drop-shadow(0 20px 20px rgba(0, 0, 0, 0.34))
         drop-shadow(0 0 22px rgba(212, 175, 55, 0.1));
@@ -207,6 +207,8 @@
       width: 100%;
       height: auto;
       opacity: 0.92;
+      transform-origin: 50% 82%;
+      animation: leopardLivingGait 0.78s ease-in-out infinite;
     }
 
     .leopard-paw {
@@ -256,17 +258,25 @@
     }
 
     .leopard-roll-center {
-      animation: leopardWatchRollCenter 5.4s cubic-bezier(0.18, 0.82, 0.2, 1);
+      animation: leopardWatchRollCenter 8.4s cubic-bezier(0.18, 0.82, 0.2, 1);
       transform-origin: center center;
     }
 
     @keyframes leopardCeremony {
-      0% { opacity: 0; transform: translateX(0) translateY(18px) scale(0.88); }
-      14% { opacity: 0.82; }
-      48% { opacity: 0.92; transform: translateX(42vw) translateY(-6px) scale(1); }
-      64% { opacity: 0.94; transform: translateX(50vw) translateY(-10px) scale(1.02); }
-      82% { opacity: 0.56; }
-      100% { opacity: 0; transform: translateX(92vw) translateY(8px) scale(0.96); }
+      0% { opacity: 0; transform: translateX(0) translateY(18px) scaleX(-1) scale(0.88); }
+      10% { opacity: 0.92; }
+      43% { opacity: 0.96; transform: translateX(-68vw) translateY(-6px) scaleX(-1) scale(1); }
+      56% { opacity: 1; transform: translateX(-82vw) translateY(-10px) scaleX(-1) scale(1.02); }
+      60% { opacity: 1; transform: translateX(-82vw) translateY(-10px) scaleX(1) scale(1.02); }
+      76% { opacity: 0.9; transform: translateX(-44vw) translateY(-4px) scaleX(1) scale(0.98); }
+      100% { opacity: 0; transform: translateX(0) translateY(8px) scaleX(1) scale(0.94); }
+    }
+
+    @keyframes leopardLivingGait {
+      0%, 100% { transform: translateY(0) rotate(0deg) skewX(0deg); }
+      25% { transform: translateY(-5px) rotate(-0.7deg) skewX(1.2deg); }
+      50% { transform: translateY(1px) rotate(0.5deg) skewX(-0.8deg); }
+      75% { transform: translateY(-3px) rotate(0.6deg) skewX(0.8deg); }
     }
 
     @keyframes leopardShadowBreath {
@@ -294,10 +304,11 @@
     }
 
     @keyframes leopardWatchRollCenter {
-      0% { transform: translateX(-46px) rotate(-4deg) scale(0.985); }
-      48% { transform: translateX(18px) rotate(7deg) scale(1.006); }
-      76% { transform: translateX(-4px) rotate(-1.5deg) scale(1.002); }
-      100% { transform: translateX(0) rotate(0deg) scale(1); }
+      0% { transform: translateX(-46vw) rotate(-24deg) scale(0.72); }
+      34% { transform: translateX(-24vw) rotate(-160deg) scale(0.84); }
+      62% { transform: translateX(5vw) rotate(-324deg) scale(1.02); }
+      82% { transform: translateX(-2vw) rotate(-352deg) scale(1.006); }
+      100% { transform: translateX(0) rotate(-360deg) scale(1); }
     }
 
     .star {
@@ -5225,7 +5236,7 @@
       watch?.classList.remove('leopard-roll-center');
       void ritual.offsetWidth;
       ritual.classList.add('active');
-      window.setTimeout(() => watch?.classList.add('leopard-roll-center'), 4200);
+      window.setTimeout(() => watch?.classList.add('leopard-roll-center'), 900);
       window.setTimeout(() => shell?.classList.add('leopard-aligned'), 6600);
       window.setTimeout(() => {
         ritual.classList.remove('active');
