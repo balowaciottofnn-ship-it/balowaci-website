@@ -189,124 +189,44 @@
       position: absolute;
       left: -24vw;
       top: clamp(170px, 32vh, 360px);
-      width: clamp(188px, 24vw, 340px);
-      height: clamp(82px, 10vw, 138px);
+      width: clamp(280px, 38vw, 620px);
+      height: auto;
       opacity: 0;
       transform: translateX(0) scale(0.95);
       filter:
-        drop-shadow(0 0 18px rgba(0, 0, 0, 0.76))
-        drop-shadow(0 0 18px rgba(212, 175, 55, 0.12));
+        drop-shadow(0 20px 20px rgba(0, 0, 0, 0.34))
+        drop-shadow(0 0 22px rgba(212, 175, 55, 0.1));
     }
 
     .leopard-ritual.active .leopard-silhouette {
       animation: leopardCeremony 13s cubic-bezier(0.2, 0.72, 0.18, 1) forwards;
     }
 
-    .leopard-body,
-    .leopard-head,
-    .leopard-tail,
-    .leopard-leg,
-    .leopard-spot,
-    .leopard-eye,
+    .leopard-silhouette img {
+      display: block;
+      width: 100%;
+      height: auto;
+      opacity: 0.92;
+    }
+
     .leopard-paw {
       position: absolute;
       display: block;
     }
 
-    .leopard-body {
-      left: 18%;
-      top: 34%;
-      width: 58%;
-      height: 34%;
-      border-radius: 52% 48% 44% 58%;
-      background:
-        radial-gradient(circle at 28% 38%, rgba(212, 175, 55, 0.26), transparent 10%),
-        radial-gradient(circle at 48% 34%, rgba(212, 175, 55, 0.22), transparent 9%),
-        radial-gradient(circle at 66% 48%, rgba(212, 175, 55, 0.2), transparent 9%),
-        linear-gradient(135deg, rgba(12, 10, 7, 0.98), rgba(37, 25, 11, 0.92));
-      box-shadow: inset 0 0 18px rgba(212, 175, 55, 0.12);
-    }
-
-    .leopard-head {
-      right: 10%;
-      top: 27%;
-      width: 22%;
-      height: 28%;
-      border-radius: 54% 48% 46% 52%;
-      background: linear-gradient(135deg, rgba(18, 13, 7, 0.98), rgba(48, 30, 12, 0.94));
-      transform: rotate(-7deg);
-    }
-
-    .leopard-head::before,
-    .leopard-head::after {
-      content: '';
-      position: absolute;
-      top: -18%;
-      width: 24%;
-      height: 30%;
-      border-radius: 60% 60% 35% 35%;
-      background: rgba(18, 13, 7, 0.98);
-    }
-
-    .leopard-head::before {
-      left: 18%;
-      transform: rotate(-22deg);
-    }
-
-    .leopard-head::after {
-      right: 14%;
-      transform: rotate(18deg);
-    }
-
-    .leopard-eye {
-      top: 38%;
-      right: 24%;
-      width: 8%;
-      height: 9%;
-      border-radius: 50%;
-      background: #f5d061;
-      box-shadow: 0 0 12px rgba(245, 208, 97, 0.82);
-    }
-
-    .leopard-tail {
-      left: 3%;
-      top: 28%;
-      width: 26%;
-      height: 16%;
-      border: 9px solid rgba(18, 13, 7, 0.95);
-      border-right: 0;
-      border-bottom: 0;
-      border-radius: 80% 0 0 0;
-      transform: rotate(18deg);
-    }
-
-    .leopard-leg {
-      top: 60%;
-      width: 7%;
-      height: 34%;
-      border-radius: 999px;
-      background: linear-gradient(180deg, rgba(20, 14, 7, 0.98), rgba(6, 5, 4, 0.98));
-      transform-origin: top center;
-    }
-
-    .leopard-leg.one { left: 30%; transform: rotate(14deg); }
-    .leopard-leg.two { left: 43%; transform: rotate(-9deg); }
-    .leopard-leg.three { left: 59%; transform: rotate(10deg); }
-    .leopard-leg.four { left: 70%; transform: rotate(-12deg); }
-
     .leopard-paw {
-      bottom: -2%;
-      width: 8%;
-      height: 6%;
+      bottom: 18%;
+      width: clamp(18px, 2.2vw, 32px);
+      height: clamp(7px, 0.9vw, 12px);
       border-radius: 999px;
       background: rgba(245, 208, 97, 0.52);
       box-shadow: 0 0 14px rgba(245, 208, 97, 0.28);
       opacity: 0;
     }
 
-    .leopard-paw.one { left: 30%; }
-    .leopard-paw.two { left: 45%; }
-    .leopard-paw.three { left: 62%; }
+    .leopard-paw.one { left: 24%; }
+    .leopard-paw.two { left: 36%; }
+    .leopard-paw.three { left: 48%; }
 
     .leopard-ritual.active .leopard-paw {
       animation: leopardPawTrace 13s ease-in-out forwards;
@@ -335,13 +255,18 @@
       animation: leopardWatchAlignment 3.8s ease-in-out;
     }
 
+    .leopard-roll-center {
+      animation: leopardWatchRollCenter 5.4s cubic-bezier(0.18, 0.82, 0.2, 1);
+      transform-origin: center center;
+    }
+
     @keyframes leopardCeremony {
-      0% { opacity: 0; transform: translateX(0) translateY(16px) scale(0.92); }
+      0% { opacity: 0; transform: translateX(0) translateY(18px) scale(0.88); }
       14% { opacity: 0.82; }
-      48% { opacity: 0.9; transform: translateX(48vw) translateY(-4px) scale(1); }
-      64% { opacity: 0.94; transform: translateX(56vw) translateY(-10px) scale(1.02); }
+      48% { opacity: 0.92; transform: translateX(42vw) translateY(-6px) scale(1); }
+      64% { opacity: 0.94; transform: translateX(50vw) translateY(-10px) scale(1.02); }
       82% { opacity: 0.56; }
-      100% { opacity: 0; transform: translateX(96vw) translateY(8px) scale(0.96); }
+      100% { opacity: 0; transform: translateX(92vw) translateY(8px) scale(0.96); }
     }
 
     @keyframes leopardShadowBreath {
@@ -366,6 +291,13 @@
         filter: drop-shadow(0 0 28px rgba(245, 208, 97, 0.32));
         transform: scale(1.012);
       }
+    }
+
+    @keyframes leopardWatchRollCenter {
+      0% { transform: translateX(-46px) rotate(-4deg) scale(0.985); }
+      48% { transform: translateX(18px) rotate(7deg) scale(1.006); }
+      76% { transform: translateX(-4px) rotate(-1.5deg) scale(1.002); }
+      100% { transform: translateX(0) rotate(0deg) scale(1); }
     }
 
     .star {
@@ -3025,13 +2957,7 @@
     <span class="leopard-shadow"></span>
     <span class="leopard-axis-pulse"></span>
     <span class="leopard-silhouette">
-      <span class="leopard-tail"></span>
-      <span class="leopard-body"></span>
-      <span class="leopard-head"><span class="leopard-eye"></span></span>
-      <span class="leopard-leg one"></span>
-      <span class="leopard-leg two"></span>
-      <span class="leopard-leg three"></span>
-      <span class="leopard-leg four"></span>
+      <img src="assets/wildlife/balowaci-leopard.png" alt="">
       <span class="leopard-paw one"></span>
       <span class="leopard-paw two"></span>
       <span class="leopard-paw three"></span>
@@ -5291,16 +5217,20 @@
       if (!isHomeSectionActive()) return;
       const ritual = document.getElementById('leopardRitual');
       const shell = document.querySelector('.home-watch-shell');
+      const watch = document.querySelector('.home-watch-nav');
       if (!ritual) return;
 
       ritual.classList.remove('active');
       shell?.classList.remove('leopard-aligned');
+      watch?.classList.remove('leopard-roll-center');
       void ritual.offsetWidth;
       ritual.classList.add('active');
+      window.setTimeout(() => watch?.classList.add('leopard-roll-center'), 4200);
       window.setTimeout(() => shell?.classList.add('leopard-aligned'), 6600);
       window.setTimeout(() => {
         ritual.classList.remove('active');
         shell?.classList.remove('leopard-aligned');
+        watch?.classList.remove('leopard-roll-center');
       }, 13500);
     }
 
