@@ -1,4 +1,4 @@
-const CACHE_NAME = 'balowaci-pwa-v24';
+const CACHE_NAME = 'balowaci-pwa-v25';
 const APP_SHELL = [
   '/manifest.json',
   '/manifest.webmanifest',
@@ -12,6 +12,14 @@ const APP_SHELL = [
   '/assets/moon-texture.jpg',
   '/assets/wildlife/balowaci-leopard.png',
   '/assets/wildlife/balowaci-leopard-walk.png',
+  '/assets/wildlife/leopard-walk-frames/frame-0.png',
+  '/assets/wildlife/leopard-walk-frames/frame-1.png',
+  '/assets/wildlife/leopard-walk-frames/frame-2.png',
+  '/assets/wildlife/leopard-walk-frames/frame-3.png',
+  '/assets/wildlife/leopard-walk-frames/frame-4.png',
+  '/assets/wildlife/leopard-walk-frames/frame-5.png',
+  '/assets/wildlife/leopard-walk-frames/frame-6.png',
+  '/assets/wildlife/leopard-walk-frames/frame-7.png',
   '/assets/real-globe.jpg',
   '/assets/founder-fadhili-baloci.jpg'
 ];

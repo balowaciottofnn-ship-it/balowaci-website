@@ -202,17 +202,13 @@
       animation: leopardCeremony 18s linear forwards;
     }
 
-    .leopard-walk-sprite {
+    .leopard-walk-frame {
       display: block;
       width: 100%;
       aspect-ratio: 360 / 220;
       opacity: 0.92;
       transform-origin: 50% 82%;
-      background-image: url('assets/wildlife/balowaci-leopard-walk.png');
-      background-repeat: no-repeat;
-      background-position: 0 0;
-      background-size: 800% 100%;
-      animation: leopardSpriteWalk 0.72s steps(8) infinite;
+      object-fit: contain;
     }
 
     .leopard-paw {
@@ -276,10 +272,6 @@
       66% { opacity: 0.96; transform: translateX(-106vw) translateY(-3px) scale(0.99); }
       82% { opacity: 0.72; transform: translateX(-130vw) translateY(3px) scale(0.96); }
       100% { opacity: 0; transform: translateX(-154vw) translateY(10px) scale(0.92); }
-    }
-
-    @keyframes leopardSpriteWalk {
-      to { background-position: 100% 0; }
     }
 
     @keyframes leopardShadowBreath {
@@ -2971,7 +2963,7 @@
     <span class="leopard-shadow"></span>
     <span class="leopard-axis-pulse"></span>
     <span class="leopard-silhouette">
-      <span class="leopard-walk-sprite"></span>
+      <img class="leopard-walk-frame" id="leopardWalkFrame" src="assets/wildlife/leopard-walk-frames/frame-0.png" alt="">
       <span class="leopard-paw one"></span>
       <span class="leopard-paw two"></span>
       <span class="leopard-paw three"></span>
@@ -5232,19 +5224,31 @@
       const ritual = document.getElementById('leopardRitual');
       const shell = document.querySelector('.home-watch-shell');
       const watch = document.querySelector('.home-watch-nav');
+      const frame = document.getElementById('leopardWalkFrame');
       if (!ritual) return;
 
       ritual.classList.remove('active');
       shell?.classList.remove('leopard-aligned');
       watch?.classList.remove('leopard-roll-center');
+      window.clearInterval(homeWatchState.leopardFrameTimer);
+      if (frame) frame.src = 'assets/wildlife/leopard-walk-frames/frame-0.png';
       void ritual.offsetWidth;
       ritual.classList.add('active');
+      if (frame) {
+        let frameIndex = 0;
+        homeWatchState.leopardFrameTimer = window.setInterval(() => {
+          frameIndex = (frameIndex + 1) % 8;
+          frame.src = `assets/wildlife/leopard-walk-frames/frame-${frameIndex}.png`;
+        }, 105);
+      }
       window.setTimeout(() => watch?.classList.add('leopard-roll-center'), 900);
       window.setTimeout(() => shell?.classList.add('leopard-aligned'), 8200);
       window.setTimeout(() => {
         ritual.classList.remove('active');
         shell?.classList.remove('leopard-aligned');
         watch?.classList.remove('leopard-roll-center');
+        window.clearInterval(homeWatchState.leopardFrameTimer);
+        if (frame) frame.src = 'assets/wildlife/leopard-walk-frames/frame-0.png';
       }, 18500);
     }
 
@@ -5644,6 +5648,7 @@
       lastHour: null,
       lastQuoteIndex: null,
       leopardTimer: null,
+      leopardFrameTimer: null,
       selectedCountryIndex: 0,
       countryCursor: 0,
       globeLongitudeDrift: 0,
