@@ -1060,6 +1060,221 @@
       background: radial-gradient(circle at center, rgba(96, 45, 180, 0.25), transparent 55%);
     }
 
+    .trinity-prototype-section {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(88px, 10vw, 150px) 24px;
+      background:
+        radial-gradient(circle at 50% 12%, rgba(212, 175, 55, 0.13), transparent 26%),
+        radial-gradient(circle at 88% 28%, rgba(37, 93, 164, 0.18), transparent 30%),
+        linear-gradient(180deg, #030303 0%, #0b0704 48%, #020203 100%);
+    }
+
+    .trinity-prototype-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, rgba(212, 175, 55, 0.08), transparent 18% 82%, rgba(212, 175, 55, 0.08)),
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 120px);
+      opacity: 0.32;
+    }
+
+    .trinity-prototype-inner {
+      position: relative;
+      width: min(1180px, 100%);
+      margin: 0 auto;
+    }
+
+    .trinity-prototype-header {
+      display: grid;
+      grid-template-columns: minmax(0, 0.85fr) minmax(280px, 1.15fr);
+      gap: clamp(28px, 5vw, 70px);
+      align-items: end;
+      margin-bottom: clamp(32px, 6vw, 70px);
+    }
+
+    .trinity-kicker {
+      margin: 0 0 14px;
+      color: #d4a12f;
+      font-size: 0.78rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+    }
+
+    .trinity-title {
+      margin: 0;
+      color: #f0d289;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.6rem, 7vw, 6.2rem);
+      font-weight: 500;
+      line-height: 0.9;
+      letter-spacing: 0.02em;
+      text-shadow: 0 0 28px rgba(212, 175, 55, 0.22);
+    }
+
+    .trinity-title span {
+      display: block;
+      color: #c884ff;
+      font-size: 0.5em;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .trinity-copy {
+      margin: 0;
+      color: rgba(255, 246, 218, 0.75);
+      font-size: clamp(1rem, 1.7vw, 1.18rem);
+      line-height: 1.8;
+    }
+
+    .trinity-board {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+      gap: clamp(22px, 4vw, 42px);
+      align-items: stretch;
+    }
+
+    .trinity-image-frame {
+      position: relative;
+      min-height: 420px;
+      border: 1px solid rgba(212, 161, 47, 0.42);
+      border-radius: 8px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 52% 42%, rgba(212, 175, 55, 0.12), transparent 35%),
+        rgba(0, 0, 0, 0.64);
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+        0 28px 90px rgba(0, 0, 0, 0.55),
+        0 0 70px rgba(212, 175, 55, 0.08);
+    }
+
+    .trinity-image-frame img {
+      width: 100%;
+      height: 100%;
+      min-height: 420px;
+      object-fit: cover;
+      display: block;
+      filter: contrast(1.06) saturate(1.04);
+    }
+
+    .trinity-image-frame::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 22%),
+        radial-gradient(circle at 50% 44%, transparent 34%, rgba(0, 0, 0, 0.32) 100%);
+      mix-blend-mode: screen;
+      opacity: 0.46;
+    }
+
+    .trinity-spec-panel {
+      border: 1px solid rgba(212, 161, 47, 0.48);
+      border-radius: 8px;
+      padding: clamp(22px, 3vw, 34px);
+      background:
+        linear-gradient(160deg, rgba(255, 255, 255, 0.055), transparent 34%),
+        rgba(0, 0, 0, 0.58);
+      box-shadow:
+        inset 0 0 34px rgba(212, 175, 55, 0.06),
+        0 20px 52px rgba(0, 0, 0, 0.34);
+    }
+
+    .trinity-spec-panel h3 {
+      margin: 0 0 20px;
+      color: #d4a12f;
+      font-size: 0.92rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+
+    .trinity-spec-list {
+      display: grid;
+      gap: 14px;
+      margin: 0 0 28px;
+      padding: 0;
+      list-style: none;
+    }
+
+    .trinity-spec-list li {
+      display: grid;
+      grid-template-columns: 112px 1fr;
+      gap: 14px;
+      align-items: start;
+      color: rgba(255, 241, 190, 0.88);
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+
+    .trinity-spec-list span {
+      color: #d4a12f;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.72rem;
+    }
+
+    .trinity-ring-legend {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .trinity-ring-legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 0.84rem;
+    }
+
+    .trinity-ring-legend span::before {
+      content: '';
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      box-shadow: 0 0 14px currentColor;
+    }
+
+    .trinity-ring-legend .blue { color: #2f80d8; }
+    .trinity-ring-legend .red { color: #d83d32; }
+    .trinity-ring-legend .gold { color: #d4a12f; }
+    .trinity-ring-legend .violet { color: #6e45b6; }
+
+    .trinity-material-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1px;
+      margin-top: clamp(22px, 4vw, 42px);
+      border: 1px solid rgba(212, 161, 47, 0.34);
+      border-radius: 8px;
+      overflow: hidden;
+      background: rgba(212, 161, 47, 0.18);
+    }
+
+    .trinity-material {
+      min-height: 92px;
+      padding: 18px;
+      background:
+        radial-gradient(circle at top, rgba(255, 255, 255, 0.08), transparent 42%),
+        rgba(0, 0, 0, 0.74);
+      color: rgba(255, 241, 190, 0.78);
+      font-size: 0.82rem;
+      line-height: 1.45;
+    }
+
+    .trinity-material strong {
+      display: block;
+      color: #f0d289;
+      margin-bottom: 5px;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
     .showcase-inner {
       max-width: 900px;
       margin: 0 auto;
@@ -1121,10 +1336,13 @@
       position: absolute;
       width: 88px;
       height: 155px;
-      background: linear-gradient(180deg, #111, #050505);
+      background:
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.08) 0 1px, transparent 1px 18px),
+        linear-gradient(180deg, #4b2814, #1b0d06 52%, #090403);
       border: 1px solid rgba(212, 175, 55, 0.35);
       left: 50%;
       transform: translateX(-50%);
+      box-shadow: inset 0 0 22px rgba(0, 0, 0, 0.54);
     }
 
     .watch-strap.top {
@@ -1142,10 +1360,27 @@
       width: 210px;
       height: 210px;
       border-radius: 50%;
-      background: radial-gradient(circle, #fff 0%, #f4efe1 55%, #d4af37 100%);
-      border: 2px solid #d4af37;
-      box-shadow: 0 0 18px rgba(212, 175, 55, 0.35);
+      background:
+        radial-gradient(circle at center, #f7f0df 0 38%, transparent 39%),
+        conic-gradient(from -90deg, #1e5ba8 0 90deg, #c83229 90deg 180deg, #d4a12f 180deg 270deg, #5a3896 270deg 360deg);
+      border: 8px solid rgba(195, 198, 190, 0.88);
+      box-shadow:
+        inset 0 0 0 4px rgba(16, 16, 16, 0.66),
+        inset 0 0 0 22px rgba(255, 246, 218, 0.92),
+        0 0 18px rgba(212, 175, 55, 0.35),
+        0 18px 36px rgba(0, 0, 0, 0.38);
       z-index: 2;
+    }
+
+    .watch-face::before {
+      content: '';
+      position: absolute;
+      inset: 54px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle, rgba(89, 59, 34, 0.32), transparent 66%),
+        rgba(109, 78, 45, 0.32);
+      border: 1px solid rgba(17, 17, 17, 0.34);
     }
 
     .watch-ring {
@@ -1246,6 +1481,34 @@
       0% { transform: translateY(0px); }
       50% { transform: translateY(-14px); }
       100% { transform: translateY(0px); }
+    }
+
+    @media (max-width: 880px) {
+      .trinity-prototype-header,
+      .trinity-board {
+        grid-template-columns: 1fr;
+      }
+
+      .trinity-image-frame,
+      .trinity-image-frame img {
+        min-height: 320px;
+      }
+
+      .trinity-material-strip {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .trinity-spec-list li {
+        grid-template-columns: 1fr;
+        gap: 4px;
+      }
+
+      .trinity-ring-legend,
+      .trinity-material-strip {
+        grid-template-columns: 1fr;
+      }
     }
 
     .button,
@@ -3104,6 +3367,63 @@
       </div>
 
       <a href="interfaces/universe-watch-wrist.html" class="showcase-btn" data-i18n="showcase.button">Experience Live Watch</a>
+    </div>
+  </section>
+
+  <section id="trinity-prototype" class="trinity-prototype-section" aria-labelledby="trinityPrototypeTitle">
+    <div class="trinity-prototype-inner">
+      <div class="trinity-prototype-header">
+        <div>
+          <p class="trinity-kicker">Prototype Concept BT-03</p>
+          <h2 id="trinityPrototypeTitle" class="trinity-title">BaloWaci <span>Trinity</span></h2>
+        </div>
+        <p class="trinity-copy">
+          The Trinity prototype translates the live BaloWaci interface into a luxury object language:
+          brushed steel, leather, sapphire glass, and three synchronized readings held inside one ceremonial dial.
+        </p>
+      </div>
+
+      <div class="trinity-board">
+        <figure class="trinity-image-frame">
+          <img src="assets/BaloWaci Trinity Protoype.png" alt="BaloWaci Trinity BT-03 prototype concept board showing dial layout, cultural time ring, subdials, case views, and specifications" loading="lazy">
+        </figure>
+
+        <aside class="trinity-spec-panel" aria-label="BaloWaci Trinity prototype specifications">
+          <h3>Trinity Language</h3>
+          <ul class="trinity-spec-list">
+            <li><span>Main Dial</span> Standard hours, minutes, and seconds stay familiar at the center.</li>
+            <li><span>Second Ring</span> Cultural time becomes a colored interpretation layer around the dial.</li>
+            <li><span>Subdials</span> Day, month, date, and 24-hour military time become mechanical rituals.</li>
+            <li><span>Material</span> 316L steel, warm leather, and flat sapphire glass shape the luxury direction.</li>
+          </ul>
+
+          <div class="trinity-ring-legend" aria-label="Cultural time ring colors">
+            <span class="blue">6 to 12</span>
+            <span class="red">12 to 5</span>
+            <span class="gold">5 to 9</span>
+            <span class="violet">9 to 6</span>
+          </div>
+        </aside>
+      </div>
+
+      <div class="trinity-material-strip" aria-label="Prototype material direction">
+        <div class="trinity-material">
+          <strong>Steel Case</strong>
+          Brushed edges and polished highlights give the interface object weight.
+        </div>
+        <div class="trinity-material">
+          <strong>Leather Strap</strong>
+          Warm brown texture softens the futuristic dial with classic craft.
+        </div>
+        <div class="trinity-material">
+          <strong>Sapphire Glass</strong>
+          Flat crystal keeps the complex dial protected and visually calm.
+        </div>
+        <div class="trinity-material">
+          <strong>Color System</strong>
+          Blue, red, gold, and violet preserve BaloWaci's interpretation language.
+        </div>
+      </div>
     </div>
   </section>
 
