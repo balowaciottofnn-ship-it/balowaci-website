@@ -211,7 +211,8 @@
       object-fit: contain;
     }
 
-    .leopard-walk-video {
+    .leopard-walk-video,
+    .leopard-youtube-video {
       display: none;
       width: 100%;
       aspect-ratio: 16 / 9;
@@ -221,7 +222,17 @@
       filter: contrast(1.05) saturate(1.04);
     }
 
-    .leopard-silhouette.use-video {
+    .leopard-youtube-video {
+      border: 0;
+      border-radius: 10px;
+      background: #030405;
+      box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.42),
+        inset 0 0 0 1px rgba(245, 208, 97, 0.16);
+    }
+
+    .leopard-silhouette.use-video,
+    .leopard-silhouette.use-youtube {
       width: clamp(380px, 52vw, 860px);
       top: clamp(150px, 28vh, 330px);
     }
@@ -230,7 +241,12 @@
       display: block;
     }
 
-    .leopard-silhouette.use-video .leopard-walk-frame {
+    .leopard-silhouette.use-youtube .leopard-youtube-video {
+      display: block;
+    }
+
+    .leopard-silhouette.use-video .leopard-walk-frame,
+    .leopard-silhouette.use-youtube .leopard-walk-frame {
       display: none;
     }
 
@@ -3254,6 +3270,13 @@
         <source src="assets/wildlife/leopard-walking.webm" type="video/webm">
         <source src="assets/leopard-walking.mp4" type="video/mp4">
       </video>
+      <iframe
+        class="leopard-youtube-video"
+        id="leopardYoutubeVideo"
+        title="Leopard walking in Kruger National Park"
+        allow="autoplay; encrypted-media; picture-in-picture"
+        referrerpolicy="strict-origin-when-cross-origin"
+      ></iframe>
       <img class="leopard-walk-frame" id="leopardWalkFrame" src="assets/wildlife/leopard-walk-frames/frame-0.png" alt="">
       <span class="leopard-paw one"></span>
       <span class="leopard-paw two"></span>
@@ -5574,22 +5597,31 @@
       const watch = document.querySelector('.home-watch-nav');
       const frame = document.getElementById('leopardWalkFrame');
       const video = document.getElementById('leopardWalkVideo');
+      const youtube = document.getElementById('leopardYoutubeVideo');
       const leopard = ritual?.querySelector('.leopard-silhouette');
       if (!ritual) return;
+      const youtubeSource = 'https://www.youtube.com/embed/Jo8ZkRpaO9M?autoplay=1&mute=1&controls=0&loop=1&playlist=Jo8ZkRpaO9M&playsinline=1&modestbranding=1&rel=0';
 
       ritual.classList.remove('active');
       shell?.classList.remove('leopard-aligned');
       watch?.classList.remove('leopard-roll-center');
       window.clearInterval(homeWatchState.leopardFrameTimer);
+      if (youtube) youtube.removeAttribute('src');
       if (frame) frame.src = 'assets/wildlife/leopard-walk-frames/frame-0.png';
       const startFrameWalk = () => {
-        leopard?.classList.remove('use-video');
+        leopard?.classList.remove('use-video', 'use-youtube');
+        if (youtube) youtube.removeAttribute('src');
         if (!frame || homeWatchState.leopardFrameTimer) return;
         let frameIndex = 0;
         homeWatchState.leopardFrameTimer = window.setInterval(() => {
           frameIndex = (frameIndex + 1) % 8;
           frame.src = `assets/wildlife/leopard-walk-frames/frame-${frameIndex}.png`;
         }, 105);
+      };
+      const startYoutubeWalk = () => {
+        leopard?.classList.remove('use-video');
+        leopard?.classList.add('use-youtube');
+        if (youtube) youtube.src = youtubeSource;
       };
       if (video) {
         video.pause();
@@ -5604,11 +5636,11 @@
         const playPromise = video.play();
         if (playPromise) {
           playPromise.catch(() => {
-            startFrameWalk();
+            startYoutubeWalk();
           });
         }
       } else {
-        startFrameWalk();
+        startYoutubeWalk();
       }
       window.setTimeout(() => watch?.classList.add('leopard-roll-center'), 900);
       window.setTimeout(() => shell?.classList.add('leopard-aligned'), 8200);
@@ -5616,7 +5648,9 @@
         ritual.classList.remove('active');
         shell?.classList.remove('leopard-aligned');
         watch?.classList.remove('leopard-roll-center');
+        leopard?.classList.remove('use-video', 'use-youtube');
         window.clearInterval(homeWatchState.leopardFrameTimer);
+        if (youtube) youtube.removeAttribute('src');
         if (video) {
           video.pause();
           video.currentTime = 0;
