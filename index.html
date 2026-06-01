@@ -211,6 +211,29 @@
       object-fit: contain;
     }
 
+    .leopard-walk-video {
+      display: none;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      opacity: 0.96;
+      object-fit: contain;
+      transform-origin: 50% 82%;
+      filter: contrast(1.05) saturate(1.04);
+    }
+
+    .leopard-silhouette.use-video {
+      width: clamp(380px, 52vw, 860px);
+      top: clamp(150px, 28vh, 330px);
+    }
+
+    .leopard-silhouette.use-video .leopard-walk-video {
+      display: block;
+    }
+
+    .leopard-silhouette.use-video .leopard-walk-frame {
+      display: none;
+    }
+
     .leopard-paw {
       position: absolute;
       display: block;
@@ -3226,6 +3249,11 @@
     <span class="leopard-shadow"></span>
     <span class="leopard-axis-pulse"></span>
     <span class="leopard-silhouette">
+      <video class="leopard-walk-video" id="leopardWalkVideo" muted playsinline preload="metadata">
+        <source src="assets/wildlife/leopard-walking.mp4" type="video/mp4">
+        <source src="assets/wildlife/leopard-walking.webm" type="video/webm">
+        <source src="assets/leopard-walking.mp4" type="video/mp4">
+      </video>
       <img class="leopard-walk-frame" id="leopardWalkFrame" src="assets/wildlife/leopard-walk-frames/frame-0.png" alt="">
       <span class="leopard-paw one"></span>
       <span class="leopard-paw two"></span>
@@ -5545,6 +5573,8 @@
       const shell = document.querySelector('.home-watch-shell');
       const watch = document.querySelector('.home-watch-nav');
       const frame = document.getElementById('leopardWalkFrame');
+      const video = document.getElementById('leopardWalkVideo');
+      const leopard = ritual?.querySelector('.leopard-silhouette');
       if (!ritual) return;
 
       ritual.classList.remove('active');
@@ -5552,14 +5582,33 @@
       watch?.classList.remove('leopard-roll-center');
       window.clearInterval(homeWatchState.leopardFrameTimer);
       if (frame) frame.src = 'assets/wildlife/leopard-walk-frames/frame-0.png';
-      void ritual.offsetWidth;
-      ritual.classList.add('active');
-      if (frame) {
+      const startFrameWalk = () => {
+        leopard?.classList.remove('use-video');
+        if (!frame || homeWatchState.leopardFrameTimer) return;
         let frameIndex = 0;
         homeWatchState.leopardFrameTimer = window.setInterval(() => {
           frameIndex = (frameIndex + 1) % 8;
           frame.src = `assets/wildlife/leopard-walk-frames/frame-${frameIndex}.png`;
         }, 105);
+      };
+      if (video) {
+        video.pause();
+        video.currentTime = 0;
+        video.load();
+        leopard?.classList.add('use-video');
+      }
+      void ritual.offsetWidth;
+      ritual.classList.add('active');
+      if (video && leopard?.classList.contains('use-video')) {
+        video.onerror = startFrameWalk;
+        const playPromise = video.play();
+        if (playPromise) {
+          playPromise.catch(() => {
+            startFrameWalk();
+          });
+        }
+      } else {
+        startFrameWalk();
       }
       window.setTimeout(() => watch?.classList.add('leopard-roll-center'), 900);
       window.setTimeout(() => shell?.classList.add('leopard-aligned'), 8200);
@@ -5568,6 +5617,10 @@
         shell?.classList.remove('leopard-aligned');
         watch?.classList.remove('leopard-roll-center');
         window.clearInterval(homeWatchState.leopardFrameTimer);
+        if (video) {
+          video.pause();
+          video.currentTime = 0;
+        }
         if (frame) frame.src = 'assets/wildlife/leopard-walk-frames/frame-0.png';
       }, 18500);
     }
