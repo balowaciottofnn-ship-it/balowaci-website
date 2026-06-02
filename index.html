@@ -189,7 +189,7 @@
       position: absolute;
       right: -58vw;
       top: clamp(170px, 32vh, 360px);
-      width: clamp(280px, 38vw, 620px);
+      width: clamp(320px, 44vw, 720px);
       height: auto;
       opacity: 0;
       transform: translateX(0) scale(0.95);
@@ -206,7 +206,7 @@
       display: block;
       width: 100%;
       aspect-ratio: 360 / 220;
-      opacity: 0.92;
+      opacity: 0.98;
       transform-origin: 50% 82%;
       object-fit: contain;
     }
@@ -252,7 +252,7 @@
 
     .leopard-paw {
       position: absolute;
-      display: block;
+      display: none;
     }
 
     .leopard-paw {
@@ -5604,12 +5604,15 @@
       const youtube = document.getElementById('leopardYoutubeVideo');
       const leopard = ritual?.querySelector('.leopard-silhouette');
       if (!ritual) return;
-      const youtubeSource = 'https://www.youtube.com/embed/Jo8ZkRpaO9M?autoplay=1&mute=1&controls=0&loop=1&playlist=Jo8ZkRpaO9M&playsinline=1&modestbranding=1&rel=0';
 
       ritual.classList.remove('active');
       shell?.classList.remove('leopard-aligned');
       watch?.classList.remove('leopard-roll-center');
       window.clearInterval(homeWatchState.leopardFrameTimer);
+      if (video) {
+        video.pause();
+        video.currentTime = 0;
+      }
       if (youtube) youtube.removeAttribute('src');
       if (frame) frame.src = 'assets/wildlife/leopard-walk-frames/frame-0.png';
       const startFrameWalk = () => {
@@ -5622,30 +5625,9 @@
           frame.src = `assets/wildlife/leopard-walk-frames/frame-${frameIndex}.png`;
         }, 105);
       };
-      const startYoutubeWalk = () => {
-        leopard?.classList.remove('use-video');
-        leopard?.classList.add('use-youtube');
-        if (youtube) youtube.src = youtubeSource;
-      };
-      if (video) {
-        video.pause();
-        video.currentTime = 0;
-        video.load();
-        leopard?.classList.add('use-video');
-      }
       void ritual.offsetWidth;
+      startFrameWalk();
       ritual.classList.add('active');
-      if (video && leopard?.classList.contains('use-video')) {
-        video.onerror = startFrameWalk;
-        const playPromise = video.play();
-        if (playPromise) {
-          playPromise.catch(() => {
-            startYoutubeWalk();
-          });
-        }
-      } else {
-        startYoutubeWalk();
-      }
       window.setTimeout(() => watch?.classList.add('leopard-roll-center'), 900);
       window.setTimeout(() => shell?.classList.add('leopard-aligned'), 8200);
       window.setTimeout(() => {
