@@ -187,7 +187,7 @@
 
     .leopard-silhouette {
       position: absolute;
-      right: -50vw;
+      right: -58vw;
       top: clamp(170px, 32vh, 360px);
       width: clamp(280px, 38vw, 620px);
       height: auto;
@@ -310,7 +310,7 @@
       54% { opacity: 0.98; transform: translateX(-87vw) translateY(2px) scale(1); }
       66% { opacity: 0.96; transform: translateX(-106vw) translateY(-3px) scale(0.99); }
       82% { opacity: 0.72; transform: translateX(-130vw) translateY(3px) scale(0.96); }
-      100% { opacity: 0; transform: translateX(-154vw) translateY(10px) scale(0.92); }
+      100% { opacity: 0; transform: translateX(-164vw) translateY(10px) scale(0.92); }
     }
 
     @keyframes leopardShadowBreath {
@@ -3266,9 +3266,12 @@
     <span class="leopard-axis-pulse"></span>
     <span class="leopard-silhouette">
       <video class="leopard-walk-video" id="leopardWalkVideo" muted playsinline preload="metadata">
+        <source src="assets/wildlife/leopard walking.mp4" type="video/mp4">
         <source src="assets/wildlife/leopard-walking.mp4" type="video/mp4">
         <source src="assets/wildlife/leopard-walking.webm" type="video/webm">
+        <source src="assets/leopard walking.mp4" type="video/mp4">
         <source src="assets/leopard-walking.mp4" type="video/mp4">
+        <source src="assets/leopard walking.mov" type="video/quicktime">
       </video>
       <iframe
         class="leopard-youtube-video"
