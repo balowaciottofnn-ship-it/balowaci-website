@@ -6427,22 +6427,74 @@
       return lines.length;
     }
 
-    function drawWatchNavLabel(ctx, item, isActive, radius, size, countryInfo) {
+    function drawRoundedRectPath(ctx, x, y, width, height, radius) {
+      if (ctx.roundRect) {
+        ctx.roundRect(x, y, width, height, radius);
+        return;
+      }
+
+      ctx.moveTo(x + radius, y);
+      ctx.lineTo(x + width - radius, y);
+      ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+      ctx.lineTo(x + width, y + height - radius);
+      ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+      ctx.lineTo(x + radius, y + height);
+      ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+      ctx.lineTo(x, y + radius);
+      ctx.quadraticCurveTo(x, y, x + radius, y);
+    }
+
+    function drawWatchNavLabel(ctx, item, isActive, radius, size, countryInfo, labelIndex = 0) {
       const displayRegion = item.target === '#hero' ? getLocalWatchRegionLabel() : item.region;
       const displayTimezone = item.target === '#hero' ? getBrowserTimezone() : item.timezone;
+      const ledColors = ['#b266ff', '#f5d061', '#ff3b3b', '#1e8cff'];
+      const ledColor = ledColors[labelIndex % ledColors.length];
+      const plaqueWidth = isActive ? radius * 0.36 : radius * 0.28;
+      const plaqueHeight = isActive ? radius * 0.2 : radius * 0.15;
+      const plaqueX = -plaqueWidth / 2;
+      const plaqueY = isActive ? -plaqueHeight / 2 - radius * 0.012 : -plaqueHeight / 2;
+      const plaqueRadius = Math.max(6, size * 0.012);
 
       if (!isActive) {
         ctx.beginPath();
-        ctx.arc(0, 0, Math.max(2.6, size * 0.006), 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(245, 208, 97, 0.5)';
+        drawRoundedRectPath(ctx, plaqueX, plaqueY, plaqueWidth, plaqueHeight, plaqueRadius);
+        ctx.shadowColor = ledColor;
+        ctx.shadowBlur = Math.max(14, size * 0.03);
+        ctx.fillStyle = 'rgba(8, 8, 16, 0.74)';
         ctx.fill();
+        ctx.shadowBlur = Math.max(8, size * 0.018);
+        ctx.strokeStyle = ledColor;
+        ctx.lineWidth = Math.max(1.4, size * 0.003);
+        ctx.stroke();
+
         ctx.beginPath();
-        ctx.arc(0, 0, Math.max(5, size * 0.012), 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(245, 208, 97, 0.18)';
+        drawRoundedRectPath(ctx, plaqueX + 4, plaqueY + 4, plaqueWidth - 8, plaqueHeight - 8, Math.max(4, plaqueRadius - 3));
+        ctx.shadowBlur = Math.max(12, size * 0.02);
+        ctx.strokeStyle = `${ledColor}88`;
         ctx.lineWidth = 0.8;
         ctx.stroke();
+
+        ctx.shadowColor = ledColor;
+        ctx.shadowBlur = Math.max(8, size * 0.018);
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = '#fff6da';
+        ctx.font = `700 ${Math.max(7, size * 0.0125)}px Inter, sans-serif`;
+        drawCenteredText(ctx, t(item.key), 0, -radius * 0.022, plaqueWidth * 0.82, 8);
+        ctx.fillStyle = ledColor;
+        ctx.font = `700 ${Math.max(6, size * 0.0095)}px Inter, sans-serif`;
+        ctx.fillText(formatRegionTime(displayTimezone), 0, radius * 0.04);
+        ctx.shadowBlur = 0;
         return;
       }
+
+      ctx.beginPath();
+      drawRoundedRectPath(ctx, plaqueX, plaqueY, plaqueWidth, plaqueHeight, plaqueRadius);
+      ctx.fillStyle = 'rgba(23, 18, 8, 0.54)';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(245, 208, 97, 0.34)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
 
       ctx.fillStyle = isActive ? '#f5d061' : 'rgba(255, 255, 255, 0.72)';
       ctx.font = `${isActive ? 600 : 400} ${Math.max(8, size * 0.016)}px Inter, sans-serif`;
@@ -7072,7 +7124,7 @@
         ctx.rotate(angle + Math.PI / 2);
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        drawWatchNavLabel(ctx, item, active, radius, size, getCountryForWatch(index, state.rotation));
+        drawWatchNavLabel(ctx, item, active, radius, size, getCountryForWatch(index, state.rotation), index);
         ctx.restore();
       });
 
