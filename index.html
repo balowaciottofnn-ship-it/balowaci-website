@@ -6205,6 +6205,24 @@
       });
     }
 
+    function getRegionTimeParts(timezone, date = new Date()) {
+      const parts = new Intl.DateTimeFormat('en-US', {
+        timeZone: timezone,
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      }).formatToParts(date).reduce((acc, part) => {
+        if (part.type !== 'literal') acc[part.type] = part.value;
+        return acc;
+      }, {});
+      return {
+        hours: Number(parts.hour === '24' ? '0' : parts.hour),
+        minutes: Number(parts.minute),
+        seconds: Number(parts.second)
+      };
+    }
+
     function formatTimezoneName(timezone) {
       const parts = new Intl.DateTimeFormat([], {
         timeZone: timezone,
@@ -7178,11 +7196,15 @@
       const faceRadius = radius * 0.64;
       const segment = (Math.PI * 2) / homeWatchNavItems.length;
       const now = new Date();
-      const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
-      const minutes = now.getMinutes() + seconds / 60;
-      const hours = (now.getHours() % 12) + minutes / 60;
-      const currentMinute = now.getMinutes();
-      const currentHour = now.getHours();
+      const selectedItem = homeWatchNavItems[state.selectedIndex];
+      const selectedTimezone = selectedItem.timezone;
+      const selectedRegion = selectedItem.region;
+      const selectedTimeParts = getRegionTimeParts(selectedTimezone, now);
+      const seconds = selectedTimeParts.seconds + now.getMilliseconds() / 1000;
+      const minutes = selectedTimeParts.minutes + seconds / 60;
+      const hours = (selectedTimeParts.hours % 12) + minutes / 60;
+      const currentMinute = selectedTimeParts.minutes;
+      const currentHour = selectedTimeParts.hours;
       const frameTime = now.getTime();
       const elapsedSeconds = state.lastFrameTime
         ? Math.min((frameTime - state.lastFrameTime) / 1000, 0.08)
@@ -7299,8 +7321,6 @@
       ctx.lineWidth = 1.5;
       ctx.stroke();
 
-      const selectedItem = homeWatchNavItems[state.selectedIndex];
-      const selectedCountry = getCountryByIndex(state.selectedCountryIndex);
       drawLiveWorldMap(ctx, faceRadius * 0.82, selectedItem, now, state.globeLongitudeDrift, state.globeLatitudeDrift);
 
       ctx.save();
@@ -7311,13 +7331,13 @@
       ctx.shadowOffsetY = 2;
       const readoutWidth = faceRadius * 1.28;
       const readoutY = faceRadius * 0.56;
-      const hierarchy = getTimeDifferenceHierarchy(selectedCountry.timezone, now);
+      const hierarchy = getTimeDifferenceHierarchy(selectedTimezone, now);
       ctx.fillStyle = '#c884ff';
       ctx.font = `700 ${Math.max(8, size * 0.014)}px Inter, sans-serif`;
-      drawCenteredText(ctx, selectedCountry.country, 0, readoutY, readoutWidth, 10);
+      drawCenteredText(ctx, selectedRegion, 0, readoutY, readoutWidth, 10);
       ctx.fillStyle = '#ff3b3b';
       ctx.font = `500 ${Math.max(7, size * 0.012)}px Inter, sans-serif`;
-      const countryLine = `${formatRegionTime(selectedCountry.timezone)} · ${formatTimeDifference(selectedCountry.timezone, now)}`;
+      const countryLine = `${formatRegionTime(selectedTimezone)} - ${formatTimeDifference(selectedTimezone, now)}`;
       drawCenteredText(ctx, countryLine, 0, readoutY + 16, readoutWidth, 9);
       ctx.fillStyle = hierarchy.color;
       ctx.shadowColor = hierarchy.color;
@@ -7383,10 +7403,8 @@
       const timeElement = document.getElementById('homeWatchTime');
       const sectionElement = document.getElementById('homeWatchSection');
       const regionElement = document.getElementById('homeWatchRegion');
-      const selectedTimezone = selectedItem.target === '#hero' ? getBrowserTimezone() : selectedItem.timezone;
-      const selectedRegion = selectedItem.target === '#hero' ? getLocalWatchRegionLabel() : selectedItem.region;
       if (timeElement) timeElement.textContent = formatRegionTime(selectedTimezone);
-      if (regionElement) regionElement.textContent = `${selectedRegion} · ${formatTimezoneName(selectedTimezone)}`;
+      if (regionElement) regionElement.textContent = `${selectedRegion} - ${formatTimezoneName(selectedTimezone)}`;
       if (sectionElement) sectionElement.textContent = t(selectedItem.key);
 
       updateSectionTimeContexts();
