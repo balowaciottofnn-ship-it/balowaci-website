@@ -880,6 +880,210 @@
       font-weight: 400;
     }
 
+    .visitor-guide {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+      background: rgba(4, 5, 9, 0.62);
+      backdrop-filter: blur(16px);
+      opacity: 1;
+      transition: opacity 0.28s ease, visibility 0.28s ease;
+    }
+
+    .visitor-guide[hidden] {
+      display: grid;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .visitor-guide-card {
+      width: min(520px, 94vw);
+      max-height: min(680px, 92vh);
+      overflow: auto;
+      border: 1px solid rgba(245, 208, 97, 0.34);
+      border-radius: 8px;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(200, 132, 255, 0.2), transparent 34%),
+        linear-gradient(145deg, rgba(12, 15, 24, 0.96), rgba(8, 7, 10, 0.96));
+      box-shadow: 0 28px 90px rgba(0, 0, 0, 0.62), inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+      color: #fff8dc;
+      padding: clamp(22px, 5vw, 34px);
+    }
+
+    .visitor-guide-kicker {
+      margin: 0 0 10px;
+      color: #f5d061;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .visitor-guide-card h2 {
+      margin: 0 0 14px;
+      color: #ffffff;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(1.9rem, 8vw, 3rem);
+      line-height: 1.04;
+      letter-spacing: 0;
+    }
+
+    .visitor-guide-card h2 span {
+      color: #c884ff;
+    }
+
+    .visitor-guide-card p {
+      margin: 0;
+      color: rgba(255, 248, 220, 0.86);
+      line-height: 1.62;
+      font-size: 1rem;
+    }
+
+    .visitor-guide-points {
+      display: grid;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .visitor-guide-point {
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr);
+      gap: 12px;
+      align-items: start;
+      padding: 12px;
+      border: 1px solid rgba(245, 208, 97, 0.18);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.045);
+    }
+
+    .visitor-guide-point strong {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      color: #120e08;
+      background: #f5d061;
+      font-size: 0.82rem;
+      font-weight: 900;
+    }
+
+    .visitor-guide-point span {
+      color: rgba(255, 255, 255, 0.9);
+      line-height: 1.45;
+      font-size: 0.94rem;
+    }
+
+    .visitor-guide-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: 18px;
+    }
+
+    .visitor-guide-button {
+      border: 1px solid rgba(245, 208, 97, 0.55);
+      border-radius: 999px;
+      padding: 11px 16px;
+      color: #120e08;
+      background: #f5d061;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .visitor-guide-button.secondary {
+      color: #f5d061;
+      background: transparent;
+    }
+
+    .visitor-guide-progress {
+      height: 3px;
+      margin-top: 20px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.14);
+    }
+
+    .visitor-guide-progress span {
+      display: block;
+      width: 100%;
+      height: 100%;
+      transform-origin: left;
+      transform: scaleX(0);
+      background: linear-gradient(90deg, #c884ff, #f5d061);
+    }
+
+    .visitor-guide.visible .visitor-guide-progress span {
+      animation: visitorGuideRead 15s linear forwards;
+    }
+
+    @keyframes visitorGuideRead {
+      to { transform: scaleX(1); }
+    }
+
+    .watch-help-button {
+      position: absolute;
+      right: clamp(4px, 3vw, 18px);
+      top: clamp(4px, 3vw, 18px);
+      z-index: 6;
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(245, 208, 97, 0.54);
+      border-radius: 50%;
+      color: #f5d061;
+      background: rgba(9, 9, 13, 0.76);
+      box-shadow: 0 0 22px rgba(245, 208, 97, 0.18);
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .watch-explainers {
+      width: min(620px, 94vw);
+      margin: -8px auto 18px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      position: relative;
+      z-index: 3;
+    }
+
+    .watch-explainer {
+      border: 1px solid rgba(245, 208, 97, 0.2);
+      border-radius: 8px;
+      padding: 10px 12px;
+      background: rgba(5, 7, 12, 0.64);
+      color: rgba(255, 255, 255, 0.82);
+      text-align: left;
+      backdrop-filter: blur(8px);
+    }
+
+    .watch-explainer strong {
+      display: block;
+      color: #f5d061;
+      font-size: 0.74rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .watch-explainer span {
+      display: block;
+      font-size: 0.82rem;
+      line-height: 1.35;
+    }
+
+    @media (max-width: 720px) {
+      .watch-explainers {
+        grid-template-columns: 1fr;
+        margin-top: 0;
+      }
+    }
+
     .artifact-direction {
       margin-top: 34px;
       display: grid;
@@ -3220,11 +3424,40 @@
     </ol>
   </div>
 
+  <div class="visitor-guide" id="visitorGuide" role="dialog" aria-modal="true" aria-labelledby="visitorGuideTitle" hidden>
+    <div class="visitor-guide-card">
+      <p class="visitor-guide-kicker">BaloWaci in 15 seconds</p>
+      <h2 id="visitorGuideTitle">This is a <span>time interpretation system</span>.</h2>
+      <p>BaloWaci turns time into a visual language. The watch shows familiar time, cultural time, world rhythm, and movement in one circular interface.</p>
+      <div class="visitor-guide-points">
+        <div class="visitor-guide-point">
+          <strong>1</strong>
+          <span>The outer watch is navigation. Click or drag the glowing sections to move through the website.</span>
+        </div>
+        <div class="visitor-guide-point">
+          <strong>2</strong>
+          <span>The rings are different ways to read time: standard numbers, cultural numbers, 24-hour marks, and direction.</span>
+        </div>
+        <div class="visitor-guide-point">
+          <strong>3</strong>
+          <span>The center connects time to place. It shows local rhythm, weather, and global perspective.</span>
+        </div>
+      </div>
+      <p>Simple version: BaloWaci is a symbolic clock, world-time tool, and future watch concept built into one experience.</p>
+      <div class="visitor-guide-actions">
+        <button class="visitor-guide-button" id="startBaloWaciGuide" type="button">Explore BaloWaci</button>
+        <button class="visitor-guide-button secondary" id="closeBaloWaciGuide" type="button">Close</button>
+      </div>
+      <div class="visitor-guide-progress" aria-hidden="true"><span></span></div>
+    </div>
+  </div>
+
   <!-- Hero Section -->
   <section class="hero luxury-hero" id="hero">
     <span class="watch-side-word balo" aria-hidden="true">Balo</span>
     <div class="home-watch-nav" aria-label="Interactive BaloWaci section navigator">
       <div class="home-watch-shell">
+        <button class="watch-help-button" id="openBaloWaciGuide" type="button" aria-label="Explain BaloWaci">?</button>
         <canvas id="homeWatchNav" width="720" height="720"></canvas>
         <div class="balowaci-sigil" aria-hidden="true">
           <span class="sigil-axis"></span>
@@ -3235,6 +3468,20 @@
       <span id="homeWatchTime" class="sr-only">--:--:--</span>
       <span id="homeWatchRegion" class="sr-only">Chicago, US</span>
       <span id="homeWatchSection" class="sr-only">Home</span>
+    </div>
+    <div class="watch-explainers" aria-label="BaloWaci interface explanation">
+      <div class="watch-explainer">
+        <strong>Outer Glow</strong>
+        <span>Website navigation and world places.</span>
+      </div>
+      <div class="watch-explainer">
+        <strong>Time Rings</strong>
+        <span>Standard, cultural, 24-hour, and direction readings.</span>
+      </div>
+      <div class="watch-explainer">
+        <strong>Center World</strong>
+        <span>Local rhythm, weather, and global meaning.</span>
+      </div>
     </div>
     <div class="weather-sync">
       <div class="weather-overlay" id="weatherOverlay" aria-hidden="true"></div>
@@ -7389,10 +7636,56 @@
       });
     }
 
+    function initializeVisitorGuide() {
+      const guide = document.getElementById('visitorGuide');
+      const openButton = document.getElementById('openBaloWaciGuide');
+      const startButton = document.getElementById('startBaloWaciGuide');
+      const closeButton = document.getElementById('closeBaloWaciGuide');
+      const storageKey = 'balowaciVisitorGuideSeen';
+      let closeTimer = null;
+
+      if (!guide) return;
+
+      function openGuide(automatic = false) {
+        clearTimeout(closeTimer);
+        guide.hidden = false;
+        requestAnimationFrame(() => guide.classList.add('visible'));
+        if (automatic) {
+          closeTimer = setTimeout(() => closeGuide(true), 15000);
+        }
+      }
+
+      function closeGuide(markSeen = true) {
+        clearTimeout(closeTimer);
+        guide.classList.remove('visible');
+        if (markSeen) {
+          localStorage.setItem(storageKey, 'true');
+        }
+        setTimeout(() => {
+          guide.hidden = true;
+        }, 280);
+      }
+
+      openButton?.addEventListener('click', () => openGuide(false));
+      startButton?.addEventListener('click', () => closeGuide(true));
+      closeButton?.addEventListener('click', () => closeGuide(true));
+      guide.addEventListener('click', (event) => {
+        if (event.target === guide) closeGuide(true);
+      });
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && !guide.hidden) closeGuide(true);
+      });
+
+      if (localStorage.getItem(storageKey) !== 'true') {
+        setTimeout(() => openGuide(true), 650);
+      }
+    }
+
     // Initialize on page load
     document.addEventListener('DOMContentLoaded', () => {
       applyLanguage(currentLanguage);
       initializePwaInstall();
+      initializeVisitorGuide();
       const languageSelect = document.getElementById('languageSelect');
       if (languageSelect) {
         languageSelect.addEventListener('change', (event) => {
