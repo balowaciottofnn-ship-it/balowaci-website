@@ -2998,6 +2998,195 @@
       background: #d4af37;
     }
 
+    .access-architecture {
+      display: grid;
+      gap: 22px;
+      margin-top: 34px;
+      text-align: left;
+    }
+
+    .access-card {
+      position: relative;
+      border: 1px solid rgba(212, 175, 55, 0.38);
+      border-radius: 8px;
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.055), transparent 36%),
+        rgba(0, 0, 0, 0.42);
+      padding: clamp(22px, 3vw, 34px);
+      overflow: hidden;
+    }
+
+    .access-card.open {
+      border-color: rgba(245, 208, 97, 0.72);
+      box-shadow: 0 0 26px rgba(212, 175, 55, 0.12);
+    }
+
+    .access-card.locked {
+      background:
+        linear-gradient(145deg, rgba(178, 102, 255, 0.12), transparent 38%),
+        rgba(0, 0, 0, 0.58);
+    }
+
+    .access-card.locked::after {
+      content: 'LOCKED';
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      border: 1px solid rgba(245, 208, 97, 0.55);
+      border-radius: 999px;
+      padding: 7px 11px;
+      color: #f5d061;
+      background: rgba(0, 0, 0, 0.62);
+      font-size: 0.66rem;
+      letter-spacing: 0.18em;
+      font-weight: 800;
+    }
+
+    .access-card h3 {
+      margin: 0 0 8px;
+      color: #f0d289;
+      font-size: clamp(1.25rem, 2.4vw, 1.7rem);
+      line-height: 1.15;
+    }
+
+    .tier-price {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      margin-bottom: 16px;
+      border: 1px solid rgba(212, 175, 55, 0.38);
+      border-radius: 999px;
+      padding: 7px 12px;
+      color: #d4af37;
+      background: rgba(0, 0, 0, 0.32);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .tier-feature-grid,
+    .revenue-grid,
+    .conversion-path {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .tier-feature-group,
+    .revenue-card,
+    .conversion-step {
+      border: 1px solid rgba(212, 175, 55, 0.22);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.045);
+      padding: 16px;
+    }
+
+    .tier-feature-group strong,
+    .revenue-card strong,
+    .conversion-step strong {
+      display: block;
+      color: #b266ff;
+      margin-bottom: 8px;
+      font-size: 0.74rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .tier-feature-group ul,
+    .revenue-card ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .tier-feature-group li,
+    .revenue-card li {
+      color: rgba(255, 255, 255, 0.76);
+      line-height: 1.55;
+      margin: 7px 0;
+      font-size: 0.9rem;
+    }
+
+    .tier-feature-group li::before,
+    .revenue-card li::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      margin-right: 8px;
+      border-radius: 50%;
+      background: #d4af37;
+      vertical-align: middle;
+    }
+
+    .premium-lock-preview {
+      margin-top: 28px;
+      border: 1px solid rgba(178, 102, 255, 0.34);
+      border-radius: 8px;
+      padding: 22px;
+      background:
+        radial-gradient(circle at top, rgba(178, 102, 255, 0.14), transparent 44%),
+        rgba(0, 0, 0, 0.34);
+      text-align: center;
+    }
+
+    .premium-lock-preview h3 {
+      margin: 0 0 8px;
+      color: #f0d289;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .premium-lock-preview p {
+      max-width: 680px;
+      margin: 0 auto 18px;
+      color: rgba(255, 255, 255, 0.72);
+      line-height: 1.65;
+    }
+
+    .locked-control {
+      opacity: 0.54;
+      filter: grayscale(0.4);
+    }
+
+    .locked-control button,
+    .locked-control input,
+    .locked-control select {
+      cursor: not-allowed;
+    }
+
+    .revenue-card.highlight {
+      border-color: rgba(245, 208, 97, 0.68);
+      background:
+        radial-gradient(circle at top, rgba(212, 175, 55, 0.13), transparent 44%),
+        rgba(0, 0, 0, 0.52);
+    }
+
+    .conversion-step {
+      min-height: 92px;
+      color: rgba(255, 255, 255, 0.74);
+      line-height: 1.45;
+    }
+
+    .conversion-step strong {
+      color: #f5d061;
+    }
+
+    .do-not-charge {
+      margin-top: 24px;
+      border: 1px solid rgba(49, 214, 123, 0.34);
+      border-radius: 8px;
+      padding: 20px;
+      background: rgba(49, 214, 123, 0.055);
+      color: rgba(255, 255, 255, 0.76);
+      line-height: 1.7;
+    }
+
+    .do-not-charge strong {
+      color: #31d67b;
+    }
+
     .pricing-note {
       max-width: 760px;
       margin: 28px auto 0;
@@ -3939,81 +4128,201 @@
   <section id="premium-access" class="premium-access-section">
     <div class="container">
       <div class="premium-access-card">
-        <p class="premium-kicker" data-i18n="premium.kicker">Premium Direction</p>
-        <h2 data-i18n="premium.title">Unlock Deeper Time Modes</h2>
-        <p data-i18n="premium.body">BaloWaci Premium will feel like opening new layers of the watch: personal regions, cultural readings, saved views, and collectible watchface themes.</p>
+        <p class="premium-kicker">Access Architecture</p>
+        <h2>Free to Feel. Premium to Own.</h2>
+        <p>The public site should make people understand BaloWaci, return to it, and want deeper access. The paid layers are separated as locked tools, private knowledge, and collector privileges.</p>
 
-        <div class="premium-mode-grid">
-          <article class="premium-mode-card">
-            <h3 data-i18n="premium.standardTitle">Standard Mode</h3>
-            <p data-i18n="premium.standardBody">The free public experience: live watch navigation, global time, and core product story.</p>
+        <div class="access-architecture">
+          <article class="access-card open">
+            <h3>Free Tier: Everyone</h3>
+            <span class="tier-price">Marketing engine</span>
+            <p>This layer stays open because it creates the first emotional reaction: "What is BaloWaci, and why does this feel different?"</p>
+            <div class="tier-feature-grid">
+              <div class="tier-feature-group">
+                <strong>Trinity Simulator</strong>
+                <ul>
+                  <li>View standard time</li>
+                  <li>View cultural time</li>
+                  <li>View military time</li>
+                  <li>Basic animations</li>
+                </ul>
+              </div>
+              <div class="tier-feature-group">
+                <strong>WorldSync Basic</strong>
+                <ul>
+                  <li>Select a few countries</li>
+                  <li>Compare times</li>
+                  <li>Basic world map</li>
+                </ul>
+              </div>
+              <div class="tier-feature-group">
+                <strong>Founder Story</strong>
+                <ul>
+                  <li>BaloWaci journey</li>
+                  <li>Mission</li>
+                  <li>Song</li>
+                  <li>Website experience</li>
+                </ul>
+              </div>
+              <div class="tier-feature-group">
+                <strong>Community</strong>
+                <ul>
+                  <li>News</li>
+                  <li>Updates</li>
+                  <li>Prototype progress</li>
+                </ul>
+              </div>
+            </div>
           </article>
-          <article class="premium-mode-card">
-            <h3 data-i18n="premium.culturalTitle">Cultural Mode</h3>
-            <p data-i18n="premium.culturalBody">A deeper layer for cultural interpretation, daily readings, and symbolic time meaning.</p>
+
+          <article class="access-card locked">
+            <h3>Premium Tier</h3>
+            <span class="tier-price">$4.99-$9.99/month</span>
+            <p>For users who want BaloWaci as a daily world-time companion, not only a website they visit once.</p>
+            <div class="tier-feature-grid">
+              <div class="tier-feature-group">
+                <strong>Full WorldSync</strong>
+                <ul>
+                  <li>All countries</li>
+                  <li>All cities</li>
+                  <li>Advanced synchronization</li>
+                  <li>Personal world dashboard</li>
+                </ul>
+              </div>
+              <div class="tier-feature-group">
+                <strong>Time Collections</strong>
+                <ul>
+                  <li>Favorite countries</li>
+                  <li>Family locations</li>
+                  <li>Business locations</li>
+                  <li>DR Congo, Japan, Brazil, New York, London</li>
+                </ul>
+              </div>
+              <div class="tier-feature-group">
+                <strong>Advanced Analytics</strong>
+                <ul>
+                  <li>Time differences</li>
+                  <li>Working-hours overlap</li>
+                  <li>Meeting planner</li>
+                  <li>Useful for travelers, businesses, and international families</li>
+                </ul>
+              </div>
+            </div>
           </article>
-          <article class="premium-mode-card">
-            <h3 data-i18n="premium.worldTitle">World Mode</h3>
-            <p data-i18n="premium.worldBody">Save favorite regions and return to a personal global time view.</p>
+
+          <article class="access-card locked">
+            <h3>Premium Plus: BaloWaci Universe</h3>
+            <span class="tier-price">$14.99-$29.99/month</span>
+            <p>The serious platform layer: cultural time knowledge, challenge systems, and digital ownership benefits.</p>
+            <div class="tier-feature-grid">
+              <div class="tier-feature-group">
+                <strong>Time Battle Sync</strong>
+                <ul>
+                  <li>Compare countries</li>
+                  <li>Compete in time challenges</li>
+                  <li>Global synchronization events</li>
+                </ul>
+              </div>
+              <div class="tier-feature-group">
+                <strong>Cultural Time Library</strong>
+                <ul>
+                  <li>Different cultural time systems</li>
+                  <li>Historical interpretations</li>
+                  <li>Educational content</li>
+                </ul>
+              </div>
+              <div class="tier-feature-group">
+                <strong>Watch Owner Benefits</strong>
+                <ul>
+                  <li>Digital certificate</li>
+                  <li>Ownership profile</li>
+                  <li>Limited releases for Trinity, Axis, and WorldSync owners</li>
+                </ul>
+              </div>
+            </div>
           </article>
-          <article class="premium-mode-card">
-            <h3 data-i18n="premium.collectorTitle">Collector Themes</h3>
-            <p data-i18n="premium.collectorBody">Switch between luxury watchface moods designed for day, night, moon, and compass experiences.</p>
+
+          <article class="access-card locked">
+            <h3>BaloWaci Founders Club</h3>
+            <span class="tier-price">$99-$499/year</span>
+            <p>The high-end membership where the luxury experience lives before and after the physical watches arrive.</p>
+            <div class="tier-feature-grid">
+              <div class="tier-feature-group">
+                <strong>Member Access</strong>
+                <ul>
+                  <li>Early prototype access</li>
+                  <li>Limited editions</li>
+                  <li>Private livestreams</li>
+                </ul>
+              </div>
+              <div class="tier-feature-group">
+                <strong>Founder Updates</strong>
+                <ul>
+                  <li>Investor updates</li>
+                  <li>Factory updates</li>
+                  <li>New model previews</li>
+                </ul>
+              </div>
+            </div>
           </article>
         </div>
 
-        <div class="theme-controls" aria-label="BaloWaci theme controls">
-          <button type="button" class="theme-button" data-theme-option="purple-night" data-i18n="theme.purple">Purple Night</button>
-          <button type="button" class="theme-button" data-theme-option="solar-dawn" data-i18n="theme.solar">Solar Dawn</button>
-          <button type="button" class="theme-button" data-theme-option="moon-phase" data-i18n="theme.moon">Moon Phase</button>
-          <button type="button" class="theme-button" data-theme-option="cultural-compass" data-i18n="theme.compass">Cultural Compass</button>
-        </div>
+        <div class="premium-lock-preview" aria-label="Locked premium preview">
+          <h3>Premium Console Preview</h3>
+          <p>These controls represent the paid layer: saved views, collector themes, ritual sound, custom uploads, and advanced interpretation modes. They are shown as a preview until checkout is connected.</p>
 
-        <div class="ritual-settings" aria-label="Minute ritual settings">
-          <h3 data-i18n="ritual.title">Minute Ritual</h3>
-          <div class="ritual-grid">
-            <label class="ritual-control inline">
-              <input type="checkbox" id="ritualVibrate">
-              <span data-i18n="ritual.vibrate">Vibrate when the watch breathes</span>
-            </label>
-            <label class="ritual-control inline">
-              <input type="checkbox" id="ritualSound">
-              <span data-i18n="ritual.sound">Play sound when the watch breathes</span>
-            </label>
-            <label class="ritual-control">
-              <span data-i18n="ritual.soundChoice">Ritual sound</span>
-              <select id="ritualSoundChoice">
-                <option value="soft" data-i18n="ritual.soft">Soft Chime</option>
-                <option value="bell" data-i18n="ritual.bell">Deep Bell</option>
-                <option value="pulse" data-i18n="ritual.pulse">Ambient Pulse</option>
-                <option value="custom" data-i18n="ritual.custom">Custom Upload</option>
-              </select>
-            </label>
-            <label class="ritual-control">
-              <span data-i18n="ritual.volume">Volume</span>
-              <input type="range" id="ritualVolume" min="0" max="1" step="0.05" value="0.45">
-            </label>
-            <label class="ritual-control">
-              <span data-i18n="ritual.upload">Upload short sound</span>
-              <input type="file" id="ritualUpload" accept="audio/*">
-            </label>
-            <label class="ritual-control">
-              <span data-i18n="ritual.visual">Visual interpretation</span>
-              <select id="ritualVisualMode">
-                <option value="present" data-i18n="ritual.present">Present Time</option>
-                <option value="future" data-i18n="ritual.future">Future Journey</option>
-                <option value="past" data-i18n="ritual.past">Past Journey</option>
-              </select>
-            </label>
+          <div class="theme-controls locked-control" aria-label="Locked BaloWaci theme controls">
+            <button type="button" class="theme-button" data-theme-option="purple-night" disabled>Purple Night</button>
+            <button type="button" class="theme-button" data-theme-option="solar-dawn" disabled>Solar Dawn</button>
+            <button type="button" class="theme-button" data-theme-option="moon-phase" disabled>Moon Phase</button>
+            <button type="button" class="theme-button" data-theme-option="cultural-compass" disabled>Cultural Compass</button>
           </div>
-          <p class="ritual-note" data-i18n="ritual.note">Sound starts after a user enables it. Custom sounds should be short, like a chime or 1-10 second ritual tone.</p>
-        </div>
 
-        <div class="final-cta-actions">
-          <button type="button" id="saveTimeView" class="luxury-btn primary" data-i18n="premium.save">Save My Time View</button>
-          <a class="luxury-btn secondary" href="#join" data-i18n="premium.waitlist">Join Premium Waitlist</a>
+          <div class="ritual-settings locked-control" aria-label="Locked minute ritual settings">
+            <h3>Minute Ritual</h3>
+            <div class="ritual-grid">
+              <label class="ritual-control inline">
+                <input type="checkbox" id="ritualVibrate" disabled>
+                <span>Vibrate when the watch breathes</span>
+              </label>
+              <label class="ritual-control inline">
+                <input type="checkbox" id="ritualSound" disabled>
+                <span>Play sound when the watch breathes</span>
+              </label>
+              <label class="ritual-control">
+                <span>Ritual sound</span>
+                <select id="ritualSoundChoice" disabled>
+                  <option value="soft">Soft Chime</option>
+                  <option value="bell">Deep Bell</option>
+                  <option value="pulse">Ambient Pulse</option>
+                  <option value="custom">Custom Upload</option>
+                </select>
+              </label>
+              <label class="ritual-control">
+                <span>Volume</span>
+                <input type="range" id="ritualVolume" min="0" max="1" step="0.05" value="0.45" disabled>
+              </label>
+              <label class="ritual-control">
+                <span>Upload short sound</span>
+                <input type="file" id="ritualUpload" accept="audio/*" disabled>
+              </label>
+              <label class="ritual-control">
+                <span>Visual interpretation</span>
+                <select id="ritualVisualMode" disabled>
+                  <option value="present">Present Time</option>
+                  <option value="future">Future Journey</option>
+                  <option value="past">Past Journey</option>
+                </select>
+              </label>
+            </div>
+          </div>
+
+          <div class="final-cta-actions">
+            <button type="button" id="saveTimeView" class="luxury-btn primary" disabled>Save My Time View</button>
+            <a class="luxury-btn secondary" href="#join">Join Premium Waitlist</a>
+          </div>
+          <p id="saveViewStatus" class="save-view-status" aria-live="polite"></p>
         </div>
-        <p id="saveViewStatus" class="save-view-status" aria-live="polite"></p>
       </div>
     </div>
   </section>
@@ -4021,50 +4330,67 @@
   <section id="monetization" class="monetization-section">
     <div class="container">
       <div class="monetization-card">
-        <p class="monetization-kicker" data-i18n="money.kicker">Digital Prototype Access</p>
-        <h2 data-i18n="money.title">A Sellable BaloWaci Experience</h2>
-        <p data-i18n="money.body">The public website introduces the invention. Premium access turns BaloWaci into a personal time system people can return to, save, customize, and support early.</p>
+        <p class="monetization-kicker">Revenue Strategy</p>
+        <h2>The BaloWaci Ladder</h2>
+        <p>The free experience spreads curiosity. Paid access monetizes depth, ownership, exclusivity, and collector identity.</p>
 
-        <div class="pricing-grid">
-          <article class="pricing-card">
-            <h3 data-i18n="money.freeTitle">Public Prototype</h3>
-            <span class="price" data-i18n="money.freePrice">Free</span>
-            <p data-i18n="money.freeBody">Designed for discovery, sharing, and first-time understanding.</p>
+        <div class="revenue-grid">
+          <article class="revenue-card highlight">
+            <strong>1. Physical Watches</strong>
             <ul>
-              <li data-i18n="money.freeOne">Live watch navigation</li>
-              <li data-i18n="money.freeTwo">Core story and case study</li>
-              <li data-i18n="money.freeThree">Feedback contribution</li>
+              <li>Largest revenue source</li>
+              <li>Trinity, Axis, and WorldSync become the premium objects</li>
             </ul>
           </article>
-
-          <article class="pricing-card featured">
-            <h3 data-i18n="money.founderTitle">Founding Digital Pass</h3>
-            <span class="price" data-i18n="money.founderPrice">$29</span>
-            <p data-i18n="money.founderBody">Best first offer for early supporters while the product is still growing.</p>
+          <article class="revenue-card highlight">
+            <strong>2. Limited Editions</strong>
             <ul>
-              <li data-i18n="money.founderOne">Premium theme previews</li>
-              <li data-i18n="money.founderTwo">Saved personal time view</li>
-              <li data-i18n="money.founderThree">Early feature voting</li>
+              <li>Highest profit margins</li>
+              <li>Scarcity, codes, certificates, and owner status</li>
             </ul>
           </article>
-
-          <article class="pricing-card">
-            <h3 data-i18n="money.premiumTitle">BaloWaci Premium</h3>
-            <span class="price" data-i18n="money.premiumPrice">$4.99/mo</span>
-            <p data-i18n="money.premiumBody">A future subscription for users who want BaloWaci as a daily time companion.</p>
+          <article class="revenue-card">
+            <strong>3. Founders Club</strong>
             <ul>
-              <li data-i18n="money.premiumOne">Daily cultural time readings</li>
-              <li data-i18n="money.premiumTwo">Favorite regions and modes</li>
-              <li data-i18n="money.premiumThree">Collector watchface themes</li>
+              <li>Recurring luxury membership</li>
+              <li>Private updates and early access</li>
+            </ul>
+          </article>
+          <article class="revenue-card">
+            <strong>4. Premium WorldSync</strong>
+            <ul>
+              <li>Scalable software revenue</li>
+              <li>Dashboards, saved places, meeting planner, and analytics</li>
+            </ul>
+          </article>
+          <article class="revenue-card">
+            <strong>5. Licensing</strong>
+            <ul>
+              <li>Potentially huge long-term upside</li>
+              <li>BaloWaci time interpretation technology for partners</li>
             </ul>
           </article>
         </div>
 
-        <p class="pricing-note" data-i18n="money.note">Next payment step: connect Stripe, PayPal, or Gumroad so these buttons can become real checkout links.</p>
+        <div class="do-not-charge">
+          <strong>Keep free:</strong> Basic Trinity, Basic WorldSync, and basic cultural time display. These are the features that make people say, "Wow, what is BaloWaci?" Charge for deeper tools, advanced synchronization, exclusive content, collector experiences, and premium memberships.
+        </div>
+
+        <div class="conversion-path" aria-label="BaloWaci conversion path">
+          <div class="conversion-step"><strong>Free App User</strong>Falls in love with the system.</div>
+          <div class="conversion-step"><strong>Premium User</strong>Saves places and uses WorldSync daily.</div>
+          <div class="conversion-step"><strong>Founders Club</strong>Receives private access and prototype updates.</div>
+          <div class="conversion-step"><strong>Trinity Owner</strong>Owns code YAH.</div>
+          <div class="conversion-step"><strong>Axis Owner</strong>Owns code WEH.</div>
+          <div class="conversion-step"><strong>WorldSync Owner</strong>Owns code YEH.</div>
+          <div class="conversion-step"><strong>Collector</strong>Collects limited editions and future releases.</div>
+        </div>
+
+        <p class="pricing-note">Next payment step: connect Stripe, PayPal, or Gumroad so locked premium cards can become real checkout paths.</p>
 
         <div class="final-cta-actions">
-          <a class="luxury-btn primary" href="mailto:balowaci.ottofnn@gmail.com?subject=BaloWaci%20Founding%20Digital%20Pass" data-i18n="money.reserve">Reserve Founding Access</a>
-          <a class="luxury-btn secondary" href="#feedback" data-i18n="money.validate">Give Product Feedback</a>
+          <a class="luxury-btn primary" href="mailto:balowaci.ottofnn@gmail.com?subject=BaloWaci%20Founders%20Club">Reserve Founders Club</a>
+          <a class="luxury-btn secondary" href="#feedback">Give Product Feedback</a>
         </div>
       </div>
     </div>
