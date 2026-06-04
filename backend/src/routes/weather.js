@@ -3,15 +3,54 @@ const https = require('https');
 
 const router = express.Router();
 
+const trustedLocalCities = [
+  { name: 'Coralville', state: 'IA', lat: 41.6764, lon: -91.5804 },
+  { name: 'Iowa City', state: 'IA', lat: 41.6611, lon: -91.5302 },
+  { name: 'North Liberty', state: 'IA', lat: 41.7492, lon: -91.5979 },
+  { name: 'Tiffin', state: 'IA', lat: 41.7058, lon: -91.6627 },
+  { name: 'University Heights', state: 'IA', lat: 41.6556, lon: -91.5560 },
+  { name: 'Solon', state: 'IA', lat: 41.8072, lon: -91.4941 },
+  { name: 'West Branch', state: 'IA', lat: 41.6714, lon: -91.3466 },
+  { name: 'Hills', state: 'IA', lat: 41.5542, lon: -91.5346 },
+  { name: 'Lone Tree', state: 'IA', lat: 41.4881, lon: -91.4254 },
+  { name: 'Swisher', state: 'IA', lat: 41.8458, lon: -91.6927 }
+];
+
+function getMilesBetween(latA, lonA, latB, lonB) {
+  const toRadians = (value) => value * Math.PI / 180;
+  const earthMiles = 3958.8;
+  const dLat = toRadians(latB - latA);
+  const dLon = toRadians(lonB - lonA);
+  const a = Math.sin(dLat / 2) ** 2
+    + Math.cos(toRadians(latA)) * Math.cos(toRadians(latB)) * Math.sin(dLon / 2) ** 2;
+  return earthMiles * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+function getTrustedLocalCity(lat, lon) {
+  const latitude = Number(lat);
+  const longitude = Number(lon);
+  if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return null;
+
+  const nearest = trustedLocalCities
+    .map((city) => ({
+      ...city,
+      distance: getMilesBetween(latitude, longitude, city.lat, city.lon)
+    }))
+    .sort((a, b) => a.distance - b.distance)[0];
+
+  return nearest && nearest.distance <= 9
+    ? `${nearest.name}, ${nearest.state}`
+    : null;
+}
+
 function cleanDisplayLocationName(lat, lon, geocodedLocation, fallbackName) {
+  const trustedLocalCity = getTrustedLocalCity(lat, lon);
+  if (trustedLocalCity) return trustedLocalCity;
+
   if (geocodedLocation?.name) {
     return geocodedLocation.state
       ? `${geocodedLocation.name}, ${geocodedLocation.state}`
       : geocodedLocation.name;
-  }
-
-  if (typeof fallbackName === 'string' && fallbackName.toLowerCase().includes('baculis')) {
-    return 'Iowa City';
   }
 
   return fallbackName || 'Local area';
