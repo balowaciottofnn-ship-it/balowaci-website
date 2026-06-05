@@ -765,6 +765,13 @@
       margin: 0 auto;
       border-radius: 50%;
       --solar-core: 0.08;
+      --watch-light-level: 1;
+      --watch-shadow-blur: 80px;
+      --watch-gold-glow: 46px;
+      --watch-purple-glow: 72px;
+      --watch-gold-alpha: 0.14;
+      --watch-purple-alpha: 0.12;
+      --watch-glass-opacity: 0.58;
       background:
         radial-gradient(circle at 34% 28%, rgba(255, 255, 255, 0.11), transparent 18%),
         radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.08), transparent 58%),
@@ -772,8 +779,14 @@
       box-shadow:
         inset 0 0 0 1px rgba(212, 175, 55, 0.18),
         inset 0 0 42px rgba(255, 255, 255, 0.04),
-        0 24px 80px rgba(0, 0, 0, 0.42);
-      transition: box-shadow 0.8s ease, background 0.8s ease;
+        0 24px var(--watch-shadow-blur) rgba(0, 0, 0, 0.42),
+        0 0 var(--watch-gold-glow) rgba(212, 175, 55, var(--watch-gold-alpha)),
+        0 0 var(--watch-purple-glow) rgba(178, 102, 255, var(--watch-purple-alpha));
+      transition: box-shadow 0.8s ease, background 0.8s ease, filter 0.45s ease;
+    }
+
+    .home-watch-shell.lights-off {
+      filter: saturate(0.76) brightness(0.72);
     }
 
     .home-watch-shell::before {
@@ -786,8 +799,151 @@
         linear-gradient(118deg, rgba(255, 255, 255, 0.18), transparent 22% 74%, rgba(212, 175, 55, 0.12)),
         radial-gradient(circle at 50% 10%, rgba(255, 255, 255, 0.16), transparent 24%);
       mix-blend-mode: screen;
-      opacity: 0.5;
+      opacity: var(--watch-glass-opacity);
       z-index: 3;
+    }
+
+    .watch-led-controls {
+      width: min(560px, 92vw);
+      margin: 16px auto 0;
+      display: grid;
+      grid-template-columns: auto minmax(150px, 1fr) auto auto auto;
+      gap: 10px;
+      align-items: center;
+      padding: 12px 14px;
+      border: 1px solid rgba(212, 175, 55, 0.38);
+      border-radius: 999px;
+      background: rgba(5, 7, 14, 0.68);
+      color: rgba(255, 255, 255, 0.74);
+      box-shadow:
+        inset 0 0 18px rgba(245, 208, 97, 0.05),
+        0 10px 28px rgba(0, 0, 0, 0.22);
+      backdrop-filter: blur(10px);
+    }
+
+    .watch-led-controls span {
+      color: #f5d061;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .watch-led-controls input[type="range"] {
+      width: 100%;
+      accent-color: #d4af37;
+    }
+
+    .watch-led-button {
+      min-height: 32px;
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      border-radius: 999px;
+      padding: 0 11px;
+      color: #d4af37;
+      background: rgba(0, 0, 0, 0.22);
+      font: inherit;
+      font-size: 0.64rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .watch-led-button:hover,
+    .watch-led-button.active {
+      color: #080711;
+      background: #d4af37;
+      box-shadow: 0 0 16px rgba(212, 175, 55, 0.28);
+    }
+
+    .angel-wing {
+      position: absolute;
+      z-index: 2;
+      width: clamp(92px, 15vw, 190px);
+      height: clamp(82px, 12vw, 150px);
+      pointer-events: none;
+      opacity: 0.82;
+      filter:
+        drop-shadow(0 0 16px rgba(245, 208, 97, 0.18))
+        drop-shadow(0 0 28px rgba(200, 132, 255, 0.14));
+      transform-origin: 50% 50%;
+      animation: wingBreathe 4.8s ease-in-out infinite;
+    }
+
+    .angel-wing::before,
+    .angel-wing::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 72% 28% 74% 26% / 24% 72% 28% 76%;
+      background:
+        repeating-radial-gradient(ellipse at 72% 34%, rgba(255, 252, 236, 0.88) 0 7px, rgba(245, 208, 97, 0.2) 8px 10px, transparent 11px 18px),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(245, 208, 97, 0.28) 48%, rgba(178, 102, 255, 0.18));
+      clip-path: polygon(0 48%, 18% 18%, 42% 6%, 72% 0, 100% 18%, 86% 38%, 100% 56%, 78% 68%, 92% 86%, 60% 82%, 34% 100%, 23% 74%);
+    }
+
+    .angel-wing::after {
+      inset: 16% 10% 4% 22%;
+      opacity: 0.68;
+      transform: rotate(-9deg);
+      background:
+        repeating-radial-gradient(ellipse at 72% 34%, rgba(255, 255, 255, 0.74) 0 5px, rgba(212, 175, 55, 0.16) 6px 8px, transparent 9px 15px),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.68), rgba(200, 132, 255, 0.16));
+    }
+
+    .angel-wing.top-left {
+      top: clamp(72px, 10vh, 132px);
+      left: clamp(14px, 3vw, 46px);
+      transform: rotate(-18deg);
+    }
+
+    .angel-wing.top-right {
+      top: clamp(72px, 10vh, 132px);
+      right: clamp(14px, 3vw, 46px);
+      transform: scaleX(-1) rotate(-18deg);
+      animation-delay: -1.1s;
+    }
+
+    .angel-wing.bottom-left {
+      bottom: clamp(24px, 5vh, 74px);
+      left: clamp(14px, 3vw, 46px);
+      transform: rotate(18deg) scaleY(-1);
+      animation-delay: -2.2s;
+    }
+
+    .angel-wing.bottom-right {
+      bottom: clamp(24px, 5vh, 74px);
+      right: clamp(14px, 3vw, 46px);
+      transform: scale(-1, -1) rotate(18deg);
+      animation-delay: -3.3s;
+    }
+
+    @keyframes wingBreathe {
+      0%, 100% {
+        opacity: 0.58;
+        filter:
+          drop-shadow(0 0 10px rgba(245, 208, 97, 0.12))
+          drop-shadow(0 0 20px rgba(200, 132, 255, 0.1));
+      }
+      48% {
+        opacity: 0.94;
+        filter:
+          drop-shadow(0 0 22px rgba(245, 208, 97, 0.28))
+          drop-shadow(0 0 42px rgba(200, 132, 255, 0.22));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .watch-led-controls {
+        grid-template-columns: 1fr 1fr 1fr;
+        border-radius: 18px;
+      }
+
+      .watch-led-controls span,
+      .watch-led-controls input[type="range"] {
+        grid-column: 1 / -1;
+      }
     }
 
     .balowaci-sigil {
@@ -3734,6 +3890,10 @@
 
   <!-- Hero Section -->
   <section class="hero luxury-hero" id="hero">
+    <div class="angel-wing top-left" aria-hidden="true"></div>
+    <div class="angel-wing top-right" aria-hidden="true"></div>
+    <div class="angel-wing bottom-left" aria-hidden="true"></div>
+    <div class="angel-wing bottom-right" aria-hidden="true"></div>
     <span class="watch-side-word balo" aria-hidden="true">Balo</span>
     <div class="home-watch-nav" aria-label="Interactive BaloWaci section navigator">
       <div class="home-watch-shell">
@@ -3744,6 +3904,13 @@
           <span class="sigil-axis horizontal"></span>
           <span class="sigil-mark">BW</span>
         </div>
+      </div>
+      <div class="watch-led-controls" aria-label="Watch LED light controls">
+        <span>LED Lights</span>
+        <input id="watchLightSlider" type="range" min="0" max="100" step="5" value="100" aria-label="Watch light brightness">
+        <button type="button" class="watch-led-button" data-watch-light="100">Full</button>
+        <button type="button" class="watch-led-button" data-watch-light="35">Dim</button>
+        <button type="button" class="watch-led-button" data-watch-light="0">Off</button>
       </div>
       <span id="homeWatchTime" class="sr-only">--:--:--</span>
       <span id="homeWatchRegion" class="sr-only">Chicago, US</span>
@@ -6661,6 +6828,8 @@
       quoteTimeout: null,
       fireTimeout: null,
       doveTimeout: null,
+      autoRotateTimer: null,
+      watchLightLevel: 1,
       dpr: 1
     };
 
@@ -6985,6 +7154,69 @@
       const shell = document.querySelector('.home-watch-shell');
       if (!shell) return;
       shell.style.removeProperty('--solar-core');
+      shell.style.setProperty('--watch-light-level', homeWatchState.watchLightLevel.toFixed(2));
+      shell.style.setProperty('--watch-shadow-blur', `${Math.round(34 + homeWatchState.watchLightLevel * 46)}px`);
+      shell.style.setProperty('--watch-gold-glow', `${Math.round(homeWatchState.watchLightLevel * 46)}px`);
+      shell.style.setProperty('--watch-purple-glow', `${Math.round(homeWatchState.watchLightLevel * 72)}px`);
+      shell.style.setProperty('--watch-gold-alpha', (homeWatchState.watchLightLevel * 0.14).toFixed(3));
+      shell.style.setProperty('--watch-purple-alpha', (homeWatchState.watchLightLevel * 0.12).toFixed(3));
+      shell.style.setProperty('--watch-glass-opacity', (0.16 + homeWatchState.watchLightLevel * 0.42).toFixed(3));
+      shell.classList.toggle('lights-off', homeWatchState.watchLightLevel <= 0.02);
+    }
+
+    function applyWatchLightLevel(level) {
+      const normalized = Math.min(Math.max(Number(level) / 100, 0), 1);
+      homeWatchState.watchLightLevel = normalized;
+      localStorage.setItem('balowaciWatchLightLevel', String(Math.round(normalized * 100)));
+      const slider = document.getElementById('watchLightSlider');
+      if (slider) slider.value = String(Math.round(normalized * 100));
+      document.querySelectorAll('[data-watch-light]').forEach((button) => {
+        button.classList.toggle('active', Number(button.dataset.watchLight) === Math.round(normalized * 100));
+      });
+      updateHomeWatchSolarStyle(getLocalSolarIntensity());
+    }
+
+    function initializeWatchLightControls() {
+      const savedLevel = localStorage.getItem('balowaciWatchLightLevel');
+      applyWatchLightLevel(savedLevel === null ? 100 : Number(savedLevel));
+      document.getElementById('watchLightSlider')?.addEventListener('input', (event) => {
+        applyWatchLightLevel(event.target.value);
+      });
+      document.querySelectorAll('[data-watch-light]').forEach((button) => {
+        button.addEventListener('click', () => {
+          applyWatchLightLevel(Number(button.dataset.watchLight));
+        });
+      });
+    }
+
+    function selectHomeWatchIndex(index, { navigate = false, advanceCountry = false, markInteraction = true } = {}) {
+      const state = homeWatchState;
+      if (markInteraction) markHomeWatchInteraction();
+      const segment = (Math.PI * 2) / homeWatchNavItems.length;
+      const normalizedIndex = ((index % homeWatchNavItems.length) + homeWatchNavItems.length) % homeWatchNavItems.length;
+      state.selectedIndex = normalizedIndex;
+      state.targetRotation = -normalizedIndex * segment;
+      if (navigate) state.rotation = state.targetRotation;
+      if (advanceCountry) advanceWatchCountry();
+      updateSectionTimeContexts();
+      if (navigate) {
+        const target = document.querySelector(homeWatchNavItems[normalizedIndex].target);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    function rotateHomeWatchToNextSection() {
+      if (homeWatchState.dragging) return;
+      selectHomeWatchIndex(homeWatchState.selectedIndex + 1, {
+        navigate: false,
+        advanceCountry: false,
+        markInteraction: false
+      });
+    }
+
+    function initializeHomeWatchAutoRotation() {
+      clearInterval(homeWatchState.autoRotateTimer);
+      homeWatchState.autoRotateTimer = setInterval(rotateHomeWatchToNextSection, 3 * 60 * 1000);
     }
 
     function normalizeRadians(angle) {
@@ -7060,6 +7292,7 @@
     function drawWatchNavLabel(ctx, item, isActive, radius, size, countryInfo, labelIndex = 0) {
       const displayRegion = item.target === '#hero' ? getLocalWatchRegionLabel() : item.region;
       const displayTimezone = item.target === '#hero' ? getBrowserTimezone() : item.timezone;
+      const lightLevel = homeWatchState.watchLightLevel;
       const ledColors = ['#b266ff', '#f5d061', '#ff3b3b', '#1e8cff'];
       const ledColor = ledColors[labelIndex % ledColors.length];
       const plaqueWidth = isActive ? radius * 0.36 : radius * 0.28;
@@ -7072,29 +7305,29 @@
         ctx.beginPath();
         drawRoundedRectPath(ctx, plaqueX, plaqueY, plaqueWidth, plaqueHeight, plaqueRadius);
         ctx.shadowColor = ledColor;
-        ctx.shadowBlur = Math.max(14, size * 0.03);
-        ctx.fillStyle = 'rgba(8, 8, 16, 0.74)';
+        ctx.shadowBlur = Math.max(14, size * 0.03) * lightLevel;
+        ctx.fillStyle = `rgba(8, 8, 16, ${0.74 + (1 - lightLevel) * 0.12})`;
         ctx.fill();
-        ctx.shadowBlur = Math.max(8, size * 0.018);
-        ctx.strokeStyle = ledColor;
+        ctx.shadowBlur = Math.max(8, size * 0.018) * lightLevel;
+        ctx.strokeStyle = lightLevel > 0.02 ? ledColor : 'rgba(255, 255, 255, 0.16)';
         ctx.lineWidth = Math.max(1.4, size * 0.003);
         ctx.stroke();
 
         ctx.beginPath();
         drawRoundedRectPath(ctx, plaqueX + 4, plaqueY + 4, plaqueWidth - 8, plaqueHeight - 8, Math.max(4, plaqueRadius - 3));
-        ctx.shadowBlur = Math.max(12, size * 0.02);
-        ctx.strokeStyle = `${ledColor}88`;
+        ctx.shadowBlur = Math.max(12, size * 0.02) * lightLevel;
+        ctx.strokeStyle = lightLevel > 0.02 ? `${ledColor}${Math.round(60 + lightLevel * 76).toString(16).padStart(2, '0')}` : 'rgba(255, 255, 255, 0.1)';
         ctx.lineWidth = 0.8;
         ctx.stroke();
 
         ctx.shadowColor = ledColor;
-        ctx.shadowBlur = Math.max(8, size * 0.018);
+        ctx.shadowBlur = Math.max(8, size * 0.018) * lightLevel;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillStyle = '#fff6da';
+        ctx.fillStyle = lightLevel > 0.02 ? '#fff6da' : 'rgba(255, 246, 218, 0.58)';
         ctx.font = `700 ${Math.max(7, size * 0.0125)}px Inter, sans-serif`;
         drawCenteredText(ctx, t(item.key), 0, -radius * 0.022, plaqueWidth * 0.82, 8);
-        ctx.fillStyle = ledColor;
+        ctx.fillStyle = lightLevel > 0.02 ? ledColor : 'rgba(255, 255, 255, 0.42)';
         ctx.font = `700 ${Math.max(6, size * 0.0095)}px Inter, sans-serif`;
         ctx.fillText(formatRegionTime(displayTimezone), 0, radius * 0.04);
         ctx.shadowBlur = 0;
@@ -7105,7 +7338,7 @@
       drawRoundedRectPath(ctx, plaqueX, plaqueY, plaqueWidth, plaqueHeight, plaqueRadius);
       ctx.fillStyle = 'rgba(23, 18, 8, 0.54)';
       ctx.fill();
-      ctx.strokeStyle = 'rgba(245, 208, 97, 0.34)';
+      ctx.strokeStyle = `rgba(245, 208, 97, ${0.12 + lightLevel * 0.22})`;
       ctx.lineWidth = 1;
       ctx.stroke();
 
@@ -7202,6 +7435,8 @@
     }
 
     function drawWatchSurfaceGlow(ctx, radius, now, beatAmount, rotation, mode = 'back') {
+      const lightLevel = homeWatchState.watchLightLevel;
+      if (lightLevel <= 0.02) return;
       const time = now.getTime();
       const visualMode = document.body.dataset.visual || 'present';
       const hueBase = visualMode === 'future' ? 188 : visualMode === 'past' ? 32 : 270;
@@ -7215,7 +7450,7 @@
       ctx.save();
       ctx.globalCompositeOperation = 'lighter';
       ctx.lineCap = 'round';
-      ctx.shadowBlur = radius * (mode === 'back' ? 0.16 : 0.12);
+      ctx.shadowBlur = radius * (mode === 'back' ? 0.16 : 0.12) * lightLevel;
 
       for (let i = 0; i < 4; i += 1) {
         const start = -Math.PI / 2 + rotation * (mode === 'back' ? 0.28 : -0.36) + i * Math.PI / 2 + time * (mode === 'back' ? 0.00022 : -0.00034);
@@ -7223,16 +7458,16 @@
         const hue = i % 2 === 0 ? slowHue + i * 38 : fastHue + i * 48;
         ctx.beginPath();
         ctx.arc(0, 0, outer - i * radius * 0.022, start, end);
-        ctx.strokeStyle = `hsla(${hue}, 95%, ${mode === 'back' ? 62 : 58}%, ${0.18 + pulse * 0.24 + beatAmount * 0.18})`;
+        ctx.strokeStyle = `hsla(${hue}, 95%, ${mode === 'back' ? 62 : 58}%, ${(0.18 + pulse * 0.24 + beatAmount * 0.18) * lightLevel})`;
         ctx.lineWidth = lineWidth * (1 - i * 0.12);
-        ctx.shadowColor = `hsla(${hue}, 95%, 60%, ${0.55 + beatAmount * 0.25})`;
+        ctx.shadowColor = `hsla(${hue}, 95%, 60%, ${(0.55 + beatAmount * 0.25) * lightLevel})`;
         ctx.stroke();
       }
 
       const wash = ctx.createRadialGradient(0, 0, inner, 0, 0, outer * 1.08);
       wash.addColorStop(0, `hsla(${slowHue}, 96%, 62%, 0)`);
-      wash.addColorStop(0.48, `hsla(${slowHue}, 96%, 62%, ${0.04 + pulse * 0.08 + beatAmount * 0.04})`);
-      wash.addColorStop(0.76, `hsla(${fastHue}, 96%, 60%, ${0.08 + pulse * 0.11 + beatAmount * 0.06})`);
+      wash.addColorStop(0.48, `hsla(${slowHue}, 96%, 62%, ${(0.04 + pulse * 0.08 + beatAmount * 0.04) * lightLevel})`);
+      wash.addColorStop(0.76, `hsla(${fastHue}, 96%, 60%, ${(0.08 + pulse * 0.11 + beatAmount * 0.06) * lightLevel})`);
       wash.addColorStop(1, 'rgba(0, 0, 0, 0)');
       ctx.fillStyle = wash;
       ctx.beginPath();
@@ -7934,19 +8169,13 @@
 
     function snapHomeWatchNav(shouldNavigate = false) {
       const state = homeWatchState;
-      markHomeWatchInteraction();
       const segment = (Math.PI * 2) / homeWatchNavItems.length;
       const index = ((Math.round(-state.targetRotation / segment) % homeWatchNavItems.length) + homeWatchNavItems.length) % homeWatchNavItems.length;
-      state.selectedIndex = index;
-      state.targetRotation = -index * segment;
-      state.rotation = state.targetRotation;
-      updateSectionTimeContexts();
-
-      if (shouldNavigate) {
-        advanceWatchCountry();
-        const target = document.querySelector(homeWatchNavItems[index].target);
-        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      selectHomeWatchIndex(index, {
+        navigate: shouldNavigate,
+        advanceCountry: shouldNavigate,
+        markInteraction: true
+      });
     }
 
     function selectHomeWatchNavFromPoint(event) {
@@ -7972,9 +8201,11 @@
         }
       });
       if (index === 0 && isHomeSectionActive()) return true;
-      state.selectedIndex = index;
-      state.targetRotation = -index * segment;
-      snapHomeWatchNav(true);
+      selectHomeWatchIndex(index, {
+        navigate: true,
+        advanceCountry: true,
+        markInteraction: true
+      });
       return true;
     }
 
@@ -8227,7 +8458,9 @@
       }
       initializeWorldRhythmMode();
       initializePremiumExperience();
+      initializeWatchLightControls();
       initializeHomeWatchNav();
+      initializeHomeWatchAutoRotation();
       initializeWeatherSync();
       startTimeRefresh();
       initializeFeedbackProgress();
