@@ -860,15 +860,17 @@
     .angel-wing {
       position: absolute;
       z-index: 2;
-      width: clamp(92px, 15vw, 190px);
-      height: clamp(82px, 12vw, 150px);
+      width: clamp(138px, 19vw, 285px);
+      height: clamp(138px, 19vw, 285px);
       pointer-events: none;
       opacity: 0.82;
+      background: url('assets/balowaci-angel-wing.png') center / contain no-repeat;
       filter:
-        drop-shadow(0 0 16px rgba(245, 208, 97, 0.18))
-        drop-shadow(0 0 28px rgba(200, 132, 255, 0.14));
+        drop-shadow(0 0 12px rgba(255, 255, 255, 0.24))
+        drop-shadow(0 0 22px rgba(245, 208, 97, 0.18))
+        drop-shadow(0 0 32px rgba(200, 132, 255, 0.12));
       transform-origin: 50% 50%;
-      animation: wingBreathe 4.8s ease-in-out infinite;
+      animation: wingBreathe 5.2s ease-in-out infinite;
     }
 
     .angel-wing::before,
@@ -876,20 +878,21 @@
       content: '';
       position: absolute;
       inset: 0;
-      border-radius: 72% 28% 74% 26% / 24% 72% 28% 76%;
-      background:
-        repeating-radial-gradient(ellipse at 72% 34%, rgba(255, 252, 236, 0.88) 0 7px, rgba(245, 208, 97, 0.2) 8px 10px, transparent 11px 18px),
-        linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(245, 208, 97, 0.28) 48%, rgba(178, 102, 255, 0.18));
-      clip-path: polygon(0 48%, 18% 18%, 42% 6%, 72% 0, 100% 18%, 86% 38%, 100% 56%, 78% 68%, 92% 86%, 60% 82%, 34% 100%, 23% 74%);
+      pointer-events: none;
+      background: url('assets/balowaci-angel-wing.png') center / contain no-repeat;
+    }
+
+    .angel-wing::before {
+      opacity: 0.18;
+      filter: blur(14px);
+      transform: scale(1.04);
     }
 
     .angel-wing::after {
-      inset: 16% 10% 4% 22%;
-      opacity: 0.68;
-      transform: rotate(-9deg);
-      background:
-        repeating-radial-gradient(ellipse at 72% 34%, rgba(255, 255, 255, 0.74) 0 5px, rgba(212, 175, 55, 0.16) 6px 8px, transparent 9px 15px),
-        linear-gradient(135deg, rgba(255, 255, 255, 0.68), rgba(200, 132, 255, 0.16));
+      opacity: 0;
+      mix-blend-mode: screen;
+      filter: brightness(1.25);
+      animation: wingGlimmer 7.4s ease-in-out infinite;
     }
 
     .angel-wing.top-left {
@@ -921,16 +924,29 @@
 
     @keyframes wingBreathe {
       0%, 100% {
-        opacity: 0.58;
+        opacity: 0.66;
         filter:
-          drop-shadow(0 0 10px rgba(245, 208, 97, 0.12))
-          drop-shadow(0 0 20px rgba(200, 132, 255, 0.1));
+          drop-shadow(0 0 8px rgba(255, 255, 255, 0.18))
+          drop-shadow(0 0 16px rgba(245, 208, 97, 0.12))
+          drop-shadow(0 0 24px rgba(200, 132, 255, 0.08));
       }
       48% {
-        opacity: 0.94;
+        opacity: 0.96;
         filter:
-          drop-shadow(0 0 22px rgba(245, 208, 97, 0.28))
-          drop-shadow(0 0 42px rgba(200, 132, 255, 0.22));
+          drop-shadow(0 0 18px rgba(255, 255, 255, 0.3))
+          drop-shadow(0 0 30px rgba(245, 208, 97, 0.24))
+          drop-shadow(0 0 48px rgba(200, 132, 255, 0.16));
+      }
+    }
+
+    @keyframes wingGlimmer {
+      0%, 62%, 100% {
+        opacity: 0;
+        transform: translate3d(-5%, 4%, 0) scale(0.98);
+      }
+      72% {
+        opacity: 0.18;
+        transform: translate3d(2%, -2%, 0) scale(1.02);
       }
     }
 
