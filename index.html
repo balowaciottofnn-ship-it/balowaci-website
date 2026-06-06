@@ -869,8 +869,10 @@
         drop-shadow(0 0 12px rgba(255, 255, 255, 0.24))
         drop-shadow(0 0 22px rgba(245, 208, 97, 0.18))
         drop-shadow(0 0 32px rgba(200, 132, 255, 0.12));
-      transform-origin: 50% 50%;
-      animation: wingBreathe 5.2s ease-in-out infinite;
+      --wing-rotation: -18deg;
+      --wing-flip: scale(1, 1);
+      transform-origin: 18% 62%;
+      animation: wingWave 1.85s ease-in-out infinite;
     }
 
     .angel-wing::before,
@@ -898,44 +900,65 @@
     .angel-wing.top-left {
       top: clamp(72px, 10vh, 132px);
       left: clamp(14px, 3vw, 46px);
-      transform: rotate(-18deg);
+      --wing-rotation: -18deg;
+      --wing-flap-open: -22deg;
+      --wing-flap-close: -13deg;
     }
 
     .angel-wing.top-right {
       top: clamp(72px, 10vh, 132px);
       right: clamp(14px, 3vw, 46px);
-      transform: scaleX(-1) rotate(-18deg);
-      animation-delay: -1.1s;
+      --wing-flip: scale(-1, 1);
+      --wing-rotation: -18deg;
+      --wing-flap-open: -22deg;
+      --wing-flap-close: -13deg;
+      animation-delay: -0.42s;
     }
 
     .angel-wing.bottom-left {
       bottom: clamp(24px, 5vh, 74px);
       left: clamp(14px, 3vw, 46px);
-      transform: rotate(18deg) scaleY(-1);
-      animation-delay: -2.2s;
+      --wing-flip: scale(1, -1);
+      --wing-rotation: 18deg;
+      --wing-flap-open: 14deg;
+      --wing-flap-close: 23deg;
+      animation-delay: -0.84s;
     }
 
     .angel-wing.bottom-right {
       bottom: clamp(24px, 5vh, 74px);
       right: clamp(14px, 3vw, 46px);
-      transform: scale(-1, -1) rotate(18deg);
-      animation-delay: -3.3s;
+      --wing-flip: scale(-1, -1);
+      --wing-rotation: 18deg;
+      --wing-flap-open: 14deg;
+      --wing-flap-close: 23deg;
+      animation-delay: -1.26s;
     }
 
-    @keyframes wingBreathe {
+    @keyframes wingWave {
       0%, 100% {
         opacity: 0.66;
+        transform: var(--wing-flip) rotate(var(--wing-rotation)) scale(1) skewY(0deg);
         filter:
           drop-shadow(0 0 8px rgba(255, 255, 255, 0.18))
           drop-shadow(0 0 16px rgba(245, 208, 97, 0.12))
           drop-shadow(0 0 24px rgba(200, 132, 255, 0.08));
       }
-      48% {
+      24% {
+        opacity: 0.9;
+        transform: var(--wing-flip) rotate(var(--wing-flap-open)) scale(1.045, 0.94) skewY(-2deg);
+      }
+      52% {
         opacity: 0.96;
+        transform: var(--wing-flip) rotate(var(--wing-flap-close)) scale(0.965, 1.055) skewY(2deg);
         filter:
           drop-shadow(0 0 18px rgba(255, 255, 255, 0.3))
           drop-shadow(0 0 30px rgba(245, 208, 97, 0.24))
           drop-shadow(0 0 48px rgba(200, 132, 255, 0.16));
+      }
+      76% {
+        opacity: 0.82;
+        transform: var(--wing-flip) rotate(var(--wing-flap-open)) scale(1.02, 0.98) skewY(-1deg);
       }
     }
 
