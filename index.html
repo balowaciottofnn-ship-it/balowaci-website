@@ -7931,11 +7931,6 @@
 
       ctx.restore();
 
-      ctx.beginPath();
-      ctx.arc(0, 0, mapRadius, 0, Math.PI * 2);
-      ctx.strokeStyle = 'rgba(212, 175, 55, 0.45)';
-      ctx.lineWidth = 1.4;
-      ctx.stroke();
     }
 
     function drawHomeWatchNav() {
@@ -8060,14 +8055,7 @@
         ctx.stroke();
       }
 
-      drawLiveWorldMap(ctx, faceRadius * 1.12, selectedItem, now, state.globeLongitudeDrift, state.globeLatitudeDrift);
-
-      ctx.beginPath();
-      ctx.arc(0, 0, faceRadius * 0.86, 0, Math.PI * 2);
-      ctx.lineWidth = 3;
-      drawWatchSurfaceGlow(ctx, faceRadius * 0.86, now, beatAmount * 0.7, -state.rotation, 'ring');
-      ctx.strokeStyle = 'rgba(212, 161, 47, 0.88)';
-      ctx.stroke();
+      drawLiveWorldMap(ctx, faceRadius * 1.22, selectedItem, now, state.globeLongitudeDrift, state.globeLatitudeDrift);
 
       ctx.save();
       ctx.textAlign = 'center';
