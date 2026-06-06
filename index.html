@@ -915,26 +915,6 @@
       animation-delay: -0.42s;
     }
 
-    .angel-wing.bottom-left {
-      bottom: clamp(24px, 5vh, 74px);
-      left: clamp(14px, 3vw, 46px);
-      --wing-flip: scale(1, -1);
-      --wing-rotation: 18deg;
-      --wing-flap-open: 14deg;
-      --wing-flap-close: 23deg;
-      animation-delay: -0.84s;
-    }
-
-    .angel-wing.bottom-right {
-      bottom: clamp(24px, 5vh, 74px);
-      right: clamp(14px, 3vw, 46px);
-      --wing-flip: scale(-1, -1);
-      --wing-rotation: 18deg;
-      --wing-flap-open: 14deg;
-      --wing-flap-close: 23deg;
-      animation-delay: -1.26s;
-    }
-
     @keyframes wingWave {
       0%, 100% {
         opacity: 0.66;
@@ -3931,8 +3911,6 @@
   <section class="hero luxury-hero" id="hero">
     <div class="angel-wing top-left" aria-hidden="true"></div>
     <div class="angel-wing top-right" aria-hidden="true"></div>
-    <div class="angel-wing bottom-left" aria-hidden="true"></div>
-    <div class="angel-wing bottom-right" aria-hidden="true"></div>
     <span class="watch-side-word balo" aria-hidden="true">Balo</span>
     <div class="home-watch-nav" aria-label="Interactive BaloWaci section navigator">
       <div class="home-watch-shell">
@@ -8082,26 +8060,14 @@
         ctx.stroke();
       }
 
-      const faceGradient = ctx.createRadialGradient(-faceRadius * 0.2, -faceRadius * 0.25, 0, 0, 0, faceRadius);
-      faceGradient.addColorStop(0, '#fffaf0');
-      faceGradient.addColorStop(0.58, '#f4efe1');
-      faceGradient.addColorStop(1, '#d4af37');
+      drawLiveWorldMap(ctx, faceRadius * 1.12, selectedItem, now, state.globeLongitudeDrift, state.globeLatitudeDrift);
+
       ctx.beginPath();
-      ctx.arc(0, 0, faceRadius * 0.82, 0, Math.PI * 2);
-      ctx.fillStyle = faceGradient;
-      ctx.fill();
+      ctx.arc(0, 0, faceRadius * 0.86, 0, Math.PI * 2);
       ctx.lineWidth = 3;
       drawWatchSurfaceGlow(ctx, faceRadius * 0.86, now, beatAmount * 0.7, -state.rotation, 'ring');
       ctx.strokeStyle = 'rgba(212, 161, 47, 0.88)';
       ctx.stroke();
-
-      ctx.beginPath();
-      ctx.arc(0, 0, faceRadius * 0.7, 0, Math.PI * 2);
-      ctx.strokeStyle = 'rgba(17, 17, 17, 0.42)';
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-
-      drawLiveWorldMap(ctx, faceRadius * 0.92, selectedItem, now, state.globeLongitudeDrift, state.globeLatitudeDrift);
 
       ctx.save();
       ctx.textAlign = 'center';
