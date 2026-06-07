@@ -8045,8 +8045,8 @@
         : 0;
       state.lastFrameTime = frameTime;
       const idleForMs = frameTime - state.lastInteractionAt;
-      if (!state.dragging && isHomeSectionActive() && idleForMs > 3000) {
-        state.globeLongitudeDrift = normalizeLongitude(state.globeLongitudeDrift + elapsedSeconds * 2.4);
+      if (!state.dragging && isHomeSectionActive()) {
+        state.globeLongitudeDrift = normalizeLongitude(state.globeLongitudeDrift + elapsedSeconds * 7.2);
         state.globeLatitudeDrift = Math.sin(frameTime * 0.000075) * 18;
       }
       if (state.lastMinute === null) {
@@ -8115,6 +8115,7 @@
       drawLiveWorldMap(ctx, faceRadius * 2, selectedItem, now, state.globeLongitudeDrift, state.globeLatitudeDrift);
 
       homeWatchNavItems.forEach((item, index) => {
+        const active = index === state.selectedIndex;
         const angle = -Math.PI / 2 + index * segment + state.rotation;
         const labelRadius = radius * 0.86;
         ctx.save();
