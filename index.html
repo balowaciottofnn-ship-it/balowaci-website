@@ -7627,9 +7627,9 @@
       ctx.shadowBlur = 0;
 
       [
-        { r: radius * 0.61, color: 'rgba(236, 229, 211, 0.94)', width: Math.max(12, radius * 0.05) },
-        { r: radius * 0.535, color: 'rgba(94, 61, 32, 0.9)', width: Math.max(10, radius * 0.045) },
-        { r: faceRadius * 1.02, color: 'rgba(246, 239, 222, 0.94)', width: Math.max(14, radius * 0.058) }
+        { r: radius * 0.61, color: 'rgba(236, 229, 211, 0.34)', width: Math.max(8, radius * 0.024) },
+        { r: radius * 0.535, color: 'rgba(94, 61, 32, 0.42)', width: Math.max(7, radius * 0.02) },
+        { r: faceRadius * 1.02, color: 'rgba(246, 239, 222, 0.36)', width: Math.max(8, radius * 0.024) }
       ].forEach((ring) => {
         ctx.beginPath();
         ctx.arc(0, 0, ring.r, 0, Math.PI * 2);
@@ -8115,6 +8115,8 @@
 
       drawOrbitalCompassScale(ctx, radius, size, state.rotation);
 
+      drawLiveWorldMap(ctx, faceRadius * 1.76, selectedItem, now, state.globeLongitudeDrift, state.globeLatitudeDrift);
+
       homeWatchNavItems.forEach((item, index) => {
         const start = -Math.PI / 2 + index * segment + state.rotation - segment / 2;
         const end = start + segment;
@@ -8139,8 +8141,6 @@
         drawWatchNavLabel(ctx, item, active, radius, size, getCountryForWatch(index, state.rotation), index);
         ctx.restore();
       });
-
-      drawLiveWorldMap(ctx, faceRadius * 1.52, selectedItem, now, state.globeLongitudeDrift, state.globeLatitudeDrift);
 
       drawTrinityDialLayer(ctx, radius, faceRadius, size, now);
 
