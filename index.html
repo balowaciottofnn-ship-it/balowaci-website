@@ -3331,6 +3331,53 @@
       cursor: not-allowed;
     }
 
+    body.premium-preview-active .access-card.locked {
+      border-color: rgba(178, 102, 255, 0.68);
+      box-shadow: 0 0 28px rgba(178, 102, 255, 0.16);
+    }
+
+    body.premium-preview-active .access-card.locked::after {
+      content: 'PREVIEW';
+      border-color: rgba(49, 214, 123, 0.58);
+      color: #31d67b;
+    }
+
+    body.premium-preview-active .locked-control {
+      opacity: 1;
+      filter: none;
+    }
+
+    body.premium-preview-active .locked-control button,
+    body.premium-preview-active .locked-control input,
+    body.premium-preview-active .locked-control select {
+      cursor: pointer;
+    }
+
+    .premium-preview-access {
+      margin: 22px 0 4px;
+      border: 1px solid rgba(245, 208, 97, 0.34);
+      border-radius: 8px;
+      padding: 18px;
+      background:
+        radial-gradient(circle at top left, rgba(49, 214, 123, 0.11), transparent 38%),
+        rgba(0, 0, 0, 0.32);
+      display: grid;
+      gap: 12px;
+    }
+
+    .premium-preview-access p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.76);
+    }
+
+    .premium-preview-status {
+      min-height: 24px;
+      color: #f5d061;
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
     .revenue-card.highlight {
       border-color: rgba(245, 208, 97, 0.68);
       background:
@@ -4315,6 +4362,15 @@
         <p class="premium-kicker">Access Architecture</p>
         <h2>Free to Feel. Premium to Own.</h2>
         <p>The public site should make people understand BaloWaci, return to it, and want deeper access. The paid layers are separated as locked tools, private knowledge, and collector privileges.</p>
+
+        <div class="premium-preview-access" aria-label="Premium timed preview access">
+          <p>Open the paid layers for a 25-minute trial. When the timer ends, the console locks again and payment is required for continued access.</p>
+          <div class="final-cta-actions">
+            <button type="button" id="startPremiumPreview" class="luxury-btn primary">Start 25-Minute Premium Preview</button>
+            <a class="luxury-btn secondary" href="#monetization">See Payment Options</a>
+          </div>
+          <p id="premiumPreviewStatus" class="premium-preview-status" aria-live="polite">Premium preview locked. Start the timer to explore.</p>
+        </div>
 
         <div class="access-architecture">
           <article class="access-card open">
@@ -6407,9 +6463,52 @@
       }
     }
 
+    const premiumPreviewDurationMs = 25 * 60 * 1000;
+    const premiumPreviewStorageKey = 'balowaciPremiumPreviewExpiresAt';
+    let premiumPreviewTimer = null;
+
+    function formatPreviewTime(ms) {
+      const totalSeconds = Math.max(0, Math.ceil(ms / 1000));
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = totalSeconds % 60;
+      return `${minutes}:${String(seconds).padStart(2, '0')}`;
+    }
+
+    function setPremiumPreviewUnlocked(unlocked) {
+      document.body.classList.toggle('premium-preview-active', unlocked);
+      document.querySelectorAll('.locked-control button, .locked-control input, .locked-control select, #saveTimeView').forEach((control) => {
+        control.disabled = !unlocked;
+      });
+    }
+
+    function updatePremiumPreviewState() {
+      const status = document.getElementById('premiumPreviewStatus');
+      const startButton = document.getElementById('startPremiumPreview');
+      const expiresAt = Number(localStorage.getItem(premiumPreviewStorageKey) || '0');
+      const remaining = expiresAt - Date.now();
+      const active = remaining > 0;
+
+      setPremiumPreviewUnlocked(active);
+      if (startButton) startButton.textContent = active ? 'Premium Preview Active' : 'Start 25-Minute Premium Preview';
+      if (status) {
+        status.textContent = active
+          ? `Premium preview unlocked. ${formatPreviewTime(remaining)} remaining before payment lock returns.`
+          : 'Premium preview locked. Start the timer to explore.';
+      }
+      if (!active && expiresAt) localStorage.removeItem(premiumPreviewStorageKey);
+    }
+
+    function startPremiumPreview() {
+      localStorage.setItem(premiumPreviewStorageKey, String(Date.now() + premiumPreviewDurationMs));
+      updatePremiumPreviewState();
+    }
+
     function initializePremiumExperience() {
       restoreSavedTimeView();
       syncRitualControls();
+      updatePremiumPreviewState();
+      premiumPreviewTimer = setInterval(updatePremiumPreviewState, 1000);
+      document.getElementById('startPremiumPreview')?.addEventListener('click', startPremiumPreview);
       document.querySelectorAll('[data-theme-option]').forEach((button) => {
         button.addEventListener('click', () => {
           applyBaloWaciTheme(button.dataset.themeOption);
