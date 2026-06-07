@@ -7626,24 +7626,6 @@
       });
       ctx.shadowBlur = 0;
 
-      [
-        { r: radius * 0.61, color: 'rgba(236, 229, 211, 0.34)', width: Math.max(8, radius * 0.024) },
-        { r: radius * 0.535, color: 'rgba(94, 61, 32, 0.42)', width: Math.max(7, radius * 0.02) },
-        { r: faceRadius * 1.02, color: 'rgba(246, 239, 222, 0.36)', width: Math.max(8, radius * 0.024) }
-      ].forEach((ring) => {
-        ctx.beginPath();
-        ctx.arc(0, 0, ring.r, 0, Math.PI * 2);
-        ctx.strokeStyle = ring.color;
-        ctx.lineWidth = ring.width;
-        ctx.stroke();
-      });
-
-      ctx.beginPath();
-      ctx.arc(0, 0, radius * 0.69, 0, Math.PI * 2);
-      ctx.strokeStyle = 'rgba(192, 196, 188, 0.86)';
-      ctx.lineWidth = Math.max(5, radius * 0.018);
-      ctx.stroke();
-
       const culturalTimeNumbers = [6, 7, 8, 9, 10, 11, 12, 1, 2, 3, 4, 5];
       const culturalRingRadius = radius * 0.555;
       ctx.beginPath();
@@ -7762,22 +7744,22 @@
 
       const plaqueRadius = radius * 0.435;
       [
-        { text: '12', angle: Math.PI / 2 },
-        { text: '3', angle: Math.PI },
-        { text: '6', angle: -Math.PI / 2 },
-        { text: '9', angle: 0 }
+        { text: 'North', angle: Math.PI / 2 },
+        { text: 'East', angle: 0 },
+        { text: 'South', angle: -Math.PI / 2 },
+        { text: 'West', angle: Math.PI }
       ].forEach(({ text, angle }) => {
         const x = Math.cos(angle) * plaqueRadius;
         const y = -Math.sin(angle) * plaqueRadius;
         ctx.beginPath();
-        ctx.ellipse(x, y, radius * 0.055, radius * 0.035, 0, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(226, 214, 194, 0.96)';
-        ctx.strokeStyle = 'rgba(41, 29, 18, 0.78)';
+        ctx.ellipse(x, y, radius * 0.082, radius * 0.034, 0, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(13, 10, 22, 0.78)';
+        ctx.strokeStyle = 'rgba(178, 102, 255, 0.7)';
         ctx.lineWidth = 1.2;
         ctx.fill();
         ctx.stroke();
-        ctx.fillStyle = '#24170f';
-        ctx.font = `700 ${Math.max(10, size * 0.02)}px Playfair Display, serif`;
+        ctx.fillStyle = '#f8e7ff';
+        ctx.font = `800 ${Math.max(7, size * 0.011)}px Inter, sans-serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(text, x, y);
@@ -8115,8 +8097,6 @@
 
       drawOrbitalCompassScale(ctx, radius, size, state.rotation);
 
-      drawLiveWorldMap(ctx, faceRadius * 1.76, selectedItem, now, state.globeLongitudeDrift, state.globeLatitudeDrift);
-
       homeWatchNavItems.forEach((item, index) => {
         const start = -Math.PI / 2 + index * segment + state.rotation - segment / 2;
         const end = start + segment;
@@ -8130,7 +8110,11 @@
         ctx.strokeStyle = active ? 'rgba(212, 175, 55, 0.5)' : 'rgba(212, 175, 55, 0.16)';
         ctx.lineWidth = 1;
         ctx.stroke();
+      });
 
+      drawLiveWorldMap(ctx, faceRadius * 2, selectedItem, now, state.globeLongitudeDrift, state.globeLatitudeDrift);
+
+      homeWatchNavItems.forEach((item, index) => {
         const angle = -Math.PI / 2 + index * segment + state.rotation;
         const labelRadius = radius * 0.86;
         ctx.save();
