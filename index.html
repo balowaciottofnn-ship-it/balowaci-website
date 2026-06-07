@@ -8140,6 +8140,8 @@
         ctx.restore();
       });
 
+      drawLiveWorldMap(ctx, faceRadius * 1.52, selectedItem, now, state.globeLongitudeDrift, state.globeLatitudeDrift);
+
       drawTrinityDialLayer(ctx, radius, faceRadius, size, now);
 
       for (let i = 0; i < 60; i += 1) {
@@ -8153,8 +8155,6 @@
         ctx.lineWidth = i % 5 === 0 ? 2 : 1;
         ctx.stroke();
       }
-
-      drawLiveWorldMap(ctx, faceRadius * 1.08, selectedItem, now, state.globeLongitudeDrift, state.globeLatitudeDrift);
 
       ctx.save();
       ctx.textAlign = 'center';
