@@ -1,4 +1,4 @@
-const CACHE_NAME = 'balowaci-pwa-v49';
+const CACHE_NAME = 'balowaci-pwa-v50';
 const APP_SHELL = [
   '/manifest.json',
   '/manifest.webmanifest',
