@@ -21,15 +21,19 @@
 
     html {
       scroll-behavior: smooth;
+      background: #05030a;
+      overscroll-behavior-y: none;
     }
 
     body {
       font-family: 'Inter', sans-serif;
+      background-color: #05030a;
       background: radial-gradient(circle at center, #2b0052 0%, #120020 45%, #000 100%);
       color: #d4af37;
       overflow-x: hidden;
       line-height: 1.6;
       min-height: 100vh;
+      overscroll-behavior-y: none;
     }
 
     h1,
@@ -70,7 +74,7 @@
       position: fixed;
       inset: 0;
       pointer-events: none;
-      z-index: 2;
+      z-index: 0;
       opacity: var(--day-sky-opacity, 0);
       overflow: hidden;
       background:
@@ -7627,7 +7631,7 @@
       ctx.shadowBlur = 0;
 
       const culturalTimeNumbers = [6, 7, 8, 9, 10, 11, 12, 1, 2, 3, 4, 5];
-      const culturalRingRadius = radius * 0.555;
+      const culturalRingRadius = radius * 0.525;
       ctx.beginPath();
       ctx.arc(0, 0, culturalRingRadius, 0, Math.PI * 2);
       ctx.strokeStyle = 'rgba(178, 102, 255, 0.58)';
@@ -7641,7 +7645,7 @@
         const angle = -Math.PI / 2 + (index / 12) * Math.PI * 2;
         const x = Math.cos(angle) * culturalRingRadius;
         const y = Math.sin(angle) * culturalRingRadius;
-        const textSize = Math.max(9, size * 0.016);
+        const textSize = Math.max(8, size * 0.013);
         ctx.save();
         ctx.translate(x, y);
         ctx.beginPath();
@@ -7666,7 +7670,7 @@
 
       for (let i = 0; i < 12; i += 1) {
         const angle = -Math.PI / 2 + i / 12 * Math.PI * 2;
-        const markerRadius = radius * 0.66;
+        const markerRadius = radius * 0.645;
         ctx.save();
         ctx.translate(Math.cos(angle) * markerRadius, Math.sin(angle) * markerRadius);
         ctx.rotate(angle);
@@ -7694,14 +7698,14 @@
       };
       for (let hour = 1; hour <= 12; hour += 1) {
         const angle = -Math.PI / 2 + (hour / 12) * Math.PI * 2;
-        const numeralRadius = radius * 0.615;
+        const numeralRadius = radius * 0.595;
         const x = Math.cos(angle) * numeralRadius;
         const y = Math.sin(angle) * numeralRadius;
-        const letterRadius = radius * 0.68;
+        const letterRadius = radius * 0.715;
         const letterX = Math.cos(angle) * letterRadius;
         const letterY = Math.sin(angle) * letterRadius;
-        const numeralSize = Math.max(16, size * 0.032);
-        const letterSize = Math.max(9, size * 0.014);
+        const numeralSize = Math.max(13, size * 0.026);
+        const letterSize = Math.max(8, size * 0.012);
         ctx.save();
         ctx.translate(x, y);
         ctx.fillStyle = '#ffffff';
@@ -7742,7 +7746,7 @@
         ctx.restore();
       }
 
-      const plaqueRadius = radius * 0.435;
+      const plaqueRadius = radius * 0.39;
       [
         { text: 'N', angle: Math.PI / 2 },
         { text: 'E', angle: 0 },
@@ -7752,14 +7756,14 @@
         const x = Math.cos(angle) * plaqueRadius;
         const y = -Math.sin(angle) * plaqueRadius;
         ctx.beginPath();
-        ctx.ellipse(x, y, radius * 0.082, radius * 0.034, 0, 0, Math.PI * 2);
+        ctx.ellipse(x, y, radius * 0.05, radius * 0.028, 0, 0, Math.PI * 2);
         ctx.fillStyle = 'rgba(13, 10, 22, 0.78)';
         ctx.strokeStyle = 'rgba(178, 102, 255, 0.7)';
         ctx.lineWidth = 1.2;
         ctx.fill();
         ctx.stroke();
         ctx.fillStyle = '#f8e7ff';
-        ctx.font = `800 ${Math.max(7, size * 0.011)}px Inter, sans-serif`;
+        ctx.font = `800 ${Math.max(7, size * 0.0105)}px Inter, sans-serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(text, x, y);
@@ -7808,12 +7812,12 @@
         ctx.fill();
       }
 
-      const subR = Math.max(19, radius * 0.07);
+      const subR = Math.max(15, radius * 0.052);
       const dayNames = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
       const monthNames = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-      drawSubdial(-faceRadius * 0.56, -faceRadius * 0.08, subR, 'rgba(210, 161, 37, 0.88)', dayNames[now.getDay()], 'DAY', (now.getDay() / 7) * Math.PI * 2);
-      drawSubdial(faceRadius * 0.56, -faceRadius * 0.08, subR, 'rgba(92, 57, 153, 0.86)', monthNames[now.getMonth()], 'MON', (now.getMonth() / 12) * Math.PI * 2);
-      drawSubdial(0, faceRadius * 0.48, subR * 0.9, 'rgba(184, 48, 38, 0.86)', '24H', String(now.getHours()).padStart(2, '0'), (now.getHours() / 24) * Math.PI * 2);
+      drawSubdial(-faceRadius * 0.5, -faceRadius * 0.05, subR, 'rgba(210, 161, 37, 0.88)', dayNames[now.getDay()], 'DAY', (now.getDay() / 7) * Math.PI * 2);
+      drawSubdial(faceRadius * 0.5, -faceRadius * 0.05, subR, 'rgba(92, 57, 153, 0.86)', monthNames[now.getMonth()], 'MON', (now.getMonth() / 12) * Math.PI * 2);
+      drawSubdial(0, faceRadius * 0.43, subR * 0.86, 'rgba(184, 48, 38, 0.86)', '24H', String(now.getHours()).padStart(2, '0'), (now.getHours() / 24) * Math.PI * 2);
 
       const dateX = faceRadius * 0.58;
       const dateY = faceRadius * 0.42;
