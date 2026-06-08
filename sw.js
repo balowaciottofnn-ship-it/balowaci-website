@@ -1,4 +1,4 @@
-const CACHE_NAME = 'balowaci-pwa-v52';
+const CACHE_NAME = 'balowaci-pwa-v53';
 const APP_SHELL = [
   '/manifest.json',
   '/manifest.webmanifest',
@@ -9,8 +9,8 @@ const APP_SHELL = [
   '/assets/balowaci-icon-512.png',
   '/assets/balogo.png',
   '/assets/balowaci-angel-wing.png',
-  '/assets/BaloWaci Trinity Protoype.png',
-  '/assets/balowaci axis.png',
+  '/assets/BaloWaci Trinity.png',
+  '/assets/BaloWaci Axis.png',
   '/assets/balowaci worldsync.png',
   '/assets/earth-texture.jpg',
   '/assets/moon-texture.jpg',
