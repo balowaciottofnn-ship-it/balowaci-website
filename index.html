@@ -576,6 +576,17 @@
 
     .weather-overlay.weather-rain {
       opacity: 1;
+      background:
+        linear-gradient(180deg, rgba(8, 12, 24, 0.34), rgba(4, 7, 14, 0.12)),
+        rgba(4, 8, 18, 0.12);
+    }
+
+    .weather-overlay.weather-storm {
+      opacity: 1;
+      background:
+        radial-gradient(circle at 48% 18%, rgba(255, 255, 255, 0.12), transparent 20%),
+        linear-gradient(180deg, rgba(7, 10, 22, 0.58), rgba(2, 4, 10, 0.26));
+      animation: stormFlash 5.8s ease-in-out infinite;
     }
 
     .weather-overlay.weather-clouds {
@@ -600,19 +611,43 @@
 
     .weather-overlay .rain-drop {
       position: absolute;
-      top: -4%;
+      top: -12%;
       width: 2px;
-      height: 18px;
-      background: rgba(255, 255, 255, 0.78);
-      transform: translateY(-100%) rotate(12deg);
+      height: 38px;
+      background: linear-gradient(to bottom, transparent, rgba(210, 235, 255, 0.92), rgba(255, 255, 255, 0.34));
+      transform: translateY(-100%) rotate(14deg);
       border-radius: 1px;
+      box-shadow: 0 0 8px rgba(169, 216, 255, 0.28);
       animation-name: rainFall;
       animation-iteration-count: infinite;
       animation-timing-function: linear;
     }
 
     @keyframes rainFall {
-      to { transform: translateY(120vh) rotate(12deg); }
+      to { transform: translateY(128vh) translateX(-16vw) rotate(14deg); }
+    }
+
+    .weather-overlay .lightning-bolt {
+      position: absolute;
+      top: 0;
+      width: 3px;
+      height: 34vh;
+      opacity: 0;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #f8fbff 18%, #bfe6ff 46%, rgba(255, 255, 255, 0));
+      clip-path: polygon(45% 0, 72% 0, 52% 36%, 82% 36%, 28% 100%, 44% 52%, 18% 52%);
+      filter: drop-shadow(0 0 14px rgba(206, 235, 255, 0.9));
+      animation: lightningStrike 5.8s ease-in-out infinite;
+    }
+
+    @keyframes lightningStrike {
+      0%, 76%, 82%, 100% { opacity: 0; transform: translateY(-8%) scaleY(0.92); }
+      77%, 78.5% { opacity: 0.92; transform: translateY(0) scaleY(1.08); }
+      80% { opacity: 0.42; }
+    }
+
+    @keyframes stormFlash {
+      0%, 74%, 83%, 100% { filter: brightness(1); }
+      77%, 79% { filter: brightness(1.85); }
     }
 
     @keyframes snowFall {
@@ -6733,6 +6768,7 @@
 
     function getWeatherCategory(weatherId, main) {
       if (typeof weatherId === 'number') {
+        if (weatherId >= 200 && weatherId < 300) return 'storm';
         if (weatherId >= 200 && weatherId < 600) return 'rain';
         if (weatherId >= 600 && weatherId < 700) return 'snow';
         if (weatherId >= 700 && weatherId < 800) return 'clouds';
@@ -6742,7 +6778,8 @@
 
       if (typeof main === 'string') {
         const normalized = main.toLowerCase();
-        if (normalized.includes('rain') || normalized.includes('drizzle') || normalized.includes('storm')) return 'rain';
+        if (normalized.includes('thunder') || normalized.includes('storm')) return 'storm';
+        if (normalized.includes('rain') || normalized.includes('drizzle')) return 'rain';
         if (normalized.includes('snow')) return 'snow';
         if (normalized.includes('cloud')) return 'clouds';
         if (normalized.includes('mist') || normalized.includes('fog') || normalized.includes('haze')) return 'clouds';
@@ -6751,20 +6788,30 @@
       return 'clear';
     }
 
-    function createRainDrops(count = 40) {
+    function createRainDrops(count = 150, storm = false) {
       const overlay = document.getElementById('weatherOverlay');
       if (!overlay) return;
       overlay.innerHTML = '';
+
+      if (storm) {
+        for (let i = 0; i < 3; i += 1) {
+          const bolt = document.createElement('span');
+          bolt.className = 'lightning-bolt';
+          bolt.style.left = `${18 + Math.random() * 64}%`;
+          bolt.style.animationDelay = `${-Math.random() * 5.8}s`;
+          overlay.appendChild(bolt);
+        }
+      }
 
       for (let i = 0; i < count; i += 1) {
         const drop = document.createElement('span');
         drop.className = 'rain-drop';
         drop.style.left = `${Math.random() * 100}%`;
-        drop.style.opacity = String(0.12 + Math.random() * 0.24);
-        drop.style.animationDuration = `${0.7 + Math.random() * 0.9}s`;
-        drop.style.animationDelay = `${-Math.random() * 2}s`;
-        drop.style.height = `${12 + Math.random() * 24}px`;
-        drop.style.width = `${1 + Math.random() * 1}px`;
+        drop.style.opacity = String((storm ? 0.34 : 0.24) + Math.random() * (storm ? 0.48 : 0.34));
+        drop.style.animationDuration = `${(storm ? 0.24 : 0.36) + Math.random() * (storm ? 0.42 : 0.62)}s`;
+        drop.style.animationDelay = `${-Math.random() * 2.4}s`;
+        drop.style.height = `${(storm ? 30 : 22) + Math.random() * (storm ? 46 : 34)}px`;
+        drop.style.width = `${1 + Math.random() * (storm ? 2.4 : 1.6)}px`;
         overlay.appendChild(drop);
       }
     }
@@ -6807,6 +6854,7 @@
 
     function getWeatherIcon(category) {
       switch (category) {
+        case 'storm': return '⚡';
         case 'rain': return '🌧️';
         case 'snow': return '❄️';
         case 'clouds': return '☁️';
@@ -6831,8 +6879,10 @@
       const category = getWeatherCategory(weatherData.weatherId, weatherData.condition);
       overlay.className = `weather-overlay weather-${category}`;
 
-      if (category === 'rain') {
-        createRainDrops(40);
+      if (category === 'storm') {
+        createRainDrops(220, true);
+      } else if (category === 'rain') {
+        createRainDrops(150);
       } else if (category === 'snow') {
         createSnowflakes(42);
       } else if (category === 'clouds') {
@@ -7787,7 +7837,7 @@
         ctx.lineWidth = 1;
         ctx.stroke();
 
-        ctx.fillStyle = 'rgba(18, 13, 8, 0.94)';
+        ctx.fillStyle = '#ffffff';
         ctx.font = `700 ${Math.max(6, size * 0.009)}px Inter, sans-serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
@@ -7817,10 +7867,10 @@
       const monthNames = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
       drawSubdial(-faceRadius * 0.5, -faceRadius * 0.05, subR, 'rgba(210, 161, 37, 0.88)', dayNames[now.getDay()], 'DAY', (now.getDay() / 7) * Math.PI * 2);
       drawSubdial(faceRadius * 0.5, -faceRadius * 0.05, subR, 'rgba(92, 57, 153, 0.86)', monthNames[now.getMonth()], 'MON', (now.getMonth() / 12) * Math.PI * 2);
-      drawSubdial(0, faceRadius * 0.43, subR * 0.86, 'rgba(184, 48, 38, 0.86)', '24H', String(now.getHours()).padStart(2, '0'), (now.getHours() / 24) * Math.PI * 2);
+      drawSubdial(0, faceRadius * 0.33, subR * 0.86, 'rgba(184, 48, 38, 0.86)', '24H', String(now.getHours()).padStart(2, '0'), (now.getHours() / 24) * Math.PI * 2);
 
-      const dateX = faceRadius * 0.58;
-      const dateY = faceRadius * 0.42;
+      const dateX = faceRadius * 0.5;
+      const dateY = faceRadius * 0.34;
       ctx.save();
       ctx.translate(dateX, dateY);
       ctx.rotate(-Math.PI / 4);
@@ -7830,7 +7880,7 @@
       ctx.fillRect(-radius * 0.04, -radius * 0.04, radius * 0.08, radius * 0.08);
       ctx.strokeRect(-radius * 0.04, -radius * 0.04, radius * 0.08, radius * 0.08);
       ctx.rotate(Math.PI / 4);
-      ctx.fillStyle = '#f0d289';
+      ctx.fillStyle = '#ffffff';
       ctx.font = `700 ${Math.max(7, size * 0.012)}px Inter, sans-serif`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
@@ -8152,7 +8202,7 @@
       ctx.shadowBlur = 8;
       ctx.shadowOffsetY = 2;
       const readoutWidth = faceRadius * 1.28;
-      const readoutY = faceRadius * 0.56;
+      const readoutY = faceRadius * 0.46;
       const hierarchy = getTimeDifferenceHierarchy(selectedTimezone, now);
       ctx.fillStyle = '#c884ff';
       ctx.font = `700 ${Math.max(8, size * 0.014)}px Inter, sans-serif`;
