@@ -30,6 +30,8 @@
       background-color: #05030a;
       background: radial-gradient(circle at center, #2b0052 0%, #120020 45%, #000 100%);
       color: #d4af37;
+      font-size: 17px;
+      font-weight: 600;
       overflow-x: hidden;
       line-height: 1.6;
       min-height: 100vh;
@@ -40,7 +42,51 @@
     h2,
     h3 {
       font-family: 'Playfair Display', serif;
+      font-weight: 700;
       letter-spacing: 1px;
+    }
+
+    .sacred-name {
+      position: relative;
+      display: inline-block;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      line-height: 1;
+      isolation: isolate;
+    }
+
+    .sacred-name::before {
+      content: '';
+      position: absolute;
+      inset: -0.28em -0.18em;
+      z-index: -1;
+      border-radius: 999px;
+      opacity: 0.56;
+      filter: blur(10px);
+    }
+
+    .sacred-name.yahweh {
+      color: #ffd95a;
+      text-shadow:
+        0 0 10px rgba(255, 217, 90, 0.72),
+        0 0 28px rgba(212, 175, 55, 0.5);
+    }
+
+    .sacred-name.yahweh::before {
+      background: radial-gradient(circle, rgba(255, 217, 90, 0.58), transparent 68%);
+    }
+
+    .sacred-name.ehovah {
+      color: #ff3b3b;
+      text-shadow:
+        0 0 10px rgba(255, 59, 59, 0.74),
+        0 0 28px rgba(168, 18, 18, 0.52);
+    }
+
+    .sacred-name.ehovah::before {
+      background: radial-gradient(circle, rgba(255, 59, 59, 0.5), transparent 68%);
     }
 
     .glow {
@@ -703,7 +749,8 @@
       border-radius: 999px;
       background: rgba(8, 10, 18, 0.64);
       color: #f0f5ff;
-      font-size: 0.95rem;
+      font-size: 1.04rem;
+      font-weight: 800;
       line-height: 1.4;
       box-shadow: 0 10px 28px rgba(0, 0, 0, 0.24);
       display: inline-flex;
@@ -862,8 +909,8 @@
 
     .watch-led-controls span {
       color: #f5d061;
-      font-size: 0.68rem;
-      font-weight: 700;
+      font-size: 0.82rem;
+      font-weight: 900;
       letter-spacing: 0.16em;
       text-transform: uppercase;
       white-space: nowrap;
@@ -882,8 +929,8 @@
       color: #d4af37;
       background: rgba(0, 0, 0, 0.22);
       font: inherit;
-      font-size: 0.64rem;
-      font-weight: 700;
+      font-size: 0.78rem;
+      font-weight: 900;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       cursor: pointer;
@@ -894,6 +941,56 @@
       color: #080711;
       background: #d4af37;
       box-shadow: 0 0 16px rgba(212, 175, 55, 0.28);
+    }
+
+    .sacred-names-banner {
+      width: min(700px, 94vw);
+      margin: 18px auto 18px;
+      position: relative;
+      z-index: 4;
+      padding: clamp(16px, 3vw, 24px);
+      border: 1px solid rgba(245, 208, 97, 0.44);
+      border-radius: 8px;
+      background:
+        linear-gradient(90deg, rgba(255, 217, 90, 0.12), rgba(255, 59, 59, 0.14)),
+        rgba(5, 7, 14, 0.72);
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+        0 0 34px rgba(245, 208, 97, 0.18),
+        0 0 42px rgba(255, 59, 59, 0.1);
+      backdrop-filter: blur(12px);
+    }
+
+    .sacred-names-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: clamp(12px, 3vw, 24px);
+      margin-bottom: 12px;
+    }
+
+    .sacred-names-row .sacred-name {
+      font-size: clamp(1.45rem, 5vw, 3.1rem);
+    }
+
+    .sacred-divider {
+      width: 52px;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #ffd95a, #ff3b3b);
+      box-shadow: 0 0 16px rgba(245, 208, 97, 0.45);
+    }
+
+    .sacred-names-message {
+      max-width: 620px;
+      margin: 0 auto;
+      color: #fff1a8;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(1.05rem, 2.5vw, 1.42rem);
+      font-weight: 700;
+      line-height: 1.42;
+      text-shadow: 0 0 16px rgba(245, 208, 97, 0.16);
     }
 
     .angel-wing {
@@ -1131,7 +1228,7 @@
     .visitor-guide-kicker {
       margin: 0 0 10px;
       color: #f5d061;
-      font-size: 0.72rem;
+      font-size: 0.86rem;
       font-weight: 800;
       letter-spacing: 0.18em;
       text-transform: uppercase;
@@ -1142,6 +1239,7 @@
       color: #ffffff;
       font-family: 'Playfair Display', Georgia, serif;
       font-size: clamp(1.9rem, 8vw, 3rem);
+      font-weight: 700;
       line-height: 1.04;
       letter-spacing: 0;
     }
@@ -1154,7 +1252,8 @@
       margin: 0;
       color: rgba(255, 248, 220, 0.86);
       line-height: 1.62;
-      font-size: 1rem;
+      font-size: 1.08rem;
+      font-weight: 700;
     }
 
     .visitor-guide-points {
@@ -1189,7 +1288,8 @@
     .visitor-guide-point span {
       color: rgba(255, 255, 255, 0.9);
       line-height: 1.45;
-      font-size: 0.94rem;
+      font-size: 1.02rem;
+      font-weight: 700;
     }
 
     .visitor-guide-actions {
@@ -1207,6 +1307,7 @@
       color: #120e08;
       background: #f5d061;
       font-weight: 800;
+      font-size: 1rem;
       cursor: pointer;
     }
 
@@ -1253,6 +1354,7 @@
       background: rgba(9, 9, 13, 0.76);
       box-shadow: 0 0 22px rgba(245, 208, 97, 0.18);
       font-weight: 900;
+      font-size: 1.08rem;
       cursor: pointer;
     }
 
@@ -1279,7 +1381,8 @@
     .watch-explainer strong {
       display: block;
       color: #f5d061;
-      font-size: 0.74rem;
+      font-size: 0.9rem;
+      font-weight: 900;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       margin-bottom: 4px;
@@ -1287,7 +1390,8 @@
 
     .watch-explainer span {
       display: block;
-      font-size: 0.82rem;
+      font-size: 0.96rem;
+      font-weight: 700;
       line-height: 1.35;
     }
 
@@ -2921,7 +3025,8 @@
     .premium-kicker,
     .monetization-kicker {
       color: #d4af37;
-      font-size: 0.78rem;
+      font-size: 0.92rem;
+      font-weight: 900;
       letter-spacing: 0.24em;
       text-transform: uppercase;
       margin-bottom: 14px;
@@ -2933,6 +3038,7 @@
       color: #fff1a8;
       font-family: 'Playfair Display', serif;
       font-size: clamp(1.45rem, 3vw, 2.15rem);
+      font-weight: 700;
       line-height: 1.55;
     }
 
@@ -2943,7 +3049,8 @@
       justify-content: center;
       margin-top: 26px;
       color: rgba(255, 255, 255, 0.72);
-      font-size: 0.78rem;
+      font-size: 0.9rem;
+      font-weight: 800;
       letter-spacing: 0.12em;
       text-transform: uppercase;
     }
@@ -2967,12 +3074,14 @@
       margin: 0;
       color: #ffffff;
       font-size: clamp(1.2rem, 2.5vw, 1.7rem);
+      font-weight: 700;
       line-height: 1.2;
     }
 
     .world-rhythm-time {
       color: #d4af37;
-      font-size: 0.84rem;
+      font-size: 0.98rem;
+      font-weight: 900;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       white-space: nowrap;
@@ -2981,14 +3090,16 @@
     .world-rhythm-reading {
       margin: 18px 0 0;
       color: #fff1a8;
-      font-size: 1rem;
+      font-size: 1.08rem;
+      font-weight: 700;
       line-height: 1.7;
     }
 
     .world-rhythm-meaning {
       margin: 14px 0 0;
       color: rgba(255, 255, 255, 0.76);
-      font-size: 0.92rem;
+      font-size: 1rem;
+      font-weight: 700;
       line-height: 1.6;
     }
 
@@ -3009,7 +3120,8 @@
     .world-rhythm-chip span {
       display: block;
       color: rgba(255, 255, 255, 0.58);
-      font-size: 0.68rem;
+      font-size: 0.8rem;
+      font-weight: 900;
       letter-spacing: 0.13em;
       text-transform: uppercase;
     }
@@ -3018,7 +3130,8 @@
       display: block;
       margin-top: 6px;
       color: #ffffff;
-      font-size: 0.9rem;
+      font-size: 1.02rem;
+      font-weight: 800;
       line-height: 1.35;
     }
 
@@ -3038,7 +3151,8 @@
       background: rgba(0, 0, 0, 0.24);
       color: #d4af37;
       padding: 0 14px;
-      font-size: 0.72rem;
+      font-size: 0.84rem;
+      font-weight: 900;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       cursor: pointer;
@@ -4018,6 +4132,16 @@
       <span id="homeWatchTime" class="sr-only">--:--:--</span>
       <span id="homeWatchRegion" class="sr-only">Chicago, US</span>
       <span id="homeWatchSection" class="sr-only">Home</span>
+    </div>
+    <div class="sacred-names-banner" aria-label="Sacred names surrounding BaloWaci">
+      <div class="sacred-names-row">
+        <span class="sacred-name yahweh">YAHWEH</span>
+        <span class="sacred-divider" aria-hidden="true"></span>
+        <span class="sacred-name ehovah">EHOVAH</span>
+      </div>
+      <p class="sacred-names-message">
+        BaloWaci is surrounded by God. Everyone who interacts with BaloWaci is invited to receive the wisdom of time that comes from God.
+      </p>
     </div>
     <div class="watch-explainers" aria-label="BaloWaci interface explanation">
       <div class="watch-explainer">
