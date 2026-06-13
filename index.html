@@ -7619,10 +7619,10 @@
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillStyle = lightLevel > 0.02 ? '#fff6da' : 'rgba(255, 246, 218, 0.58)';
-        ctx.font = `700 ${Math.max(7, size * 0.0125)}px Inter, sans-serif`;
-        drawCenteredText(ctx, t(item.key), 0, -radius * 0.022, plaqueWidth * 0.82, 8);
+        ctx.font = `900 ${Math.max(8, size * 0.014)}px Inter, sans-serif`;
+        drawCenteredText(ctx, t(item.key), 0, -radius * 0.022, plaqueWidth * 0.82, 9);
         ctx.fillStyle = lightLevel > 0.02 ? ledColor : 'rgba(255, 255, 255, 0.42)';
-        ctx.font = `700 ${Math.max(6, size * 0.0095)}px Inter, sans-serif`;
+        ctx.font = `900 ${Math.max(7, size * 0.0105)}px Inter, sans-serif`;
         ctx.fillText(formatRegionTime(displayTimezone), 0, radius * 0.04);
         ctx.shadowBlur = 0;
         return;
@@ -7637,21 +7637,55 @@
       ctx.stroke();
 
       ctx.fillStyle = isActive ? '#f5d061' : 'rgba(255, 255, 255, 0.72)';
-      ctx.font = `${isActive ? 600 : 400} ${Math.max(8, size * 0.016)}px Inter, sans-serif`;
-      const sectionLines = drawCenteredText(ctx, t(item.key), 0, -24, radius * 0.3, 11);
-      const sectionHeight = Math.max(1, sectionLines) * 11;
+      ctx.font = `900 ${Math.max(10, size * 0.019)}px Inter, sans-serif`;
+      const sectionLines = drawCenteredText(ctx, t(item.key), 0, -24, radius * 0.3, 13);
+      const sectionHeight = Math.max(1, sectionLines) * 13;
       const detailsY = -24 + sectionHeight / 2 + 12;
       ctx.fillStyle = isActive ? 'rgba(255, 255, 255, 0.88)' : 'rgba(212, 175, 55, 0.64)';
-      ctx.font = `400 ${Math.max(7, size * 0.0125)}px Inter, sans-serif`;
-      drawCenteredText(ctx, displayRegion, 0, detailsY, radius * 0.31, 9);
+      ctx.font = `800 ${Math.max(8, size * 0.0135)}px Inter, sans-serif`;
+      drawCenteredText(ctx, displayRegion, 0, detailsY, radius * 0.31, 10);
       ctx.fillStyle = isActive ? '#f5d061' : 'rgba(255, 255, 255, 0.62)';
-      ctx.font = `400 ${Math.max(7, size * 0.012)}px Inter, sans-serif`;
-      drawCenteredText(ctx, formatRegionTime(displayTimezone), 0, detailsY + 15, radius * 0.3, 9);
+      ctx.font = `800 ${Math.max(8, size * 0.013)}px Inter, sans-serif`;
+      drawCenteredText(ctx, formatRegionTime(displayTimezone), 0, detailsY + 16, radius * 0.3, 10);
       if (isActive && countryInfo) {
         ctx.fillStyle = '#4fd7ff';
-        ctx.font = `600 ${Math.max(7, size * 0.0115)}px Inter, sans-serif`;
-        drawCenteredText(ctx, countryInfo.country, 0, detailsY + 31, radius * 0.33, 9);
+        ctx.font = `900 ${Math.max(8, size * 0.0125)}px Inter, sans-serif`;
+        drawCenteredText(ctx, countryInfo.country, 0, detailsY + 33, radius * 0.33, 10);
       }
+    }
+
+    function drawSacredNamesOnWatch(ctx, faceRadius, size, pulse) {
+      const nameSize = Math.max(18, size * 0.037);
+      const messageSize = Math.max(8, size * 0.0135);
+      const gold = '#ffd95a';
+      const red = '#ff3b3b';
+
+      ctx.save();
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.font = `900 ${nameSize}px Playfair Display, Georgia, serif`;
+      ctx.lineWidth = Math.max(2, size * 0.004);
+
+      ctx.shadowColor = 'rgba(255, 217, 90, 0.96)';
+      ctx.shadowBlur = 18 + pulse * 10;
+      ctx.strokeStyle = 'rgba(48, 28, 0, 0.9)';
+      ctx.fillStyle = gold;
+      ctx.strokeText('YAHWEH', 0, -faceRadius * 0.18);
+      ctx.fillText('YAHWEH', 0, -faceRadius * 0.18);
+
+      ctx.shadowColor = 'rgba(255, 59, 59, 0.95)';
+      ctx.shadowBlur = 18 + pulse * 10;
+      ctx.strokeStyle = 'rgba(48, 0, 0, 0.92)';
+      ctx.fillStyle = red;
+      ctx.strokeText('EHOVAH', 0, faceRadius * 0.18);
+      ctx.fillText('EHOVAH', 0, faceRadius * 0.18);
+
+      ctx.shadowColor = 'rgba(245, 208, 97, 0.74)';
+      ctx.shadowBlur = 10 + pulse * 6;
+      ctx.font = `900 ${messageSize}px Inter, sans-serif`;
+      ctx.fillStyle = 'rgba(255, 241, 168, 0.96)';
+      drawCenteredText(ctx, 'God surrounds BaloWaci with the wisdom of time.', 0, faceRadius * 0.58, faceRadius * 1.34, messageSize * 1.35);
+      ctx.restore();
     }
 
     function drawOrbitalCompassScale(ctx, radius, size, rotation) {
@@ -8306,6 +8340,7 @@
       });
 
       drawTrinityDialLayer(ctx, radius, faceRadius, size, now);
+      drawSacredNamesOnWatch(ctx, faceRadius, size, beatAmount);
 
       for (let i = 0; i < 60; i += 1) {
         const angle = -Math.PI / 2 + (i / 60) * Math.PI * 2;
