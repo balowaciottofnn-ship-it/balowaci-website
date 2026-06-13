@@ -78,14 +78,14 @@
       background: radial-gradient(circle, rgba(255, 217, 90, 0.58), transparent 68%);
     }
 
-    .sacred-name.ehovah {
+    .sacred-name.yehovah {
       color: #ff3b3b;
       text-shadow:
         0 0 10px rgba(255, 59, 59, 0.74),
         0 0 28px rgba(168, 18, 18, 0.52);
     }
 
-    .sacred-name.ehovah::before {
+    .sacred-name.yehovah::before {
       background: radial-gradient(circle, rgba(255, 59, 59, 0.5), transparent 68%);
     }
 
@@ -4137,7 +4137,7 @@
       <div class="sacred-names-row">
         <span class="sacred-name yahweh">YAHWEH</span>
         <span class="sacred-divider" aria-hidden="true"></span>
-        <span class="sacred-name ehovah">EHOVAH</span>
+        <span class="sacred-name yehovah">YEHOVAH</span>
       </div>
       <p class="sacred-names-message">
         BaloWaci is surrounded by God. Everyone who interacts with BaloWaci is invited to receive the wisdom of time that comes from God.
@@ -7677,8 +7677,8 @@
       ctx.shadowBlur = 18 + pulse * 10;
       ctx.strokeStyle = 'rgba(48, 0, 0, 0.92)';
       ctx.fillStyle = red;
-      ctx.strokeText('EHOVAH', 0, faceRadius * 0.18);
-      ctx.fillText('EHOVAH', 0, faceRadius * 0.18);
+      ctx.strokeText('YEHOVAH', 0, faceRadius * 0.18);
+      ctx.fillText('YEHOVAH', 0, faceRadius * 0.18);
 
       ctx.shadowColor = 'rgba(245, 208, 97, 0.74)';
       ctx.shadowBlur = 10 + pulse * 6;
@@ -7891,18 +7891,18 @@
       }
 
       const standardRingLetters = {
-        12: 'Y',
-        1: 'A',
-        2: 'H',
-        3: 'W',
-        4: 'E',
-        5: 'H',
-        6: 'H',
-        7: 'A',
-        8: 'V',
-        9: 'O',
-        10: 'H',
-        11: 'E'
+        12: { text: 'Y', fill: '#ffd95a', stroke: 'rgba(52, 32, 0, 0.95)', glow: 'rgba(255, 217, 90, 1)' },
+        1: { text: 'A', fill: '#ffd95a', stroke: 'rgba(52, 32, 0, 0.95)', glow: 'rgba(255, 217, 90, 1)' },
+        2: { text: 'H', fill: '#ffd95a', stroke: 'rgba(52, 32, 0, 0.95)', glow: 'rgba(255, 217, 90, 1)' },
+        3: { text: 'W', fill: '#ffd95a', stroke: 'rgba(52, 32, 0, 0.95)', glow: 'rgba(255, 217, 90, 1)' },
+        4: { text: 'E', fill: '#ffd95a', stroke: 'rgba(52, 32, 0, 0.95)', glow: 'rgba(255, 217, 90, 1)' },
+        5: { text: 'H', fill: '#ffd95a', stroke: 'rgba(52, 32, 0, 0.95)', glow: 'rgba(255, 217, 90, 1)' },
+        6: { text: 'Y', fill: '#ff3b3b', stroke: 'rgba(54, 0, 0, 0.95)', glow: 'rgba(255, 59, 59, 1)' },
+        7: { text: 'E', fill: '#ff3b3b', stroke: 'rgba(54, 0, 0, 0.95)', glow: 'rgba(255, 59, 59, 1)' },
+        8: { text: 'H', fill: '#ff3b3b', stroke: 'rgba(54, 0, 0, 0.95)', glow: 'rgba(255, 59, 59, 1)' },
+        9: { text: 'O', fill: '#ff3b3b', stroke: 'rgba(54, 0, 0, 0.95)', glow: 'rgba(255, 59, 59, 1)' },
+        10: { text: 'V', fill: '#ff3b3b', stroke: 'rgba(54, 0, 0, 0.95)', glow: 'rgba(255, 59, 59, 1)' },
+        11: { text: 'A', fill: '#ff3b3b', stroke: 'rgba(54, 0, 0, 0.95)', glow: 'rgba(255, 59, 59, 1)' }
       };
       for (let hour = 1; hour <= 12; hour += 1) {
         const angle = -Math.PI / 2 + (hour / 12) * Math.PI * 2;
@@ -7913,7 +7913,8 @@
         const letterX = Math.cos(angle) * letterRadius;
         const letterY = Math.sin(angle) * letterRadius;
         const numeralSize = Math.max(13, size * 0.026);
-        const letterSize = Math.max(8, size * 0.012);
+        const letterSize = Math.max(11, size * 0.017);
+        const sacredLetter = standardRingLetters[hour];
         ctx.save();
         ctx.translate(x, y);
         ctx.fillStyle = '#ffffff';
@@ -7932,27 +7933,50 @@
         ctx.save();
         ctx.translate(letterX, letterY);
         ctx.beginPath();
-        ctx.arc(0, 0, letterSize * 0.86, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(17, 10, 26, 0.82)';
-        ctx.strokeStyle = 'rgba(245, 208, 97, 0.46)';
-        ctx.lineWidth = 1.2;
+        ctx.arc(0, 0, letterSize * 0.92, 0, Math.PI * 2);
+        ctx.fillStyle = hour <= 5 || hour === 12 ? 'rgba(52, 35, 0, 0.72)' : 'rgba(58, 0, 0, 0.72)';
+        ctx.strokeStyle = sacredLetter.fill;
+        ctx.lineWidth = 1.6;
         ctx.fill();
         ctx.stroke();
-        ctx.font = `800 ${letterSize}px Inter, system-ui, sans-serif`;
+        ctx.font = `900 ${letterSize}px Inter, system-ui, sans-serif`;
         ctx.letterSpacing = '0.06em';
-        ctx.fillStyle = 'rgba(238, 205, 255, 0.98)';
-        ctx.strokeStyle = 'rgba(72, 18, 132, 0.92)';
-        ctx.lineWidth = 1.8;
+        ctx.fillStyle = sacredLetter.fill;
+        ctx.strokeStyle = sacredLetter.stroke;
+        ctx.lineWidth = 2.2;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.shadowColor = 'rgba(200, 92, 255, 1)';
-        ctx.shadowBlur = 10;
-        ctx.strokeText(standardRingLetters[hour], 0, 0);
-        ctx.fillText(standardRingLetters[hour], 0, 0);
+        ctx.shadowColor = sacredLetter.glow;
+        ctx.shadowBlur = 14;
+        ctx.strokeText(sacredLetter.text, 0, 0);
+        ctx.fillText(sacredLetter.text, 0, 0);
         ctx.shadowBlur = 0;
         ctx.letterSpacing = '0';
         ctx.restore();
       }
+
+      ctx.save();
+      const finalYehovahAngle = -Math.PI / 2 + (11.5 / 12) * Math.PI * 2;
+      const finalYehovahRadius = radius * 0.715;
+      ctx.translate(Math.cos(finalYehovahAngle) * finalYehovahRadius, Math.sin(finalYehovahAngle) * finalYehovahRadius);
+      ctx.beginPath();
+      ctx.arc(0, 0, Math.max(11, size * 0.017) * 0.92, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(58, 0, 0, 0.72)';
+      ctx.strokeStyle = '#ff3b3b';
+      ctx.lineWidth = 1.6;
+      ctx.fill();
+      ctx.stroke();
+      ctx.font = `900 ${Math.max(11, size * 0.017)}px Inter, system-ui, sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = '#ff3b3b';
+      ctx.strokeStyle = 'rgba(54, 0, 0, 0.95)';
+      ctx.lineWidth = 2.2;
+      ctx.shadowColor = 'rgba(255, 59, 59, 1)';
+      ctx.shadowBlur = 14;
+      ctx.strokeText('H', 0, 0);
+      ctx.fillText('H', 0, 0);
+      ctx.restore();
 
       const plaqueRadius = radius * 0.39;
       [
