@@ -6472,7 +6472,9 @@
     }
 
     async function fetchLocalWeather(lat, lon) {
-      const response = await fetch(`${API_BASE_URL}/weather?lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}`);
+      const response = await fetch(`${API_BASE_URL}/weather?lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}&t=${Date.now()}`, {
+        cache: 'no-store'
+      });
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.error || 'Unable to fetch local weather');
