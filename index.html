@@ -1587,6 +1587,210 @@
       text-transform: uppercase;
     }
 
+    .prototype-update-panel {
+      display: grid;
+      grid-template-columns: minmax(260px, 0.78fr) minmax(0, 1.22fr);
+      gap: clamp(20px, 4vw, 40px);
+      align-items: stretch;
+      margin-top: clamp(28px, 5vw, 56px);
+      border: 1px solid rgba(212, 161, 47, 0.44);
+      border-radius: 8px;
+      overflow: hidden;
+      background:
+        linear-gradient(135deg, rgba(47, 128, 216, 0.12), transparent 32%),
+        linear-gradient(315deg, rgba(200, 132, 255, 0.14), transparent 34%),
+        rgba(2, 2, 8, 0.74);
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+        0 28px 80px rgba(0, 0, 0, 0.42);
+      text-align: left;
+    }
+
+    .prototype-update-visual {
+      position: relative;
+      min-height: 320px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 52% 46%, rgba(245, 208, 97, 0.24), transparent 34%),
+        radial-gradient(circle at 24% 28%, rgba(47, 128, 216, 0.28), transparent 26%),
+        #06050a;
+    }
+
+    .prototype-update-visual img {
+      width: 100%;
+      height: 100%;
+      min-height: 320px;
+      object-fit: cover;
+      display: block;
+      opacity: 0.86;
+      filter: contrast(1.08) saturate(1.08);
+    }
+
+    .prototype-update-visual::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 30%),
+        radial-gradient(circle at 50% 46%, transparent 30%, rgba(0, 0, 0, 0.54) 100%);
+      pointer-events: none;
+    }
+
+    .prototype-update-orbit {
+      position: absolute;
+      inset: 12%;
+      border: 1px solid rgba(245, 208, 97, 0.32);
+      border-radius: 50%;
+      box-shadow:
+        0 0 34px rgba(245, 208, 97, 0.16),
+        inset 0 0 30px rgba(200, 132, 255, 0.12);
+      animation: updateOrbitSpin 18s linear infinite;
+      z-index: 1;
+    }
+
+    .prototype-update-orbit::before,
+    .prototype-update-orbit::after {
+      content: '';
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #f5d061;
+      box-shadow: 0 0 18px rgba(245, 208, 97, 0.72);
+    }
+
+    .prototype-update-orbit::before {
+      top: -6px;
+      left: 50%;
+    }
+
+    .prototype-update-orbit::after {
+      bottom: -6px;
+      right: 50%;
+      background: #c884ff;
+      box-shadow: 0 0 18px rgba(200, 132, 255, 0.68);
+    }
+
+    @keyframes updateOrbitSpin {
+      to { transform: rotate(360deg); }
+    }
+
+    .prototype-update-content {
+      display: grid;
+      gap: clamp(18px, 3vw, 28px);
+      padding: clamp(24px, 4vw, 42px);
+    }
+
+    .prototype-update-kicker {
+      margin: 0;
+      color: #d4a12f;
+      font-size: 0.76rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+    }
+
+    .prototype-update-title {
+      margin: 0;
+      color: #f0d289;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4.5vw, 4rem);
+      font-weight: 500;
+      line-height: 0.98;
+      letter-spacing: 0.02em;
+    }
+
+    .prototype-update-copy {
+      margin: 0;
+      max-width: 760px;
+      color: rgba(255, 246, 218, 0.74);
+      font-size: 1rem;
+      line-height: 1.75;
+    }
+
+    .prototype-phase-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .prototype-phase-button {
+      min-height: 42px;
+      padding: 10px 14px;
+      border: 1px solid rgba(212, 161, 47, 0.44);
+      border-radius: 6px;
+      background: rgba(0, 0, 0, 0.32);
+      color: rgba(255, 246, 218, 0.82);
+      cursor: pointer;
+      font: inherit;
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: border-color 180ms ease, background 180ms ease, color 180ms ease, transform 180ms ease;
+    }
+
+    .prototype-phase-button:hover,
+    .prototype-phase-button.active {
+      border-color: rgba(245, 208, 97, 0.86);
+      background: rgba(212, 161, 47, 0.16);
+      color: #f5d061;
+      transform: translateY(-1px);
+    }
+
+    .prototype-phase-readout {
+      display: grid;
+      gap: 8px;
+      padding: clamp(16px, 2.5vw, 22px);
+      border: 1px solid rgba(245, 208, 97, 0.24);
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.28);
+    }
+
+    .prototype-phase-readout strong {
+      color: #f5d061;
+      font-size: 0.86rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .prototype-phase-readout p {
+      margin: 0;
+      max-width: none;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 0.95rem;
+      line-height: 1.65;
+    }
+
+    .prototype-update-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1px;
+      overflow: hidden;
+      border: 1px solid rgba(212, 161, 47, 0.26);
+      border-radius: 8px;
+      background: rgba(212, 161, 47, 0.18);
+    }
+
+    .prototype-update-metric {
+      min-height: 94px;
+      padding: 18px;
+      background: rgba(0, 0, 0, 0.58);
+    }
+
+    .prototype-update-metric span {
+      display: block;
+      margin-bottom: 7px;
+      color: rgba(255, 255, 255, 0.62);
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .prototype-update-metric strong {
+      color: #f0d289;
+      font-size: clamp(1.4rem, 3vw, 2.1rem);
+      line-height: 1;
+    }
+
     .showcase-inner {
       max-width: 900px;
       margin: 0 auto;
@@ -1810,6 +2014,10 @@
       .trinity-material-strip {
         grid-template-columns: 1fr 1fr;
       }
+
+      .prototype-update-panel {
+        grid-template-columns: 1fr;
+      }
     }
 
     @media (max-width: 560px) {
@@ -1820,6 +2028,10 @@
 
       .trinity-ring-legend,
       .trinity-material-strip {
+        grid-template-columns: 1fr;
+      }
+
+      .prototype-update-metrics {
         grid-template-columns: 1fr;
       }
     }
@@ -3876,6 +4088,50 @@
         <div class="trinity-material">
           <strong>Color System</strong>
           Blue, red, gold, and violet preserve BaloWaci's interpretation language.
+        </div>
+      </div>
+
+      <div class="prototype-update-panel" aria-labelledby="prototypeUpdateTitle">
+        <div class="prototype-update-visual" aria-hidden="true">
+          <img src="assets/BaloWaci Patent Prototype Diagrams.png" alt="">
+          <span class="prototype-update-orbit"></span>
+        </div>
+
+        <div class="prototype-update-content">
+          <div>
+            <p class="prototype-update-kicker">June 2026 Product Update</p>
+            <h3 id="prototypeUpdateTitle" class="prototype-update-title">From invention file to working artifact.</h3>
+          </div>
+
+          <p class="prototype-update-copy">
+            BaloWaci is now being shaped as a family of physical and digital time experiences: a patent-ready system, a live interface, and a collector watch language that keeps cultural, standard, military, and world rhythm readings connected.
+          </p>
+
+          <div class="prototype-phase-controls" aria-label="Prototype update phases">
+            <button type="button" class="prototype-phase-button active" data-prototype-phase="Prototype">Prototype</button>
+            <button type="button" class="prototype-phase-button" data-prototype-phase="Field Testing">Field Testing</button>
+            <button type="button" class="prototype-phase-button" data-prototype-phase="Launch Prep">Launch Prep</button>
+          </div>
+
+          <div class="prototype-phase-readout" aria-live="polite">
+            <strong id="prototypePhaseTitle">Prototype</strong>
+            <p id="prototypePhaseText">The watch codes, live wheel, and product diagrams are being unified into one clear invention story for investors, testers, and early supporters.</p>
+          </div>
+
+          <div class="prototype-update-metrics" aria-label="Current BaloWaci build signals">
+            <div class="prototype-update-metric">
+              <span>Modes</span>
+              <strong>4</strong>
+            </div>
+            <div class="prototype-update-metric">
+              <span>Watch Codes</span>
+              <strong>3</strong>
+            </div>
+            <div class="prototype-update-metric">
+              <span>World Rhythm</span>
+              <strong>Live</strong>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -8003,6 +8259,29 @@
       }
     }
 
+    function initializePrototypeUpdatePanel() {
+      const phaseCopy = {
+        Prototype: 'The watch codes, live wheel, and product diagrams are being unified into one clear invention story for investors, testers, and early supporters.',
+        'Field Testing': 'The next pass focuses on real feedback: which readings feel natural, which controls feel premium, and where the experience needs to become simpler.',
+        'Launch Prep': 'BaloWaci is being prepared as a polished public system with product demos, legal pages, app packaging, feedback capture, and a stronger first impression.'
+      };
+      const buttons = Array.from(document.querySelectorAll('[data-prototype-phase]'));
+      const title = document.getElementById('prototypePhaseTitle');
+      const text = document.getElementById('prototypePhaseText');
+      if (!buttons.length || !title || !text) return;
+
+      buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const phase = button.dataset.prototypePhase;
+          buttons.forEach((phaseButton) => {
+            phaseButton.classList.toggle('active', phaseButton === button);
+          });
+          title.textContent = phase;
+          text.textContent = phaseCopy[phase] || phaseCopy.Prototype;
+        });
+      });
+    }
+
     // Initialize on page load
     document.addEventListener('DOMContentLoaded', () => {
       applyLanguage(currentLanguage);
@@ -8024,6 +8303,7 @@
       }
       initializeWorldRhythmMode();
       initializePremiumExperience();
+      initializePrototypeUpdatePanel();
       initializeWatchLightControls();
       initializeHomeWatchNav();
       initializeHomeWatchAutoRotation();
