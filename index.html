@@ -4665,6 +4665,60 @@
       opacity: 0 !important;
       pointer-events: none !important;
     }
+
+    /* Keep the homepage interface crisp: no full-screen fog over the hero. */
+    #hero .hero-interface-copy,
+    #hero .worldsync-hero-stage,
+    #hero .worldsync-prototype-shell,
+    #hero .worldsync-prototype-image,
+    #hero .worldsync-live-card {
+      position: relative;
+      z-index: 30;
+    }
+
+    #hero .weather-sync {
+      z-index: 12;
+      inset: auto auto auto 0;
+      width: auto;
+      height: auto;
+      padding: 118px 20px 0;
+    }
+
+    #hero .weather-overlay,
+    #hero .weather-overlay.weather-clouds,
+    #hero .weather-overlay.weather-rain,
+    #hero .weather-overlay.weather-storm,
+    #hero .weather-overlay.weather-snow,
+    #hero .weather-overlay .cloud,
+    #hero .weather-overlay .rain-drop,
+    #hero .weather-overlay .snowflake,
+    #hero .weather-overlay .lightning-bolt,
+    .day-sky,
+    .sun-cloud {
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+    }
+
+    #hero .weather-status {
+      position: relative;
+      z-index: 35;
+      backdrop-filter: none;
+      background: rgba(7, 11, 15, 0.78);
+    }
+
+    #hero .worldsync-prototype-shell {
+      backdrop-filter: none;
+    }
+
+    #hero .worldsync-prototype-shell::before {
+      filter: blur(8px);
+      opacity: 0.28;
+    }
+
+    #hero .worldsync-prototype-image {
+      filter: drop-shadow(0 22px 44px rgba(0, 0, 0, 0.48)) saturate(1.08) contrast(1.08);
+    }
   </style>
 </head>
 <body>
