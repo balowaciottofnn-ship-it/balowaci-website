@@ -4719,6 +4719,175 @@
     #hero .worldsync-prototype-image {
       filter: drop-shadow(0 22px 44px rgba(0, 0, 0, 0.48)) saturate(1.08) contrast(1.08);
     }
+
+    /* WorldSync hero focus: larger floating watch, no rectangular frame, interactive city dock. */
+    body .luxury-hero {
+      grid-template-columns: minmax(250px, 0.58fr) minmax(560px, 1.42fr);
+      gap: clamp(22px, 3.8vw, 58px);
+    }
+
+    #hero .hero-interface-copy {
+      max-width: 560px;
+    }
+
+    #hero .hero-interface-copy h1 {
+      font-size: clamp(4.2rem, 7.2vw, 7.8rem);
+    }
+
+    #hero .worldsync-hero-stage {
+      width: min(64vw, 980px);
+      gap: 18px;
+      align-self: center;
+      transform: translateX(-1vw);
+    }
+
+    #hero .worldsync-prototype-shell {
+      width: min(64vw, 940px);
+      overflow: visible;
+      border: 0 !important;
+      border-radius: 50%;
+      background: transparent !important;
+      box-shadow: none !important;
+      cursor: grab;
+      touch-action: none;
+      user-select: none;
+      --worldsync-rotation: 0deg;
+    }
+
+    #hero .worldsync-prototype-shell:active {
+      cursor: grabbing;
+    }
+
+    #hero .worldsync-prototype-shell::before {
+      inset: 6%;
+      border-radius: 50%;
+      filter: blur(20px);
+      opacity: 0.34;
+      background: conic-gradient(from 90deg, rgba(214, 179, 92, 0), rgba(214, 179, 92, 0.5), rgba(105, 211, 223, 0.36), rgba(227, 93, 79, 0.22), rgba(214, 179, 92, 0));
+    }
+
+    #hero .worldsync-prototype-shell::after {
+      border-radius: 50%;
+      opacity: 0.45;
+    }
+
+    #hero .worldsync-prototype-image {
+      inset: -2%;
+      width: 104%;
+      height: 104%;
+      transform: translateY(var(--worldsync-float-y, 0px)) scale(1.04) rotate(var(--worldsync-rotation));
+      transform-origin: 50% 50%;
+      transition: transform 0.16s ease-out;
+      filter: drop-shadow(0 34px 62px rgba(0, 0, 0, 0.58)) saturate(1.1) contrast(1.1);
+      animation: worldsyncFloat 5.5s ease-in-out infinite;
+      will-change: transform;
+    }
+
+    #hero .worldsync-orbit,
+    #hero .worldsync-scan {
+      opacity: 0.42;
+      pointer-events: none;
+    }
+
+    #hero .worldsync-live-card {
+      min-width: 138px;
+      border-radius: 999px;
+      border-color: rgba(214, 179, 92, 0.2);
+      background: rgba(5, 7, 10, 0.66);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.24);
+      backdrop-filter: blur(8px);
+    }
+
+    #hero .local-card { left: 7%; top: 9%; }
+    #hero .world-card { right: 7%; top: 10%; }
+    #hero .mode-card { bottom: 3%; }
+
+    .worldsync-city-dock {
+      position: relative;
+      z-index: 38;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: min(680px, 92%);
+      min-height: 58px;
+      padding: 8px 10px 8px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(214, 179, 92, 0.18);
+      background: linear-gradient(135deg, rgba(7, 11, 15, 0.76), rgba(12, 18, 24, 0.48));
+      box-shadow: 0 18px 46px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(10px);
+    }
+
+    .worldsync-city-dock label {
+      color: var(--bw-gold);
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .worldsync-city-dock select {
+      flex: 1 1 260px;
+      min-width: 190px;
+      height: 42px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(0, 0, 0, 0.38);
+      color: var(--bw-text);
+      padding: 0 16px;
+      font-weight: 800;
+    }
+
+    .worldsync-city-dock button {
+      width: 74px;
+      height: 42px;
+      border: 1px solid rgba(214, 179, 92, 0.24);
+      border-radius: 999px;
+      background: rgba(214, 179, 92, 0.12);
+      color: var(--bw-gold);
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+    }
+
+    @keyframes worldsyncFloat {
+      0%, 100% { --worldsync-float-y: 0px; }
+      50% { --worldsync-float-y: -10px; }
+    }
+
+    @media (max-width: 1180px) {
+      body .luxury-hero {
+        grid-template-columns: 1fr;
+      }
+
+      #hero .worldsync-hero-stage,
+      #hero .worldsync-prototype-shell {
+        width: min(94vw, 820px);
+        transform: none;
+      }
+    }
+
+    @media (max-width: 760px) {
+      #hero .worldsync-hero-stage,
+      #hero .worldsync-prototype-shell {
+        width: min(98vw, 560px);
+      }
+
+      .worldsync-city-dock {
+        width: min(96vw, 520px);
+        flex-wrap: wrap;
+        border-radius: 18px;
+        padding: 12px;
+      }
+
+      .worldsync-city-dock label,
+      .worldsync-city-dock select,
+      .worldsync-city-dock button {
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
@@ -4812,6 +4981,22 @@
           <span>Mode</span>
           <strong id="worldsyncLiveMode">Cultural</strong>
         </div>
+      </div>
+      <div class="worldsync-city-dock" aria-label="Choose a WorldSync city">
+        <label for="worldsyncCitySelect">City Time</label>
+        <select id="worldsyncCitySelect" aria-label="Choose city time">
+          <option value="Africa/Kinshasa" data-city="Kinshasa" data-code="DR Congo">Kinshasa, DR Congo</option>
+          <option value="America/Chicago" data-city="Chicago" data-code="United States">Chicago, United States</option>
+          <option value="America/New_York" data-city="New York" data-code="United States">New York, United States</option>
+          <option value="Europe/London" data-city="London" data-code="United Kingdom">London, United Kingdom</option>
+          <option value="Europe/Paris" data-city="Paris" data-code="France">Paris, France</option>
+          <option value="Asia/Dubai" data-city="Dubai" data-code="UAE">Dubai, UAE</option>
+          <option value="Asia/Tokyo" data-city="Tokyo" data-code="Japan">Tokyo, Japan</option>
+          <option value="Africa/Maputo" data-city="Maputo" data-code="Mozambique">Maputo, Mozambique</option>
+          <option value="America/Sao_Paulo" data-city="Sao Paulo" data-code="Brazil">Sao Paulo, Brazil</option>
+          <option value="Asia/Shanghai" data-city="Beijing" data-code="China">Beijing, China</option>
+        </select>
+        <button type="button" id="worldsyncResetRotation">Reset</button>
       </div>
       <div class="watch-led-controls" aria-label="Watch LED light controls">
         <span>LED Lights</span>
@@ -9186,17 +9371,32 @@
     }
 
 
+    const worldsyncHeroState = {
+      timezone: 'Africa/Kinshasa',
+      city: 'Kinshasa',
+      code: 'DR Congo',
+      rotation: 0,
+      dragging: false,
+      startAngle: 0,
+      startRotation: 0
+    };
+
     function updateWorldSyncHeroInterface() {
       const now = new Date();
       const localTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
       const shortLocal = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       const worldTime = new Intl.DateTimeFormat([], {
-        timeZone: 'Africa/Kinshasa',
+        timeZone: worldsyncHeroState.timezone,
         hour: '2-digit',
-        minute: '2-digit'
+        minute: '2-digit',
+        second: '2-digit'
       }).format(now);
-      const hour = now.getHours();
-      const mode = hour < 6 ? 'Night' : hour < 12 ? 'Morning' : hour < 18 ? 'Day' : 'Evening';
+      const worldHour = Number(new Intl.DateTimeFormat('en-US', {
+        timeZone: worldsyncHeroState.timezone,
+        hour: 'numeric',
+        hour12: false
+      }).format(now));
+      const mode = worldHour < 6 ? 'Night' : worldHour < 12 ? 'Morning' : worldHour < 18 ? 'Day' : 'Evening';
       const local = document.getElementById('worldsyncLiveLocal');
       const world = document.getElementById('worldsyncLiveWorld');
       const modeElement = document.getElementById('worldsyncLiveMode');
@@ -9207,11 +9407,55 @@
       if (world) world.textContent = worldTime;
       if (modeElement) modeElement.textContent = mode;
       if (heroTime) heroTime.textContent = shortLocal;
-      if (offset) offset.textContent = formatTimeDifference('Africa/Kinshasa', now);
-      if (place) place.textContent = 'Kinshasa';
+      if (offset) offset.textContent = formatTimeDifference(worldsyncHeroState.timezone, now);
+      if (place) place.textContent = worldsyncHeroState.city;
+    }
+
+    function getWorldSyncPointerAngle(event, element) {
+      const rect = element.getBoundingClientRect();
+      const x = event.clientX - rect.left - rect.width / 2;
+      const y = event.clientY - rect.top - rect.height / 2;
+      return Math.atan2(y, x) * 180 / Math.PI;
+    }
+
+    function setWorldSyncRotation(value) {
+      worldsyncHeroState.rotation = value;
+      const shell = document.querySelector('.worldsync-prototype-shell');
+      if (shell) shell.style.setProperty('--worldsync-rotation', `${value}deg`);
     }
 
     function initializeWorldSyncHeroInterface() {
+      const select = document.getElementById('worldsyncCitySelect');
+      const shell = document.querySelector('.worldsync-prototype-shell');
+      const resetButton = document.getElementById('worldsyncResetRotation');
+      if (select) {
+        select.addEventListener('change', () => {
+          const option = select.selectedOptions[0];
+          worldsyncHeroState.timezone = select.value;
+          worldsyncHeroState.city = option?.dataset.city || option?.textContent || 'WorldSync';
+          worldsyncHeroState.code = option?.dataset.code || '';
+          updateWorldSyncHeroInterface();
+        });
+      }
+      if (shell) {
+        shell.addEventListener('pointerdown', (event) => {
+          worldsyncHeroState.dragging = true;
+          worldsyncHeroState.startAngle = getWorldSyncPointerAngle(event, shell);
+          worldsyncHeroState.startRotation = worldsyncHeroState.rotation;
+          shell.setPointerCapture?.(event.pointerId);
+        });
+        shell.addEventListener('pointermove', (event) => {
+          if (!worldsyncHeroState.dragging) return;
+          const angle = getWorldSyncPointerAngle(event, shell);
+          setWorldSyncRotation(worldsyncHeroState.startRotation + angle - worldsyncHeroState.startAngle);
+        });
+        ['pointerup', 'pointercancel', 'lostpointercapture'].forEach((eventName) => {
+          shell.addEventListener(eventName, () => {
+            worldsyncHeroState.dragging = false;
+          });
+        });
+      }
+      resetButton?.addEventListener('click', () => setWorldSyncRotation(0));
       updateWorldSyncHeroInterface();
       window.setInterval(updateWorldSyncHeroInterface, 1000);
     }
