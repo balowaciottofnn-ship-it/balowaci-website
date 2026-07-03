@@ -4677,11 +4677,15 @@
     }
 
     #hero .weather-sync {
-      z-index: 12;
-      inset: auto auto auto 0;
-      width: auto;
+      position: fixed;
+      top: 132px;
+      left: 32px;
+      z-index: 41;
+      inset: auto;
+      width: min(360px, calc(100vw - 64px));
       height: auto;
-      padding: 118px 20px 0;
+      padding: 0;
+      align-items: flex-start;
     }
 
     #hero .weather-overlay,
@@ -4702,9 +4706,13 @@
 
     #hero .weather-status {
       position: relative;
-      z-index: 35;
+      z-index: 42;
+      max-width: 100%;
+      padding: 8px 12px;
+      border: 1px solid rgba(214, 179, 92, 0.16);
       backdrop-filter: none;
-      background: rgba(7, 11, 15, 0.78);
+      background: rgba(7, 11, 15, 0.82);
+      font-size: 0.92rem;
     }
 
     #hero .worldsync-prototype-shell {
@@ -5152,6 +5160,14 @@
 
     @media (max-width: 760px) {
       #hero .live-worldsync-watch-shell { width: min(98vw, 560px) !important; }
+    }
+
+    @media (max-width: 760px) {
+      #hero .weather-sync {
+        top: 84px;
+        left: 14px;
+        width: min(320px, calc(100vw - 28px));
+      }
     }
   </style>
 </head>
@@ -9797,20 +9813,27 @@
         const start = -Math.PI / 2 + index * segment;
         const end = start + segment;
         ctx.beginPath();
-        ctx.arc(0, 0, radius * 0.73, start, end);
-        ctx.arc(0, 0, radius * 0.48, end, start, true);
+        ctx.arc(0, 0, radius * 0.77, start, end);
+        ctx.arc(0, 0, radius * 0.43, end, start, true);
         ctx.closePath();
-        ctx.fillStyle = index === worldsyncHeroState.cityIndex ? '#16633b' : '#0b472c';
+        ctx.fillStyle = index === worldsyncHeroState.cityIndex ? '#176c40' : '#0b4d2f';
         ctx.fill();
-        ctx.strokeStyle = 'rgba(214,179,92,0.82)';
-        ctx.lineWidth = 1.2;
+        ctx.strokeStyle = 'rgba(214,179,92,0.86)';
+        ctx.lineWidth = 1.35;
         ctx.stroke();
         const angle = start + segment / 2;
+        const labelRadius = radius * 0.61;
+        const labelX = Math.cos(angle) * labelRadius;
+        const labelY = Math.sin(angle) * labelRadius;
         ctx.save();
-        ctx.rotate(angle);
-        ctx.translate(0, -radius * 0.61);
-        ctx.rotate(Math.PI / 2);
-        ctx.fillStyle = '#f0c95f';
+        ctx.translate(labelX, labelY);
+        let labelRotation = angle + Math.PI / 2;
+        const normalizedRotation = (labelRotation + Math.PI * 2) % (Math.PI * 2);
+        if (normalizedRotation > Math.PI / 2 && normalizedRotation < Math.PI * 1.5) {
+          labelRotation += Math.PI;
+        }
+        ctx.rotate(labelRotation);
+        ctx.fillStyle = '#f8db79';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         const countryLabel = item.code
@@ -9818,12 +9841,15 @@
           .replace('DEMOCRATIC REPUBLIC OF THE CONGO', 'DR CONGO')
           .replace('UNITED ARAB EMIRATES', 'UAE')
           .replace('UNITED KINGDOM', 'UK')
-          .replace('UNITED STATES', 'UNITED STATES');
+          .replace('UNITED STATES', 'US');
         const cityLabel = item.city.toUpperCase();
-        ctx.font = `800 ${Math.max(8, radius * 0.024)}px Inter, sans-serif`;
-        ctx.fillText(countryLabel.slice(0, 16), 0, -8);
-        ctx.font = `900 ${Math.max(10, radius * 0.03)}px Inter, sans-serif`;
-        ctx.fillText(cityLabel.slice(0, 14), 0, 9);
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.82)';
+        ctx.shadowBlur = 5;
+        ctx.font = `900 ${Math.max(13, radius * 0.039)}px Inter, sans-serif`;
+        ctx.fillText(cityLabel.slice(0, 11), 0, -5);
+        ctx.font = `900 ${Math.max(9, radius * 0.027)}px Inter, sans-serif`;
+        ctx.fillText(countryLabel.slice(0, 10), 0, 13);
+        ctx.shadowBlur = 0;
         ctx.restore();
       });
       ctx.restore();
