@@ -5034,6 +5034,65 @@
         min-width: 92px;
       }
     }
+
+    /* Use the actual watch artwork as the interface: no duplicate hands or poster box. */
+    #hero .worldsync-prototype-shell {
+      overflow: visible !important;
+      background: transparent !important;
+      border: 0 !important;
+      box-shadow: none !important;
+    }
+
+    #hero .worldsync-prototype-shell::after,
+    #hero .worldsync-orbit,
+    #hero .worldsync-scan,
+    #hero .worldsync-node,
+    #hero .worldsync-hand,
+    #hero .worldsync-city-pointer,
+    #hero .worldsync-center-jewel,
+    #hero .worldsync-live-time-badge {
+      display: none !important;
+    }
+
+    #hero .worldsync-prototype-image {
+      mix-blend-mode: screen;
+      filter: drop-shadow(0 38px 68px rgba(0, 0, 0, 0.62)) saturate(1.08) contrast(1.08) !important;
+    }
+
+    #hero .worldsync-dial-live-layer {
+      overflow: hidden;
+      border-radius: 50%;
+      background: transparent;
+      box-shadow: none;
+      cursor: pointer;
+      --worldsync-face-angle: 0deg;
+    }
+
+    #hero .worldsync-dial-live-layer::before {
+      display: none !important;
+    }
+
+    .worldsync-face-rotor-image {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 177%;
+      height: 177%;
+      max-width: none;
+      object-fit: contain;
+      transform: translate(-50%, -50%) rotate(var(--worldsync-face-angle));
+      transform-origin: 50% 50%;
+      transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+      filter: saturate(1.08) contrast(1.08);
+      pointer-events: none;
+    }
+
+    #hero .worldsync-city-dock {
+      border: 0;
+      background: rgba(5, 7, 10, 0.34);
+      box-shadow: none;
+      backdrop-filter: none;
+    }
   </style>
 </head>
 <body>
@@ -5109,13 +5168,8 @@
     <div class="worldsync-hero-stage" aria-label="Live BaloWaci WorldSync prototype interface">
       <div class="worldsync-prototype-shell">
         <img src="assets/balowaci worldsync final prototype.png" alt="BaloWaci WorldSync final prototype interface" class="worldsync-prototype-image">
-        <div class="worldsync-dial-live-layer" aria-hidden="true">
-          <span class="worldsync-city-pointer"></span>
-          <span class="worldsync-hand hour-hand"></span>
-          <span class="worldsync-hand minute-hand"></span>
-          <span class="worldsync-hand second-hand"></span>
-          <span class="worldsync-center-jewel"></span>
-          <span class="worldsync-live-time-badge" id="worldsyncDialTime">--:--:--</span>
+        <div class="worldsync-dial-live-layer" aria-label="Select a WorldSync city from the watch face">
+          <img src="assets/balowaci worldsync final prototype.png" alt="" class="worldsync-face-rotor-image">
         </div>
         <div class="worldsync-orbit one" aria-hidden="true"></div>
         <div class="worldsync-orbit two" aria-hidden="true"></div>
@@ -9575,29 +9629,19 @@
         second: '2-digit'
       }).format(now);
       const mode = worldParts.hours < 6 ? 'Night' : worldParts.hours < 12 ? 'Morning' : worldParts.hours < 18 ? 'Day' : 'Evening';
-      const seconds = worldParts.seconds;
-      const minutes = worldParts.minutes + seconds / 60;
-      const hours = (worldParts.hours % 12) + minutes / 60;
-      const layer = document.querySelector('.worldsync-dial-live-layer');
-      if (layer) {
-        layer.style.setProperty('--worldsync-second-angle', `${seconds * 6}deg`);
-        layer.style.setProperty('--worldsync-minute-angle', `${minutes * 6}deg`);
-        layer.style.setProperty('--worldsync-hour-angle', `${hours * 30}deg`);
-      }
+
       const local = document.getElementById('worldsyncLiveLocal');
       const world = document.getElementById('worldsyncLiveWorld');
       const modeElement = document.getElementById('worldsyncLiveMode');
       const heroTime = document.getElementById('worldsyncHeroTime');
       const offset = document.getElementById('worldsyncHeroOffset');
       const place = document.getElementById('worldsyncLivePlace');
-      const dialTime = document.getElementById('worldsyncDialTime');
       if (local) local.textContent = localTime;
       if (world) world.textContent = worldTime;
       if (modeElement) modeElement.textContent = mode;
       if (heroTime) heroTime.textContent = shortLocal;
       if (offset) offset.textContent = formatTimeDifference(worldsyncHeroState.timezone, now);
       if (place) place.textContent = worldsyncHeroState.city;
-      if (dialTime) dialTime.textContent = `${worldsyncHeroState.city} ${worldTime}`;
     }
 
     function getWorldSyncPointerAngle(event, element) {
