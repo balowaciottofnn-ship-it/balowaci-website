@@ -5244,16 +5244,18 @@
       <div class="worldsync-city-dock" aria-label="Choose a WorldSync city">
         <label for="worldsyncCitySelect">City Time</label>
         <select id="worldsyncCitySelect" aria-label="Choose city time">
-          <option value="Africa/Kinshasa" data-city="Kinshasa" data-code="DR Congo">Kinshasa, DR Congo</option>
-          <option value="America/Chicago" data-city="Chicago" data-code="United States">Chicago, United States</option>
-          <option value="America/New_York" data-city="New York" data-code="United States">New York, United States</option>
-          <option value="Europe/London" data-city="London" data-code="United Kingdom">London, United Kingdom</option>
+          <option value="Africa/Kinshasa" data-city="Kinshasa" data-code="Democratic Republic of the Congo">Kinshasa, Democratic Republic of the Congo</option>
+          <option value="Asia/Dubai" data-city="Dubai" data-code="United Arab Emirates">Dubai, United Arab Emirates</option>
           <option value="Europe/Paris" data-city="Paris" data-code="France">Paris, France</option>
-          <option value="Asia/Dubai" data-city="Dubai" data-code="UAE">Dubai, UAE</option>
+          <option value="Europe/Berlin" data-city="Berlin" data-code="Germany">Berlin, Germany</option>
+          <option value="Asia/Shanghai" data-city="Beijing" data-code="China">Beijing, China</option>
           <option value="Asia/Tokyo" data-city="Tokyo" data-code="Japan">Tokyo, Japan</option>
           <option value="Africa/Maputo" data-city="Maputo" data-code="Mozambique">Maputo, Mozambique</option>
           <option value="America/Sao_Paulo" data-city="Sao Paulo" data-code="Brazil">Sao Paulo, Brazil</option>
-          <option value="Asia/Shanghai" data-city="Beijing" data-code="China">Beijing, China</option>
+          <option value="America/New_York" data-city="New York" data-code="United States">New York, United States</option>
+          <option value="America/Los_Angeles" data-city="Los Angeles" data-code="United States">Los Angeles, United States</option>
+          <option value="Europe/London" data-city="London" data-code="United Kingdom">London, United Kingdom</option>
+          <option value="America/Chicago" data-city="Chicago" data-code="United States">Chicago, United States</option>
         </select>
         <button type="button" id="worldsyncResetRotation">Reset</button>
       </div>
@@ -9809,10 +9811,19 @@
         ctx.translate(0, -radius * 0.61);
         ctx.rotate(Math.PI / 2);
         ctx.fillStyle = '#f0c95f';
-        ctx.font = `700 ${Math.max(10, radius * 0.032)}px Inter, sans-serif`;
         ctx.textAlign = 'center';
-        ctx.fillText(item.code.toUpperCase().slice(0, 12), 0, -7);
-        ctx.fillText(item.city.toUpperCase().slice(0, 12), 0, 10);
+        ctx.textBaseline = 'middle';
+        const countryLabel = item.code
+          .toUpperCase()
+          .replace('DEMOCRATIC REPUBLIC OF THE CONGO', 'DR CONGO')
+          .replace('UNITED ARAB EMIRATES', 'UAE')
+          .replace('UNITED KINGDOM', 'UK')
+          .replace('UNITED STATES', 'UNITED STATES');
+        const cityLabel = item.city.toUpperCase();
+        ctx.font = `800 ${Math.max(8, radius * 0.024)}px Inter, sans-serif`;
+        ctx.fillText(countryLabel.slice(0, 16), 0, -8);
+        ctx.font = `900 ${Math.max(10, radius * 0.03)}px Inter, sans-serif`;
+        ctx.fillText(cityLabel.slice(0, 14), 0, 9);
         ctx.restore();
       });
       ctx.restore();
