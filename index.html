@@ -9804,63 +9804,101 @@
 
     function drawWorldSyncCenterGlobe(ctx, radius, now) {
       const globeRadius = radius * 0.335;
-      const phase = (now.getTime() / 12000) % (Math.PI * 2);
+      const rotation = ((now.getTime() / 26000) % 1) * Math.PI * 2;
+      const tilt = -18 * Math.PI / 180;
+      const landmasses = [
+        [[-168, 72], [-142, 70], [-126, 56], [-124, 42], [-112, 30], [-96, 18], [-86, 20], [-78, 30], [-68, 44], [-58, 52], [-62, 62], [-92, 72], [-132, 76]],
+        [[-82, 12], [-76, 2], [-80, -12], [-72, -34], [-66, -52], [-52, -56], [-42, -30], [-38, -12], [-50, 4], [-64, 10]],
+        [[-18, 36], [6, 34], [28, 30], [40, 10], [50, -8], [40, -30], [22, -35], [8, -22], [-4, -2], [-14, 12]],
+        [[-10, 58], [18, 70], [52, 66], [92, 60], [132, 48], [150, 32], [126, 18], [96, 22], [74, 8], [56, 22], [32, 34], [8, 42]],
+        [[68, 24], [90, 20], [102, 8], [96, -6], [78, -2]],
+        [[112, -12], [154, -16], [150, -34], [130, -42], [112, -30]],
+        [[-52, 74], [-34, 78], [-22, 68], [-38, 60], [-54, 64]]
+      ];
+
+      function projectPoint(lon, lat) {
+        const lambda = lon * Math.PI / 180 + rotation;
+        const phi = lat * Math.PI / 180;
+        const cosPhi = Math.cos(phi);
+        const x = globeRadius * cosPhi * Math.sin(lambda);
+        const y = -globeRadius * (Math.sin(phi) * Math.cos(tilt) - cosPhi * Math.cos(lambda) * Math.sin(tilt));
+        const visible = cosPhi * Math.cos(lambda) * Math.cos(tilt) + Math.sin(phi) * Math.sin(tilt) > -0.05;
+        return { x, y, visible };
+      }
+
       ctx.save();
       ctx.beginPath();
       ctx.arc(0, 0, globeRadius, 0, Math.PI * 2);
       ctx.clip();
 
-      const ocean = ctx.createRadialGradient(-globeRadius * 0.32, -globeRadius * 0.38, globeRadius * 0.1, 0, 0, globeRadius);
-      ocean.addColorStop(0, 'rgba(27, 102, 173, 0.92)');
-      ocean.addColorStop(0.48, 'rgba(7, 49, 105, 0.88)');
-      ocean.addColorStop(1, 'rgba(2, 13, 35, 0.96)');
+      const ocean = ctx.createRadialGradient(-globeRadius * 0.36, -globeRadius * 0.42, globeRadius * 0.08, 0, 0, globeRadius);
+      ocean.addColorStop(0, 'rgba(47, 141, 211, 0.96)');
+      ocean.addColorStop(0.45, 'rgba(9, 69, 139, 0.92)');
+      ocean.addColorStop(1, 'rgba(1, 15, 45, 0.98)');
       ctx.fillStyle = ocean;
       ctx.fillRect(-globeRadius, -globeRadius, globeRadius * 2, globeRadius * 2);
 
-      ctx.strokeStyle = 'rgba(105, 211, 223, 0.22)';
-      ctx.lineWidth = Math.max(0.7, radius * 0.003);
-      for (let i = -2; i <= 2; i += 1) {
+      ctx.strokeStyle = 'rgba(147, 220, 231, 0.18)';
+      ctx.lineWidth = Math.max(0.6, radius * 0.0026);
+      for (let lon = -150; lon <= 180; lon += 30) {
         ctx.beginPath();
-        ctx.ellipse(0, 0, globeRadius * (0.18 + Math.abs(i) * 0.18), globeRadius * 0.92, phase + i * 0.18, 0, Math.PI * 2);
+        let drawing = false;
+        for (let lat = -75; lat <= 75; lat += 5) {
+          const point = projectPoint(lon, lat);
+          if (!point.visible) { drawing = false; continue; }
+          if (!drawing) ctx.moveTo(point.x, point.y);
+          else ctx.lineTo(point.x, point.y);
+          drawing = true;
+        }
         ctx.stroke();
       }
-      for (let i = -2; i <= 2; i += 1) {
+      for (let lat = -60; lat <= 60; lat += 30) {
         ctx.beginPath();
-        ctx.ellipse(0, i * globeRadius * 0.22, globeRadius * 0.95, globeRadius * 0.16, 0, 0, Math.PI * 2);
+        let drawing = false;
+        for (let lon = -180; lon <= 180; lon += 5) {
+          const point = projectPoint(lon, lat);
+          if (!point.visible) { drawing = false; continue; }
+          if (!drawing) ctx.moveTo(point.x, point.y);
+          else ctx.lineTo(point.x, point.y);
+          drawing = true;
+        }
         ctx.stroke();
       }
 
-      const continents = [
-        [[-0.58, -0.18], [-0.36, -0.34], [-0.14, -0.2], [-0.22, 0.02], [-0.46, 0.08]],
-        [[-0.18, 0.12], [0.02, 0.02], [0.14, 0.24], [0.0, 0.5], [-0.16, 0.34]],
-        [[0.16, -0.28], [0.52, -0.34], [0.66, -0.08], [0.42, 0.1], [0.12, 0.02]],
-        [[0.36, 0.18], [0.68, 0.22], [0.52, 0.46], [0.22, 0.38]]
-      ];
-      ctx.fillStyle = 'rgba(216, 170, 66, 0.72)';
-      ctx.strokeStyle = 'rgba(255, 232, 156, 0.35)';
-      ctx.lineWidth = Math.max(0.8, radius * 0.004);
-      continents.forEach((shape, shapeIndex) => {
-        const drift = Math.sin(phase + shapeIndex * 1.8) * globeRadius * 0.18;
+      ctx.fillStyle = 'rgba(212, 169, 72, 0.82)';
+      ctx.strokeStyle = 'rgba(255, 235, 164, 0.46)';
+      ctx.lineWidth = Math.max(0.9, radius * 0.0042);
+      landmasses.forEach((shape) => {
         ctx.beginPath();
-        shape.forEach((point, index) => {
-          const x = point[0] * globeRadius + drift;
-          const y = point[1] * globeRadius;
-          if (index === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
+        let started = false;
+        shape.forEach(([lon, lat]) => {
+          const point = projectPoint(lon, lat);
+          if (!point.visible) return;
+          if (!started) ctx.moveTo(point.x, point.y);
+          else ctx.lineTo(point.x, point.y);
+          started = true;
         });
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
+        if (started) {
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+        }
       });
+
+      const shine = ctx.createLinearGradient(-globeRadius, -globeRadius, globeRadius, globeRadius);
+      shine.addColorStop(0, 'rgba(255, 255, 255, 0.22)');
+      shine.addColorStop(0.38, 'rgba(255, 255, 255, 0.04)');
+      shine.addColorStop(1, 'rgba(0, 0, 0, 0.34)');
+      ctx.fillStyle = shine;
+      ctx.fillRect(-globeRadius, -globeRadius, globeRadius * 2, globeRadius * 2);
 
       ctx.restore();
       ctx.beginPath();
       ctx.arc(0, 0, globeRadius, 0, Math.PI * 2);
-      ctx.strokeStyle = 'rgba(214, 179, 92, 0.34)';
+      ctx.strokeStyle = 'rgba(214, 179, 92, 0.38)';
       ctx.lineWidth = Math.max(1, radius * 0.006);
       ctx.stroke();
     }
-
     function drawWorldSyncWatch() {
       const canvas = document.getElementById('worldsyncLiveCanvas');
       if (!canvas) return;
