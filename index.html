@@ -4751,7 +4751,6 @@
       cursor: grab;
       touch-action: none;
       user-select: none;
-      --worldsync-rotation: 0deg;
     }
 
     #hero .worldsync-prototype-shell:active {
@@ -4775,7 +4774,7 @@
       inset: -2%;
       width: 104%;
       height: 104%;
-      transform: translateY(var(--worldsync-float-y, 0px)) scale(1.04) rotate(var(--worldsync-rotation));
+      transform: translateY(var(--worldsync-float-y, 0px)) scale(1.04);
       transform-origin: 50% 50%;
       transition: transform 0.16s ease-out;
       filter: drop-shadow(0 34px 62px rgba(0, 0, 0, 0.58)) saturate(1.1) contrast(1.1);
@@ -4888,6 +4887,153 @@
         width: 100%;
       }
     }
+
+    /* Keep the WorldSync artwork attached; make the dial itself live. */
+    #hero .worldsync-prototype-shell {
+      cursor: default;
+      transform: none !important;
+      isolation: isolate;
+    }
+
+    #hero .worldsync-prototype-image {
+      inset: -1%;
+      width: 102%;
+      height: 102%;
+      transform: translateY(var(--worldsync-float-y, 0px)) scale(1.02) !important;
+      rotate: none !important;
+    }
+
+    .worldsync-dial-live-layer {
+      position: absolute;
+      left: 50.7%;
+      top: 48.6%;
+      width: 57.5%;
+      aspect-ratio: 1;
+      z-index: 36;
+      pointer-events: auto;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      cursor: crosshair;
+      touch-action: none;
+    }
+
+    .worldsync-dial-live-layer::before {
+      content: '';
+      position: absolute;
+      inset: -2%;
+      border-radius: 50%;
+      border: 1px solid rgba(214, 179, 92, 0.18);
+      box-shadow: inset 0 0 28px rgba(214, 179, 92, 0.08), 0 0 34px rgba(105, 211, 223, 0.08);
+      pointer-events: none;
+    }
+
+    .worldsync-hand {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 2px;
+      border-radius: 999px;
+      transform-origin: 50% 100%;
+      pointer-events: none;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.78);
+    }
+
+    .worldsync-hand.hour-hand {
+      height: 24%;
+      background: linear-gradient(to top, #5b4010, #f3d073 72%, #fff4b7);
+      transform: translate(-50%, -100%) rotate(var(--worldsync-hour-angle, 45deg));
+      width: 5px;
+    }
+
+    .worldsync-hand.minute-hand {
+      height: 34%;
+      background: linear-gradient(to top, #4f3510, #fff0a5 72%, #ffffff);
+      transform: translate(-50%, -100%) rotate(var(--worldsync-minute-angle, 120deg));
+      width: 3px;
+    }
+
+    .worldsync-hand.second-hand {
+      height: 38%;
+      background: linear-gradient(to top, #5b0d07, #ff2f1f 68%, #ffb3a9);
+      transform: translate(-50%, -100%) rotate(var(--worldsync-second-angle, 180deg));
+      width: 2px;
+      box-shadow: 0 0 11px rgba(255, 47, 31, 0.45);
+    }
+
+    .worldsync-center-jewel {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 5.8%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(circle at 38% 32%, #fff8bf, #d6b35c 45%, #171006 72%);
+      border: 2px solid rgba(0, 0, 0, 0.7);
+      box-shadow: 0 0 12px rgba(214, 179, 92, 0.58);
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .worldsync-city-pointer {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 2px;
+      height: 46%;
+      transform: translate(-50%, -100%) rotate(var(--worldsync-city-angle, 0deg));
+      transform-origin: 50% 100%;
+      background: linear-gradient(to top, rgba(105, 211, 223, 0), rgba(105, 211, 223, 0.95));
+      filter: drop-shadow(0 0 8px rgba(105, 211, 223, 0.75));
+      pointer-events: none;
+    }
+
+    .worldsync-city-pointer::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: -7px;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: var(--bw-cyan);
+      box-shadow: 0 0 0 7px rgba(105, 211, 223, 0.13), 0 0 18px rgba(105, 211, 223, 0.9);
+      transform: translateX(-50%);
+    }
+
+    .worldsync-live-time-badge {
+      position: absolute;
+      left: 50%;
+      top: 59%;
+      min-width: 116px;
+      padding: 6px 10px;
+      border: 1px solid rgba(214, 179, 92, 0.28);
+      border-radius: 999px;
+      background: rgba(4, 7, 10, 0.62);
+      color: #ffe693;
+      font-size: clamp(0.62rem, 1vw, 0.84rem);
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-align: center;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24);
+      pointer-events: none;
+    }
+
+    .worldsync-city-dock {
+      margin-top: -8px;
+    }
+
+    @media (max-width: 760px) {
+      .worldsync-dial-live-layer {
+        left: 50.7%;
+        top: 48.8%;
+        width: 58%;
+      }
+
+      .worldsync-live-time-badge {
+        min-width: 92px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -4963,6 +5109,14 @@
     <div class="worldsync-hero-stage" aria-label="Live BaloWaci WorldSync prototype interface">
       <div class="worldsync-prototype-shell">
         <img src="assets/balowaci worldsync final prototype.png" alt="BaloWaci WorldSync final prototype interface" class="worldsync-prototype-image">
+        <div class="worldsync-dial-live-layer" aria-hidden="true">
+          <span class="worldsync-city-pointer"></span>
+          <span class="worldsync-hand hour-hand"></span>
+          <span class="worldsync-hand minute-hand"></span>
+          <span class="worldsync-hand second-hand"></span>
+          <span class="worldsync-center-jewel"></span>
+          <span class="worldsync-live-time-badge" id="worldsyncDialTime">--:--:--</span>
+        </div>
         <div class="worldsync-orbit one" aria-hidden="true"></div>
         <div class="worldsync-orbit two" aria-hidden="true"></div>
         <div class="worldsync-scan" aria-hidden="true"></div>
@@ -9375,87 +9529,114 @@
       timezone: 'Africa/Kinshasa',
       city: 'Kinshasa',
       code: 'DR Congo',
-      rotation: 0,
-      dragging: false,
-      startAngle: 0,
-      startRotation: 0
+      cityIndex: 0
     };
+
+    function getWorldSyncTimeParts(timezone, date = new Date()) {
+      const parts = new Intl.DateTimeFormat('en-US', {
+        timeZone: timezone,
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        hour12: false
+      }).formatToParts(date).reduce((result, part) => {
+        if (part.type !== 'literal') result[part.type] = Number(part.value);
+        return result;
+      }, {});
+      return {
+        hours: parts.hour === 24 ? 0 : (parts.hour || 0),
+        minutes: parts.minute || 0,
+        seconds: parts.second || 0
+      };
+    }
+
+    function setWorldSyncCityFromSelect(select) {
+      const option = select.selectedOptions[0];
+      worldsyncHeroState.timezone = select.value;
+      worldsyncHeroState.city = option?.dataset.city || option?.textContent || 'WorldSync';
+      worldsyncHeroState.code = option?.dataset.code || '';
+      worldsyncHeroState.cityIndex = select.selectedIndex;
+      const layer = document.querySelector('.worldsync-dial-live-layer');
+      if (layer && select.options.length) {
+        layer.style.setProperty('--worldsync-city-angle', `${(select.selectedIndex / select.options.length) * 360}deg`);
+      }
+      updateWorldSyncHeroInterface();
+    }
 
     function updateWorldSyncHeroInterface() {
       const now = new Date();
       const localTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
       const shortLocal = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const worldParts = getWorldSyncTimeParts(worldsyncHeroState.timezone, now);
       const worldTime = new Intl.DateTimeFormat([], {
         timeZone: worldsyncHeroState.timezone,
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit'
       }).format(now);
-      const worldHour = Number(new Intl.DateTimeFormat('en-US', {
-        timeZone: worldsyncHeroState.timezone,
-        hour: 'numeric',
-        hour12: false
-      }).format(now));
-      const mode = worldHour < 6 ? 'Night' : worldHour < 12 ? 'Morning' : worldHour < 18 ? 'Day' : 'Evening';
+      const mode = worldParts.hours < 6 ? 'Night' : worldParts.hours < 12 ? 'Morning' : worldParts.hours < 18 ? 'Day' : 'Evening';
+      const seconds = worldParts.seconds;
+      const minutes = worldParts.minutes + seconds / 60;
+      const hours = (worldParts.hours % 12) + minutes / 60;
+      const layer = document.querySelector('.worldsync-dial-live-layer');
+      if (layer) {
+        layer.style.setProperty('--worldsync-second-angle', `${seconds * 6}deg`);
+        layer.style.setProperty('--worldsync-minute-angle', `${minutes * 6}deg`);
+        layer.style.setProperty('--worldsync-hour-angle', `${hours * 30}deg`);
+      }
       const local = document.getElementById('worldsyncLiveLocal');
       const world = document.getElementById('worldsyncLiveWorld');
       const modeElement = document.getElementById('worldsyncLiveMode');
       const heroTime = document.getElementById('worldsyncHeroTime');
       const offset = document.getElementById('worldsyncHeroOffset');
       const place = document.getElementById('worldsyncLivePlace');
+      const dialTime = document.getElementById('worldsyncDialTime');
       if (local) local.textContent = localTime;
       if (world) world.textContent = worldTime;
       if (modeElement) modeElement.textContent = mode;
       if (heroTime) heroTime.textContent = shortLocal;
       if (offset) offset.textContent = formatTimeDifference(worldsyncHeroState.timezone, now);
       if (place) place.textContent = worldsyncHeroState.city;
+      if (dialTime) dialTime.textContent = `${worldsyncHeroState.city} ${worldTime}`;
     }
 
     function getWorldSyncPointerAngle(event, element) {
       const rect = element.getBoundingClientRect();
       const x = event.clientX - rect.left - rect.width / 2;
       const y = event.clientY - rect.top - rect.height / 2;
-      return Math.atan2(y, x) * 180 / Math.PI;
+      return (Math.atan2(y, x) * 180 / Math.PI + 450) % 360;
     }
 
-    function setWorldSyncRotation(value) {
-      worldsyncHeroState.rotation = value;
-      const shell = document.querySelector('.worldsync-prototype-shell');
-      if (shell) shell.style.setProperty('--worldsync-rotation', `${value}deg`);
+    function selectWorldSyncCityByAngle(angle) {
+      const select = document.getElementById('worldsyncCitySelect');
+      if (!select || !select.options.length) return;
+      const index = Math.round((angle / 360) * select.options.length) % select.options.length;
+      select.selectedIndex = index;
+      setWorldSyncCityFromSelect(select);
     }
 
     function initializeWorldSyncHeroInterface() {
       const select = document.getElementById('worldsyncCitySelect');
-      const shell = document.querySelector('.worldsync-prototype-shell');
-      const resetButton = document.getElementById('worldsyncResetRotation');
+      const layer = document.querySelector('.worldsync-dial-live-layer');
       if (select) {
-        select.addEventListener('change', () => {
-          const option = select.selectedOptions[0];
-          worldsyncHeroState.timezone = select.value;
-          worldsyncHeroState.city = option?.dataset.city || option?.textContent || 'WorldSync';
-          worldsyncHeroState.code = option?.dataset.code || '';
-          updateWorldSyncHeroInterface();
+        select.addEventListener('change', () => setWorldSyncCityFromSelect(select));
+        setWorldSyncCityFromSelect(select);
+      }
+      if (layer) {
+        layer.addEventListener('pointerdown', (event) => {
+          layer.setPointerCapture?.(event.pointerId);
+          selectWorldSyncCityByAngle(getWorldSyncPointerAngle(event, layer));
+        });
+        layer.addEventListener('pointermove', (event) => {
+          if (event.buttons !== 1) return;
+          selectWorldSyncCityByAngle(getWorldSyncPointerAngle(event, layer));
         });
       }
-      if (shell) {
-        shell.addEventListener('pointerdown', (event) => {
-          worldsyncHeroState.dragging = true;
-          worldsyncHeroState.startAngle = getWorldSyncPointerAngle(event, shell);
-          worldsyncHeroState.startRotation = worldsyncHeroState.rotation;
-          shell.setPointerCapture?.(event.pointerId);
-        });
-        shell.addEventListener('pointermove', (event) => {
-          if (!worldsyncHeroState.dragging) return;
-          const angle = getWorldSyncPointerAngle(event, shell);
-          setWorldSyncRotation(worldsyncHeroState.startRotation + angle - worldsyncHeroState.startAngle);
-        });
-        ['pointerup', 'pointercancel', 'lostpointercapture'].forEach((eventName) => {
-          shell.addEventListener(eventName, () => {
-            worldsyncHeroState.dragging = false;
-          });
-        });
-      }
-      resetButton?.addEventListener('click', () => setWorldSyncRotation(0));
+      document.getElementById('worldsyncResetRotation')?.addEventListener('click', () => {
+        if (!select) return;
+        select.selectedIndex = 0;
+        setWorldSyncCityFromSelect(select);
+      });
       updateWorldSyncHeroInterface();
       window.setInterval(updateWorldSyncHeroInterface, 1000);
     }
