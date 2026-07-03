@@ -3828,6 +3828,843 @@
         right: 16px;
       }
     }
+
+    :root {
+      --bw-ink: #05070a;
+      --bw-panel: rgba(11, 16, 22, 0.84);
+      --bw-panel-solid: #0d1218;
+      --bw-line: rgba(224, 232, 238, 0.13);
+      --bw-text: #eef4f5;
+      --bw-muted: #9aa8af;
+      --bw-gold: #d6b35c;
+      --bw-cyan: #69d3df;
+      --bw-red: #e35d4f;
+      --bw-blue: #4f83ff;
+      --bw-green: #6dd596;
+    }
+
+    body {
+      background:
+        linear-gradient(115deg, rgba(79, 131, 255, 0.11), transparent 28%),
+        linear-gradient(245deg, rgba(227, 93, 79, 0.11), transparent 30%),
+        radial-gradient(circle at 50% 0%, rgba(214, 179, 92, 0.16), transparent 42%),
+        var(--bw-ink);
+      color: var(--bw-text);
+      font-weight: 400;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.026) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: linear-gradient(to bottom, black, transparent 72%);
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, rgba(5, 7, 10, 0.82), transparent 18%, transparent 82%, rgba(5, 7, 10, 0.82)),
+        linear-gradient(180deg, transparent, rgba(5, 7, 10, 0.86));
+    }
+
+    .day-sky,
+    .stars-container {
+      opacity: 0.22;
+      mix-blend-mode: screen;
+    }
+
+    .moon-stage,
+    .sun-stage {
+      filter: saturate(0.8);
+      opacity: 0.58;
+    }
+
+    .site-corner-logo {
+      background: rgba(7, 11, 15, 0.72);
+      border: 1px solid var(--bw-line);
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
+      backdrop-filter: blur(18px);
+    }
+
+    .site-corner-logo span,
+    .brand-waci {
+      color: var(--bw-text);
+    }
+
+    .site-language-control {
+      top: 18px;
+      right: 22px;
+      z-index: 40;
+    }
+
+    .language-select {
+      background: rgba(7, 11, 15, 0.72);
+      border: 1px solid var(--bw-line);
+      color: var(--bw-text);
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.24);
+      backdrop-filter: blur(18px);
+    }
+
+    .interface-nav {
+      position: fixed;
+      top: 18px;
+      left: 50%;
+      z-index: 39;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      width: min(720px, calc(100vw - 360px));
+      min-height: 56px;
+      padding: 7px;
+      border: 1px solid var(--bw-line);
+      border-radius: 999px;
+      background: rgba(7, 11, 15, 0.72);
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.26);
+      backdrop-filter: blur(18px);
+      transform: translateX(-50%);
+    }
+
+    .interface-nav a {
+      flex: 1 1 auto;
+      min-width: 0;
+      padding: 11px 12px;
+      border-radius: 999px;
+      color: var(--bw-muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-align: center;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .interface-nav a:hover,
+    .interface-nav a:focus-visible {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--bw-text);
+      outline: none;
+      transform: translateY(-1px);
+    }
+
+    body .luxury-hero {
+      min-height: 100svh;
+      padding: clamp(112px, 13vh, 150px) clamp(18px, 4vw, 72px) clamp(42px, 8vh, 84px);
+      display: grid;
+      grid-template-columns: minmax(280px, 0.82fr) minmax(320px, 1.18fr);
+      gap: clamp(28px, 5vw, 72px);
+      align-items: center;
+      background:
+        linear-gradient(90deg, rgba(5, 7, 10, 0.92), rgba(5, 7, 10, 0.35) 48%, rgba(5, 7, 10, 0.88)),
+        radial-gradient(circle at 72% 44%, rgba(105, 211, 223, 0.16), transparent 36%),
+        radial-gradient(circle at 24% 18%, rgba(214, 179, 92, 0.14), transparent 32%);
+    }
+
+    .angel-wing,
+    body .watch-side-word {
+      display: none;
+    }
+
+    .hero-interface-copy {
+      position: relative;
+      z-index: 5;
+      max-width: 680px;
+    }
+
+    .hero-kicker,
+    .section-kicker,
+    .daily-kicker,
+    .showcase-kicker,
+    .trinity-kicker,
+    .premium-kicker,
+    .monetization-kicker {
+      color: var(--bw-cyan);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .hero-interface-copy h1 {
+      margin-top: 18px;
+      max-width: 11ch;
+      color: var(--bw-text);
+      font-size: clamp(4rem, 9vw, 8.4rem);
+      line-height: 0.86;
+      letter-spacing: 0;
+    }
+
+    .hero-interface-copy h1 span {
+      display: block;
+      color: var(--bw-gold);
+    }
+
+    .hero-interface-copy p {
+      max-width: 620px;
+      margin-top: 24px;
+      color: #c8d2d6;
+      font-size: clamp(1rem, 1.4vw, 1.18rem);
+      line-height: 1.75;
+    }
+
+    .hero-command-row,
+    .final-cta-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .hero-command-row {
+      margin-top: 30px;
+    }
+
+    .luxury-btn,
+    .showcase-btn,
+    .btn-primary,
+    .world-rhythm-mini-btn,
+    .prototype-phase-button,
+    .watch-led-button {
+      min-height: 44px;
+      border: 1px solid var(--bw-line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.07);
+      color: var(--bw-text);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .luxury-btn.primary,
+    .showcase-btn,
+    .btn-primary {
+      background: linear-gradient(135deg, var(--bw-gold), #f3df9b);
+      color: #151008;
+      border-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 18px 46px rgba(214, 179, 92, 0.2);
+    }
+
+    .luxury-btn:hover,
+    .showcase-btn:hover,
+    .btn-primary:hover,
+    .world-rhythm-mini-btn:hover,
+    .prototype-phase-button:hover,
+    .watch-led-button:hover {
+      transform: translateY(-2px);
+    }
+
+    .hero-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 36px;
+      max-width: 620px;
+    }
+
+    .hero-metric {
+      padding: 16px;
+      border: 1px solid var(--bw-line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.055);
+    }
+
+    .hero-metric strong {
+      display: block;
+      color: var(--bw-text);
+      font-size: 1.45rem;
+      line-height: 1;
+    }
+
+    .hero-metric span {
+      display: block;
+      margin-top: 8px;
+      color: var(--bw-muted);
+      font-size: 0.78rem;
+      line-height: 1.35;
+      text-transform: uppercase;
+    }
+
+    body .home-watch-nav {
+      width: min(48vw, 720px);
+      z-index: 5;
+    }
+
+    body .home-watch-shell {
+      width: min(48vw, 680px);
+      padding: clamp(12px, 2vw, 22px);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 24px;
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.025)),
+        rgba(8, 12, 16, 0.66);
+      box-shadow: 0 38px 110px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(20px);
+    }
+
+    body .home-watch-shell canvas {
+      width: 100%;
+      height: auto;
+      display: block;
+      aspect-ratio: 1;
+    }
+
+    .watch-led-controls,
+    .weather-sync,
+    .watch-explainers {
+      z-index: 6;
+      border: 1px solid var(--bw-line);
+      background: rgba(7, 11, 15, 0.72);
+      color: var(--bw-text);
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.24);
+      backdrop-filter: blur(18px);
+    }
+
+    .watch-explainers {
+      right: clamp(18px, 3vw, 46px);
+      bottom: clamp(18px, 4vh, 46px);
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      width: min(760px, calc(100vw - 36px));
+      gap: 1px;
+      padding: 0;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+
+    .watch-explainer {
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .watch-explainer strong {
+      color: var(--bw-text);
+    }
+
+    .watch-explainer span,
+    .weather-text {
+      color: var(--bw-muted);
+    }
+
+    .container,
+    .showcase-inner,
+    .trinity-prototype-inner {
+      width: min(1180px, calc(100vw - 36px));
+      margin-inline: auto;
+    }
+
+    section:not(.luxury-hero) {
+      position: relative;
+      z-index: 2;
+      padding: clamp(70px, 9vw, 120px) 0;
+      background: transparent;
+    }
+
+    section h2,
+    .showcase-title,
+    .trinity-title,
+    .prototype-update-title {
+      color: var(--bw-text);
+      font-size: clamp(2rem, 4vw, 4.7rem);
+      line-height: 0.98;
+      letter-spacing: 0;
+    }
+
+    section p,
+    .journey-intro,
+    .showcase-text,
+    .trinity-copy,
+    .prototype-update-copy,
+    .daily-reading,
+    .world-rhythm-reading,
+    .world-rhythm-meaning {
+      color: #b8c5ca;
+      font-weight: 400;
+    }
+
+    .daily-ritual-card,
+    .world-rhythm-panel,
+    .prototype-model-card,
+    .trinity-board,
+    .trinity-material,
+    .prototype-update-panel,
+    .founder-message-card,
+    .time-panel,
+    .vision-item,
+    .case-study-card,
+    .demo-card,
+    .premium-access-card,
+    .access-card,
+    .monetization-card,
+    .revenue-card,
+    .journey-card,
+    .feedback-form {
+      border: 1px solid var(--bw-line);
+      border-radius: 8px;
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.085), rgba(255, 255, 255, 0.026)),
+        rgba(9, 14, 19, 0.78);
+      box-shadow: 0 24px 72px rgba(0, 0, 0, 0.26);
+      backdrop-filter: blur(18px);
+    }
+
+    .daily-ritual-card {
+      display: grid;
+      grid-template-columns: minmax(260px, 0.85fr) minmax(320px, 1.15fr);
+      gap: clamp(22px, 4vw, 46px);
+      padding: clamp(22px, 4vw, 46px);
+    }
+
+    .daily-ritual-card > .world-rhythm-panel {
+      margin: 0;
+    }
+
+    .daily-meta,
+    .world-rhythm-details,
+    .prototype-update-metrics,
+    .revenue-grid,
+    .vision-grid,
+    .case-study-grid,
+    .demo-grid,
+    .access-architecture {
+      display: grid;
+      gap: 12px;
+    }
+
+    .daily-meta {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-top: 22px;
+    }
+
+    .daily-meta span,
+    .world-rhythm-chip,
+    .prototype-update-metric,
+    .tier-feature-group,
+    .conversion-step,
+    .material-swatch {
+      border: 1px solid var(--bw-line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.045);
+      color: var(--bw-text);
+    }
+
+    .watch-showcase .showcase-inner {
+      display: grid;
+      grid-template-columns: minmax(280px, 0.8fr) minmax(320px, 1.2fr);
+      align-items: center;
+      gap: clamp(28px, 6vw, 80px);
+      text-align: left;
+    }
+
+    .watch-stage {
+      min-height: clamp(360px, 46vw, 640px);
+      border: 1px solid var(--bw-line);
+      border-radius: 8px;
+      background:
+        radial-gradient(circle at 50% 42%, rgba(214, 179, 92, 0.18), transparent 38%),
+        rgba(255, 255, 255, 0.035);
+    }
+
+    .prototype-family-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .prototype-model-card {
+      overflow: hidden;
+    }
+
+    .prototype-model-card figure,
+    .trinity-image-frame,
+    .prototype-update-visual {
+      background: #080c10;
+    }
+
+    .prototype-model-card img,
+    .trinity-image-frame img,
+    .prototype-update-visual img,
+    .journey-card img,
+    .founder-portrait {
+      filter: saturate(0.96) contrast(1.04);
+    }
+
+    .prototype-model-card figure {
+      aspect-ratio: 4 / 3;
+    }
+
+    .prototype-model-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .prototype-model-body {
+      padding: 20px;
+    }
+
+    .trinity-board,
+    .prototype-update-panel {
+      display: grid;
+      grid-template-columns: minmax(320px, 1.15fr) minmax(280px, 0.85fr);
+      gap: 18px;
+      padding: 18px;
+    }
+
+    .trinity-image-frame,
+    .prototype-update-visual {
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .trinity-spec-panel {
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .product-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .journey-card {
+      overflow: hidden;
+    }
+
+    .journey-card img {
+      aspect-ratio: 1;
+      object-fit: cover;
+    }
+
+    .journey-card figcaption {
+      color: #b8c5ca;
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    .feedback-form {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      padding: clamp(20px, 4vw, 42px);
+    }
+
+    .feedback-progress,
+    .feedback-thank-you,
+    .feedback-form .btn-primary,
+    .form-status {
+      grid-column: 1 / -1;
+    }
+
+    .form-group label {
+      color: var(--bw-text);
+      font-size: 0.9rem;
+      font-weight: 800;
+    }
+
+    input,
+    textarea,
+    select {
+      border: 1px solid var(--bw-line);
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.22);
+      color: var(--bw-text);
+    }
+
+    footer {
+      position: relative;
+      z-index: 2;
+      border-top: 1px solid var(--bw-line);
+      background: rgba(5, 7, 10, 0.78);
+      color: var(--bw-muted);
+    }
+
+    footer a {
+      color: var(--bw-text);
+    }
+
+    @media (max-width: 1100px) {
+      .interface-nav {
+        top: auto;
+        bottom: 14px;
+        width: min(720px, calc(100vw - 28px));
+      }
+
+      body .luxury-hero {
+        grid-template-columns: 1fr;
+        padding-bottom: 150px;
+      }
+
+      body .home-watch-nav,
+      body .home-watch-shell {
+        width: min(86vw, 680px);
+      }
+
+      .watch-explainers {
+        position: relative;
+        right: auto;
+        bottom: auto;
+        grid-column: 1 / -1;
+        width: 100%;
+        margin-top: 18px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .site-corner-logo span {
+        display: none;
+      }
+
+      .site-language-control {
+        right: 14px;
+      }
+
+      .language-select {
+        min-width: 96px;
+      }
+
+      .interface-nav {
+        overflow-x: auto;
+        justify-content: flex-start;
+        border-radius: 18px;
+      }
+
+      .interface-nav a {
+        flex: 0 0 auto;
+      }
+
+      .hero-interface-copy h1 {
+        font-size: clamp(3.4rem, 18vw, 5.2rem);
+      }
+
+      .hero-metrics,
+      .daily-ritual-card,
+      .watch-showcase .showcase-inner,
+      .prototype-family-grid,
+      .trinity-board,
+      .prototype-update-panel,
+      .feedback-form {
+        grid-template-columns: 1fr;
+      }
+
+      .daily-meta,
+      .watch-explainers {
+        grid-template-columns: 1fr;
+      }
+
+      .watch-explainers {
+        display: none;
+      }
+
+      section:not(.luxury-hero) {
+        padding: 62px 0;
+      }
+    }
+
+    .worldsync-hero-stage {
+      position: relative;
+      z-index: 5;
+      display: grid;
+      gap: 16px;
+      justify-items: center;
+      width: min(48vw, 760px);
+      margin-inline: auto;
+    }
+
+    .worldsync-prototype-shell {
+      position: relative;
+      width: min(48vw, 720px);
+      aspect-ratio: 1;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 26px;
+      background:
+        radial-gradient(circle at 50% 45%, rgba(105, 211, 223, 0.16), transparent 38%),
+        rgba(8, 12, 16, 0.76);
+      box-shadow: 0 38px 110px rgba(0, 0, 0, 0.52);
+      backdrop-filter: blur(20px);
+    }
+
+    .worldsync-prototype-image {
+      position: absolute;
+      inset: 7%;
+      width: 86%;
+      height: 86%;
+      object-fit: contain;
+      filter: drop-shadow(0 28px 54px rgba(0, 0, 0, 0.52)) saturate(1.08) contrast(1.05);
+      animation: worldsyncFloat 5.5s ease-in-out infinite;
+    }
+
+    .worldsync-prototype-shell::before {
+      content: '';
+      position: absolute;
+      inset: 11%;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, rgba(105, 211, 223, 0), rgba(105, 211, 223, 0.52), rgba(214, 179, 92, 0.44), rgba(227, 93, 79, 0.36), rgba(105, 211, 223, 0));
+      filter: blur(18px);
+      opacity: 0.52;
+      animation: worldsyncSpin 14s linear infinite;
+    }
+
+    .worldsync-prototype-shell::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(110deg, transparent 22%, rgba(255, 255, 255, 0.18) 48%, transparent 72%);
+      transform: translateX(-120%);
+      animation: worldsyncSheen 5.2s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .worldsync-orbit {
+      position: absolute;
+      inset: 13%;
+      border: 1px solid rgba(105, 211, 223, 0.34);
+      border-radius: 50%;
+      animation: worldsyncSpin 18s linear infinite;
+    }
+
+    .worldsync-orbit.two {
+      inset: 21%;
+      border-color: rgba(214, 179, 92, 0.34);
+      animation-duration: 11s;
+      animation-direction: reverse;
+    }
+
+    .worldsync-scan {
+      position: absolute;
+      left: 10%;
+      right: 10%;
+      top: 50%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(105, 211, 223, 0.9), transparent);
+      box-shadow: 0 0 18px rgba(105, 211, 223, 0.76);
+      animation: worldsyncScan 3.8s ease-in-out infinite;
+    }
+
+    .worldsync-node {
+      position: absolute;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: var(--bw-cyan);
+      box-shadow: 0 0 0 8px rgba(105, 211, 223, 0.12), 0 0 26px rgba(105, 211, 223, 0.82);
+      animation: worldsyncPulse 1.8s ease-in-out infinite;
+    }
+
+    .worldsync-node.local { left: 49%; top: 49%; background: var(--bw-gold); }
+    .worldsync-node.east { right: 18%; top: 33%; animation-delay: 0.4s; }
+    .worldsync-node.west { left: 18%; bottom: 28%; background: var(--bw-red); animation-delay: 0.8s; }
+
+    .worldsync-live-card {
+      position: absolute;
+      min-width: 128px;
+      padding: 12px 14px;
+      border: 1px solid var(--bw-line);
+      border-radius: 8px;
+      background: rgba(5, 7, 10, 0.78);
+      box-shadow: 0 18px 46px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(16px);
+    }
+
+    .worldsync-live-card span {
+      display: block;
+      color: var(--bw-muted);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .worldsync-live-card strong {
+      display: block;
+      margin-top: 4px;
+      color: var(--bw-text);
+      font-size: clamp(1rem, 1.7vw, 1.35rem);
+      line-height: 1;
+    }
+
+    .local-card { left: 5%; top: 8%; }
+    .world-card { right: 5%; top: 12%; text-align: right; }
+    .mode-card { left: 50%; bottom: 7%; transform: translateX(-50%); text-align: center; }
+
+    .legacy-watch-engine {
+      position: absolute;
+      width: 2px !important;
+      height: 2px;
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .legacy-watch-engine .home-watch-shell {
+      width: 2px !important;
+      padding: 0;
+      border: 0;
+    }
+
+    .legacy-watch-engine canvas {
+      width: 2px !important;
+      height: 2px !important;
+    }
+
+    @keyframes worldsyncFloat {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-10px) scale(1.015); }
+    }
+
+    @keyframes worldsyncSpin { to { transform: rotate(360deg); } }
+
+    @keyframes worldsyncSheen {
+      0%, 48% { transform: translateX(-120%); }
+      72%, 100% { transform: translateX(120%); }
+    }
+
+    @keyframes worldsyncScan {
+      0%, 100% { transform: translateY(-130px); opacity: 0; }
+      18%, 82% { opacity: 1; }
+      50% { transform: translateY(130px); }
+    }
+
+    @keyframes worldsyncPulse {
+      0%, 100% { transform: scale(0.85); opacity: 0.72; }
+      50% { transform: scale(1.24); opacity: 1; }
+    }
+
+    @media (max-width: 1100px) {
+      .worldsync-hero-stage,
+      .worldsync-prototype-shell { width: min(86vw, 680px); }
+    }
+
+    @media (max-width: 760px) {
+      .worldsync-live-card { min-width: 104px; padding: 10px; }
+      .local-card { left: 4%; top: 5%; }
+      .world-card { right: 4%; top: 5%; }
+      .mode-card { bottom: 5%; }
+    }
+
+    .angel-wing,
+    .minute-dove-ritual,
+    .minute-dove-bird {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
   </style>
 </head>
 <body>
@@ -3839,15 +4676,6 @@
     <span class="day-cloud four"></span>
   </div>
   <div class="minute-fire-overlay" id="minuteFireOverlay" aria-hidden="true"></div>
-  <div class="minute-dove-ritual" id="minuteDoveRitual" aria-hidden="true">
-    <span class="minute-dove-bird">
-      <span class="minute-dove-wing back"></span>
-      <span class="minute-dove-wing"></span>
-      <span class="minute-dove-tail"></span>
-      <span class="minute-dove-body"></span>
-      <span class="minute-dove-head"></span>
-    </span>
-  </div>
   <div class="moon-stage" id="moonStage" aria-hidden="true">
     <canvas id="moonCanvas" width="172" height="172"></canvas>
   </div>
@@ -3872,19 +4700,63 @@
       <option value="ar">العربية</option>
     </select>
   </div>
-
+  <nav class="interface-nav" aria-label="BaloWaci sections">
+    <a href="#daily-ritual">Today</a>
+    <a href="#watch-showcase">Watch</a>
+    <a href="#trinity-prototype">Prototypes</a>
+    <a href="#time-panel">Live Time</a>
+    <a href="#premium-access">Access</a>
+    <a href="#feedback">Feedback</a>
+  </nav>
   <!-- Hero Section -->
   <section class="hero luxury-hero" id="hero">
-    <div class="angel-wing top-left" aria-hidden="true"></div>
-    <div class="angel-wing top-right" aria-hidden="true"></div>
     <span class="watch-side-word balo" aria-hidden="true">Balo</span>
-    <div class="home-watch-nav" aria-label="Interactive BaloWaci section navigator">
-      <div class="home-watch-shell">
-        <canvas id="homeWatchNav" width="720" height="720"></canvas>
-        <div class="balowaci-sigil" aria-hidden="true">
-          <span class="sigil-axis"></span>
-          <span class="sigil-axis horizontal"></span>
-          <span class="sigil-mark">BW</span>
+    <div class="hero-interface-copy">
+      <p class="hero-kicker">WorldSync live interface</p>
+      <h1>Balo<span>Waci</span></h1>
+      <p>
+        The main BaloWaci experience now opens on WorldSync: a living prototype surface for local time,
+        world rhythm, cultural interpretation, and the future watch interface.
+      </p>
+      <div class="hero-command-row">
+        <a class="luxury-btn primary" href="interfaces/universe-watch-wrist.html">Open Live Watch</a>
+        <a class="luxury-btn secondary" href="interfaces/universe-time-wheel-patent.html">Open Live Wheel</a>
+      </div>
+      <div class="hero-metrics" aria-label="BaloWaci system highlights">
+        <div class="hero-metric">
+          <strong id="worldsyncHeroTime">--:--</strong>
+          <span>Local pulse</span>
+        </div>
+        <div class="hero-metric">
+          <strong id="worldsyncHeroOffset">SYNC</strong>
+          <span>World rhythm</span>
+        </div>
+        <div class="hero-metric">
+          <strong>YEH</strong>
+          <span>WorldSync code</span>
+        </div>
+      </div>
+    </div>
+    <div class="worldsync-hero-stage" aria-label="Live BaloWaci WorldSync prototype interface">
+      <div class="worldsync-prototype-shell">
+        <img src="assets/balowaci worldsync final prototype.png" alt="BaloWaci WorldSync final prototype interface" class="worldsync-prototype-image">
+        <div class="worldsync-orbit one" aria-hidden="true"></div>
+        <div class="worldsync-orbit two" aria-hidden="true"></div>
+        <div class="worldsync-scan" aria-hidden="true"></div>
+        <div class="worldsync-node local" aria-hidden="true"></div>
+        <div class="worldsync-node east" aria-hidden="true"></div>
+        <div class="worldsync-node west" aria-hidden="true"></div>
+        <div class="worldsync-live-card local-card">
+          <span>Local</span>
+          <strong id="worldsyncLiveLocal">--:--:--</strong>
+        </div>
+        <div class="worldsync-live-card world-card">
+          <span id="worldsyncLivePlace">WorldSync</span>
+          <strong id="worldsyncLiveWorld">--:--</strong>
+        </div>
+        <div class="worldsync-live-card mode-card">
+          <span>Mode</span>
+          <strong id="worldsyncLiveMode">Cultural</strong>
         </div>
       </div>
       <div class="watch-led-controls" aria-label="Watch LED light controls">
@@ -3894,11 +4766,20 @@
         <button type="button" class="watch-led-button" data-watch-light="35">Dim</button>
         <button type="button" class="watch-led-button" data-watch-light="0">Off</button>
       </div>
-      <span id="homeWatchTime" class="sr-only">--:--:--</span>
-      <span id="homeWatchRegion" class="sr-only">Chicago, US</span>
-      <span id="homeWatchSection" class="sr-only">Home</span>
-    </div>
-    <div class="watch-explainers" aria-label="BaloWaci interface explanation">
+      <div class="home-watch-nav legacy-watch-engine" aria-label="Interactive BaloWaci section navigator">
+        <div class="home-watch-shell">
+          <canvas id="homeWatchNav" width="720" height="720"></canvas>
+          <div class="balowaci-sigil" aria-hidden="true">
+            <span class="sigil-axis"></span>
+            <span class="sigil-axis horizontal"></span>
+            <span class="sigil-mark">BW</span>
+          </div>
+        </div>
+        <span id="homeWatchTime" class="sr-only">--:--:--</span>
+        <span id="homeWatchRegion" class="sr-only">Chicago, US</span>
+        <span id="homeWatchSection" class="sr-only">Home</span>
+      </div>
+    </div>    <div class="watch-explainers" aria-label="BaloWaci interface explanation">
       <div class="watch-explainer">
         <strong>Outer Glow</strong>
         <span>Website navigation and world places.</span>
@@ -4018,7 +4899,7 @@
         <article class="prototype-model-card">
           <figure>
             <span class="prototype-model-code">YAH</span>
-            <img src="assets/BaloWaci Trinity.png" alt="BaloWaci Trinity YAH prototype concept board showing dial layout, cultural time ring, subdials, case views, and specifications" loading="lazy">
+            <img src="assets/balowaci trinity final protoype.png" alt="BaloWaci Trinity YAH prototype concept board showing dial layout, cultural time ring, subdials, case views, and specifications" loading="lazy">
           </figure>
           <div class="prototype-model-body">
             <h3>BaloWaci Trinity</h3>
@@ -4029,7 +4910,7 @@
         <article class="prototype-model-card">
           <figure>
             <span class="prototype-model-code">WEH</span>
-            <img src="assets/BaloWaci Axis.png" alt="BaloWaci Axis WEH prototype watch concept" loading="lazy">
+            <img src="assets/balowaci axis final prototype.png" alt="BaloWaci Axis WEH prototype watch concept" loading="lazy">
           </figure>
           <div class="prototype-model-body">
             <h3>BaloWaci Axis</h3>
@@ -4040,7 +4921,7 @@
         <article class="prototype-model-card">
           <figure>
             <span class="prototype-model-code">YEH</span>
-            <img src="assets/balowaci worldsync.png" alt="BaloWaci WorldSync YEH prototype watch concept" loading="lazy">
+            <img src="assets/balowaci worldsync final prototype.png" alt="BaloWaci WorldSync YEH prototype watch concept" loading="lazy">
           </figure>
           <div class="prototype-model-body">
             <h3>BaloWaci WorldSync</h3>
@@ -4051,7 +4932,7 @@
 
       <div class="trinity-board">
         <figure class="trinity-image-frame">
-          <img src="assets/BaloWaci Trinity.png" alt="BaloWaci Trinity YAH prototype concept board showing dial layout, cultural time ring, subdials, case views, and specifications" loading="lazy">
+          <img src="assets/balowaci trinity final protoype.png" alt="BaloWaci Trinity YAH prototype concept board showing dial layout, cultural time ring, subdials, case views, and specifications" loading="lazy">
         </figure>
 
         <aside class="trinity-spec-panel" aria-label="BaloWaci Trinity prototype specifications">
@@ -6267,7 +7148,6 @@
 
     function triggerMinuteRitual() {
       const fireOverlay = document.getElementById('minuteFireOverlay');
-      triggerDoveRitual();
       if (fireOverlay) {
         fireOverlay.classList.remove('active');
         fireOverlay.innerHTML = '';
@@ -8251,6 +9131,36 @@
       requestAnimationFrame(drawHomeWatchNav);
     }
 
+
+    function updateWorldSyncHeroInterface() {
+      const now = new Date();
+      const localTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      const shortLocal = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const worldTime = new Intl.DateTimeFormat([], {
+        timeZone: 'Africa/Kinshasa',
+        hour: '2-digit',
+        minute: '2-digit'
+      }).format(now);
+      const hour = now.getHours();
+      const mode = hour < 6 ? 'Night' : hour < 12 ? 'Morning' : hour < 18 ? 'Day' : 'Evening';
+      const local = document.getElementById('worldsyncLiveLocal');
+      const world = document.getElementById('worldsyncLiveWorld');
+      const modeElement = document.getElementById('worldsyncLiveMode');
+      const heroTime = document.getElementById('worldsyncHeroTime');
+      const offset = document.getElementById('worldsyncHeroOffset');
+      const place = document.getElementById('worldsyncLivePlace');
+      if (local) local.textContent = localTime;
+      if (world) world.textContent = worldTime;
+      if (modeElement) modeElement.textContent = mode;
+      if (heroTime) heroTime.textContent = shortLocal;
+      if (offset) offset.textContent = formatTimeDifference('Africa/Kinshasa', now);
+      if (place) place.textContent = 'Kinshasa';
+    }
+
+    function initializeWorldSyncHeroInterface() {
+      updateWorldSyncHeroInterface();
+      window.setInterval(updateWorldSyncHeroInterface, 1000);
+    }
     function registerServiceWorker() {
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('sw.js').catch((error) => {
@@ -8304,6 +9214,7 @@
       initializeWorldRhythmMode();
       initializePremiumExperience();
       initializePrototypeUpdatePanel();
+      initializeWorldSyncHeroInterface();
       initializeWatchLightControls();
       initializeHomeWatchNav();
       initializeHomeWatchAutoRotation();
