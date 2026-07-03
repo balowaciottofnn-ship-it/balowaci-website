@@ -5197,6 +5197,40 @@
         width: min(320px, calc(100vw - 40px));
       }
     }
+
+    /* Final homepage weather pin: keep it under the fixed top-left BaloWaci brand, never at the bottom. */
+    #hero > .weather-sync {
+      position: fixed !important;
+      top: 132px !important;
+      left: 20px !important;
+      right: auto !important;
+      bottom: auto !important;
+      width: min(340px, calc(100vw - 40px)) !important;
+      height: auto !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      transform: none !important;
+      align-items: flex-start !important;
+      justify-content: flex-start !important;
+      border: 0 !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      backdrop-filter: none !important;
+      pointer-events: none !important;
+    }
+
+    #hero > .weather-sync .weather-status {
+      max-width: 100% !important;
+      pointer-events: auto;
+    }
+
+    @media (max-width: 760px) {
+      #hero > .weather-sync {
+        top: 132px !important;
+        left: 20px !important;
+        width: min(320px, calc(100vw - 40px)) !important;
+      }
+    }
   </style>
 </head>
 <body>
