@@ -4688,15 +4688,6 @@
       align-items: flex-start;
     }
 
-    #hero .weather-overlay,
-    #hero .weather-overlay.weather-clouds,
-    #hero .weather-overlay.weather-rain,
-    #hero .weather-overlay.weather-storm,
-    #hero .weather-overlay.weather-snow,
-    #hero .weather-overlay .cloud,
-    #hero .weather-overlay .rain-drop,
-    #hero .weather-overlay .snowflake,
-    #hero .weather-overlay .lightning-bolt,
     .day-sky,
     .sun-cloud {
       display: none !important;
@@ -5231,26 +5222,51 @@
         width: min(320px, calc(100vw - 40px)) !important;
       }
     }
+
+    /* Removed non-weather rituals: only real local weather remains active. */
+    .day-sky,
+    .moon-stage,
+    .sun-stage,
+    .minute-fire-overlay,
+    .minute-fire-drop,
+    .minute-dove-ritual,
+    .minute-dove-bird {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      animation: none !important;
+    }
+
+    section,
+    .prototype-model-card,
+    .founder-message-card,
+    .daily-ritual-card,
+    .time-panel,
+    .feedback-form {
+      content-visibility: auto;
+      contain-intrinsic-size: 1px 720px;
+    }
+
+    /* Real weather visuals stay enabled and come only from the live weather category. */
+    #hero > .weather-sync .weather-overlay {
+      position: fixed !important;
+      inset: 0 !important;
+      z-index: 2 !important;
+      display: block !important;
+      visibility: visible !important;
+      pointer-events: none !important;
+    }
+
+    #hero > .weather-sync .weather-status {
+      position: relative !important;
+      z-index: 42 !important;
+    }
   </style>
 </head>
 <body>
   <div class="stars-container" id="starsContainer"></div>
-  <div class="day-sky" id="daySky" aria-hidden="true">
-    <span class="day-cloud one"></span>
-    <span class="day-cloud two"></span>
-    <span class="day-cloud three"></span>
-    <span class="day-cloud four"></span>
-  </div>
-  <div class="minute-fire-overlay" id="minuteFireOverlay" aria-hidden="true"></div>
-  <div class="moon-stage" id="moonStage" aria-hidden="true">
-    <canvas id="moonCanvas" width="172" height="172"></canvas>
-  </div>
-  <div class="sun-stage" id="sunStage" aria-hidden="true">
-    <span class="sun-halo"></span>
-    <span class="sun-cloud one"></span>
-    <span class="sun-cloud two"></span>
-  </div>
-  <a class="site-corner-logo" href="#hero" aria-label="BaloWaci home">
+<a class="site-corner-logo" href="#hero" aria-label="BaloWaci home">
     <img src="assets/balogo-circle.png" alt="BaloWaci logo">
     <span>Balo<span class="brand-waci">Waci</span></span>
   </a>
@@ -5267,39 +5283,36 @@
     </select>
   </div>
   <nav class="interface-nav" aria-label="BaloWaci sections">
-    <a href="#daily-ritual">Today</a>
-    <a href="#watch-showcase">Watch</a>
-    <a href="#trinity-prototype">Prototypes</a>
-    <a href="#time-panel">Live Time</a>
-    <a href="#premium-access">Access</a>
-    <a href="#feedback">Feedback</a>
+    <a href="#daily-ritual" data-i18n="nav.today">Today</a>
+    <a href="#hero" data-i18n="nav.watch">Watch</a>
+    <a href="#trinity-prototype" data-i18n="nav.prototypes">Prototypes</a>
+    <a href="#time-panel" data-i18n="nav.liveTime">Live Time</a>
+    <a href="#founder" data-i18n="nav.founder">Founder</a>
+    <a href="#feedback" data-i18n="nav.feedback">Feedback</a>
   </nav>
   <!-- Hero Section -->
   <section class="hero luxury-hero" id="hero">
     <span class="watch-side-word balo" aria-hidden="true">Balo</span>
     <div class="hero-interface-copy">
-      <p class="hero-kicker">WorldSync live interface</p>
+      <p class="hero-kicker" data-i18n="hero.kicker">WorldSync live watch</p>
       <h1>Balo<span>Waci</span></h1>
-      <p>
-        The main BaloWaci experience now opens on WorldSync: a living prototype surface for local time,
-        world rhythm, cultural interpretation, and the future watch interface.
-      </p>
+      <p data-i18n="hero.body">BaloWaci helps people read one moment in more than one way: local time, world time, cultural rhythm, and weather-aware context in one live watch interface.</p>
       <div class="hero-command-row">
-        <a class="luxury-btn primary" href="interfaces/universe-watch-wrist.html">Open Live Watch</a>
-        <a class="luxury-btn secondary" href="interfaces/universe-time-wheel-patent.html">Open Live Wheel</a>
+        <a class="luxury-btn primary" href="interfaces/universe-watch-wrist.html" data-i18n="hero.openWatch">Open Live Watch</a>
+        <a class="luxury-btn secondary" href="interfaces/universe-time-wheel-patent.html" data-i18n="hero.openWheel">Open Live Wheel</a>
       </div>
       <div class="hero-metrics" aria-label="BaloWaci system highlights">
         <div class="hero-metric">
           <strong id="worldsyncHeroTime">--:--</strong>
-          <span>Local pulse</span>
+          <span data-i18n="hero.localPulse">Local pulse</span>
         </div>
         <div class="hero-metric">
           <strong id="worldsyncHeroOffset">SYNC</strong>
-          <span>World rhythm</span>
+          <span data-i18n="hero.worldRhythm">World rhythm</span>
         </div>
         <div class="hero-metric">
           <strong>YEH</strong>
-          <span>WorldSync code</span>
+          <span data-i18n="hero.worldsyncCode">WorldSync code</span>
         </div>
       </div>
     </div>
@@ -5307,7 +5320,7 @@
       <div class="worldsync-prototype-shell live-worldsync-watch-shell">
         <canvas id="worldsyncLiveCanvas" class="worldsync-live-canvas" width="1200" height="1200" aria-label="Live BaloWaci WorldSync watch"></canvas>
         <div class="worldsync-live-card local-card">
-          <span>Local</span>
+          <span data-i18n="watch.local">Local</span>
           <strong id="worldsyncLiveLocal">--:--:--</strong>
         </div>
         <div class="worldsync-live-card world-card">
@@ -5315,12 +5328,12 @@
           <strong id="worldsyncLiveWorld">--:--</strong>
         </div>
         <div class="worldsync-live-card mode-card">
-          <span>Mode</span>
+          <span data-i18n="watch.mode">Mode</span>
           <strong id="worldsyncLiveMode">Cultural</strong>
         </div>
       </div>
       <div class="worldsync-city-dock" aria-label="Choose a WorldSync city">
-        <label for="worldsyncCitySelect">City Time</label>
+        <label for="worldsyncCitySelect" data-i18n="watch.cityTime">City Time</label>
         <select id="worldsyncCitySelect" aria-label="Choose city time">
           <option value="Africa/Kinshasa" data-city="Kinshasa" data-code="Democratic Republic of the Congo">Kinshasa, Democratic Republic of the Congo</option>
           <option value="Asia/Dubai" data-city="Dubai" data-code="United Arab Emirates">Dubai, United Arab Emirates</option>
@@ -5335,14 +5348,14 @@
           <option value="Europe/London" data-city="London" data-code="United Kingdom">London, United Kingdom</option>
           <option value="America/Chicago" data-city="Chicago" data-code="United States">Chicago, United States</option>
         </select>
-        <button type="button" id="worldsyncResetRotation">Reset</button>
+        <button type="button" id="worldsyncResetRotation" data-i18n="watch.reset">Reset</button>
       </div>
       <div class="watch-led-controls" aria-label="Watch LED light controls">
-        <span>LED Lights</span>
+        <span data-i18n="watch.ledLights">LED Lights</span>
         <input id="watchLightSlider" type="range" min="0" max="100" step="5" value="100" aria-label="Watch light brightness">
-        <button type="button" class="watch-led-button" data-watch-light="100">Full</button>
-        <button type="button" class="watch-led-button" data-watch-light="35">Dim</button>
-        <button type="button" class="watch-led-button" data-watch-light="0">Off</button>
+        <button type="button" class="watch-led-button" data-watch-light="100" data-i18n="watch.full">Full</button>
+        <button type="button" class="watch-led-button" data-watch-light="35" data-i18n="watch.dim">Dim</button>
+        <button type="button" class="watch-led-button" data-watch-light="0" data-i18n="watch.off">Off</button>
       </div>
       <div class="home-watch-nav legacy-watch-engine" aria-label="Interactive BaloWaci section navigator">
         <div class="home-watch-shell">
@@ -5464,13 +5477,10 @@
     <div class="trinity-prototype-inner">
       <div class="trinity-prototype-header">
         <div>
-          <p class="trinity-kicker">Prototype Watch Codes</p>
-          <h2 id="trinityPrototypeTitle" class="trinity-title">BaloWaci <span>Prototype Family</span></h2>
+          <p class="trinity-kicker" data-i18n="prototype.kicker">Prototype Watch Codes</p>
+          <h2 id="trinityPrototypeTitle" class="trinity-title">BaloWaci <span data-i18n="prototype.family">Prototype Family</span></h2>
         </div>
-        <p class="trinity-copy">
-          Trinity, Axis, and WorldSync translate the BaloWaci time system into three watch directions:
-          symbolic harmony, directional alignment, and global synchronization.
-        </p>
+        <p class="trinity-copy" data-i18n="prototype.intro">Each BaloWaci prototype explores one clear idea: Trinity combines three ways to read time, Axis explains direction and balance, and WorldSync connects cities across the world.</p>
       </div>
 
       <div class="prototype-family-grid" aria-label="BaloWaci prototype watch family">
@@ -5480,8 +5490,8 @@
             <img src="assets/balowaci trinity final protoype.png" alt="BaloWaci Trinity YAH prototype concept board showing dial layout, cultural time ring, subdials, case views, and specifications" loading="lazy">
           </figure>
           <div class="prototype-model-body">
-            <h3>BaloWaci Trinity</h3>
-            <p>Code YAH. The ceremonial three-reading model: standard time, cultural time, and military time held in one luxury dial.</p>
+            <h3 data-i18n="prototype.trinityTitle">BaloWaci Trinity</h3>
+            <p data-i18n="prototype.trinityBody">Code YAH. Trinity is the easy starting point: it shows regular clock time, 24-hour time, and cultural time together so a user can understand the same moment three ways.</p>
           </div>
         </article>
 
@@ -5491,8 +5501,8 @@
             <img src="assets/balowaci axis final prototype.png" alt="BaloWaci Axis WEH prototype watch concept" loading="lazy">
           </figure>
           <div class="prototype-model-body">
-            <h3>BaloWaci Axis</h3>
-            <p>Code WEH. The alignment model, built around direction, balance, movement, and the centerline of personal time.</p>
+            <h3 data-i18n="prototype.axisTitle">BaloWaci Axis</h3>
+            <p data-i18n="prototype.axisBody">Code WEH. Axis focuses on direction. It helps explain where a moment sits on the watch, like a compass for time, movement, and personal focus.</p>
           </div>
         </article>
 
@@ -5502,8 +5512,8 @@
             <img src="assets/balowaci worldsync final prototype.png" alt="BaloWaci WorldSync YEH prototype watch concept" loading="lazy">
           </figure>
           <div class="prototype-model-body">
-            <h3>BaloWaci WorldSync</h3>
-            <p>Code YEH. The global model, designed for world rhythm, time-zone awareness, and synchronized place-based readings.</p>
+            <h3 data-i18n="prototype.worldsyncTitle">BaloWaci WorldSync</h3>
+            <p data-i18n="prototype.worldsyncBody">Code YEH. WorldSync is the global model. It lets users choose a city, see that city time live, and understand how people in different places share the same moment.</p>
           </div>
         </article>
       </div>
@@ -5514,12 +5524,12 @@
         </figure>
 
         <aside class="trinity-spec-panel" aria-label="BaloWaci Trinity prototype specifications">
-          <h3>Trinity Language</h3>
+          <h3 data-i18n="prototype.languageTitle">Trinity Language</h3>
           <ul class="trinity-spec-list">
-            <li><span>Main Dial</span> Standard hours, minutes, and seconds stay familiar at the center.</li>
-            <li><span>Second Ring</span> Cultural time becomes a colored interpretation layer around the dial.</li>
-            <li><span>Subdials</span> Day, month, date, and 24-hour military time become mechanical rituals.</li>
-            <li><span>Material</span> 316L steel, warm leather, and flat sapphire glass shape the luxury direction.</li>
+            <li><span data-i18n="prototype.mainDialLabel">Main Dial</span> <span data-i18n="prototype.mainDialBody">Regular hours, minutes, and seconds stay familiar at the center.</span></li>
+            <li><span data-i18n="prototype.secondRingLabel">Second Ring</span> <span data-i18n="prototype.secondRingBody">Color shows how the day can feel culturally, not just numerically.</span></li>
+            <li><span data-i18n="prototype.subdialsLabel">Subdials</span> <span data-i18n="prototype.subdialsBody">Small dials can show date, day, month, and 24-hour time.</span></li>
+            <li><span data-i18n="prototype.materialLabel">Material</span> <span data-i18n="prototype.materialBody">Steel, leather, and sapphire glass point the idea toward a real luxury watch.</span></li>
           </ul>
 
           <div class="trinity-ring-legend" aria-label="Cultural time ring colors">
@@ -5612,35 +5622,50 @@
       <div class="founder-message-header">
         <img class="founder-portrait" src="assets/founder-fadhili-baloci.jpg" alt="Fadhili Baloci, founder of BaloWaci">
         <div class="founder-message-title">
-          <h2 data-i18n="founder.title">Founder‚Äôs Message</h2>
+          <h2 data-i18n="founder.title">A Message From the Founder</h2>
           <h3>Fadhili Baloci</h3>
         </div>
       </div>
 
       <div class="founder-message-body">
-        <p data-i18n="founder.body">
-          My name is Fadhili Baloci, founder of BaloWaci.
-          <br><br>
-          I was born in Fizi, Democratic Republic of Congo, and raised in Mozambique after my family fled war in search of peace. In the year 2000, we found refuge there and built a life for 11 years before I moved to the United States in 2011 at the age of 11. Today, I reside in Iowa City, Iowa‚Äîbut my journey across continents, cultures, and challenges is what shaped the vision behind BaloWaci.
-          <br><br>
-          BaloWaci was not created overnight. It was born from reflection, curiosity, and a deep desire to understand time, perception, and human potential in a new way. Growing up between different worlds taught me that perspective is everything‚Äîand that what we accept as fixed can always be reimagined. BaloWaci represents that belief: a system that challenges how we interpret time and invites us to think beyond limits.
-          <br><br>
-          I want to show both young and old minds that there are no boundaries to what the human mind can achieve. When you choose a domain in your life and commit to it with 100% focus, discipline, and faith, results will come‚Äîsooner or later. The journey may be silent, but the impact will speak.
-          <br><br>
-          True work doesn‚Äôt always need to be loud to be powerful. Work hard whether you are noticed or not. Move with integrity. Build with humility. And trust that what you create in silence will one day echo in the world.
-          <br><br>
-          BaloWaci is more than a system‚Äîit is a reflection of resilience, vision, and the belief that greatness can come from anywhere. If my story stands for anything, it is this: your beginning does not define your ending. What matters is what you choose to build.
-          <br><br>
-          ‚Äî Fadhili Baloci
-        </p>
+        <p data-i18n="founder.body">Welcome to BaloWaci.
 
-        <div class="founder-quote-box">
-          <blockquote data-i18n="founder.quote">‚ÄúSound is the absence of silence, not action.‚Äù</blockquote>
+When I first began thinking about time, I wasn't trying to build a watch. I was trying to understand something that most of us experience every day but rarely stop to question.
+
+Time connects every person on Earth, yet we interpret it in different ways. Around the world, cultures, professions, and communities use different systems to describe the same moment. Travelers convert time zones. Pilots and military personnel use the 24-hour clock. Families and cultures often describe time according to the rhythm of the day rather than the numbers on a clock.
+
+That curiosity inspired BaloWaci.
+
+Our goal is not simply to measure time. It is to help people interpret it.
+
+BaloWaci was created around the idea that one moment can be understood through multiple synchronized perspectives. By bringing together standard time, military time, cultural interpretations, and global synchronization into a unified experience, we hope to make time more intuitive, more educational, and more meaningful.
+
+Our philosophy is simple:
+
+Everything Moving Together In Time.
+
+Those words represent more than a slogan. They represent our belief that people, cultures, and places across the world are connected through a shared passage of time, even though they may express it differently.
+
+As BaloWaci grows, our vision extends beyond watches. We see opportunities to develop technologies and experiences that help people better understand global time, improve coordination across regions, support education, and inspire curiosity about the world.
+
+Every prototype you see represents another step in that journey.
+
+Whether you are a traveler, student, professional, collector, or simply someone fascinated by time, thank you for being part of the BaloWaci story.
+
+This is only the beginning.
+
+- Fadhili Baloci
+Founder, BaloWaci</p>
+
+        <div class="founder-quote-box founder-purpose-box">
+          <h3 data-i18n="mission.title">Our Mission</h3>
+          <p data-i18n="mission.body">To create innovative time interpretation systems that help people understand, synchronize, and experience time from multiple perspectives.</p>
+          <h3 data-i18n="vision.simpleTitle">Our Vision</h3>
+          <p data-i18n="vision.simpleBody">To become the world's leading brand for time interpretation, global synchronization, and innovative timekeeping experiences.</p>
         </div>
       </div>
     </div>
   </section>
-
   <!-- Live Time Interpretation Panel -->
   <section id="time-panel">
     <div class="container">
@@ -7302,6 +7327,62 @@
     Object.entries(monetizationTranslationUpdates).forEach(([language, entries]) => {
       Object.assign(translations[language], entries);
     });
+    const homepageTranslationUpdates = {
+      en: {
+        'nav.today': 'Today', 'nav.watch': 'Watch', 'nav.prototypes': 'Prototypes', 'nav.liveTime': 'Live Time', 'nav.founder': 'Founder', 'nav.feedback': 'Feedback',
+        'hero.kicker': 'WorldSync live watch', 'hero.body': 'BaloWaci helps people read one moment in more than one way: local time, world time, cultural rhythm, and weather-aware context in one live watch interface.', 'hero.openWatch': 'Open Live Watch', 'hero.openWheel': 'Open Live Wheel', 'hero.localPulse': 'Local pulse', 'hero.worldRhythm': 'World rhythm', 'hero.worldsyncCode': 'WorldSync code',
+        'watch.local': 'Local', 'watch.mode': 'Mode', 'watch.cityTime': 'City Time', 'watch.reset': 'Reset', 'watch.ledLights': 'LED Lights', 'watch.full': 'Full', 'watch.dim': 'Dim', 'watch.off': 'Off',
+        'explain.timeTitle': 'One Time', 'explain.timeBody': 'The hands show the selected city in real time.', 'explain.ringTitle': 'Twelve Cities', 'explain.ringBody': 'The ring lets users compare major world places quickly.', 'explain.weatherTitle': 'Live Context', 'explain.weatherBody': 'Weather stays tied to the user location and updates only when needed.',
+        'prototype.kicker': 'Prototype Watch Codes', 'prototype.family': 'Prototype Family', 'prototype.intro': 'Each BaloWaci prototype explores one clear idea: Trinity combines three ways to read time, Axis explains direction and balance, and WorldSync connects cities across the world.', 'prototype.trinityTitle': 'BaloWaci Trinity', 'prototype.trinityBody': 'Code YAH. Trinity is the easy starting point: it shows regular clock time, 24-hour time, and cultural time together so a user can understand the same moment three ways.', 'prototype.axisTitle': 'BaloWaci Axis', 'prototype.axisBody': 'Code WEH. Axis focuses on direction. It helps explain where a moment sits on the watch, like a compass for time, movement, and personal focus.', 'prototype.worldsyncTitle': 'BaloWaci WorldSync', 'prototype.worldsyncBody': 'Code YEH. WorldSync is the global model. It lets users choose a city, see that city time live, and understand how people in different places share the same moment.', 'prototype.languageTitle': 'Trinity Language', 'prototype.mainDialLabel': 'Main Dial', 'prototype.mainDialBody': 'Regular hours, minutes, and seconds stay familiar at the center.', 'prototype.secondRingLabel': 'Second Ring', 'prototype.secondRingBody': 'Color shows how the day can feel culturally, not just numerically.', 'prototype.subdialsLabel': 'Subdials', 'prototype.subdialsBody': 'Small dials can show date, day, month, and 24-hour time.', 'prototype.materialLabel': 'Material', 'prototype.materialBody': 'Steel, leather, and sapphire glass point the idea toward a real luxury watch.',
+        'founder.title': 'A Message From the Founder', 'founder.body': 'Welcome to BaloWaci.\n\nWhen I first began thinking about time, I was not trying to build a watch. I was trying to understand something that most of us experience every day but rarely stop to question.\n\nTime connects every person on Earth, yet we interpret it in different ways. Around the world, cultures, professions, and communities use different systems to describe the same moment. Travelers convert time zones. Pilots and military personnel use the 24-hour clock. Families and cultures often describe time according to the rhythm of the day rather than the numbers on a clock.\n\nThat curiosity inspired BaloWaci.\n\nOur goal is not simply to measure time. It is to help people interpret it.\n\nBaloWaci was created around the idea that one moment can be understood through multiple synchronized perspectives. By bringing together standard time, military time, cultural interpretations, and global synchronization into a unified experience, we hope to make time more intuitive, more educational, and more meaningful.\n\nOur philosophy is simple:\n\nEverything Moving Together In Time.\n\nThose words represent more than a slogan. They represent our belief that people, cultures, and places across the world are connected through a shared passage of time, even though they may express it differently.\n\nAs BaloWaci grows, our vision extends beyond watches. We see opportunities to develop technologies and experiences that help people better understand global time, improve coordination across regions, support education, and inspire curiosity about the world.\n\nEvery prototype you see represents another step in that journey.\n\nWhether you are a traveler, student, professional, collector, or simply someone fascinated by time, thank you for being part of the BaloWaci story.\n\nThis is only the beginning.\n\n- Fadhili Baloci\nFounder, BaloWaci', 'mission.title': 'Our Mission', 'mission.body': 'To create innovative time interpretation systems that help people understand, synchronize, and experience time from multiple perspectives.', 'vision.simpleTitle': 'Our Vision', 'vision.simpleBody': 'To become the world\'s leading brand for time interpretation, global synchronization, and innovative timekeeping experiences.',
+        'weather.status': '{condition} in {location}{temperature}', 'weather.condition.clear': 'Clear', 'weather.condition.clouds': 'Cloudy', 'weather.condition.rain': 'Raining', 'weather.condition.storm': 'Storm', 'weather.condition.snow': 'Snowing', 'weather.condition.unknown': 'Weather', 'weather.yourArea': 'your area', 'weather.updating': 'Updating weather for your location...', 'weather.gettingLocation': 'Getting your location for weather sync...', 'weather.denied': 'Location permission denied. Weather sync needs your current location.', 'weather.noLocation': 'Location is not available on this device.', 'weather.apiKey': 'Weather sync needs the OpenWeather API key in Render.', 'weather.unable': 'Unable to load weather. Check your connection or location settings.'
+      },
+      sw: {
+        'nav.today': 'Leo', 'nav.watch': 'Saa', 'nav.prototypes': 'Mifano', 'nav.liveTime': 'Wakati Hai', 'nav.founder': 'Mwanzilishi', 'nav.feedback': 'Maoni',
+        'hero.kicker': 'Saa hai ya WorldSync', 'hero.body': 'BaloWaci huwasaidia watu kusoma dakika moja kwa njia zaidi ya moja: wakati wa eneo, wakati wa dunia, mdundo wa kitamaduni, na hali ya hewa katika kiolesura kimoja cha saa hai.', 'hero.openWatch': 'Fungua Saa Hai', 'hero.openWheel': 'Fungua Gurudumu Hai', 'hero.localPulse': 'Mapigo ya eneo', 'hero.worldRhythm': 'Mdundo wa dunia', 'hero.worldsyncCode': 'Msimbo wa WorldSync',
+        'watch.local': 'Eneo', 'watch.mode': 'Hali', 'watch.cityTime': 'Wakati wa Jiji', 'watch.reset': 'Weka upya', 'watch.ledLights': 'Taa za LED', 'watch.full': 'Kamili', 'watch.dim': 'Punguza', 'watch.off': 'Zima',
+        'explain.timeTitle': 'Wakati Mmoja', 'explain.timeBody': 'Mikono inaonyesha wakati wa jiji ulilochagua moja kwa moja.', 'explain.ringTitle': 'Miji Kumi na Mbili', 'explain.ringBody': 'Pete huwasaidia watumiaji kulinganisha maeneo makubwa ya dunia haraka.', 'explain.weatherTitle': 'Muktadha Hai', 'explain.weatherBody': 'Hali ya hewa hubaki kwenye eneo la mtumiaji na husasishwa inapohitajika tu.',
+        'prototype.kicker': 'Misimbo ya Mifano ya Saa', 'prototype.family': 'Familia ya Mifano', 'prototype.intro': 'Kila mfano wa BaloWaci unaeleza wazo moja wazi: Trinity huunganisha njia tatu za kusoma wakati, Axis hueleza mwelekeo na usawa, na WorldSync huunganisha miji duniani.', 'prototype.trinityTitle': 'BaloWaci Trinity', 'prototype.trinityBody': 'Msimbo YAH. Trinity ni mwanzo rahisi: inaonyesha wakati wa kawaida, wakati wa saa 24, na wakati wa kitamaduni pamoja ili mtumiaji aelewe dakika moja kwa njia tatu.', 'prototype.axisTitle': 'BaloWaci Axis', 'prototype.axisBody': 'Msimbo WEH. Axis inazingatia mwelekeo. Inaeleza mahali dakika ilipo kwenye saa, kama dira ya wakati, mwendo, na umakini binafsi.', 'prototype.worldsyncTitle': 'BaloWaci WorldSync', 'prototype.worldsyncBody': 'Msimbo YEH. WorldSync ni mfano wa dunia. Mtumiaji huchagua jiji, huona wakati wake moja kwa moja, na kuelewa jinsi watu sehemu tofauti wanavyoshiriki dakika ileile.', 'prototype.languageTitle': 'Lugha ya Trinity', 'prototype.mainDialLabel': 'Sura Kuu', 'prototype.mainDialBody': 'Saa, dakika, na sekunde za kawaida hubaki katikati kwa urahisi.', 'prototype.secondRingLabel': 'Pete ya Pili', 'prototype.secondRingBody': 'Rangi huonyesha jinsi siku inaweza kuhisiwa kitamaduni, si kwa namba pekee.', 'prototype.subdialsLabel': 'Visura Vidogo', 'prototype.subdialsBody': 'Visura vidogo vinaweza kuonyesha tarehe, siku, mwezi, na wakati wa saa 24.', 'prototype.materialLabel': 'Nyenzo', 'prototype.materialBody': 'Chuma, ngozi, na glasi ya sapphire hupeleka wazo kuelekea saa halisi ya kifahari.',
+        'founder.title': 'Ujumbe Kutoka kwa Mwanzilishi', 'founder.body': 'Karibu BaloWaci.\n\nNilipoanza kufikiria kuhusu wakati, sikuwa najenga saa. Nilikuwa najaribu kuelewa jambo ambalo wengi wetu hupitia kila siku lakini mara chache tunasimama kuliuliza.\n\nWakati huunganisha kila mtu duniani, lakini tunautafsiri kwa njia tofauti. Duniani kote, tamaduni, taaluma, na jamii hutumia mifumo tofauti kueleza dakika ileile. Wasafiri hubadilisha maeneo ya saa. Marubani na wanajeshi hutumia saa ya saa 24. Familia na tamaduni mara nyingi hueleza wakati kwa mdundo wa siku badala ya namba kwenye saa.\n\nUdadisi huo ulihamasisha BaloWaci.\n\nLengo letu si kupima wakati tu. Ni kuwasaidia watu kuutafsiri.\n\nBaloWaci iliundwa kwa wazo kwamba dakika moja inaweza kueleweka kupitia mitazamo mingi inayosawazishwa. Kwa kuleta pamoja wakati wa kawaida, wakati wa kijeshi, tafsiri za kitamaduni, na usawazishaji wa dunia katika uzoefu mmoja, tunatarajia kufanya wakati uwe rahisi kuelewa, wa kielimu zaidi, na wenye maana zaidi.\n\nFalsafa yetu ni rahisi:\n\nKila Kitu Kinasonga Pamoja Katika Wakati.\n\nManeno hayo ni zaidi ya kauli mbiu. Yanaonyesha imani yetu kwamba watu, tamaduni, na maeneo duniani kote wameunganishwa kupitia safari moja ya wakati, hata kama wanaueleza tofauti.\n\nBaloWaci inapokua, maono yetu yanapita zaidi ya saa. Tunaona nafasi za kutengeneza teknolojia na uzoefu unaowasaidia watu kuelewa vizuri wakati wa dunia, kuboresha uratibu kati ya maeneo, kusaidia elimu, na kuchochea udadisi kuhusu dunia.\n\nKila mfano unaouona ni hatua nyingine katika safari hiyo.\n\nIwe wewe ni msafiri, mwanafunzi, mtaalamu, mkusanyaji, au mtu anayevutiwa tu na wakati, asante kwa kuwa sehemu ya hadithi ya BaloWaci.\n\nHuu ni mwanzo tu.\n\n- Fadhili Baloci\nMwanzilishi, BaloWaci', 'mission.title': 'Dhamira Yetu', 'mission.body': 'Kuunda mifumo bunifu ya tafsiri ya wakati inayowasaidia watu kuelewa, kusawazisha, na kupata uzoefu wa wakati kutoka mitazamo mingi.', 'vision.simpleTitle': 'Maono Yetu', 'vision.simpleBody': 'Kuwa chapa inayoongoza duniani katika tafsiri ya wakati, usawazishaji wa dunia, na uzoefu bunifu wa utunzaji wa wakati.',
+        'weather.status': '{condition} huko {location}{temperature}', 'weather.condition.clear': 'Angavu', 'weather.condition.clouds': 'Mawingu', 'weather.condition.rain': 'Mvua', 'weather.condition.storm': 'Dhoruba', 'weather.condition.snow': 'Theluji', 'weather.condition.unknown': 'Hali ya hewa', 'weather.yourArea': 'eneo lako', 'weather.updating': 'Inasasisha hali ya hewa ya eneo lako...', 'weather.gettingLocation': 'Inatafuta eneo lako kwa usawazishaji wa hali ya hewa...', 'weather.denied': 'Ruhusa ya eneo imekataliwa. Hali ya hewa inahitaji eneo lako la sasa.', 'weather.noLocation': 'Eneo halipatikani kwenye kifaa hiki.', 'weather.apiKey': 'Hali ya hewa inahitaji ufunguo wa OpenWeather kwenye Render.', 'weather.unable': 'Imeshindwa kupakia hali ya hewa. Kagua intaneti au mipangilio ya eneo.'
+      },
+      es: {
+        'nav.today': 'Hoy', 'nav.watch': 'Reloj', 'nav.prototypes': 'Prototipos', 'nav.liveTime': 'Hora en vivo', 'nav.founder': 'Fundador', 'nav.feedback': 'Comentarios',
+        'hero.kicker': 'Reloj WorldSync en vivo', 'hero.body': 'BaloWaci ayuda a leer un mismo momento de varias maneras: hora local, hora mundial, ritmo cultural y contexto del clima en una sola interfaz de reloj vivo.', 'hero.openWatch': 'Abrir reloj en vivo', 'hero.openWheel': 'Abrir rueda en vivo', 'hero.localPulse': 'Pulso local', 'hero.worldRhythm': 'Ritmo mundial', 'hero.worldsyncCode': 'CÛdigo WorldSync',
+        'watch.local': 'Local', 'watch.mode': 'Modo', 'watch.cityTime': 'Hora de ciudad', 'watch.reset': 'Restablecer', 'watch.ledLights': 'Luces LED', 'watch.full': 'Completo', 'watch.dim': 'Tenue', 'watch.off': 'Apagado',
+        'prototype.kicker': 'CÛdigos de prototipo', 'prototype.family': 'Familia de prototipos', 'prototype.intro': 'Cada prototipo de BaloWaci explora una idea clara: Trinity combina tres formas de leer el tiempo, Axis explica direcciÛn y equilibrio, y WorldSync conecta ciudades del mundo.',
+        'founder.title': 'Un mensaje del fundador', 'mission.title': 'Nuestra misiÛn', 'mission.body': 'Crear sistemas innovadores de interpretaciÛn del tiempo que ayuden a las personas a comprender, sincronizar y experimentar el tiempo desde m˙ltiples perspectivas.', 'vision.simpleTitle': 'Nuestra visiÛn', 'vision.simpleBody': 'Convertirnos en la marca lÌder mundial en interpretaciÛn del tiempo, sincronizaciÛn global y experiencias innovadoras de mediciÛn del tiempo.',
+        'weather.status': '{condition} en {location}{temperature}', 'weather.condition.clear': 'Despejado', 'weather.condition.clouds': 'Nublado', 'weather.condition.rain': 'Lluvia', 'weather.condition.storm': 'Tormenta', 'weather.condition.snow': 'Nieve', 'weather.yourArea': 'tu zona', 'weather.updating': 'Actualizando el clima de tu ubicaciÛn...', 'weather.gettingLocation': 'Buscando tu ubicaciÛn para el clima...', 'weather.denied': 'Permiso de ubicaciÛn denegado. El clima necesita tu ubicaciÛn actual.', 'weather.noLocation': 'La ubicaciÛn no est· disponible en este dispositivo.', 'weather.apiKey': 'El clima necesita la clave de OpenWeather en Render.', 'weather.unable': 'No se pudo cargar el clima. Revisa tu conexiÛn o ubicaciÛn.'
+      }
+    };
+
+    const homepageSharedFallback = {
+      pt: Object.assign({}, homepageTranslationUpdates.en, { 'nav.today': 'Hoje', 'nav.watch': 'RelÛgio', 'nav.prototypes': 'ProtÛtipos', 'nav.liveTime': 'Hora ao vivo', 'nav.founder': 'Fundador', 'nav.feedback': 'Coment·rios', 'weather.status': '{condition} em {location}{temperature}', 'weather.condition.clear': 'CÈu limpo', 'weather.condition.clouds': 'Nublado', 'weather.condition.rain': 'Chuva', 'weather.condition.storm': 'Tempestade', 'weather.condition.snow': 'Neve', 'weather.yourArea': 'sua ·rea' }),
+      fr: Object.assign({}, homepageTranslationUpdates.en, { 'nav.today': 'Aujourdíhui', 'nav.watch': 'Montre', 'nav.prototypes': 'Prototypes', 'nav.liveTime': 'Heure en direct', 'nav.founder': 'Fondateur', 'nav.feedback': 'Avis', 'weather.status': '{condition} ‡ {location}{temperature}', 'weather.condition.clear': 'Clair', 'weather.condition.clouds': 'Nuageux', 'weather.condition.rain': 'Pluie', 'weather.condition.storm': 'Orage', 'weather.condition.snow': 'Neige', 'weather.yourArea': 'votre zone' })
+    };
+
+    Object.assign(homepageSharedFallback.pt, {
+      'hero.kicker': 'RelÛgio WorldSync ao vivo', 'hero.body': 'BaloWaci ajuda as pessoas a ler o mesmo momento de mais de uma forma: hora local, hora mundial, ritmo cultural e contexto do clima em uma ˙nica interface de relÛgio vivo.', 'hero.openWatch': 'Abrir relÛgio ao vivo', 'hero.openWheel': 'Abrir roda ao vivo', 'hero.localPulse': 'Pulso local', 'hero.worldRhythm': 'Ritmo mundial', 'hero.worldsyncCode': 'CÛdigo WorldSync',
+      'watch.local': 'Local', 'watch.mode': 'Modo', 'watch.cityTime': 'Hora da cidade', 'watch.reset': 'Redefinir', 'watch.ledLights': 'Luzes LED', 'watch.full': 'Forte', 'watch.dim': 'Fraco', 'watch.off': 'Desligado',
+      'explain.timeTitle': 'Um tempo', 'explain.timeBody': 'Os ponteiros mostram a cidade escolhida em tempo real.', 'explain.ringTitle': 'Doze cidades', 'explain.ringBody': 'O anel permite comparar rapidamente grandes lugares do mundo.', 'explain.weatherTitle': 'Contexto ao vivo', 'explain.weatherBody': 'O clima fica ligado ‡ localizaÁ„o do usu·rio e sÛ atualiza quando necess·rio.',
+      'prototype.kicker': 'CÛdigos dos protÛtipos', 'prototype.family': 'FamÌlia de protÛtipos', 'prototype.intro': 'Cada protÛtipo BaloWaci explora uma ideia clara: Trinity combina trÍs formas de ler o tempo, Axis explica direÁ„o e equilÌbrio, e WorldSync conecta cidades do mundo.', 'prototype.trinityBody': 'CÛdigo YAH. Trinity mostra hora comum, hora de 24 horas e tempo cultural juntos para entender o mesmo momento de trÍs formas.', 'prototype.axisBody': 'CÛdigo WEH. Axis explica direÁ„o, movimento e foco pessoal como uma b˙ssola do tempo.', 'prototype.worldsyncBody': 'CÛdigo YEH. WorldSync permite escolher uma cidade, ver sua hora ao vivo e entender como lugares diferentes compartilham o mesmo momento.',
+      'founder.title': 'Uma mensagem do fundador', 'founder.body': 'Bem-vindo ‡ BaloWaci.\n\nQuando comecei a pensar sobre o tempo, eu n„o estava tentando construir um relÛgio. Eu tentava entender algo que todos vivemos todos os dias, mas raramente paramos para questionar.\n\nO tempo conecta todas as pessoas na Terra, mas cada cultura, profiss„o e comunidade pode descrevÍ-lo de modo diferente. Essa curiosidade inspirou a BaloWaci.\n\nNosso objetivo n„o È apenas medir o tempo. … ajudar as pessoas a interpret·-lo.\n\nBaloWaci une hora padr„o, hora de 24 horas, interpretaÁıes culturais e sincronizaÁ„o global em uma experiÍncia simples, educativa e significativa.\n\nNossa filosofia È simples: Tudo se movendo junto no tempo.\n\nCada protÛtipo representa mais um passo nessa jornada. Obrigado por fazer parte da histÛria da BaloWaci.\n\nIsto È apenas o comeÁo.\n\n- Fadhili Baloci\nFundador, BaloWaci', 'mission.title': 'Nossa miss„o', 'mission.body': 'Criar sistemas inovadores de interpretaÁ„o do tempo que ajudem as pessoas a compreender, sincronizar e viver o tempo a partir de m˙ltiplas perspectivas.', 'vision.simpleTitle': 'Nossa vis„o', 'vision.simpleBody': 'Tornar-se a principal marca mundial em interpretaÁ„o do tempo, sincronizaÁ„o global e experiÍncias inovadoras de marcaÁ„o do tempo.'
+    });
+
+    Object.assign(homepageSharedFallback.fr, {
+      'hero.kicker': 'Montre WorldSync en direct', 'hero.body': 'BaloWaci aide ‡ lire un mÍme moment de plusieurs faÁons : heure locale, heure mondiale, rythme culturel et contexte mÈtÈo dans une seule interface de montre vivante.', 'hero.openWatch': 'Ouvrir la montre', 'hero.openWheel': 'Ouvrir la roue', 'hero.localPulse': 'Pouls local', 'hero.worldRhythm': 'Rythme mondial', 'hero.worldsyncCode': 'Code WorldSync',
+      'watch.local': 'Local', 'watch.mode': 'Mode', 'watch.cityTime': 'Heure de la ville', 'watch.reset': 'RÈinitialiser', 'watch.ledLights': 'LumiËres LED', 'watch.full': 'Fort', 'watch.dim': 'Faible', 'watch.off': '…teint',
+      'explain.timeTitle': 'Un temps', 'explain.timeBody': 'Les aiguilles montrent la ville choisie en temps rÈel.', 'explain.ringTitle': 'Douze villes', 'explain.ringBody': 'Líanneau permet de comparer rapidement de grands lieux du monde.', 'explain.weatherTitle': 'Contexte en direct', 'explain.weatherBody': 'La mÈtÈo reste liÈe ‡ la position de líutilisateur et ne se met ‡ jour que si nÈcessaire.',
+      'prototype.kicker': 'Codes des prototypes', 'prototype.family': 'Famille de prototypes', 'prototype.intro': 'Chaque prototype BaloWaci explore une idÈe claire : Trinity combine trois faÁons de lire le temps, Axis explique la direction et líÈquilibre, et WorldSync relie les villes du monde.', 'prototype.trinityBody': 'Code YAH. Trinity montre líheure classique, líheure sur 24 heures et le temps culturel ensemble.', 'prototype.axisBody': 'Code WEH. Axis explique la direction, le mouvement et le focus personnel comme une boussole du temps.', 'prototype.worldsyncBody': 'Code YEH. WorldSync permet de choisir une ville, de voir son heure en direct et de comprendre comment diffÈrents lieux partagent le mÍme moment.',
+      'founder.title': 'Un message du fondateur', 'founder.body': 'Bienvenue ‡ BaloWaci.\n\nQuand jíai commencÈ ‡ penser au temps, je ne cherchais pas ‡ construire une montre. Je voulais comprendre quelque chose que nous vivons tous chaque jour, mais que nous questionnons rarement.\n\nLe temps relie chaque personne sur Terre, mais les cultures, mÈtiers et communautÈs peuvent le dÈcrire diffÈremment. Cette curiositÈ a inspirÈ BaloWaci.\n\nNotre objectif níest pas seulement de mesurer le temps. Cíest díaider les personnes ‡ líinterprÈter.\n\nBaloWaci rÈunit líheure standard, líheure sur 24 heures, les interprÈtations culturelles et la synchronisation mondiale dans une expÈrience simple, Èducative et pleine de sens.\n\nNotre philosophie est simple : Tout bouge ensemble dans le temps.\n\nChaque prototype reprÈsente une nouvelle Ètape de ce parcours. Merci de faire partie de líhistoire de BaloWaci.\n\nCe níest que le dÈbut.\n\n- Fadhili Baloci\nFondateur, BaloWaci', 'mission.title': 'Notre mission', 'mission.body': 'CrÈer des systËmes innovants díinterprÈtation du temps qui aident les personnes ‡ comprendre, synchroniser et vivre le temps depuis plusieurs perspectives.', 'vision.simpleTitle': 'Notre vision', 'vision.simpleBody': 'Devenir la marque mondiale de rÈfÈrence pour líinterprÈtation du temps, la synchronisation globale et les expÈriences innovantes de mesure du temps.'
+    });
+    Object.entries(homepageSharedFallback).forEach(([language, entries]) => {
+      homepageTranslationUpdates[language] = Object.assign({}, entries, homepageTranslationUpdates[language] || {});
+    });
+
+    Object.entries(homepageTranslationUpdates).forEach(([language, entries]) => {
+      Object.assign(translations[language], entries);
+    });
 
     function t(key) {
       return translations[currentLanguage]?.[key] || translations.en[key] || key;
@@ -7347,10 +7428,7 @@
         star.style.animationDelay = Math.random() * 4 + 's';
         container.appendChild(star);
       }
-      updateEnvironmentalSky();
-      window.addEventListener('scroll', updateEnvironmentalSky, { passive: true });
-      window.addEventListener('resize', updateEnvironmentalSky);
-      setInterval(updateEnvironmentalSky, 60000);
+      // Sun/moon/day-sky updates removed; weather remains live.
     }
 
     // Fetch and display live time interpretation
@@ -7725,53 +7803,12 @@
     }
 
     function triggerMinuteRitual() {
-      const fireOverlay = document.getElementById('minuteFireOverlay');
-      if (fireOverlay) {
-        fireOverlay.classList.remove('active');
-        fireOverlay.innerHTML = '';
-        for (let i = 0; i < 72; i += 1) {
-          const drop = document.createElement('span');
-          drop.className = 'minute-fire-drop';
-          drop.style.left = `${Math.random() * 100}%`;
-          drop.style.height = `${22 + Math.random() * 28}px`;
-          drop.style.width = `${2.4 + Math.random() * 1.8}px`;
-          drop.style.opacity = String(0.44 + Math.random() * 0.38);
-          drop.style.animationDuration = `${0.85 + Math.random() * 0.95}s`;
-          drop.style.animationDelay = `${-Math.random() * 1.8}s`;
-          fireOverlay.appendChild(drop);
-        }
-        void fireOverlay.offsetWidth;
-        fireOverlay.classList.add('active');
-        clearTimeout(homeWatchState.fireTimeout);
-        homeWatchState.fireTimeout = setTimeout(() => {
-          fireOverlay.classList.remove('active');
-          fireOverlay.innerHTML = '';
-        }, 5000);
-      }
-
-      const settings = getRitualSettings();
-      if (settings.vibrate && navigator.vibrate) {
-        navigator.vibrate(settings.visualMode === 'future' ? [35, 30, 65] : settings.visualMode === 'past' ? [90] : [55]);
-      }
-      if (!settings.sound) return;
-      const volume = Math.min(Math.max(settings.volume, 0), 1);
-      if (settings.soundChoice === 'custom' && playCustomRitualSound(volume)) return;
-      playBuiltInRitualSound(settings.soundChoice, volume);
+      // Minute rain/fire/audio rituals were removed so the homepage stays calm and accurate.
     }
 
     function triggerDoveRitual() {
-      const doveRitual = document.getElementById('minuteDoveRitual');
-      if (!doveRitual) return;
-
-      doveRitual.classList.remove('active');
-      void doveRitual.offsetWidth;
-      doveRitual.classList.add('active');
-      clearTimeout(homeWatchState.doveTimeout);
-      homeWatchState.doveTimeout = setTimeout(() => {
-        doveRitual.classList.remove('active');
-      }, 10000);
+      // Dove ritual removed permanently.
     }
-
     function restoreSavedTimeView() {
       const savedTheme = localStorage.getItem('balowaciTheme') || 'purple-night';
       applyBaloWaciTheme(savedTheme);
@@ -7952,7 +7989,7 @@
     const weatherState = {
       currentCoords: null,
       lastUpdate: 0,
-      nextRefreshMs: 10 * 60 * 1000,
+      nextRefreshMs: 20 * 60 * 1000,
       watchId: null,
       activeCondition: 'clear',
       localPlaceName: '',
@@ -8153,6 +8190,24 @@
       text.textContent = message;
     }
 
+    function getWeatherConditionLabel(category) {
+      const key = `weather.condition.${category}`;
+      return t(key) === key ? t('weather.condition.clear') : t(key);
+    }
+
+    function formatWeatherStatus(category, locationName, temperature) {
+      const template = t('weather.status');
+      return template
+        .replace('{condition}', getWeatherConditionLabel(category))
+        .replace('{location}', locationName)
+        .replace('{temperature}', temperature ? ` ∑ ${temperature}` : '');
+    }
+
+    function hasLocationMeaningfullyChanged(lat, lon) {
+      if (!weatherState.currentCoords) return true;
+      return getMilesBetween(weatherState.currentCoords.lat, weatherState.currentCoords.lon, lat, lon) > 0.25;
+    }
+
     function updateWeatherDisplay(weatherData, lat, lon) {
       const overlay = document.getElementById('weatherOverlay');
       if (!overlay || !weatherData) return;
@@ -8161,11 +8216,11 @@
       overlay.className = `weather-overlay weather-${category}`;
 
       if (category === 'storm') {
-        createRainDrops(220, true);
+        createRainDrops(96, true);
       } else if (category === 'rain') {
-        createRainDrops(150);
+        createRainDrops(72);
       } else if (category === 'snow') {
-        createSnowflakes(42);
+        createSnowflakes(24);
       } else if (category === 'clouds') {
         createClouds();
       } else if (category === 'clear') {
@@ -8178,11 +8233,11 @@
       const temperature = typeof weatherData.temperature === 'number'
         ? `${Math.round(weatherData.temperature)}¬∞${unit}`
         : '';
-      const description = weatherData.description || weatherData.condition || 'Clear skies';
-      const locationName = normalizePlaceName(weatherData.locationName) || 'your area';
-      if (locationName !== 'your area') weatherState.localPlaceName = locationName;
+      const locationName = normalizePlaceName(weatherData.locationName) || t('weather.yourArea');
+      if (locationName !== t('weather.yourArea')) weatherState.localPlaceName = locationName;
+      weatherState.lastWeatherData = weatherData;
 
-      setWeatherStatusText(`${description.charAt(0).toUpperCase() + description.slice(1)} in ${locationName}${temperature ? ` ¬∑ ${temperature}` : ''}`, category);
+      setWeatherStatusText(formatWeatherStatus(category, locationName, temperature), category);
     }
 
     async function fetchLocalWeather(lat, lon) {
@@ -8196,65 +8251,70 @@
       return response.json();
     }
 
-    async function refreshWeatherForLocation(lat, lon) {
+    async function refreshWeatherForLocation(lat, lon, options = {}) {
+      const latitude = Number(lat);
+      const longitude = Number(lon);
+      if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return;
+
       const now = Date.now();
-      if (weatherState.currentCoords && weatherState.currentCoords.lat === lat && weatherState.currentCoords.lon === lon) {
-        if (now - weatherState.lastUpdate < weatherState.nextRefreshMs) {
-          return;
-        }
-      }
-
-      weatherState.currentCoords = { lat, lon };
-      setWeatherStatusText('Updating weather for your location‚Ä¶');
-
-      try {
-        const weatherData = await fetchLocalWeather(lat, lon);
-        const resolvedPlaceName = await resolveCurrentPlaceName(lat, lon, weatherData.locationName);
-        if (resolvedPlaceName) weatherData.locationName = resolvedPlaceName;
-        weatherState.lastUpdate = now;
-        updateWeatherDisplay(weatherData, lat, lon);
-      } catch (error) {
-        const message = error?.message || '';
-        if (message.includes('OpenWeather API key')) {
-          setWeatherStatusText('Weather sync needs the OpenWeather API key in Render.');
-          return;
-        }
-        setWeatherStatusText(`Unable to load weather${message ? `: ${message}` : '. Check your connection or location settings.'}`);
-      }
-    }
-
-    function requestLocalWeather() {
-      if (!('geolocation' in navigator)) {
-        setWeatherStatusText('Location is not available on this device.');
+      const moved = hasLocationMeaningfullyChanged(latitude, longitude);
+      const cacheFresh = now - weatherState.lastUpdate < weatherState.nextRefreshMs;
+      if (!options.force && !moved && cacheFresh && weatherState.lastWeatherData) {
         return;
       }
 
-      setWeatherStatusText('Getting your location for weather sync‚Ä¶');
+      weatherState.currentCoords = { lat: latitude, lon: longitude };
+      if (!weatherState.lastWeatherData) setWeatherStatusText(t('weather.updating'));
+
+      try {
+        const weatherData = await fetchLocalWeather(latitude, longitude);
+        const resolvedPlaceName = await resolveCurrentPlaceName(latitude, longitude, weatherData.locationName);
+        if (resolvedPlaceName) weatherData.locationName = resolvedPlaceName;
+        weatherState.lastUpdate = now;
+        updateWeatherDisplay(weatherData, latitude, longitude);
+      } catch (error) {
+        const message = error?.message || '';
+        if (message.includes('OpenWeather API key')) {
+          setWeatherStatusText(t('weather.apiKey'));
+          return;
+        }
+        if (!weatherState.lastWeatherData) {
+          setWeatherStatusText(t('weather.unable'));
+        }
+      }
+    }
+    function requestLocalWeather(options = {}) {
+      if (!('geolocation' in navigator)) {
+        setWeatherStatusText(t('weather.noLocation'));
+        return;
+      }
+
+      if (!weatherState.currentCoords && !weatherState.lastWeatherData) {
+        setWeatherStatusText(t('weather.gettingLocation'));
+      }
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          refreshWeatherForLocation(position.coords.latitude, position.coords.longitude);
+          refreshWeatherForLocation(position.coords.latitude, position.coords.longitude, options);
         },
         () => {
-          setWeatherStatusText('Location permission denied. Weather sync needs your current location.');
+          if (!weatherState.currentCoords && !weatherState.lastWeatherData) {
+            setWeatherStatusText(t('weather.denied'));
+          }
         },
-        { enableHighAccuracy: true, maximumAge: 0, timeout: 15000 }
+        { enableHighAccuracy: false, maximumAge: weatherState.nextRefreshMs, timeout: 12000 }
       );
     }
 
     function initializeWeatherSync() {
-      requestLocalWeather();
-      if ('geolocation' in navigator && typeof navigator.geolocation.watchPosition === 'function') {
-        weatherState.watchId = navigator.geolocation.watchPosition(
-          (position) => {
-            refreshWeatherForLocation(position.coords.latitude, position.coords.longitude);
-          },
-          () => {},
-          { enableHighAccuracy: true, maximumAge: 0, timeout: 15000 }
-        );
-      }
-      setInterval(requestLocalWeather, weatherState.nextRefreshMs);
+      requestLocalWeather({ force: true });
+      setInterval(() => {
+        if (weatherState.currentCoords) {
+          refreshWeatherForLocation(weatherState.currentCoords.lat, weatherState.currentCoords.lon, { force: true });
+        } else {
+          requestLocalWeather({ force: true });
+        }
+      }, weatherState.nextRefreshMs);
     }
-
     const homeWatchState = {
       canvas: null,
       ctx: null,
