@@ -5262,6 +5262,47 @@
       position: relative !important;
       z-index: 42 !important;
     }
+
+    body.premium-preview-active .premium-lock-preview {
+      border-color: rgba(214, 179, 92, 0.72);
+      background:
+        radial-gradient(circle at top left, rgba(178, 102, 255, 0.22), transparent 42%),
+        radial-gradient(circle at bottom right, rgba(214, 179, 92, 0.18), transparent 38%),
+        rgba(8, 8, 14, 0.72);
+      box-shadow: 0 0 42px rgba(178, 102, 255, 0.18), inset 0 0 0 1px rgba(214, 179, 92, 0.18);
+    }
+
+    .premium-live-panel {
+      display: none;
+      margin: 18px auto;
+      max-width: 760px;
+      border: 1px solid rgba(214, 179, 92, 0.28);
+      border-radius: 8px;
+      padding: 16px;
+      background: rgba(6, 8, 14, 0.7);
+      text-align: left;
+    }
+
+    body.premium-preview-active .premium-live-panel {
+      display: grid;
+      gap: 10px;
+    }
+
+    .premium-live-panel strong {
+      color: #f0d289;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .premium-live-panel span {
+      color: rgba(255, 255, 255, 0.78);
+      line-height: 1.55;
+    }
+
+    body.premium-preview-active .premium-preview-access {
+      border-color: rgba(49, 214, 123, 0.45);
+      box-shadow: 0 0 28px rgba(49, 214, 123, 0.12);
+    }
   </style>
 </head>
 <body>
@@ -5952,7 +5993,7 @@ Founder, BaloWaci</p>
 
         <div class="premium-lock-preview" aria-label="Locked premium preview">
           <h3>Premium Console Preview</h3>
-          <p>These controls represent the paid layer: saved views, collector themes, ritual sound, custom uploads, and advanced interpretation modes. They are shown as a preview until checkout is connected.</p>
+          <p>Use this 25-minute preview to test the paid layer before charging users: collector themes, saved city views, premium interpretation modes, and a private WorldSync setup.</p>
 
           <div class="theme-controls locked-control" aria-label="Locked BaloWaci theme controls">
             <button type="button" class="theme-button" data-theme-option="purple-night" disabled>Purple Night</button>
@@ -5961,45 +6002,45 @@ Founder, BaloWaci</p>
             <button type="button" class="theme-button" data-theme-option="cultural-compass" disabled>Cultural Compass</button>
           </div>
 
-          <div class="ritual-settings locked-control" aria-label="Locked minute ritual settings">
-            <h3>Minute Ritual</h3>
+          <div class="ritual-settings locked-control" aria-label="Locked premium WorldSync settings">
+            <h3>Premium WorldSync Tools</h3>
             <div class="ritual-grid">
-              <label class="ritual-control inline">
-                <input type="checkbox" id="ritualVibrate" disabled>
-                <span>Vibrate when the watch breathes</span>
-              </label>
-              <label class="ritual-control inline">
-                <input type="checkbox" id="ritualSound" disabled>
-                <span>Play sound when the watch breathes</span>
-              </label>
               <label class="ritual-control">
-                <span>Ritual sound</span>
-                <select id="ritualSoundChoice" disabled>
-                  <option value="soft">Soft Chime</option>
-                  <option value="bell">Deep Bell</option>
-                  <option value="pulse">Ambient Pulse</option>
-                  <option value="custom">Custom Upload</option>
+                <span>Premium city focus</span>
+                <select id="premiumCityFocus" disabled>
+                  <option value="America/Chicago">Chicago, United States</option>
+                  <option value="Africa/Kinshasa">Kinshasa, Democratic Republic of the Congo</option>
+                  <option value="Asia/Dubai">Dubai, United Arab Emirates</option>
+                  <option value="Europe/Paris">Paris, France</option>
+                  <option value="Asia/Tokyo">Tokyo, Japan</option>
+                  <option value="Africa/Maputo">Maputo, Mozambique</option>
                 </select>
               </label>
               <label class="ritual-control">
-                <span>Volume</span>
-                <input type="range" id="ritualVolume" min="0" max="1" step="0.05" value="0.45" disabled>
-              </label>
-              <label class="ritual-control">
-                <span>Upload short sound</span>
-                <input type="file" id="ritualUpload" accept="audio/*" disabled>
-              </label>
-              <label class="ritual-control">
-                <span>Visual interpretation</span>
-                <select id="ritualVisualMode" disabled>
-                  <option value="present">Present Time</option>
-                  <option value="future">Future Journey</option>
-                  <option value="past">Past Journey</option>
+                <span>Interpretation mode</span>
+                <select id="premiumInterpretationMode" disabled>
+                  <option value="Cultural">Cultural</option>
+                  <option value="Business">Business</option>
+                  <option value="Travel">Travel</option>
+                  <option value="Family">Family</option>
+                  <option value="Collector">Collector</option>
                 </select>
+              </label>
+              <label class="ritual-control inline">
+                <input type="checkbox" id="premiumWeatherContext" disabled>
+                <span>Include live weather context</span>
+              </label>
+              <label class="ritual-control inline">
+                <input type="checkbox" id="premiumAutoSave" disabled>
+                <span>Auto-save this premium setup on this device</span>
               </label>
             </div>
           </div>
 
+          <div class="premium-live-panel" id="premiumLivePanel" aria-live="polite">
+            <strong>Premium preview is locked</strong>
+            <span>Start the preview to test saved city focus, collector themes, interpretation mode, and personal WorldSync setup.</span>
+          </div>
           <div class="final-cta-actions">
             <button type="button" id="saveTimeView" class="luxury-btn primary" disabled>Save My Time View</button>
             <a class="luxury-btn secondary" href="#join">Join Premium Waitlist</a>
@@ -7833,11 +7874,33 @@ Founder, BaloWaci</p>
       return `${minutes}:${String(seconds).padStart(2, '0')}`;
     }
 
+    function getPremiumControls() {
+      return Array.from(document.querySelectorAll('.locked-control button, .locked-control input, .locked-control select, #saveTimeView'));
+    }
+
+    function updatePremiumLivePanel(active) {
+      const panel = document.getElementById('premiumLivePanel');
+      if (!panel) return;
+      const citySelect = document.getElementById('premiumCityFocus');
+      const modeSelect = document.getElementById('premiumInterpretationMode');
+      const weatherContext = document.getElementById('premiumWeatherContext');
+      const cityLabel = citySelect?.selectedOptions?.[0]?.textContent || 'Chicago, United States';
+      const mode = modeSelect?.value || 'Cultural';
+      panel.innerHTML = active
+        ? `<strong>Premium preview active</strong><span>${mode} mode · ${cityLabel}${weatherContext?.checked ? ' · live weather context included' : ''}. You can change themes, save this view, and test the paid WorldSync setup.</span>`
+        : '<strong>Premium preview is locked</strong><span>Start the preview to test saved city focus, collector themes, interpretation mode, and personal WorldSync setup.</span>';
+    }
+
     function setPremiumPreviewUnlocked(unlocked) {
       document.body.classList.toggle('premium-preview-active', unlocked);
-      document.querySelectorAll('.locked-control button, .locked-control input, .locked-control select, #saveTimeView').forEach((control) => {
+      getPremiumControls().forEach((control) => {
         control.disabled = !unlocked;
+        control.setAttribute('aria-disabled', String(!unlocked));
       });
+      document.querySelectorAll('.access-card.locked').forEach((card) => {
+        card.setAttribute('aria-label', unlocked ? 'Premium preview unlocked' : 'Premium locked');
+      });
+      updatePremiumLivePanel(unlocked);
     }
 
     function updatePremiumPreviewState() {
@@ -7848,10 +7911,10 @@ Founder, BaloWaci</p>
       const active = remaining > 0;
 
       setPremiumPreviewUnlocked(active);
-      if (startButton) startButton.textContent = active ? 'Premium Preview Active' : 'Start 25-Minute Premium Preview';
+      if (startButton) startButton.textContent = active ? `Premium Preview Active · ${formatPreviewTime(remaining)}` : 'Start 25-Minute Premium Preview';
       if (status) {
         status.textContent = active
-          ? `Premium preview unlocked. ${formatPreviewTime(remaining)} remaining before payment lock returns.`
+          ? `Premium preview unlocked. ${formatPreviewTime(remaining)} remaining. Try themes, city focus, interpretation mode, and saving your view.`
           : 'Premium preview locked. Start the timer to explore.';
       }
       if (!active && expiresAt) localStorage.removeItem(premiumPreviewStorageKey);
@@ -7860,64 +7923,86 @@ Founder, BaloWaci</p>
     function startPremiumPreview() {
       localStorage.setItem(premiumPreviewStorageKey, String(Date.now() + premiumPreviewDurationMs));
       updatePremiumPreviewState();
+      document.getElementById('premiumCityFocus')?.focus();
+    }
+
+    function applyPremiumCityFocus(timezone) {
+      const worldsyncSelect = document.getElementById('worldsyncCitySelect');
+      if (worldsyncSelect) {
+        const option = Array.from(worldsyncSelect.options).find((item) => item.value === timezone);
+        if (option) {
+          worldsyncSelect.value = timezone;
+          setWorldSyncCityFromSelect(worldsyncSelect);
+        }
+      }
+      localStorage.setItem('balowaciPremiumCityFocus', timezone);
+      updatePremiumLivePanel(document.body.classList.contains('premium-preview-active'));
+    }
+
+    function applyPremiumInterpretationMode(mode) {
+      const modeElement = document.getElementById('worldsyncLiveMode');
+      if (modeElement) modeElement.textContent = mode;
+      localStorage.setItem('balowaciPremiumInterpretationMode', mode);
+      updatePremiumLivePanel(document.body.classList.contains('premium-preview-active'));
+    }
+
+    function savePremiumPreviewView() {
+      const saveStatus = document.getElementById('saveViewStatus');
+      const cityFocus = document.getElementById('premiumCityFocus')?.value || worldsyncHeroState.timezone;
+      const mode = document.getElementById('premiumInterpretationMode')?.value || 'Cultural';
+      const payload = {
+        cityFocus,
+        mode,
+        theme: document.body.dataset.theme || 'purple-night',
+        weather: Boolean(document.getElementById('premiumWeatherContext')?.checked),
+        savedAt: new Date().toISOString()
+      };
+      localStorage.setItem('balowaciPremiumPreviewView', JSON.stringify(payload));
+      localStorage.setItem('balowaciSavedWatchIndex', String(homeWatchState.selectedIndex));
+      localStorage.setItem('balowaciLanguage', currentLanguage);
+      if (saveStatus) saveStatus.textContent = `Premium view saved: ${mode} mode for ${document.getElementById('premiumCityFocus')?.selectedOptions?.[0]?.textContent || 'your city'}.`;
+      updatePremiumLivePanel(true);
     }
 
     function initializePremiumExperience() {
       restoreSavedTimeView();
-      syncRitualControls();
+      const savedPremiumView = (() => {
+        try { return JSON.parse(localStorage.getItem('balowaciPremiumPreviewView') || '{}'); } catch (error) { return {}; }
+      })();
+      const cityFocus = document.getElementById('premiumCityFocus');
+      const modeSelect = document.getElementById('premiumInterpretationMode');
+      const weatherContext = document.getElementById('premiumWeatherContext');
+      const autoSave = document.getElementById('premiumAutoSave');
+      if (cityFocus && savedPremiumView.cityFocus) cityFocus.value = savedPremiumView.cityFocus;
+      if (modeSelect && savedPremiumView.mode) modeSelect.value = savedPremiumView.mode;
+      if (weatherContext) weatherContext.checked = Boolean(savedPremiumView.weather);
+      if (autoSave) autoSave.checked = localStorage.getItem('balowaciPremiumAutoSave') === 'true';
       updatePremiumPreviewState();
       premiumPreviewTimer = setInterval(updatePremiumPreviewState, 1000);
       document.getElementById('startPremiumPreview')?.addEventListener('click', startPremiumPreview);
       document.querySelectorAll('[data-theme-option]').forEach((button) => {
         button.addEventListener('click', () => {
           applyBaloWaciTheme(button.dataset.themeOption);
+          updatePremiumLivePanel(document.body.classList.contains('premium-preview-active'));
         });
       });
-      const saveButton = document.getElementById('saveTimeView');
-      const saveStatus = document.getElementById('saveViewStatus');
-      saveButton?.addEventListener('click', () => {
-        localStorage.setItem('balowaciSavedWatchIndex', String(homeWatchState.selectedIndex));
-        localStorage.setItem('balowaciLanguage', currentLanguage);
-        if (saveStatus) saveStatus.textContent = t('premium.saved');
+      cityFocus?.addEventListener('change', (event) => {
+        applyPremiumCityFocus(event.target.value);
+        if (autoSave?.checked) savePremiumPreviewView();
       });
-      document.getElementById('ritualVibrate')?.addEventListener('change', (event) => {
-        localStorage.setItem('balowaciRitualVibrate', String(event.target.checked));
+      modeSelect?.addEventListener('change', (event) => {
+        applyPremiumInterpretationMode(event.target.value);
+        if (autoSave?.checked) savePremiumPreviewView();
       });
-      document.getElementById('ritualSound')?.addEventListener('change', (event) => {
-        localStorage.setItem('balowaciRitualSound', String(event.target.checked));
-        if (event.target.checked) ensureRitualAudioContext();
+      weatherContext?.addEventListener('change', () => {
+        updatePremiumLivePanel(document.body.classList.contains('premium-preview-active'));
+        if (autoSave?.checked) savePremiumPreviewView();
       });
-      document.getElementById('ritualSoundChoice')?.addEventListener('change', (event) => {
-        localStorage.setItem('balowaciRitualSoundChoice', event.target.value);
-        ensureRitualAudioContext();
+      autoSave?.addEventListener('change', (event) => {
+        localStorage.setItem('balowaciPremiumAutoSave', String(event.target.checked));
+        if (event.target.checked) savePremiumPreviewView();
       });
-      document.getElementById('ritualVolume')?.addEventListener('input', (event) => {
-        localStorage.setItem('balowaciRitualVolume', event.target.value);
-      });
-      document.getElementById('ritualVisualMode')?.addEventListener('change', (event) => {
-        applyVisualMode(event.target.value);
-      });
-      document.getElementById('ritualUpload')?.addEventListener('change', (event) => {
-        const file = event.target.files?.[0];
-        if (!file) return;
-        if (file.size > 2500000) {
-          if (saveStatus) saveStatus.textContent = 'Please choose a shorter sound under 2.5 MB.';
-          event.target.value = '';
-          return;
-        }
-        const reader = new FileReader();
-        reader.onload = () => {
-          try {
-            localStorage.setItem('balowaciRitualCustomSound', String(reader.result));
-            localStorage.setItem('balowaciRitualSoundChoice', 'custom');
-            syncRitualControls();
-            if (saveStatus) saveStatus.textContent = 'Custom ritual sound saved on this device.';
-          } catch (error) {
-            if (saveStatus) saveStatus.textContent = 'This sound is too large to save on this device.';
-          }
-        };
-        reader.readAsDataURL(file);
-      });
+      document.getElementById('saveTimeView')?.addEventListener('click', savePremiumPreviewView);
       updateDailyRitual();
       setInterval(updateDailyRitual, 60000);
     }
