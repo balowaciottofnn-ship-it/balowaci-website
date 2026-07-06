@@ -5303,6 +5303,240 @@
       border-color: rgba(49, 214, 123, 0.45);
       box-shadow: 0 0 28px rgba(49, 214, 123, 0.12);
     }
+
+    /* Final clarity pass: readable hero, contained controls, no empty daily boxes. */
+    body .luxury-hero {
+      background:
+        linear-gradient(90deg, rgba(7, 9, 14, 0.72), rgba(7, 9, 14, 0.18) 48%, rgba(7, 9, 14, 0.48)),
+        radial-gradient(circle at 70% 42%, rgba(105, 211, 223, 0.2), transparent 36%),
+        radial-gradient(circle at 24% 18%, rgba(214, 179, 92, 0.2), transparent 34%),
+        #06070b !important;
+    }
+
+    #hero .hero-interface-copy {
+      color: #f7fbff;
+      text-shadow: 0 2px 18px rgba(0, 0, 0, 0.72);
+    }
+
+    #hero .hero-interface-copy h1 {
+      color: #b266ff !important;
+      opacity: 1 !important;
+      text-shadow: 0 0 24px rgba(178, 102, 255, 0.44), 0 4px 20px rgba(0, 0, 0, 0.86);
+    }
+
+    #hero .hero-interface-copy h1 span {
+      color: #d6b35c !important;
+      text-shadow: 0 0 24px rgba(214, 179, 92, 0.42), 0 4px 20px rgba(0, 0, 0, 0.86);
+    }
+
+    #hero .hero-interface-copy p,
+    #hero .hero-kicker {
+      color: #eef6f8 !important;
+      opacity: 1 !important;
+    }
+
+    #hero .luxury-btn {
+      color: #f9fbff !important;
+      opacity: 1 !important;
+    }
+
+    #hero .luxury-btn.primary {
+      color: #070707 !important;
+    }
+
+    #hero .hero-metric {
+      background: rgba(9, 13, 18, 0.76);
+      color: #f5f7fb;
+    }
+
+    #hero .live-worldsync-watch-shell .worldsync-live-card {
+      display: none !important;
+    }
+
+    #hero .worldsync-city-dock {
+      width: min(760px, 94vw) !important;
+      margin: 14px auto 0 !important;
+      padding: 12px !important;
+      display: grid !important;
+      grid-template-columns: auto minmax(260px, 1fr) auto !important;
+      align-items: center !important;
+      gap: 12px !important;
+      border: 1px solid rgba(214, 179, 92, 0.24) !important;
+      border-radius: 999px !important;
+      background: rgba(5, 7, 10, 0.72) !important;
+      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.32) !important;
+    }
+
+    #hero .worldsync-city-dock label,
+    #hero .worldsync-city-dock select,
+    #hero .worldsync-city-dock button {
+      position: static !important;
+      transform: none !important;
+      line-height: 1.2 !important;
+    }
+
+    #hero .worldsync-city-dock select {
+      width: 100% !important;
+      min-width: 0 !important;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .daily-ritual-card {
+      grid-template-columns: minmax(280px, 0.95fr) minmax(320px, 1.05fr) !important;
+      align-items: start !important;
+    }
+
+    .daily-reading,
+    .world-rhythm-reading,
+    .world-rhythm-meaning {
+      color: #eef6f8 !important;
+      opacity: 1 !important;
+    }
+
+    .daily-meta {
+      display: grid !important;
+      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+      gap: 12px !important;
+      width: 100% !important;
+    }
+
+    .daily-meta span {
+      display: grid !important;
+      gap: 6px !important;
+      min-height: 116px !important;
+      padding: 16px !important;
+      align-content: start !important;
+      text-align: left !important;
+      overflow: hidden !important;
+    }
+
+    .daily-meta strong {
+      color: #ffffff !important;
+      font-size: clamp(1rem, 1.8vw, 1.35rem) !important;
+      line-height: 1.12 !important;
+      letter-spacing: 0.04em !important;
+      text-transform: none !important;
+    }
+
+    .daily-meta small {
+      color: #c8d2d6 !important;
+      font-size: 0.78rem !important;
+      font-weight: 800 !important;
+      line-height: 1.35 !important;
+      letter-spacing: 0.04em !important;
+      text-transform: none !important;
+    }
+
+    .world-rhythm-header {
+      align-items: flex-start !important;
+    }
+
+    .world-rhythm-time {
+      white-space: normal !important;
+      text-align: right !important;
+      line-height: 1.25 !important;
+    }
+
+    .founder-quote-box blockquote {
+      color: #f7e3a0 !important;
+      font-size: clamp(1.25rem, 2.6vw, 2.1rem) !important;
+      line-height: 1.45 !important;
+    }
+
+    #daily-ritual,
+    #watch-showcase,
+    #trinity-prototype,
+    #founder,
+    #time-panel {
+      content-visibility: visible !important;
+      contain-intrinsic-size: auto !important;
+    }
+
+    @media (max-width: 820px) {
+      .daily-ritual-card {
+        grid-template-columns: 1fr !important;
+      }
+
+      .daily-meta {
+        grid-template-columns: 1fr !important;
+      }
+
+      #hero .worldsync-city-dock {
+        grid-template-columns: 1fr !important;
+        border-radius: 18px !important;
+      }
+
+      .world-rhythm-time {
+        text-align: left !important;
+      }
+    }
+
+    .premium-experience-dashboard {
+      display: none;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin: 18px auto;
+      text-align: left;
+    }
+
+    body.premium-preview-active .premium-experience-dashboard {
+      display: grid;
+    }
+
+    .premium-dashboard-card {
+      border: 1px solid rgba(214, 179, 92, 0.26);
+      border-radius: 8px;
+      padding: 16px;
+      background:
+        linear-gradient(145deg, rgba(178, 102, 255, 0.12), transparent 44%),
+        rgba(5, 7, 10, 0.72);
+      min-height: 126px;
+    }
+
+    .premium-dashboard-card.wide {
+      grid-column: 1 / -1;
+    }
+
+    .premium-dashboard-card span {
+      display: block;
+      color: #d6b35c;
+      font-size: 0.74rem;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .premium-dashboard-card strong {
+      display: block;
+      color: #ffffff;
+      font-size: clamp(1.1rem, 2.2vw, 1.7rem);
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+
+    .premium-dashboard-card small {
+      display: block;
+      color: #c8d2d6;
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+
+    body.premium-preview-active .access-card.locked {
+      cursor: pointer;
+    }
+
+    body.premium-preview-active .access-card.locked:focus-visible {
+      outline: 2px solid #d6b35c;
+      outline-offset: 4px;
+    }
+
+    @media (max-width: 720px) {
+      .premium-experience-dashboard {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
@@ -5441,9 +5675,9 @@
         <h2 data-i18n="daily.title">Your Daily Time Reading</h2>
         <p id="dailyReading" class="daily-reading" data-i18n="daily.fallback">Time is opening a quiet window. Pause, choose your direction, and move with intention.</p>
         <div class="daily-meta">
-          <span id="dailySunState">Solar State</span>
-          <span id="dailyMoonState">Moon Phase</span>
-          <span id="dailyLocalTime">--:--</span>
+          <span id="dailySunState"><strong>Daylight</strong><small>Current local light rhythm</small></span>
+          <span id="dailyMoonState"><strong>Moon Phase</strong><small>Night cycle context</small></span>
+          <span id="dailyLocalTime"><strong>--:--</strong><small>Your current local time</small></span>
         </div>
         <div class="world-rhythm-panel" aria-live="polite">
           <div class="world-rhythm-header">
@@ -5697,6 +5931,10 @@ This is only the beginning.
 
 - Fadhili Baloci
 Founder, BaloWaci</p>
+
+        <div class="founder-quote-box">
+          <blockquote data-i18n="founder.quote">"Silence conceals the act; sound reveals its echo. What is done in silence will always echo in sound."</blockquote>
+        </div>
 
         <div class="founder-quote-box founder-purpose-box">
           <h3 data-i18n="mission.title">Our Mission</h3>
@@ -6010,10 +6248,28 @@ Founder, BaloWaci</p>
                 <select id="premiumCityFocus" disabled>
                   <option value="America/Chicago">Chicago, United States</option>
                   <option value="Africa/Kinshasa">Kinshasa, Democratic Republic of the Congo</option>
-                  <option value="Asia/Dubai">Dubai, United Arab Emirates</option>
-                  <option value="Europe/Paris">Paris, France</option>
-                  <option value="Asia/Tokyo">Tokyo, Japan</option>
                   <option value="Africa/Maputo">Maputo, Mozambique</option>
+                  <option value="Africa/Nairobi">Nairobi, Kenya</option>
+                  <option value="Africa/Johannesburg">Johannesburg, South Africa</option>
+                  <option value="Africa/Lagos">Lagos, Nigeria</option>
+                  <option value="Africa/Cairo">Cairo, Egypt</option>
+                  <option value="Asia/Dubai">Dubai, United Arab Emirates</option>
+                  <option value="Asia/Tokyo">Tokyo, Japan</option>
+                  <option value="Asia/Shanghai">Beijing, China</option>
+                  <option value="Asia/Singapore">Singapore, Singapore</option>
+                  <option value="Asia/Kolkata">New Delhi, India</option>
+                  <option value="Asia/Seoul">Seoul, South Korea</option>
+                  <option value="Europe/London">London, United Kingdom</option>
+                  <option value="Europe/Paris">Paris, France</option>
+                  <option value="Europe/Berlin">Berlin, Germany</option>
+                  <option value="Europe/Rome">Rome, Italy</option>
+                  <option value="Europe/Madrid">Madrid, Spain</option>
+                  <option value="America/New_York">New York, United States</option>
+                  <option value="America/Los_Angeles">Los Angeles, United States</option>
+                  <option value="America/Sao_Paulo">Sao Paulo, Brazil</option>
+                  <option value="America/Mexico_City">Mexico City, Mexico</option>
+                  <option value="America/Toronto">Toronto, Canada</option>
+                  <option value="Australia/Sydney">Sydney, Australia</option>
                 </select>
               </label>
               <label class="ritual-control">
@@ -6040,6 +6296,28 @@ Founder, BaloWaci</p>
           <div class="premium-live-panel" id="premiumLivePanel" aria-live="polite">
             <strong>Premium preview is locked</strong>
             <span>Start the preview to test saved city focus, collector themes, interpretation mode, and personal WorldSync setup.</span>
+          </div>
+          <div class="premium-experience-dashboard" id="premiumExperienceDashboard" aria-live="polite">
+            <div class="premium-dashboard-card">
+              <span>Selected city time</span>
+              <strong id="premiumSelectedTime">--:--</strong>
+              <small id="premiumSelectedZone">Choose a city to preview.</small>
+            </div>
+            <div class="premium-dashboard-card">
+              <span>Local comparison</span>
+              <strong id="premiumTimeDifference">--</strong>
+              <small id="premiumLocalComparison">Start premium preview to compare your time.</small>
+            </div>
+            <div class="premium-dashboard-card wide">
+              <span>Time interpretation</span>
+              <strong id="premiumInterpretationTitle">Locked</strong>
+              <small id="premiumInterpretationText">Activate the preview to see what the selected time means for travel, business, family, culture, or collecting.</small>
+            </div>
+            <div class="premium-dashboard-card wide">
+              <span>Premium feature test</span>
+              <strong id="premiumFeatureTitle">No feature selected</strong>
+              <small id="premiumFeatureText">After activation, click any premium tier card to preview what users will experience.</small>
+            </div>
           </div>
           <div class="final-cta-actions">
             <button type="button" id="saveTimeView" class="luxury-btn primary" disabled>Save My Time View</button>
@@ -7375,7 +7653,7 @@ Founder, BaloWaci</p>
         'watch.local': 'Local', 'watch.mode': 'Mode', 'watch.cityTime': 'City Time', 'watch.reset': 'Reset', 'watch.ledLights': 'LED Lights', 'watch.full': 'Full', 'watch.dim': 'Dim', 'watch.off': 'Off',
         'explain.timeTitle': 'One Time', 'explain.timeBody': 'The hands show the selected city in real time.', 'explain.ringTitle': 'Twelve Cities', 'explain.ringBody': 'The ring lets users compare major world places quickly.', 'explain.weatherTitle': 'Live Context', 'explain.weatherBody': 'Weather stays tied to the user location and updates only when needed.',
         'prototype.kicker': 'Prototype Watch Codes', 'prototype.family': 'Prototype Family', 'prototype.intro': 'Each BaloWaci prototype explores one clear idea: Trinity combines three ways to read time, Axis explains direction and balance, and WorldSync connects cities across the world.', 'prototype.trinityTitle': 'BaloWaci Trinity', 'prototype.trinityBody': 'Code YAH. Trinity is the easy starting point: it shows regular clock time, 24-hour time, and cultural time together so a user can understand the same moment three ways.', 'prototype.axisTitle': 'BaloWaci Axis', 'prototype.axisBody': 'Code WEH. Axis focuses on direction. It helps explain where a moment sits on the watch, like a compass for time, movement, and personal focus.', 'prototype.worldsyncTitle': 'BaloWaci WorldSync', 'prototype.worldsyncBody': 'Code YEH. WorldSync is the global model. It lets users choose a city, see that city time live, and understand how people in different places share the same moment.', 'prototype.languageTitle': 'Trinity Language', 'prototype.mainDialLabel': 'Main Dial', 'prototype.mainDialBody': 'Regular hours, minutes, and seconds stay familiar at the center.', 'prototype.secondRingLabel': 'Second Ring', 'prototype.secondRingBody': 'Color shows how the day can feel culturally, not just numerically.', 'prototype.subdialsLabel': 'Subdials', 'prototype.subdialsBody': 'Small dials can show date, day, month, and 24-hour time.', 'prototype.materialLabel': 'Material', 'prototype.materialBody': 'Steel, leather, and sapphire glass point the idea toward a real luxury watch.',
-        'founder.title': 'A Message From the Founder', 'founder.body': 'Welcome to BaloWaci.\n\nWhen I first began thinking about time, I was not trying to build a watch. I was trying to understand something that most of us experience every day but rarely stop to question.\n\nTime connects every person on Earth, yet we interpret it in different ways. Around the world, cultures, professions, and communities use different systems to describe the same moment. Travelers convert time zones. Pilots and military personnel use the 24-hour clock. Families and cultures often describe time according to the rhythm of the day rather than the numbers on a clock.\n\nThat curiosity inspired BaloWaci.\n\nOur goal is not simply to measure time. It is to help people interpret it.\n\nBaloWaci was created around the idea that one moment can be understood through multiple synchronized perspectives. By bringing together standard time, military time, cultural interpretations, and global synchronization into a unified experience, we hope to make time more intuitive, more educational, and more meaningful.\n\nOur philosophy is simple:\n\nEverything Moving Together In Time.\n\nThose words represent more than a slogan. They represent our belief that people, cultures, and places across the world are connected through a shared passage of time, even though they may express it differently.\n\nAs BaloWaci grows, our vision extends beyond watches. We see opportunities to develop technologies and experiences that help people better understand global time, improve coordination across regions, support education, and inspire curiosity about the world.\n\nEvery prototype you see represents another step in that journey.\n\nWhether you are a traveler, student, professional, collector, or simply someone fascinated by time, thank you for being part of the BaloWaci story.\n\nThis is only the beginning.\n\n- Fadhili Baloci\nFounder, BaloWaci', 'mission.title': 'Our Mission', 'mission.body': 'To create innovative time interpretation systems that help people understand, synchronize, and experience time from multiple perspectives.', 'vision.simpleTitle': 'Our Vision', 'vision.simpleBody': 'To become the world\'s leading brand for time interpretation, global synchronization, and innovative timekeeping experiences.',
+        'founder.title': 'A Message From the Founder', 'founder.body': 'Welcome to BaloWaci.\n\nWhen I first began thinking about time, I was not trying to build a watch. I was trying to understand something that most of us experience every day but rarely stop to question.\n\nTime connects every person on Earth, yet we interpret it in different ways. Around the world, cultures, professions, and communities use different systems to describe the same moment. Travelers convert time zones. Pilots and military personnel use the 24-hour clock. Families and cultures often describe time according to the rhythm of the day rather than the numbers on a clock.\n\nThat curiosity inspired BaloWaci.\n\nOur goal is not simply to measure time. It is to help people interpret it.\n\nBaloWaci was created around the idea that one moment can be understood through multiple synchronized perspectives. By bringing together standard time, military time, cultural interpretations, and global synchronization into a unified experience, we hope to make time more intuitive, more educational, and more meaningful.\n\nOur philosophy is simple:\n\nEverything Moving Together In Time.\n\nThose words represent more than a slogan. They represent our belief that people, cultures, and places across the world are connected through a shared passage of time, even though they may express it differently.\n\nAs BaloWaci grows, our vision extends beyond watches. We see opportunities to develop technologies and experiences that help people better understand global time, improve coordination across regions, support education, and inspire curiosity about the world.\n\nEvery prototype you see represents another step in that journey.\n\nWhether you are a traveler, student, professional, collector, or simply someone fascinated by time, thank you for being part of the BaloWaci story.\n\nThis is only the beginning.\n\n- Fadhili Baloci\nFounder, BaloWaci', 'founder.quote': '"Silence conceals the act; sound reveals its echo. What is done in silence will always echo in sound."', 'mission.title': 'Our Mission', 'mission.body': 'To create innovative time interpretation systems that help people understand, synchronize, and experience time from multiple perspectives.', 'vision.simpleTitle': 'Our Vision', 'vision.simpleBody': 'To become the world\'s leading brand for time interpretation, global synchronization, and innovative timekeeping experiences.',
         'weather.status': '{condition} in {location}{temperature}', 'weather.condition.clear': 'Clear', 'weather.condition.clouds': 'Cloudy', 'weather.condition.rain': 'Raining', 'weather.condition.storm': 'Storm', 'weather.condition.snow': 'Snowing', 'weather.condition.unknown': 'Weather', 'weather.yourArea': 'your area', 'weather.updating': 'Updating weather for your location...', 'weather.gettingLocation': 'Getting your location for weather sync...', 'weather.denied': 'Location permission denied. Weather sync needs your current location.', 'weather.noLocation': 'Location is not available on this device.', 'weather.apiKey': 'Weather sync needs the OpenWeather API key in Render.', 'weather.unable': 'Unable to load weather. Check your connection or location settings.'
       },
       sw: {
@@ -7384,7 +7662,7 @@ Founder, BaloWaci</p>
         'watch.local': 'Eneo', 'watch.mode': 'Hali', 'watch.cityTime': 'Wakati wa Jiji', 'watch.reset': 'Weka upya', 'watch.ledLights': 'Taa za LED', 'watch.full': 'Kamili', 'watch.dim': 'Punguza', 'watch.off': 'Zima',
         'explain.timeTitle': 'Wakati Mmoja', 'explain.timeBody': 'Mikono inaonyesha wakati wa jiji ulilochagua moja kwa moja.', 'explain.ringTitle': 'Miji Kumi na Mbili', 'explain.ringBody': 'Pete huwasaidia watumiaji kulinganisha maeneo makubwa ya dunia haraka.', 'explain.weatherTitle': 'Muktadha Hai', 'explain.weatherBody': 'Hali ya hewa hubaki kwenye eneo la mtumiaji na husasishwa inapohitajika tu.',
         'prototype.kicker': 'Misimbo ya Mifano ya Saa', 'prototype.family': 'Familia ya Mifano', 'prototype.intro': 'Kila mfano wa BaloWaci unaeleza wazo moja wazi: Trinity huunganisha njia tatu za kusoma wakati, Axis hueleza mwelekeo na usawa, na WorldSync huunganisha miji duniani.', 'prototype.trinityTitle': 'BaloWaci Trinity', 'prototype.trinityBody': 'Msimbo YAH. Trinity ni mwanzo rahisi: inaonyesha wakati wa kawaida, wakati wa saa 24, na wakati wa kitamaduni pamoja ili mtumiaji aelewe dakika moja kwa njia tatu.', 'prototype.axisTitle': 'BaloWaci Axis', 'prototype.axisBody': 'Msimbo WEH. Axis inazingatia mwelekeo. Inaeleza mahali dakika ilipo kwenye saa, kama dira ya wakati, mwendo, na umakini binafsi.', 'prototype.worldsyncTitle': 'BaloWaci WorldSync', 'prototype.worldsyncBody': 'Msimbo YEH. WorldSync ni mfano wa dunia. Mtumiaji huchagua jiji, huona wakati wake moja kwa moja, na kuelewa jinsi watu sehemu tofauti wanavyoshiriki dakika ileile.', 'prototype.languageTitle': 'Lugha ya Trinity', 'prototype.mainDialLabel': 'Sura Kuu', 'prototype.mainDialBody': 'Saa, dakika, na sekunde za kawaida hubaki katikati kwa urahisi.', 'prototype.secondRingLabel': 'Pete ya Pili', 'prototype.secondRingBody': 'Rangi huonyesha jinsi siku inaweza kuhisiwa kitamaduni, si kwa namba pekee.', 'prototype.subdialsLabel': 'Visura Vidogo', 'prototype.subdialsBody': 'Visura vidogo vinaweza kuonyesha tarehe, siku, mwezi, na wakati wa saa 24.', 'prototype.materialLabel': 'Nyenzo', 'prototype.materialBody': 'Chuma, ngozi, na glasi ya sapphire hupeleka wazo kuelekea saa halisi ya kifahari.',
-        'founder.title': 'Ujumbe Kutoka kwa Mwanzilishi', 'founder.body': 'Karibu BaloWaci.\n\nNilipoanza kufikiria kuhusu wakati, sikuwa najenga saa. Nilikuwa najaribu kuelewa jambo ambalo wengi wetu hupitia kila siku lakini mara chache tunasimama kuliuliza.\n\nWakati huunganisha kila mtu duniani, lakini tunautafsiri kwa njia tofauti. Duniani kote, tamaduni, taaluma, na jamii hutumia mifumo tofauti kueleza dakika ileile. Wasafiri hubadilisha maeneo ya saa. Marubani na wanajeshi hutumia saa ya saa 24. Familia na tamaduni mara nyingi hueleza wakati kwa mdundo wa siku badala ya namba kwenye saa.\n\nUdadisi huo ulihamasisha BaloWaci.\n\nLengo letu si kupima wakati tu. Ni kuwasaidia watu kuutafsiri.\n\nBaloWaci iliundwa kwa wazo kwamba dakika moja inaweza kueleweka kupitia mitazamo mingi inayosawazishwa. Kwa kuleta pamoja wakati wa kawaida, wakati wa kijeshi, tafsiri za kitamaduni, na usawazishaji wa dunia katika uzoefu mmoja, tunatarajia kufanya wakati uwe rahisi kuelewa, wa kielimu zaidi, na wenye maana zaidi.\n\nFalsafa yetu ni rahisi:\n\nKila Kitu Kinasonga Pamoja Katika Wakati.\n\nManeno hayo ni zaidi ya kauli mbiu. Yanaonyesha imani yetu kwamba watu, tamaduni, na maeneo duniani kote wameunganishwa kupitia safari moja ya wakati, hata kama wanaueleza tofauti.\n\nBaloWaci inapokua, maono yetu yanapita zaidi ya saa. Tunaona nafasi za kutengeneza teknolojia na uzoefu unaowasaidia watu kuelewa vizuri wakati wa dunia, kuboresha uratibu kati ya maeneo, kusaidia elimu, na kuchochea udadisi kuhusu dunia.\n\nKila mfano unaouona ni hatua nyingine katika safari hiyo.\n\nIwe wewe ni msafiri, mwanafunzi, mtaalamu, mkusanyaji, au mtu anayevutiwa tu na wakati, asante kwa kuwa sehemu ya hadithi ya BaloWaci.\n\nHuu ni mwanzo tu.\n\n- Fadhili Baloci\nMwanzilishi, BaloWaci', 'mission.title': 'Dhamira Yetu', 'mission.body': 'Kuunda mifumo bunifu ya tafsiri ya wakati inayowasaidia watu kuelewa, kusawazisha, na kupata uzoefu wa wakati kutoka mitazamo mingi.', 'vision.simpleTitle': 'Maono Yetu', 'vision.simpleBody': 'Kuwa chapa inayoongoza duniani katika tafsiri ya wakati, usawazishaji wa dunia, na uzoefu bunifu wa utunzaji wa wakati.',
+        'founder.title': 'Ujumbe Kutoka kwa Mwanzilishi', 'founder.body': 'Karibu BaloWaci.\n\nNilipoanza kufikiria kuhusu wakati, sikuwa najenga saa. Nilikuwa najaribu kuelewa jambo ambalo wengi wetu hupitia kila siku lakini mara chache tunasimama kuliuliza.\n\nWakati huunganisha kila mtu duniani, lakini tunautafsiri kwa njia tofauti. Duniani kote, tamaduni, taaluma, na jamii hutumia mifumo tofauti kueleza dakika ileile. Wasafiri hubadilisha maeneo ya saa. Marubani na wanajeshi hutumia saa ya saa 24. Familia na tamaduni mara nyingi hueleza wakati kwa mdundo wa siku badala ya namba kwenye saa.\n\nUdadisi huo ulihamasisha BaloWaci.\n\nLengo letu si kupima wakati tu. Ni kuwasaidia watu kuutafsiri.\n\nBaloWaci iliundwa kwa wazo kwamba dakika moja inaweza kueleweka kupitia mitazamo mingi inayosawazishwa. Kwa kuleta pamoja wakati wa kawaida, wakati wa kijeshi, tafsiri za kitamaduni, na usawazishaji wa dunia katika uzoefu mmoja, tunatarajia kufanya wakati uwe rahisi kuelewa, wa kielimu zaidi, na wenye maana zaidi.\n\nFalsafa yetu ni rahisi:\n\nKila Kitu Kinasonga Pamoja Katika Wakati.\n\nManeno hayo ni zaidi ya kauli mbiu. Yanaonyesha imani yetu kwamba watu, tamaduni, na maeneo duniani kote wameunganishwa kupitia safari moja ya wakati, hata kama wanaueleza tofauti.\n\nBaloWaci inapokua, maono yetu yanapita zaidi ya saa. Tunaona nafasi za kutengeneza teknolojia na uzoefu unaowasaidia watu kuelewa vizuri wakati wa dunia, kuboresha uratibu kati ya maeneo, kusaidia elimu, na kuchochea udadisi kuhusu dunia.\n\nKila mfano unaouona ni hatua nyingine katika safari hiyo.\n\nIwe wewe ni msafiri, mwanafunzi, mtaalamu, mkusanyaji, au mtu anayevutiwa tu na wakati, asante kwa kuwa sehemu ya hadithi ya BaloWaci.\n\nHuu ni mwanzo tu.\n\n- Fadhili Baloci\nMwanzilishi, BaloWaci', 'founder.quote': '"Ukimya huficha kitendo; sauti hufunua mwangwi wake. Kinachofanywa kimyakimya daima kitasikika kwa sauti."', 'mission.title': 'Dhamira Yetu', 'mission.body': 'Kuunda mifumo bunifu ya tafsiri ya wakati inayowasaidia watu kuelewa, kusawazisha, na kupata uzoefu wa wakati kutoka mitazamo mingi.', 'vision.simpleTitle': 'Maono Yetu', 'vision.simpleBody': 'Kuwa chapa inayoongoza duniani katika tafsiri ya wakati, usawazishaji wa dunia, na uzoefu bunifu wa utunzaji wa wakati.',
         'weather.status': '{condition} huko {location}{temperature}', 'weather.condition.clear': 'Angavu', 'weather.condition.clouds': 'Mawingu', 'weather.condition.rain': 'Mvua', 'weather.condition.storm': 'Dhoruba', 'weather.condition.snow': 'Theluji', 'weather.condition.unknown': 'Hali ya hewa', 'weather.yourArea': 'eneo lako', 'weather.updating': 'Inasasisha hali ya hewa ya eneo lako...', 'weather.gettingLocation': 'Inatafuta eneo lako kwa usawazishaji wa hali ya hewa...', 'weather.denied': 'Ruhusa ya eneo imekataliwa. Hali ya hewa inahitaji eneo lako la sasa.', 'weather.noLocation': 'Eneo halipatikani kwenye kifaa hiki.', 'weather.apiKey': 'Hali ya hewa inahitaji ufunguo wa OpenWeather kwenye Render.', 'weather.unable': 'Imeshindwa kupakia hali ya hewa. Kagua intaneti au mipangilio ya eneo.'
       },
       es: {
@@ -7392,7 +7670,7 @@ Founder, BaloWaci</p>
         'hero.kicker': 'Reloj WorldSync en vivo', 'hero.body': 'BaloWaci ayuda a leer un mismo momento de varias maneras: hora local, hora mundial, ritmo cultural y contexto del clima en una sola interfaz de reloj vivo.', 'hero.openWatch': 'Abrir reloj en vivo', 'hero.openWheel': 'Abrir rueda en vivo', 'hero.localPulse': 'Pulso local', 'hero.worldRhythm': 'Ritmo mundial', 'hero.worldsyncCode': 'Código WorldSync',
         'watch.local': 'Local', 'watch.mode': 'Modo', 'watch.cityTime': 'Hora de ciudad', 'watch.reset': 'Restablecer', 'watch.ledLights': 'Luces LED', 'watch.full': 'Completo', 'watch.dim': 'Tenue', 'watch.off': 'Apagado',
         'prototype.kicker': 'Códigos de prototipo', 'prototype.family': 'Familia de prototipos', 'prototype.intro': 'Cada prototipo de BaloWaci explora una idea clara: Trinity combina tres formas de leer el tiempo, Axis explica dirección y equilibrio, y WorldSync conecta ciudades del mundo.',
-        'founder.title': 'Un mensaje del fundador', 'mission.title': 'Nuestra misión', 'mission.body': 'Crear sistemas innovadores de interpretación del tiempo que ayuden a las personas a comprender, sincronizar y experimentar el tiempo desde múltiples perspectivas.', 'vision.simpleTitle': 'Nuestra visión', 'vision.simpleBody': 'Convertirnos en la marca líder mundial en interpretación del tiempo, sincronización global y experiencias innovadoras de medición del tiempo.',
+        'founder.title': 'Un mensaje del fundador', 'founder.quote': '"El silencio oculta el acto; el sonido revela su eco. Lo que se hace en silencio siempre resonara en sonido."', 'mission.title': 'Nuestra misión', 'mission.body': 'Crear sistemas innovadores de interpretación del tiempo que ayuden a las personas a comprender, sincronizar y experimentar el tiempo desde múltiples perspectivas.', 'vision.simpleTitle': 'Nuestra visión', 'vision.simpleBody': 'Convertirnos en la marca líder mundial en interpretación del tiempo, sincronización global y experiencias innovadoras de medición del tiempo.',
         'weather.status': '{condition} en {location}{temperature}', 'weather.condition.clear': 'Despejado', 'weather.condition.clouds': 'Nublado', 'weather.condition.rain': 'Lluvia', 'weather.condition.storm': 'Tormenta', 'weather.condition.snow': 'Nieve', 'weather.yourArea': 'tu zona', 'weather.updating': 'Actualizando el clima de tu ubicación...', 'weather.gettingLocation': 'Buscando tu ubicación para el clima...', 'weather.denied': 'Permiso de ubicación denegado. El clima necesita tu ubicación actual.', 'weather.noLocation': 'La ubicación no está disponible en este dispositivo.', 'weather.apiKey': 'El clima necesita la clave de OpenWeather en Render.', 'weather.unable': 'No se pudo cargar el clima. Revisa tu conexión o ubicación.'
       }
     };
@@ -7407,7 +7685,7 @@ Founder, BaloWaci</p>
       'watch.local': 'Local', 'watch.mode': 'Modo', 'watch.cityTime': 'Hora da cidade', 'watch.reset': 'Redefinir', 'watch.ledLights': 'Luzes LED', 'watch.full': 'Forte', 'watch.dim': 'Fraco', 'watch.off': 'Desligado',
       'explain.timeTitle': 'Um tempo', 'explain.timeBody': 'Os ponteiros mostram a cidade escolhida em tempo real.', 'explain.ringTitle': 'Doze cidades', 'explain.ringBody': 'O anel permite comparar rapidamente grandes lugares do mundo.', 'explain.weatherTitle': 'Contexto ao vivo', 'explain.weatherBody': 'O clima fica ligado à localização do usuário e só atualiza quando necessário.',
       'prototype.kicker': 'Códigos dos protótipos', 'prototype.family': 'Família de protótipos', 'prototype.intro': 'Cada protótipo BaloWaci explora uma ideia clara: Trinity combina três formas de ler o tempo, Axis explica direção e equilíbrio, e WorldSync conecta cidades do mundo.', 'prototype.trinityBody': 'Código YAH. Trinity mostra hora comum, hora de 24 horas e tempo cultural juntos para entender o mesmo momento de três formas.', 'prototype.axisBody': 'Código WEH. Axis explica direção, movimento e foco pessoal como uma bússola do tempo.', 'prototype.worldsyncBody': 'Código YEH. WorldSync permite escolher uma cidade, ver sua hora ao vivo e entender como lugares diferentes compartilham o mesmo momento.',
-      'founder.title': 'Uma mensagem do fundador', 'founder.body': 'Bem-vindo à BaloWaci.\n\nQuando comecei a pensar sobre o tempo, eu não estava tentando construir um relógio. Eu tentava entender algo que todos vivemos todos os dias, mas raramente paramos para questionar.\n\nO tempo conecta todas as pessoas na Terra, mas cada cultura, profissão e comunidade pode descrevê-lo de modo diferente. Essa curiosidade inspirou a BaloWaci.\n\nNosso objetivo não é apenas medir o tempo. É ajudar as pessoas a interpretá-lo.\n\nBaloWaci une hora padrão, hora de 24 horas, interpretações culturais e sincronização global em uma experiência simples, educativa e significativa.\n\nNossa filosofia é simples: Tudo se movendo junto no tempo.\n\nCada protótipo representa mais um passo nessa jornada. Obrigado por fazer parte da história da BaloWaci.\n\nIsto é apenas o começo.\n\n- Fadhili Baloci\nFundador, BaloWaci', 'mission.title': 'Nossa missão', 'mission.body': 'Criar sistemas inovadores de interpretação do tempo que ajudem as pessoas a compreender, sincronizar e viver o tempo a partir de múltiplas perspectivas.', 'vision.simpleTitle': 'Nossa visão', 'vision.simpleBody': 'Tornar-se a principal marca mundial em interpretação do tempo, sincronização global e experiências inovadoras de marcação do tempo.'
+      'founder.title': 'Uma mensagem do fundador', 'founder.body': 'Bem-vindo à BaloWaci.\n\nQuando comecei a pensar sobre o tempo, eu não estava tentando construir um relógio. Eu tentava entender algo que todos vivemos todos os dias, mas raramente paramos para questionar.\n\nO tempo conecta todas as pessoas na Terra, mas cada cultura, profissão e comunidade pode descrevê-lo de modo diferente. Essa curiosidade inspirou a BaloWaci.\n\nNosso objetivo não é apenas medir o tempo. É ajudar as pessoas a interpretá-lo.\n\nBaloWaci une hora padrão, hora de 24 horas, interpretações culturais e sincronização global em uma experiência simples, educativa e significativa.\n\nNossa filosofia é simples: Tudo se movendo junto no tempo.\n\nCada protótipo representa mais um passo nessa jornada. Obrigado por fazer parte da história da BaloWaci.\n\nIsto é apenas o começo.\n\n- Fadhili Baloci\nFundador, BaloWaci', 'founder.quote': '"O silencio oculta o ato; o som revela seu eco. O que e feito em silencio sempre ecoara em som."', 'mission.title': 'Nossa missão', 'mission.body': 'Criar sistemas inovadores de interpretação do tempo que ajudem as pessoas a compreender, sincronizar e viver o tempo a partir de múltiplas perspectivas.', 'vision.simpleTitle': 'Nossa visão', 'vision.simpleBody': 'Tornar-se a principal marca mundial em interpretação do tempo, sincronização global e experiências inovadoras de marcação do tempo.'
     });
 
     Object.assign(homepageSharedFallback.fr, {
@@ -7415,7 +7693,7 @@ Founder, BaloWaci</p>
       'watch.local': 'Local', 'watch.mode': 'Mode', 'watch.cityTime': 'Heure de la ville', 'watch.reset': 'Réinitialiser', 'watch.ledLights': 'Lumières LED', 'watch.full': 'Fort', 'watch.dim': 'Faible', 'watch.off': 'Éteint',
       'explain.timeTitle': 'Un temps', 'explain.timeBody': 'Les aiguilles montrent la ville choisie en temps réel.', 'explain.ringTitle': 'Douze villes', 'explain.ringBody': 'L’anneau permet de comparer rapidement de grands lieux du monde.', 'explain.weatherTitle': 'Contexte en direct', 'explain.weatherBody': 'La météo reste liée à la position de l’utilisateur et ne se met à jour que si nécessaire.',
       'prototype.kicker': 'Codes des prototypes', 'prototype.family': 'Famille de prototypes', 'prototype.intro': 'Chaque prototype BaloWaci explore une idée claire : Trinity combine trois façons de lire le temps, Axis explique la direction et l’équilibre, et WorldSync relie les villes du monde.', 'prototype.trinityBody': 'Code YAH. Trinity montre l’heure classique, l’heure sur 24 heures et le temps culturel ensemble.', 'prototype.axisBody': 'Code WEH. Axis explique la direction, le mouvement et le focus personnel comme une boussole du temps.', 'prototype.worldsyncBody': 'Code YEH. WorldSync permet de choisir une ville, de voir son heure en direct et de comprendre comment différents lieux partagent le même moment.',
-      'founder.title': 'Un message du fondateur', 'founder.body': 'Bienvenue à BaloWaci.\n\nQuand j’ai commencé à penser au temps, je ne cherchais pas à construire une montre. Je voulais comprendre quelque chose que nous vivons tous chaque jour, mais que nous questionnons rarement.\n\nLe temps relie chaque personne sur Terre, mais les cultures, métiers et communautés peuvent le décrire différemment. Cette curiosité a inspiré BaloWaci.\n\nNotre objectif n’est pas seulement de mesurer le temps. C’est d’aider les personnes à l’interpréter.\n\nBaloWaci réunit l’heure standard, l’heure sur 24 heures, les interprétations culturelles et la synchronisation mondiale dans une expérience simple, éducative et pleine de sens.\n\nNotre philosophie est simple : Tout bouge ensemble dans le temps.\n\nChaque prototype représente une nouvelle étape de ce parcours. Merci de faire partie de l’histoire de BaloWaci.\n\nCe n’est que le début.\n\n- Fadhili Baloci\nFondateur, BaloWaci', 'mission.title': 'Notre mission', 'mission.body': 'Créer des systèmes innovants d’interprétation du temps qui aident les personnes à comprendre, synchroniser et vivre le temps depuis plusieurs perspectives.', 'vision.simpleTitle': 'Notre vision', 'vision.simpleBody': 'Devenir la marque mondiale de référence pour l’interprétation du temps, la synchronisation globale et les expériences innovantes de mesure du temps.'
+      'founder.title': 'Un message du fondateur', 'founder.body': 'Bienvenue à BaloWaci.\n\nQuand j’ai commencé à penser au temps, je ne cherchais pas à construire une montre. Je voulais comprendre quelque chose que nous vivons tous chaque jour, mais que nous questionnons rarement.\n\nLe temps relie chaque personne sur Terre, mais les cultures, métiers et communautés peuvent le décrire différemment. Cette curiosité a inspiré BaloWaci.\n\nNotre objectif n’est pas seulement de mesurer le temps. C’est d’aider les personnes à l’interpréter.\n\nBaloWaci réunit l’heure standard, l’heure sur 24 heures, les interprétations culturelles et la synchronisation mondiale dans une expérience simple, éducative et pleine de sens.\n\nNotre philosophie est simple : Tout bouge ensemble dans le temps.\n\nChaque prototype représente une nouvelle étape de ce parcours. Merci de faire partie de l’histoire de BaloWaci.\n\nCe n’est que le début.\n\n- Fadhili Baloci\nFondateur, BaloWaci', 'founder.quote': '"Le silence cache l\'acte; le son revele son echo. Ce qui est fait en silence resonnera toujours en son."', 'mission.title': 'Notre mission', 'mission.body': 'Créer des systèmes innovants d’interprétation du temps qui aident les personnes à comprendre, synchroniser et vivre le temps depuis plusieurs perspectives.', 'vision.simpleTitle': 'Notre vision', 'vision.simpleBody': 'Devenir la marque mondiale de référence pour l’interprétation du temps, la synchronisation globale et les expériences innovantes de mesure du temps.'
     });
     Object.entries(homepageSharedFallback).forEach(([language, entries]) => {
       homepageTranslationUpdates[language] = Object.assign({}, entries, homepageTranslationUpdates[language] || {});
@@ -7641,9 +7919,9 @@ Founder, BaloWaci</p>
       const sunState = document.getElementById('dailySunState');
       const moonState = document.getElementById('dailyMoonState');
       const localTime = document.getElementById('dailyLocalTime');
-      if (sunState) sunState.textContent = sunLabel;
-      if (moonState) moonState.textContent = getMoonPhaseLabel(phase);
-      if (localTime) localTime.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      if (sunState) sunState.innerHTML = `<strong>${sunLabel}</strong><small>Current local light rhythm</small>`;
+      if (moonState) moonState.innerHTML = `<strong>${getMoonPhaseLabel(phase)}</strong><small>Night cycle context</small>`;
+      if (localTime) localTime.innerHTML = `<strong>${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</strong><small>Your current local time</small>`;
     }
 
     function normalizeWorldRhythmIndex(index) {
@@ -7878,16 +8156,107 @@ Founder, BaloWaci</p>
       return Array.from(document.querySelectorAll('.locked-control button, .locked-control input, .locked-control select, #saveTimeView'));
     }
 
+    function getPremiumSelectedCity() {
+      const citySelect = document.getElementById('premiumCityFocus');
+      const option = citySelect?.selectedOptions?.[0];
+      const label = option?.textContent?.trim() || 'Chicago, United States';
+      const [city, country = ''] = label.split(',').map((part) => part.trim());
+      return {
+        timezone: citySelect?.value || 'America/Chicago',
+        label,
+        city,
+        country
+      };
+    }
+
+    function getPremiumTimeParts(timezone, now = new Date()) {
+      const parts = new Intl.DateTimeFormat('en-US', {
+        timeZone: timezone,
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      }).formatToParts(now).reduce((acc, part) => {
+        if (part.type !== 'literal') acc[part.type] = part.value;
+        return acc;
+      }, {});
+      return {
+        hour: Number(String(parts.hour || '0').replace('24', '0')),
+        minute: Number(parts.minute || '0'),
+        second: Number(parts.second || '0')
+      };
+    }
+
+    function getPremiumDayPeriod(hour) {
+      if (hour >= 5 && hour < 12) return 'morning';
+      if (hour >= 12 && hour < 17) return 'daytime';
+      if (hour >= 17 && hour < 21) return 'evening';
+      return 'night';
+    }
+
+    function getPremiumModeInterpretation(mode, cityInfo, parts) {
+      const period = getPremiumDayPeriod(parts.hour);
+      const timeText = `${String(parts.hour).padStart(2, '0')}:${String(parts.minute).padStart(2, '0')}`;
+      const city = cityInfo.city || cityInfo.label;
+      const interpretations = {
+        Cultural: {
+          title: `${city} cultural rhythm`,
+          text: `It is ${timeText} in ${city}. This reads as ${period} time: a moment to understand how the city may be moving socially, spiritually, and daily, not only what the clock number says.`
+        },
+        Business: {
+          title: `${city} business window`,
+          text: `It is ${timeText} in ${city}. Business mode helps you decide if this is a good moment for calls, planning, coordination, or waiting until the next work window.`
+        },
+        Travel: {
+          title: `${city} travel awareness`,
+          text: `It is ${timeText} in ${city}. Travel mode turns the time into arrival context: body rhythm, local activity, check-in timing, and how quickly you should adjust.`
+        },
+        Family: {
+          title: `${city} family connection`,
+          text: `It is ${timeText} in ${city}. Family mode helps you judge whether someone may be waking, working, eating, resting, or available for a respectful call.`
+        },
+        Collector: {
+          title: `${city} collector reading`,
+          text: `It is ${timeText} in ${city}. Collector mode frames the selected city as a saved WorldSync position, turning the watch into a personal global time artifact.`
+        }
+      };
+      return interpretations[mode] || interpretations.Cultural;
+    }
+
+    function setPremiumText(id, text) {
+      const element = document.getElementById(id);
+      if (element) element.textContent = text;
+    }
+
+    function updatePremiumDashboard(active) {
+      const cityInfo = getPremiumSelectedCity();
+      const mode = document.getElementById('premiumInterpretationMode')?.value || 'Cultural';
+      const now = new Date();
+      const selectedTime = formatRegionTime(cityInfo.timezone, { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      const selectedZone = formatTimezoneName(cityInfo.timezone);
+      const difference = formatTimeDifference(cityInfo.timezone, now);
+      const parts = getPremiumTimeParts(cityInfo.timezone, now);
+      const interpretation = getPremiumModeInterpretation(mode, cityInfo, parts);
+
+      setPremiumText('premiumSelectedTime', active ? selectedTime : '--:--');
+      setPremiumText('premiumSelectedZone', active ? `${cityInfo.label} · ${selectedZone}` : 'Choose a city to preview.');
+      setPremiumText('premiumTimeDifference', active ? difference : '--');
+      setPremiumText('premiumLocalComparison', active ? `Compared with your current local time, ${cityInfo.city || cityInfo.label} is ${difference}.` : 'Start premium preview to compare your time.');
+      setPremiumText('premiumInterpretationTitle', active ? interpretation.title : 'Locked');
+      setPremiumText('premiumInterpretationText', active ? interpretation.text : 'Activate the preview to see what the selected time means for travel, business, family, culture, or collecting.');
+    }
+
     function updatePremiumLivePanel(active) {
       const panel = document.getElementById('premiumLivePanel');
       if (!panel) return;
-      const citySelect = document.getElementById('premiumCityFocus');
-      const modeSelect = document.getElementById('premiumInterpretationMode');
+      const cityInfo = getPremiumSelectedCity();
+      const mode = document.getElementById('premiumInterpretationMode')?.value || 'Cultural';
       const weatherContext = document.getElementById('premiumWeatherContext');
-      const cityLabel = citySelect?.selectedOptions?.[0]?.textContent || 'Chicago, United States';
-      const mode = modeSelect?.value || 'Cultural';
+      const parts = getPremiumTimeParts(cityInfo.timezone);
+      const interpretation = getPremiumModeInterpretation(mode, cityInfo, parts);
+      updatePremiumDashboard(active);
       panel.innerHTML = active
-        ? `<strong>Premium preview active</strong><span>${mode} mode · ${cityLabel}${weatherContext?.checked ? ' · live weather context included' : ''}. You can change themes, save this view, and test the paid WorldSync setup.</span>`
+        ? `<strong>Premium preview active</strong><span>${mode} mode is now testing ${cityInfo.label}. ${interpretation.text}${weatherContext?.checked ? ' Live weather context is included when location weather is available.' : ''}</span>`
         : '<strong>Premium preview is locked</strong><span>Start the preview to test saved city focus, collector themes, interpretation mode, and personal WorldSync setup.</span>';
     }
 
@@ -7898,7 +8267,9 @@ Founder, BaloWaci</p>
         control.setAttribute('aria-disabled', String(!unlocked));
       });
       document.querySelectorAll('.access-card.locked').forEach((card) => {
-        card.setAttribute('aria-label', unlocked ? 'Premium preview unlocked' : 'Premium locked');
+        card.setAttribute('aria-label', unlocked ? 'Premium preview unlocked. Click to test this feature.' : 'Premium locked');
+        card.setAttribute('role', 'button');
+        card.tabIndex = unlocked ? 0 : -1;
       });
       updatePremiumLivePanel(unlocked);
     }
@@ -7914,7 +8285,7 @@ Founder, BaloWaci</p>
       if (startButton) startButton.textContent = active ? `Premium Preview Active · ${formatPreviewTime(remaining)}` : 'Start 25-Minute Premium Preview';
       if (status) {
         status.textContent = active
-          ? `Premium preview unlocked. ${formatPreviewTime(remaining)} remaining. Try themes, city focus, interpretation mode, and saving your view.`
+          ? `Premium preview unlocked. ${formatPreviewTime(remaining)} remaining. Change city, mode, themes, and click premium cards to test features.`
           : 'Premium preview locked. Start the timer to explore.';
       }
       if (!active && expiresAt) localStorage.removeItem(premiumPreviewStorageKey);
@@ -7923,6 +8294,7 @@ Founder, BaloWaci</p>
     function startPremiumPreview() {
       localStorage.setItem(premiumPreviewStorageKey, String(Date.now() + premiumPreviewDurationMs));
       updatePremiumPreviewState();
+      document.getElementById('premiumExperienceDashboard')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       document.getElementById('premiumCityFocus')?.focus();
     }
 
@@ -7946,12 +8318,22 @@ Founder, BaloWaci</p>
       updatePremiumLivePanel(document.body.classList.contains('premium-preview-active'));
     }
 
+    function previewPremiumCard(card) {
+      if (!document.body.classList.contains('premium-preview-active')) return;
+      const title = card.querySelector('h3')?.textContent?.trim() || 'Premium feature';
+      const body = card.querySelector('p')?.textContent?.trim() || 'This premium feature is available in preview.';
+      setPremiumText('premiumFeatureTitle', title);
+      setPremiumText('premiumFeatureText', body);
+      document.getElementById('premiumExperienceDashboard')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
     function savePremiumPreviewView() {
       const saveStatus = document.getElementById('saveViewStatus');
-      const cityFocus = document.getElementById('premiumCityFocus')?.value || worldsyncHeroState.timezone;
+      const cityInfo = getPremiumSelectedCity();
       const mode = document.getElementById('premiumInterpretationMode')?.value || 'Cultural';
       const payload = {
-        cityFocus,
+        cityFocus: cityInfo.timezone,
+        cityLabel: cityInfo.label,
         mode,
         theme: document.body.dataset.theme || 'purple-night',
         weather: Boolean(document.getElementById('premiumWeatherContext')?.checked),
@@ -7960,7 +8342,7 @@ Founder, BaloWaci</p>
       localStorage.setItem('balowaciPremiumPreviewView', JSON.stringify(payload));
       localStorage.setItem('balowaciSavedWatchIndex', String(homeWatchState.selectedIndex));
       localStorage.setItem('balowaciLanguage', currentLanguage);
-      if (saveStatus) saveStatus.textContent = `Premium view saved: ${mode} mode for ${document.getElementById('premiumCityFocus')?.selectedOptions?.[0]?.textContent || 'your city'}.`;
+      if (saveStatus) saveStatus.textContent = `Premium view saved: ${mode} mode for ${cityInfo.label}.`;
       updatePremiumLivePanel(true);
     }
 
@@ -7986,6 +8368,15 @@ Founder, BaloWaci</p>
           updatePremiumLivePanel(document.body.classList.contains('premium-preview-active'));
         });
       });
+      document.querySelectorAll('.access-card.locked').forEach((card) => {
+        card.addEventListener('click', () => previewPremiumCard(card));
+        card.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            previewPremiumCard(card);
+          }
+        });
+      });
       cityFocus?.addEventListener('change', (event) => {
         applyPremiumCityFocus(event.target.value);
         if (autoSave?.checked) savePremiumPreviewView();
@@ -8006,7 +8397,6 @@ Founder, BaloWaci</p>
       updateDailyRitual();
       setInterval(updateDailyRitual, 60000);
     }
-
     function updateFeedbackProgress() {
       const progress = document.getElementById('feedbackProgress');
       const form = document.getElementById('feedbackForm');
