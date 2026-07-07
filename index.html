@@ -5548,6 +5548,14 @@
         grid-template-columns: 1fr;
       }
     }
+  
+    body { background: #11151b !important; color: #f7fbff !important; }
+    body .luxury-hero { background: linear-gradient(90deg, rgba(18,22,30,.52), rgba(18,22,30,.1) 48%, rgba(18,22,30,.34)), radial-gradient(circle at 70% 42%, rgba(105,211,223,.26), transparent 38%), radial-gradient(circle at 24% 18%, rgba(245,208,97,.28), transparent 36%), #10141a !important; }
+    section:not(.luxury-hero), .premium-access-section, .monetization-section, .trinity-prototype-section { background-color: #141920 !important; }
+    .prototype-update-panel { overflow: visible !important; background: linear-gradient(135deg, rgba(47,128,216,.18), transparent 32%), rgba(24,29,36,.96) !important; }
+    .prototype-update-content { min-width: 0 !important; }
+    .prototype-update-title { max-width: 100% !important; font-size: clamp(2rem, 3vw, 3.05rem) !important; line-height: 1.08 !important; overflow-wrap: anywhere !important; }
+    .prototype-update-copy, .prototype-phase-readout p { color: #e7eef2 !important; overflow-wrap: anywhere !important; }
   </style>
 </head>
 <body>
@@ -5636,13 +5644,6 @@
         </select>
         <button type="button" id="worldsyncResetRotation" data-i18n="watch.reset">Reset</button>
       </div>
-      <div class="watch-led-controls" aria-label="Watch LED light controls">
-        <span data-i18n="watch.ledLights">LED Lights</span>
-        <input id="watchLightSlider" type="range" min="0" max="100" step="5" value="100" aria-label="Watch light brightness">
-        <button type="button" class="watch-led-button" data-watch-light="100" data-i18n="watch.full">Full</button>
-        <button type="button" class="watch-led-button" data-watch-light="35" data-i18n="watch.dim">Dim</button>
-        <button type="button" class="watch-led-button" data-watch-light="0" data-i18n="watch.off">Off</button>
-      </div>
       <div class="home-watch-nav legacy-watch-engine" aria-label="Interactive BaloWaci section navigator">
         <div class="home-watch-shell">
           <canvas id="homeWatchNav" width="720" height="720"></canvas>
@@ -5674,7 +5675,7 @@
       <div class="weather-overlay" id="weatherOverlay" aria-hidden="true"></div>
       <div class="weather-status" id="weatherStatus" aria-live="polite">
         <span class="weather-icon" id="weatherIcon">☁️</span>
-        <span class="weather-text" id="weatherText">Loading local weather…</span>
+        <span class="weather-text" id="weatherText" data-i18n="weather.loading">Loading local weather...</span>
       </div>
     </div>
     <span class="watch-side-word waci" aria-hidden="true">Waci</span>
@@ -5858,33 +5859,33 @@
             <h3 id="prototypeUpdateTitle" class="prototype-update-title" data-i18n="prototype.updateTitle">From invention file to working artifact.</h3>
           </div>
 
-          <p class="prototype-update-copy">
+          <p class="prototype-update-copy" data-i18n="prototype.updateCopy">
             BaloWaci is now being shaped as a family of physical and digital time experiences: a patent-ready system, a live interface, and a collector watch language that keeps cultural, standard, military, and world rhythm readings connected.
           </p>
 
           <div class="prototype-phase-controls" aria-label="Prototype update phases">
-            <button type="button" class="prototype-phase-button active" data-prototype-phase="Prototype">Prototype</button>
-            <button type="button" class="prototype-phase-button" data-prototype-phase="Field Testing">Field Testing</button>
-            <button type="button" class="prototype-phase-button" data-prototype-phase="Launch Prep">Launch Prep</button>
+            <button type="button" class="prototype-phase-button active" data-prototype-phase="Prototype" data-i18n="prototype.phasePrototype">Prototype</button>
+            <button type="button" class="prototype-phase-button" data-prototype-phase="Field Testing" data-i18n="prototype.phaseFieldTesting">Field Testing</button>
+            <button type="button" class="prototype-phase-button" data-prototype-phase="Launch Prep" data-i18n="prototype.phaseLaunchPrep">Launch Prep</button>
           </div>
 
           <div class="prototype-phase-readout" aria-live="polite">
-            <strong id="prototypePhaseTitle">Prototype</strong>
-            <p id="prototypePhaseText">The watch codes, live wheel, and product diagrams are being unified into one clear invention story for investors, testers, and early supporters.</p>
+            <strong id="prototypePhaseTitle" data-i18n="prototype.phasePrototype">Prototype</strong>
+            <p id="prototypePhaseText" data-i18n="prototype.phasePrototypeBody">The watch codes, live wheel, and product diagrams are being unified into one clear invention story for investors, testers, and early supporters.</p>
           </div>
 
           <div class="prototype-update-metrics" aria-label="Current BaloWaci build signals">
             <div class="prototype-update-metric">
-              <span>Modes</span>
+              <span data-i18n="prototype.metricModes">Modes</span>
               <strong>4</strong>
             </div>
             <div class="prototype-update-metric">
-              <span>Watch Codes</span>
+              <span data-i18n="prototype.metricWatchCodes">Watch Codes</span>
               <strong>3</strong>
             </div>
             <div class="prototype-update-metric">
-              <span>World Rhythm</span>
-              <strong>Live</strong>
+              <span data-i18n="prototype.metricWorldRhythm">World Rhythm</span>
+              <strong data-i18n="prototype.metricLive">Live</strong>
             </div>
           </div>
         </div>
@@ -5944,7 +5945,7 @@ This is only the beginning.
 Founder, BaloWaci</p>
 
         <div class="founder-quote-box">
-          <blockquote data-i18n="founder.quote">"Silence conceals the act; sound reveals its echo. What is done in silence will always echo in sound."</blockquote>
+          <blockquote data-i18n="founder.quote">"Sound is the absence of silence, and not action."</blockquote>
         </div>
 
         <div class="founder-quote-box founder-purpose-box">
@@ -7761,6 +7762,17 @@ Founder, BaloWaci</p>
 
 
 
+
+    const requestedFinalTranslations = {
+      en: {'founder.quote':'"Sound is the absence of silence, and not action."','weather.loading':'Loading local weather...','weather.status':'{condition} in {location}{temperature}','weather.condition.clear':'Clear','prototype.updateKicker':'June 2026 Product Update','prototype.updateTitle':'From invention file to working artifact.','prototype.updateCopy':'BaloWaci is now being shaped as a family of physical and digital time experiences: a patent-ready system, a live interface, and a collector watch language that keeps cultural, standard, military, and world rhythm readings connected.','prototype.phasePrototype':'Prototype','prototype.phaseFieldTesting':'Field Testing','prototype.phaseLaunchPrep':'Launch Prep','prototype.phasePrototypeBody':'The watch codes, live wheel, and product diagrams are being unified into one clear invention story for investors, testers, and early supporters.','prototype.metricModes':'Modes','prototype.metricWatchCodes':'Watch Codes','prototype.metricWorldRhythm':'World Rhythm','prototype.metricLive':'Live'},
+      es: {'founder.quote':'"El sonido es la ausencia del silencio, y no accion."','prototype.updateKicker':'Actualizacion de producto de junio de 2026','prototype.updateTitle':'Del archivo de invencion al artefacto funcional.','prototype.updateCopy':'BaloWaci se esta formando como una familia de experiencias fisicas y digitales del tiempo.','prototype.phasePrototype':'Prototipo','prototype.phaseFieldTesting':'Pruebas de campo','prototype.phaseLaunchPrep':'Preparacion de lanzamiento','prototype.phasePrototypeBody':'Los codigos del reloj, la rueda en vivo y los diagramas se unen en una historia clara.','prototype.metricModes':'Modos','prototype.metricWatchCodes':'Codigos de reloj','prototype.metricWorldRhythm':'Ritmo mundial','prototype.metricLive':'En vivo'},
+      fr: {'founder.quote':'"Le son est l absence du silence, et non une action."','prototype.updateKicker':'Mise a jour produit de juin 2026','prototype.updateTitle':'Du dossier d invention a l objet fonctionnel.','prototype.updateCopy':'BaloWaci prend forme comme une famille d experiences physiques et numeriques du temps.','prototype.phasePrototype':'Prototype','prototype.phaseFieldTesting':'Tests terrain','prototype.phaseLaunchPrep':'Preparation du lancement','prototype.phasePrototypeBody':'Les codes de montre, la roue en direct et les schemas deviennent une histoire claire.','prototype.metricModes':'Modes','prototype.metricWatchCodes':'Codes de montre','prototype.metricWorldRhythm':'Rythme mondial','prototype.metricLive':'En direct'},
+      pt: {'founder.quote':'"O som e a ausencia do silencio, e nao acao."','prototype.updateKicker':'Atualizacao de produto de junho de 2026','prototype.updateTitle':'Do arquivo de invencao ao artefato funcional.','prototype.updateCopy':'BaloWaci esta sendo formado como uma familia de experiencias fisicas e digitais de tempo.','prototype.phasePrototype':'Prototipo','prototype.phaseFieldTesting':'Teste de campo','prototype.phaseLaunchPrep':'Preparacao de lancamento','prototype.phasePrototypeBody':'Os codigos do relogio, a roda ao vivo e os diagramas se unem em uma historia clara.','prototype.metricModes':'Modos','prototype.metricWatchCodes':'Codigos do relogio','prototype.metricWorldRhythm':'Ritmo mundial','prototype.metricLive':'Ao vivo'},
+      zh: {'founder.quote':'"???????????????"','weather.loading':'????????...','prototype.updateKicker':'2026 ? 6 ?????','prototype.updateTitle':'????????????','prototype.updateCopy':'BaloWaci ??????????????????','prototype.phasePrototype':'??','prototype.phaseFieldTesting':'????','prototype.phaseLaunchPrep':'????','prototype.phasePrototypeBody':'??????????????????????????','prototype.metricModes':'??','prototype.metricWatchCodes':'????','prototype.metricWorldRhythm':'????','prototype.metricLive':'??'},
+      ar: {'founder.quote':'"????? ?? ???? ?????? ???? ????."','weather.loading':'???? ????? ????? ??????...','weather.status':'{condition} ?? {location}{temperature}','weather.condition.clear':'???','weather.condition.clouds':'????','weather.condition.rain':'????','weather.condition.storm':'?????','weather.condition.snow':'???','prototype.updateKicker':'????? ?????? - ????? 2026','prototype.updateTitle':'?? ??? ???????? ??? ????? ????.','prototype.updateCopy':'????? BaloWaci ?????? ?? ????? ????? ??????? ????????.','prototype.phasePrototype':'???????','prototype.phaseFieldTesting':'?????? ??????','prototype.phaseLaunchPrep':'????? ???????','prototype.phasePrototypeBody':'??? ????? ???? ?????? ??????? ????? ??????? ?? ??? ?????? ?????.','prototype.metricModes':'???????','prototype.metricWatchCodes':'???? ??????','prototype.metricWorldRhythm':'????? ??????','prototype.metricLive':'?????'}
+    };
+    Object.entries(requestedFinalTranslations).forEach(([language, entries]) => { Object.assign(translations[language] || (translations[language] = {}), entries); });
+
     function t(key) {
       return translations[currentLanguage]?.[key] || translations.en[key] || key;
     }
@@ -7787,6 +7799,9 @@ Founder, BaloWaci</p>
       updateDailyRitual();
       updateWorldRhythmPanel();
       updateFeedbackProgress();
+      if (weatherState.lastWeatherData && weatherState.currentCoords) {
+        updateWeatherDisplay(weatherState.lastWeatherData, weatherState.currentCoords.lat, weatherState.currentCoords.lon);
+      }
     }
 
     // Initialize stars background
@@ -8769,6 +8784,7 @@ Founder, BaloWaci</p>
       const locationName = normalizePlaceName(weatherData.locationName) || t('weather.yourArea');
       if (locationName !== t('weather.yourArea')) weatherState.localPlaceName = locationName;
       weatherState.lastWeatherData = weatherData;
+      weatherState.currentCoords = { lat, lon };
 
       setWeatherStatusText(formatWeatherStatus(category, locationName, temperature), category);
     }
@@ -10748,7 +10764,6 @@ Founder, BaloWaci</p>
       initializePremiumExperience();
       initializePrototypeUpdatePanel();
       initializeWorldSyncHeroInterface();
-      initializeWatchLightControls();
       initializeHomeWatchNav();
       initializeHomeWatchAutoRotation();
       initializeWeatherSync();
