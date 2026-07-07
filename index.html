@@ -8517,6 +8517,8 @@ Founder, BaloWaci</p>
 
     const earthTextureImage = new Image();
     earthTextureImage.src = 'assets/earth-texture.jpg';
+    const rotationalGlobeImage = new Image();
+    rotationalGlobeImage.src = 'assets/rotational globe.jpg';
     const moonTextureImage = new Image();
     moonTextureImage.src = 'assets/moon-texture.jpg';
 
@@ -10399,100 +10401,76 @@ Founder, BaloWaci</p>
 
     function drawWorldSyncCenterGlobe(ctx, radius, now) {
       const globeRadius = radius * 0.335;
-      const rotation = ((now.getTime() / 26000) % 1) * Math.PI * 2;
-      const tilt = -18 * Math.PI / 180;
-      const landmasses = [
-        [[-168, 72], [-142, 70], [-126, 56], [-124, 42], [-112, 30], [-96, 18], [-86, 20], [-78, 30], [-68, 44], [-58, 52], [-62, 62], [-92, 72], [-132, 76]],
-        [[-82, 12], [-76, 2], [-80, -12], [-72, -34], [-66, -52], [-52, -56], [-42, -30], [-38, -12], [-50, 4], [-64, 10]],
-        [[-18, 36], [6, 34], [28, 30], [40, 10], [50, -8], [40, -30], [22, -35], [8, -22], [-4, -2], [-14, 12]],
-        [[-10, 58], [18, 70], [52, 66], [92, 60], [132, 48], [150, 32], [126, 18], [96, 22], [74, 8], [56, 22], [32, 34], [8, 42]],
-        [[68, 24], [90, 20], [102, 8], [96, -6], [78, -2]],
-        [[112, -12], [154, -16], [150, -34], [130, -42], [112, -30]],
-        [[-52, 74], [-34, 78], [-22, 68], [-38, 60], [-54, 64]]
-      ];
-
-      function projectPoint(lon, lat) {
-        const lambda = lon * Math.PI / 180 + rotation;
-        const phi = lat * Math.PI / 180;
-        const cosPhi = Math.cos(phi);
-        const x = globeRadius * cosPhi * Math.sin(lambda);
-        const y = -globeRadius * (Math.sin(phi) * Math.cos(tilt) - cosPhi * Math.cos(lambda) * Math.sin(tilt));
-        const visible = cosPhi * Math.cos(lambda) * Math.cos(tilt) + Math.sin(phi) * Math.sin(tilt) > -0.05;
-        return { x, y, visible };
-      }
+      const time = now.getTime();
+      const spin = (time / 18000) % (Math.PI * 2);
+      const breathe = 1 + Math.sin(time / 1800) * 0.018;
 
       ctx.save();
       ctx.beginPath();
       ctx.arc(0, 0, globeRadius, 0, Math.PI * 2);
       ctx.clip();
 
-      const ocean = ctx.createRadialGradient(-globeRadius * 0.36, -globeRadius * 0.42, globeRadius * 0.08, 0, 0, globeRadius);
-      ocean.addColorStop(0, 'rgba(47, 141, 211, 0.96)');
-      ocean.addColorStop(0.45, 'rgba(9, 69, 139, 0.92)');
-      ocean.addColorStop(1, 'rgba(1, 15, 45, 0.98)');
+      const ocean = ctx.createRadialGradient(-globeRadius * 0.32, -globeRadius * 0.34, globeRadius * 0.08, 0, 0, globeRadius);
+      ocean.addColorStop(0, 'rgba(62, 153, 218, 0.98)');
+      ocean.addColorStop(0.48, 'rgba(12, 82, 150, 0.96)');
+      ocean.addColorStop(1, 'rgba(2, 14, 38, 1)');
       ctx.fillStyle = ocean;
       ctx.fillRect(-globeRadius, -globeRadius, globeRadius * 2, globeRadius * 2);
 
-      ctx.strokeStyle = 'rgba(147, 220, 231, 0.18)';
-      ctx.lineWidth = Math.max(0.6, radius * 0.0026);
-      for (let lon = -150; lon <= 180; lon += 30) {
-        ctx.beginPath();
-        let drawing = false;
-        for (let lat = -75; lat <= 75; lat += 5) {
-          const point = projectPoint(lon, lat);
-          if (!point.visible) { drawing = false; continue; }
-          if (!drawing) ctx.moveTo(point.x, point.y);
-          else ctx.lineTo(point.x, point.y);
-          drawing = true;
+      if (rotationalGlobeImage.complete && rotationalGlobeImage.naturalWidth) {
+        const img = rotationalGlobeImage;
+        const imageAspect = img.naturalWidth / Math.max(1, img.naturalHeight);
+        const targetHeight = globeRadius * 2.26 * breathe;
+        const targetWidth = Math.max(targetHeight * imageAspect, globeRadius * 2.26 * breathe);
+        const drift = ((time / 26000) % 1) * targetWidth;
+
+        ctx.save();
+        ctx.rotate(spin * 0.18);
+        ctx.globalAlpha = 0.96;
+        for (let copy = -1; copy <= 1; copy += 1) {
+          ctx.drawImage(img, -targetWidth / 2 - drift + copy * targetWidth, -targetHeight / 2, targetWidth, targetHeight);
         }
-        ctx.stroke();
-      }
-      for (let lat = -60; lat <= 60; lat += 30) {
+        ctx.restore();
+
+        ctx.save();
+        ctx.rotate(-spin * 0.35);
+        ctx.globalAlpha = 0.18;
+        ctx.drawImage(img, -globeRadius * 1.16, -globeRadius * 1.16, globeRadius * 2.32, globeRadius * 2.32);
+        ctx.restore();
+      } else {
+        ctx.fillStyle = 'rgba(212, 169, 72, 0.72)';
         ctx.beginPath();
-        let drawing = false;
-        for (let lon = -180; lon <= 180; lon += 5) {
-          const point = projectPoint(lon, lat);
-          if (!point.visible) { drawing = false; continue; }
-          if (!drawing) ctx.moveTo(point.x, point.y);
-          else ctx.lineTo(point.x, point.y);
-          drawing = true;
-        }
-        ctx.stroke();
+        ctx.ellipse(-globeRadius * 0.16, -globeRadius * 0.05, globeRadius * 0.42, globeRadius * 0.62, spin, 0, Math.PI * 2);
+        ctx.fill();
       }
 
-      ctx.fillStyle = 'rgba(212, 169, 72, 0.82)';
-      ctx.strokeStyle = 'rgba(255, 235, 164, 0.46)';
-      ctx.lineWidth = Math.max(0.9, radius * 0.0042);
-      landmasses.forEach((shape) => {
-        ctx.beginPath();
-        let started = false;
-        shape.forEach(([lon, lat]) => {
-          const point = projectPoint(lon, lat);
-          if (!point.visible) return;
-          if (!started) ctx.moveTo(point.x, point.y);
-          else ctx.lineTo(point.x, point.y);
-          started = true;
-        });
-        if (started) {
-          ctx.closePath();
-          ctx.fill();
-          ctx.stroke();
-        }
-      });
+      const meridianGlow = ctx.createLinearGradient(-globeRadius, 0, globeRadius, 0);
+      meridianGlow.addColorStop(0, 'rgba(0, 0, 0, 0.38)');
+      meridianGlow.addColorStop(0.28, 'rgba(255, 255, 255, 0.06)');
+      meridianGlow.addColorStop(0.54, 'rgba(255, 255, 255, 0.22)');
+      meridianGlow.addColorStop(0.78, 'rgba(0, 0, 0, 0.16)');
+      meridianGlow.addColorStop(1, 'rgba(0, 0, 0, 0.48)');
+      ctx.fillStyle = meridianGlow;
+      ctx.fillRect(-globeRadius, -globeRadius, globeRadius * 2, globeRadius * 2);
 
-      const shine = ctx.createLinearGradient(-globeRadius, -globeRadius, globeRadius, globeRadius);
-      shine.addColorStop(0, 'rgba(255, 255, 255, 0.22)');
-      shine.addColorStop(0.38, 'rgba(255, 255, 255, 0.04)');
-      shine.addColorStop(1, 'rgba(0, 0, 0, 0.34)');
+      const shine = ctx.createRadialGradient(-globeRadius * 0.38, -globeRadius * 0.42, globeRadius * 0.04, 0, 0, globeRadius);
+      shine.addColorStop(0, 'rgba(255, 255, 255, 0.32)');
+      shine.addColorStop(0.42, 'rgba(255, 255, 255, 0.08)');
+      shine.addColorStop(1, 'rgba(0, 0, 0, 0.3)');
       ctx.fillStyle = shine;
       ctx.fillRect(-globeRadius, -globeRadius, globeRadius * 2, globeRadius * 2);
 
       ctx.restore();
+
+      ctx.save();
       ctx.beginPath();
       ctx.arc(0, 0, globeRadius, 0, Math.PI * 2);
-      ctx.strokeStyle = 'rgba(214, 179, 92, 0.38)';
+      ctx.strokeStyle = 'rgba(214, 179, 92, 0.48)';
       ctx.lineWidth = Math.max(1, radius * 0.006);
+      ctx.shadowColor = 'rgba(105, 211, 223, 0.24)';
+      ctx.shadowBlur = radius * 0.04;
       ctx.stroke();
+      ctx.restore();
     }
     function drawWorldSyncWatch() {
       const canvas = document.getElementById('worldsyncLiveCanvas');
