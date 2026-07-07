@@ -10446,27 +10446,20 @@ Founder, BaloWaci</p>
       ctx.fillStyle = ocean;
       ctx.fillRect(-globeRadius, -globeRadius, globeRadius * 2, globeRadius * 2);
 
-      if (rotationalGlobeImage.complete && rotationalGlobeImage.naturalWidth) {
+      if (earthTextureImage.complete && earthTextureImage.naturalWidth) {
+        const rotationLon = ((time / 16000) * 360) % 360;
+        drawEarthTextureGlobe(ctx, earthTextureImage, globeRadius * 0.99, rotationLon, Math.sin(time / 12000) * 3);
+      } else if (rotationalGlobeImage.complete && rotationalGlobeImage.naturalWidth) {
         const img = rotationalGlobeImage;
-        const width = img.naturalWidth;
-        const height = img.naturalHeight;
-        const rotationLon = ((time / 24000) * 360) % 360;
-        const topCrop = height * 0.04;
-        const cropHeight = height * 0.92;
+        const sourceSize = Math.min(img.naturalWidth, img.naturalHeight) * 0.74;
+        const sourceX = (img.naturalWidth - sourceSize) / 2;
+        const sourceY = (img.naturalHeight - sourceSize) / 2;
+        const textureSize = globeRadius * 2.16 * breathe;
 
         ctx.save();
-        ctx.globalAlpha = 0.98;
-        ctx.imageSmoothingEnabled = true;
-        ctx.imageSmoothingQuality = 'high';
-        for (let x = Math.floor(-globeRadius); x <= Math.ceil(globeRadius); x += 1) {
-          const nx = x / globeRadius;
-          if (Math.abs(nx) > 1) continue;
-          const visibleHeight = Math.sqrt(1 - nx * nx) * globeRadius * 2.08 * breathe;
-          const longitudeOffset = Math.asin(nx) / Math.PI + 0.5;
-          let sourceX = (longitudeOffset * width + (rotationLon / 360) * width) % width;
-          if (sourceX < 0) sourceX += width;
-          ctx.drawImage(img, sourceX, topCrop, 1, cropHeight, x, -visibleHeight / 2, 1.35, visibleHeight);
-        }
+        ctx.rotate(spin * 0.24);
+        ctx.globalAlpha = 0.94;
+        ctx.drawImage(img, sourceX, sourceY, sourceSize, sourceSize, -textureSize / 2, -textureSize / 2, textureSize, textureSize);
         ctx.restore();
       } else {
         ctx.fillStyle = 'rgba(212, 169, 72, 0.72)';
@@ -10477,17 +10470,17 @@ Founder, BaloWaci</p>
 
       const meridianGlow = ctx.createLinearGradient(-globeRadius, 0, globeRadius, 0);
       meridianGlow.addColorStop(0, 'rgba(0, 0, 0, 0.38)');
-      meridianGlow.addColorStop(0.28, 'rgba(255, 255, 255, 0.025)');
-      meridianGlow.addColorStop(0.54, 'rgba(255, 255, 255, 0.08)');
-      meridianGlow.addColorStop(0.78, 'rgba(0, 0, 0, 0.2)');
+      meridianGlow.addColorStop(0.28, 'rgba(255, 255, 255, 0.015)');
+      meridianGlow.addColorStop(0.54, 'rgba(255, 255, 255, 0.035)');
+      meridianGlow.addColorStop(0.78, 'rgba(0, 0, 0, 0.24)');
       meridianGlow.addColorStop(1, 'rgba(0, 0, 0, 0.48)');
       ctx.fillStyle = meridianGlow;
       ctx.fillRect(-globeRadius, -globeRadius, globeRadius * 2, globeRadius * 2);
 
       const shine = ctx.createRadialGradient(-globeRadius * 0.38, -globeRadius * 0.42, globeRadius * 0.04, 0, 0, globeRadius);
-      shine.addColorStop(0, 'rgba(255, 255, 255, 0.14)');
-      shine.addColorStop(0.42, 'rgba(255, 255, 255, 0.035)');
-      shine.addColorStop(1, 'rgba(0, 0, 0, 0.34)');
+      shine.addColorStop(0, 'rgba(255, 255, 255, 0.055)');
+      shine.addColorStop(0.42, 'rgba(255, 255, 255, 0.015)');
+      shine.addColorStop(1, 'rgba(0, 0, 0, 0.38)');
       ctx.fillStyle = shine;
       ctx.fillRect(-globeRadius, -globeRadius, globeRadius * 2, globeRadius * 2);
 
