@@ -5331,8 +5331,12 @@
 
     #hero .hero-interface-copy p,
     #hero .hero-kicker {
-      color: #eef6f8 !important;
+      color: #ffffff !important;
       opacity: 1 !important;
+    }
+
+    #hero .hero-interface-copy p {
+      text-shadow: 0 2px 16px rgba(0, 0, 0, 0.92);
     }
 
     #hero .luxury-btn {
@@ -5345,8 +5349,15 @@
     }
 
     #hero .hero-metric {
-      background: rgba(9, 13, 18, 0.76);
-      color: #f5f7fb;
+      background: rgba(18, 23, 31, 0.9);
+      border-color: rgba(214, 179, 92, 0.34);
+      color: #ffffff;
+      box-shadow: 0 18px 34px rgba(0, 0, 0, 0.34);
+    }
+
+    #hero .hero-metric span {
+      color: #d8e2e6 !important;
+      opacity: 1 !important;
     }
 
     #hero .live-worldsync-watch-shell .worldsync-live-card {
@@ -5647,16 +5658,16 @@
       </div>
     </div>    <div class="watch-explainers" aria-label="BaloWaci interface explanation">
       <div class="watch-explainer">
-        <strong>Outer Glow</strong>
-        <span>Website navigation and world places.</span>
+        <strong data-i18n="explain.outerGlowTitle">Outer Glow</strong>
+        <span data-i18n="explain.outerGlowBody">Website navigation and world places.</span>
       </div>
       <div class="watch-explainer">
-        <strong>Time Rings</strong>
-        <span>Standard, cultural, 24-hour, and direction readings.</span>
+        <strong data-i18n="explain.timeRingsTitle">Time Rings</strong>
+        <span data-i18n="explain.timeRingsBody">Standard, cultural, 24-hour, and direction readings.</span>
       </div>
       <div class="watch-explainer">
-        <strong>Center World</strong>
-        <span>Local rhythm, weather, and global meaning.</span>
+        <strong data-i18n="explain.centerWorldTitle">Center World</strong>
+        <span data-i18n="explain.centerWorldBody">Local rhythm, weather, and global meaning.</span>
       </div>
     </div>
     <div class="weather-sync">
@@ -5675,9 +5686,9 @@
         <h2 data-i18n="daily.title">Your Daily Time Reading</h2>
         <p id="dailyReading" class="daily-reading" data-i18n="daily.fallback">Time is opening a quiet window. Pause, choose your direction, and move with intention.</p>
         <div class="daily-meta">
-          <span id="dailySunState"><strong>Daylight</strong><small>Current local light rhythm</small></span>
-          <span id="dailyMoonState"><strong>Moon Phase</strong><small>Night cycle context</small></span>
-          <span id="dailyLocalTime"><strong>--:--</strong><small>Your current local time</small></span>
+          <span id="dailySunState"><strong data-i18n="daily.sun.day">Daylight</strong><small data-i18n="daily.sun.context">Current local light rhythm</small></span>
+          <span id="dailyMoonState"><strong data-i18n="daily.moon.title">Moon Phase</strong><small data-i18n="daily.moon.context">Night cycle context</small></span>
+          <span id="dailyLocalTime"><strong>--:--</strong><small data-i18n="daily.localTime.context">Your current local time</small></span>
         </div>
         <div class="world-rhythm-panel" aria-live="polite">
           <div class="world-rhythm-header">
@@ -5818,19 +5829,19 @@
 
       <div class="trinity-material-strip" aria-label="Prototype material direction">
         <div class="trinity-material">
-          <strong>Steel Case</strong>
+          <strong data-i18n="prototype.steelCase">Steel Case</strong>
           Brushed edges and polished highlights give the interface object weight.
         </div>
         <div class="trinity-material">
-          <strong>Leather Strap</strong>
+          <strong data-i18n="prototype.leatherStrap">Leather Strap</strong>
           Warm brown texture softens the futuristic dial with classic craft.
         </div>
         <div class="trinity-material">
-          <strong>Sapphire Glass</strong>
+          <strong data-i18n="prototype.sapphireGlass">Sapphire Glass</strong>
           Flat crystal keeps the complex dial protected and visually calm.
         </div>
         <div class="trinity-material">
-          <strong>Color System</strong>
+          <strong data-i18n="prototype.colorSystem">Color System</strong>
           Blue, red, gold, and violet preserve BaloWaci's interpretation language.
         </div>
       </div>
@@ -5843,8 +5854,8 @@
 
         <div class="prototype-update-content">
           <div>
-            <p class="prototype-update-kicker">June 2026 Product Update</p>
-            <h3 id="prototypeUpdateTitle" class="prototype-update-title">From invention file to working artifact.</h3>
+            <p class="prototype-update-kicker" data-i18n="prototype.updateKicker">June 2026 Product Update</p>
+            <h3 id="prototypeUpdateTitle" class="prototype-update-title" data-i18n="prototype.updateTitle">From invention file to working artifact.</h3>
           </div>
 
           <p class="prototype-update-copy">
@@ -6081,15 +6092,15 @@ Founder, BaloWaci</p>
   <section id="premium-access" class="premium-access-section">
     <div class="container">
       <div class="premium-access-card">
-        <p class="premium-kicker">Access Architecture</p>
-        <h2>Free to Feel. Premium to Own.</h2>
+        <p class="premium-kicker" data-i18n="access.kicker">Access Architecture</p>
+        <h2 data-i18n="access.title">Free to Feel. Premium to Own.</h2>
         <p>The public site should make people understand BaloWaci, return to it, and want deeper access. The paid layers are separated as locked tools, private knowledge, and collector privileges.</p>
 
         <div class="premium-preview-access" aria-label="Premium timed preview access">
           <p>Open the paid layers for a 25-minute trial. When the timer ends, the console locks again and payment is required for continued access.</p>
           <div class="final-cta-actions">
-            <button type="button" id="startPremiumPreview" class="luxury-btn primary">Start 25-Minute Premium Preview</button>
-            <a class="luxury-btn secondary" href="#monetization">See Payment Options</a>
+            <button type="button" id="startPremiumPreview" class="luxury-btn primary" data-i18n="access.startPreview">Start 25-Minute Premium Preview</button>
+            <a class="luxury-btn secondary" href="#monetization" data-i18n="access.paymentOptions">See Payment Options</a>
           </div>
           <p id="premiumPreviewStatus" class="premium-preview-status" aria-live="polite">Premium preview locked. Start the timer to explore.</p>
         </div>
@@ -6299,22 +6310,22 @@ Founder, BaloWaci</p>
           </div>
           <div class="premium-experience-dashboard" id="premiumExperienceDashboard" aria-live="polite">
             <div class="premium-dashboard-card">
-              <span>Selected city time</span>
+              <span data-i18n="premium.selectedCityTime">Selected city time</span>
               <strong id="premiumSelectedTime">--:--</strong>
-              <small id="premiumSelectedZone">Choose a city to preview.</small>
+              <small id="premiumSelectedZone" data-i18n="premium.chooseCity">Choose a city to preview.</small>
             </div>
             <div class="premium-dashboard-card">
-              <span>Local comparison</span>
+              <span data-i18n="premium.localComparisonLabel">Local comparison</span>
               <strong id="premiumTimeDifference">--</strong>
-              <small id="premiumLocalComparison">Start premium preview to compare your time.</small>
+              <small id="premiumLocalComparison" data-i18n="premium.compareStart">Start premium preview to compare your time.</small>
             </div>
             <div class="premium-dashboard-card wide">
-              <span>Time interpretation</span>
-              <strong id="premiumInterpretationTitle">Locked</strong>
+              <span data-i18n="premium.timeInterpretationLabel">Time interpretation</span>
+              <strong id="premiumInterpretationTitle" data-i18n="premium.locked">Locked</strong>
               <small id="premiumInterpretationText">Activate the preview to see what the selected time means for travel, business, family, culture, or collecting.</small>
             </div>
             <div class="premium-dashboard-card wide">
-              <span>Premium feature test</span>
+              <span data-i18n="premium.featureTestLabel">Premium feature test</span>
               <strong id="premiumFeatureTitle">No feature selected</strong>
               <small id="premiumFeatureText">After activation, click any premium tier card to preview what users will experience.</small>
             </div>
@@ -6332,8 +6343,8 @@ Founder, BaloWaci</p>
   <section id="monetization" class="monetization-section">
     <div class="container">
       <div class="monetization-card">
-        <p class="monetization-kicker">Revenue Strategy</p>
-        <h2>The BaloWaci Ladder</h2>
+        <p class="monetization-kicker" data-i18n="revenue.kicker">Revenue Strategy</p>
+        <h2 data-i18n="revenue.title">The BaloWaci Ladder</h2>
         <p>The free experience spreads curiosity. Paid access monetizes depth, ownership, exclusivity, and collector identity.</p>
 
         <div class="revenue-grid">
@@ -7739,6 +7750,16 @@ Founder, BaloWaci</p>
       });
     });
 
+    const finalLanguageOverrides = {
+      en: { 'weather.loading':'Loading local weather...', 'weather.status':'{condition} in {location}{temperature}', 'daily.sun.context':'Current local light rhythm', 'daily.moon.context':'Night cycle context', 'daily.localTime.context':'Your current local time', 'world.meaningSame':'You and {city} are sharing the same clock hour, but the cultural rhythm can still feel different.', 'world.meaningDifferent':'While your world is in its {localPeriod} rhythm, {city} is {difference} in a {rhythmPeriod} rhythm.', 'world.period.morning':'morning', 'world.period.day':'day', 'world.period.evening':'evening', 'world.period.night':'night', 'time.fromYou':'from you', 'premium.previewActiveButton':'Premium Preview Active' },
+      es: { 'nav.today':'Hoy','nav.watch':'Reloj','nav.prototypes':'Prototipos','nav.liveTime':'Hora en vivo','nav.founder':'Fundador','nav.feedback':'Comentarios','hero.kicker':'Reloj WorldSync en vivo','hero.worldsyncCode':'Codigo WorldSync','watch.reset':'Restablecer','prototype.kicker':'Codigos de prototipo','prototype.family':'Familia de prototipos','mission.title':'Nuestra mision','vision.simpleTitle':'Nuestra vision','weather.loading':'Cargando clima local...','weather.status':'{condition} en {location}{temperature}','weather.condition.clear':'Despejado','weather.condition.clouds':'Nublado','weather.condition.rain':'Lluvia','weather.condition.storm':'Tormenta','weather.condition.snow':'Nieve','weather.yourArea':'tu zona','daily.sun.context':'Ritmo de luz local actual','daily.moon.context':'Contexto del ciclo nocturno','daily.localTime.context':'Tu hora local actual','time.fromYou':'de ti','premium.previewActiveButton':'Vista Premium Activa' },
+      pt: { 'nav.today':'Hoje','nav.watch':'Relogio','nav.prototypes':'Prototipos','nav.liveTime':'Hora ao vivo','nav.founder':'Fundador','nav.feedback':'Comentarios','hero.kicker':'Relogio WorldSync ao vivo','hero.openWatch':'Abrir relogio ao vivo','hero.openWheel':'Abrir roda ao vivo','hero.worldsyncCode':'Codigo WorldSync','watch.reset':'Redefinir','prototype.kicker':'Codigos dos prototipos','prototype.family':'Familia de prototipos','mission.title':'Nossa missao','vision.simpleTitle':'Nossa visao','weather.loading':'Carregando clima local...','weather.status':'{condition} em {location}{temperature}','weather.condition.clear':'Ceu limpo','weather.condition.clouds':'Nublado','weather.condition.rain':'Chuva','weather.condition.storm':'Tempestade','weather.condition.snow':'Neve','weather.yourArea':'sua area','daily.sun.context':'Ritmo de luz local atual','daily.moon.context':'Contexto do ciclo noturno','daily.localTime.context':'Sua hora local atual','time.fromYou':'de voce','premium.previewActiveButton':'Previa Premium Ativa' },
+      fr: { 'nav.today':'Aujourd hui','nav.watch':'Montre','nav.prototypes':'Prototypes','nav.liveTime':'Heure en direct','nav.founder':'Fondateur','nav.feedback':'Avis','hero.kicker':'Montre WorldSync en direct','hero.body':'BaloWaci aide a lire un meme moment de plusieurs facons : heure locale, heure mondiale, rythme culturel et contexte meteo dans une seule interface de montre vivante.','hero.openWatch':'Ouvrir la montre','hero.openWheel':'Ouvrir la roue','hero.localPulse':'Pouls local','hero.worldRhythm':'Rythme mondial','hero.worldsyncCode':'Code WorldSync','watch.reset':'Reinitialiser','watch.ledLights':'Lumieres LED','watch.off':'Eteint','prototype.kicker':'Codes des prototypes','prototype.family':'Famille de prototypes','mission.title':'Notre mission','vision.simpleTitle':'Notre vision','weather.loading':'Chargement de la meteo locale...','weather.status':'{condition} a {location}{temperature}','weather.condition.clear':'Clair','weather.condition.clouds':'Nuageux','weather.condition.rain':'Pluie','weather.condition.storm':'Orage','weather.condition.snow':'Neige','weather.yourArea':'votre zone','daily.sun.context':'Rythme lumineux local actuel','daily.moon.context':'Contexte du cycle nocturne','daily.localTime.context':'Votre heure locale actuelle','time.fromYou':'de vous','premium.previewActiveButton':'Apercu Premium Actif' },
+      zh: { 'nav.today':'\u4eca\u65e5','nav.watch':'\u624b\u8868','nav.prototypes':'\u539f\u578b','nav.liveTime':'\u5b9e\u65f6\u65f6\u95f4','nav.founder':'\u521b\u59cb\u4eba','nav.feedback':'\u53cd\u9988','hero.kicker':'WorldSync \u5b9e\u65f6\u624b\u8868','hero.body':'BaloWaci \u5e2e\u52a9\u4eba\u4eec\u7528\u672c\u5730\u65f6\u95f4\u3001\u4e16\u754c\u65f6\u95f4\u3001\u6587\u5316\u8282\u594f\u548c\u5b9e\u65f6\u5929\u6c14\u6765\u9605\u8bfb\u540c\u4e00\u65f6\u523b\u3002','hero.openWatch':'\u6253\u5f00\u5b9e\u65f6\u624b\u8868','hero.openWheel':'\u6253\u5f00\u5b9e\u65f6\u65f6\u95f4\u8f6e','hero.localPulse':'\u672c\u5730\u8109\u52a8','hero.worldRhythm':'\u4e16\u754c\u8282\u594f','hero.worldsyncCode':'WorldSync \u4ee3\u7801','watch.local':'\u672c\u5730','watch.mode':'\u6a21\u5f0f','watch.cityTime':'\u57ce\u5e02\u65f6\u95f4','watch.reset':'\u91cd\u7f6e','watch.ledLights':'LED \u706f','watch.full':'\u5168\u4eae','watch.dim':'\u8c03\u6697','watch.off':'\u5173\u95ed','weather.loading':'\u6b63\u5728\u52a0\u8f7d\u672c\u5730\u5929\u6c14...','weather.status':'{location}\u7684{condition}{temperature}','weather.condition.clear':'\u6674\u6717','weather.condition.clouds':'\u591a\u4e91','weather.condition.rain':'\u4e0b\u96e8','weather.condition.storm':'\u96f7\u66b4','weather.condition.snow':'\u4e0b\u96ea','weather.yourArea':'\u4f60\u7684\u533a\u57df','explain.outerGlowTitle':'\u5916\u5c42\u5149\u73af','explain.outerGlowBody':'\u7f51\u7ad9\u5bfc\u822a\u548c\u4e16\u754c\u5730\u70b9\u3002','explain.timeRingsTitle':'\u65f6\u95f4\u73af','explain.timeRingsBody':'\u6807\u51c6\u3001\u6587\u5316\u300124\u5c0f\u65f6\u548c\u65b9\u5411\u8bfb\u6570\u3002','explain.centerWorldTitle':'\u4e2d\u5fc3\u4e16\u754c','explain.centerWorldBody':'\u672c\u5730\u8282\u594f\u3001\u5929\u6c14\u548c\u5168\u7403\u610f\u4e49\u3002','daily.kicker':'\u4eca\u65e5 BaloWaci','daily.title':'\u4f60\u7684\u6bcf\u65e5\u65f6\u95f4\u89e3\u8bfb','daily.sun.day':'\u65e5\u5149','daily.sun.context':'\u5f53\u524d\u672c\u5730\u5149\u7ebf\u8282\u594f','daily.moon.context':'\u591c\u95f4\u5faa\u73af\u4e0a\u4e0b\u6587','daily.localTime.context':'\u4f60\u5f53\u524d\u7684\u672c\u5730\u65f6\u95f4','world.kicker':'\u4e16\u754c\u8282\u594f\u6a21\u5f0f','world.greeting':'\u95ee\u5019','world.tradition':'\u6bcf\u65e5\u8282\u594f','world.previous':'\u4e0a\u4e00\u4e2a','world.next':'\u4e0b\u4e00\u4e2a\u56fd\u5bb6','world.save':'\u4fdd\u5b58\u5730\u70b9','world.meaningSame':'\u4f60\u548c {city} \u5171\u4eab\u540c\u4e00\u4e2a\u949f\u70b9\uff0c\u4f46\u6587\u5316\u8282\u594f\u4ecd\u53ef\u80fd\u4e0d\u540c\u3002','world.meaningDifferent':'\u5f53\u4f60\u7684\u4e16\u754c\u5904\u5728{localPeriod}\u8282\u594f\u65f6\uff0c{city} \u6bd4\u4f60 {difference}\uff0c\u5e76\u5904\u5728{rhythmPeriod}\u8282\u594f\u3002','world.period.morning':'\u65e9\u6668','world.period.day':'\u767d\u5929','world.period.evening':'\u508d\u665a','world.period.night':'\u591c\u665a','time.fromYou':'\u4e0e\u4f60\u76f8\u6bd4','premium.previewActiveButton':'\u9ad8\u7ea7\u9884\u89c8\u5df2\u542f\u7528' }
+    };
+    Object.entries(finalLanguageOverrides).forEach(([language, entries]) => { Object.assign(translations[language], entries); });
+
+
 
     function t(key) {
       return translations[currentLanguage]?.[key] || translations.en[key] || key;
@@ -7956,9 +7977,9 @@ Founder, BaloWaci</p>
       const sunState = document.getElementById('dailySunState');
       const moonState = document.getElementById('dailyMoonState');
       const localTime = document.getElementById('dailyLocalTime');
-      if (sunState) sunState.innerHTML = `<strong>${sunLabel}</strong><small>Current local light rhythm</small>`;
-      if (moonState) moonState.innerHTML = `<strong>${getMoonPhaseLabel(phase)}</strong><small>Night cycle context</small>`;
-      if (localTime) localTime.innerHTML = `<strong>${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</strong><small>Your current local time</small>`;
+      if (sunState) sunState.innerHTML = `<strong>${sunLabel}</strong><small>${t('daily.sun.context')}</small>`;
+      if (moonState) moonState.innerHTML = `<strong>${getMoonPhaseLabel(phase)}</strong><small>${t('daily.moon.context')}</small>`;
+      if (localTime) localTime.innerHTML = `<strong>${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</strong><small>${t('daily.localTime.context')}</small>`;
     }
 
     function normalizeWorldRhythmIndex(index) {
@@ -7982,9 +8003,9 @@ Founder, BaloWaci</p>
       const rhythmPeriod = getWorldRhythmPeriodForTimezone(rhythm.timezone, now);
       const difference = formatTimeDifference(rhythm.timezone, now);
       if (difference === 'same time') {
-        return `You and ${rhythm.city} are sharing the same clock hour, but the cultural rhythm can still feel different.`;
+        return t('world.meaningSame').replace('{city}', rhythm.city);
       }
-      return `While your world is in its ${localPeriod} rhythm, ${rhythm.city} is ${difference} in a ${rhythmPeriod} rhythm.`;
+      return t('world.meaningDifferent').replace('{localPeriod}', t(`world.period.${localPeriod}`)).replace('{city}', rhythm.city).replace('{difference}', difference).replace('{rhythmPeriod}', t(`world.period.${rhythmPeriod}`));
     }
 
     function getSavedWorldRing() {
@@ -8276,11 +8297,11 @@ Founder, BaloWaci</p>
       const interpretation = getPremiumModeInterpretation(mode, cityInfo, parts);
 
       setPremiumText('premiumSelectedTime', active ? selectedTime : '--:--');
-      setPremiumText('premiumSelectedZone', active ? `${cityInfo.label} � ${selectedZone}` : 'Choose a city to preview.');
+      setPremiumText('premiumSelectedZone', active ? `${cityInfo.label} - ${selectedZone}` : t('premium.chooseCity'));
       setPremiumText('premiumTimeDifference', active ? difference : '--');
-      setPremiumText('premiumLocalComparison', active ? `Compared with your current local time, ${cityInfo.city || cityInfo.label} is ${difference}.` : 'Start premium preview to compare your time.');
-      setPremiumText('premiumInterpretationTitle', active ? interpretation.title : 'Locked');
-      setPremiumText('premiumInterpretationText', active ? interpretation.text : 'Activate the preview to see what the selected time means for travel, business, family, culture, or collecting.');
+      setPremiumText('premiumLocalComparison', active ? `${t('premium.localComparisonLabel')}: ${cityInfo.city || cityInfo.label} ${difference}` : t('premium.compareStart'));
+      setPremiumText('premiumInterpretationTitle', active ? interpretation.title : t('premium.locked'));
+      setPremiumText('premiumInterpretationText', active ? interpretation.text : t('premium.activatePreview'));
     }
 
     function updatePremiumLivePanel(active) {
@@ -8319,7 +8340,7 @@ Founder, BaloWaci</p>
       const active = remaining > 0;
 
       setPremiumPreviewUnlocked(active);
-      if (startButton) startButton.textContent = active ? `Premium Preview Active � ${formatPreviewTime(remaining)}` : 'Start 25-Minute Premium Preview';
+      if (startButton) startButton.textContent = active ? `${t('premium.previewActiveButton')} - ${formatPreviewTime(remaining)}` : t('access.startPreview');
       if (status) {
         status.textContent = active
           ? `Premium preview unlocked. ${formatPreviewTime(remaining)} remaining. Change city, mode, themes, and click premium cards to test features.`
@@ -8712,7 +8733,7 @@ Founder, BaloWaci</p>
       return template
         .replace('{condition}', getWeatherConditionLabel(category))
         .replace('{location}', locationName)
-        .replace('{temperature}', temperature ? ` � ${temperature}` : '');
+        .replace('{temperature}', temperature ? ` - ${temperature}` : '');
     }
 
     function hasLocationMeaningfullyChanged(lat, lon) {
@@ -8960,7 +8981,7 @@ Founder, BaloWaci</p>
       const absolute = Math.abs(diffMinutes);
       const hours = Math.floor(absolute / 60);
       const minutes = absolute % 60;
-      return `${sign}${hours}${minutes ? `:${String(minutes).padStart(2, '0')}` : ''} from you`;
+      return `${sign}${hours}${minutes ? `:${String(minutes).padStart(2, '0')}` : ''} ${t('time.fromYou')}`;
     }
 
     function getTimeDifferenceHierarchy(timezone, date = new Date()) {
