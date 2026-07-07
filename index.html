@@ -8796,7 +8796,7 @@ Founder, BaloWaci</p>
 
       const unit = currentLanguage === 'ar' ? '\u0641' : (weatherData.temperatureUnit || 'F');
       const temperature = typeof weatherData.temperature === 'number'
-        ? `${Math.round(weatherData.temperature)}\u00B0${unit}`
+        ? `${Math.trunc(weatherData.temperature)}\u00B0${unit}`
         : '';
       const locationName = currentLanguage === 'ar' ? t('weather.yourArea') : (normalizePlaceName(weatherData.locationName) || t('weather.yourArea'));
       if (locationName !== t('weather.yourArea')) weatherState.localPlaceName = locationName;
@@ -10448,23 +10448,25 @@ Founder, BaloWaci</p>
 
       if (rotationalGlobeImage.complete && rotationalGlobeImage.naturalWidth) {
         const img = rotationalGlobeImage;
-        const imageAspect = img.naturalWidth / Math.max(1, img.naturalHeight);
-        const targetHeight = globeRadius * 2.26 * breathe;
-        const targetWidth = Math.max(targetHeight * imageAspect, globeRadius * 2.26 * breathe);
-        const drift = ((time / 26000) % 1) * targetWidth;
+        const sourceSize = Math.min(img.naturalWidth, img.naturalHeight);
+        const sourceX = (img.naturalWidth - sourceSize) / 2;
+        const sourceY = (img.naturalHeight - sourceSize) / 2;
+        const textureSize = globeRadius * 2.84 * breathe;
 
         ctx.save();
-        ctx.rotate(spin * 0.18);
-        ctx.globalAlpha = 0.96;
-        for (let copy = -1; copy <= 1; copy += 1) {
-          ctx.drawImage(img, -targetWidth / 2 - drift + copy * targetWidth, -targetHeight / 2, targetWidth, targetHeight);
-        }
-        ctx.restore();
-
-        ctx.save();
-        ctx.rotate(-spin * 0.35);
-        ctx.globalAlpha = 0.18;
-        ctx.drawImage(img, -globeRadius * 1.16, -globeRadius * 1.16, globeRadius * 2.32, globeRadius * 2.32);
+        ctx.rotate(spin * 0.42);
+        ctx.globalAlpha = 0.98;
+        ctx.drawImage(
+          img,
+          sourceX,
+          sourceY,
+          sourceSize,
+          sourceSize,
+          -textureSize / 2,
+          -textureSize / 2,
+          textureSize,
+          textureSize
+        );
         ctx.restore();
       } else {
         ctx.fillStyle = 'rgba(212, 169, 72, 0.72)';
