@@ -5579,7 +5579,7 @@
     }
 
     body { background: #11151b !important; color: #f7fbff !important; }
-    body .luxury-hero { background: linear-gradient(90deg, rgba(18,22,30,.52), rgba(18,22,30,.1) 48%, rgba(18,22,30,.34)), radial-gradient(circle at 70% 42%, rgba(105,211,223,.26), transparent 38%), radial-gradient(circle at 24% 18%, rgba(245,208,97,.28), transparent 36%), #10141a !important; }
+    body .luxury-hero { background: linear-gradient(90deg, rgba(28,34,43,.42), rgba(22,30,37,.06) 48%, rgba(18,24,32,.24)), radial-gradient(circle at 70% 42%, rgba(105,211,223,.34), transparent 40%), radial-gradient(circle at 24% 18%, rgba(245,208,97,.38), transparent 38%), #151b23 !important; }
     section:not(.luxury-hero), .premium-access-section, .monetization-section, .trinity-prototype-section { background-color: #141920 !important; }
     .prototype-update-panel { overflow: visible !important; background: linear-gradient(135deg, rgba(47,128,216,.18), transparent 32%), rgba(24,29,36,.96) !important; }
     .prototype-update-content { min-width: 0 !important; }
@@ -10374,6 +10374,24 @@ Founder, BaloWaci</p>
       }));
     }
 
+    function getWorldSyncRegionPoint(timezone) {
+      const regionPoints = {
+        'America/Chicago': { lon: -91.5, lat: 41.7 },
+        'America/New_York': { lon: -74, lat: 40.7 },
+        'Europe/London': { lon: -0.1, lat: 51.5 },
+        'Africa/Kinshasa': { lon: 15.3, lat: -4.3 },
+        'Africa/Maputo': { lon: 32.6, lat: -25.9 },
+        'Asia/Dubai': { lon: 55.3, lat: 25.2 },
+        'Asia/Tokyo': { lon: 139.7, lat: 35.7 },
+        'America/Sao_Paulo': { lon: -46.6, lat: -23.6 },
+        'Pacific/Honolulu': { lon: -157.8, lat: 21.3 },
+        'Europe/Paris': { lon: 2.4, lat: 48.9 },
+        'Europe/Berlin': { lon: 13.4, lat: 52.5 },
+        'Asia/Shanghai': { lon: 116.4, lat: 39.9 }
+      };
+      return regionPoints[timezone] || regionPoints['Africa/Kinshasa'];
+    }
+
     function setWorldSyncCityFromSelect(select) {
       const option = select.selectedOptions[0];
       worldsyncHeroState.timezone = select.value;
@@ -10428,11 +10446,15 @@ Founder, BaloWaci</p>
       ctx.restore();
     }
 
-    function drawWorldSyncCenterGlobe(ctx, radius, now) {
+    function drawWorldSyncCenterGlobe(ctx, radius, now, selectedItem = worldsyncHeroState) {
       const globeRadius = radius * 0.335;
       const time = now.getTime();
-      const spin = (time / 18000) % (Math.PI * 2);
-      const breathe = 1 + Math.sin(time / 1800) * 0.018;
+      const spin = (time / 26000) % (Math.PI * 2);
+      const breathe = 1 + Math.sin(time / 2200) * 0.014;
+      const selectedPoint = getWorldSyncRegionPoint(selectedItem.timezone);
+      const globeDrift = ((time / 32000) * 360) % 360;
+      const centerLon = normalizeLongitude(selectedPoint.lon + globeDrift);
+      const centerLat = selectedPoint.lat * 0.12 + Math.sin(time / 14000) * 2;
 
       ctx.save();
       ctx.beginPath();
@@ -10447,8 +10469,7 @@ Founder, BaloWaci</p>
       ctx.fillRect(-globeRadius, -globeRadius, globeRadius * 2, globeRadius * 2);
 
       if (earthTextureImage.complete && earthTextureImage.naturalWidth) {
-        const rotationLon = ((time / 16000) * 360) % 360;
-        drawEarthTextureGlobe(ctx, earthTextureImage, globeRadius * 0.99, rotationLon, Math.sin(time / 12000) * 3);
+        drawEarthTextureGlobe(ctx, earthTextureImage, globeRadius * 0.99, centerLon, centerLat);
       } else if (rotationalGlobeImage.complete && rotationalGlobeImage.naturalWidth) {
         const img = rotationalGlobeImage;
         const sourceSize = Math.min(img.naturalWidth, img.naturalHeight) * 0.74;
@@ -10483,6 +10504,40 @@ Founder, BaloWaci</p>
       shine.addColorStop(1, 'rgba(0, 0, 0, 0.38)');
       ctx.fillStyle = shine;
       ctx.fillRect(-globeRadius, -globeRadius, globeRadius * 2, globeRadius * 2);
+
+      const selectedLabelPoint = projectGlobePoint(selectedPoint.lon, selectedPoint.lat, centerLon, globeRadius * 0.99, centerLat);
+      const selectedDistance = Math.hypot(selectedLabelPoint.x, selectedLabelPoint.y);
+      const labelScale = selectedDistance > globeRadius * 0.66 ? (globeRadius * 0.66 / selectedDistance) : 1;
+      const markerX = selectedLabelPoint.x * labelScale;
+      const markerY = selectedLabelPoint.y * labelScale;
+      const cityLabel = (selectedItem.city || 'WorldSync').toUpperCase();
+      const codeLabel = (selectedItem.code || '').toUpperCase()
+        .replace('DEMOCRATIC REPUBLIC OF THE CONGO', 'DR CONGO')
+        .replace('UNITED ARAB EMIRATES', 'UAE')
+        .replace('UNITED KINGDOM', 'UK')
+        .replace('UNITED STATES', 'US');
+
+      ctx.save();
+      ctx.translate(markerX, markerY);
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.78)';
+      ctx.shadowBlur = 5;
+      ctx.fillStyle = 'rgba(246, 213, 120, 0.94)';
+      ctx.beginPath();
+      ctx.arc(0, 0, Math.max(3.5, globeRadius * 0.035), 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(3, 9, 18, 0.82)';
+      ctx.lineWidth = Math.max(1, globeRadius * 0.012);
+      ctx.stroke();
+      ctx.textAlign = markerX > 0 ? 'right' : 'left';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = 'rgba(255, 232, 151, 0.96)';
+      ctx.font = '800 ' + Math.max(7, globeRadius * 0.075) + 'px Inter, sans-serif';
+      ctx.fillText(cityLabel.slice(0, 10), markerX > 0 ? -globeRadius * 0.06 : globeRadius * 0.06, -globeRadius * 0.035);
+      if (codeLabel) {
+        ctx.font = '800 ' + Math.max(5, globeRadius * 0.048) + 'px Inter, sans-serif';
+        ctx.fillText(codeLabel.slice(0, 9), markerX > 0 ? -globeRadius * 0.06 : globeRadius * 0.06, globeRadius * 0.06);
+      }
+      ctx.restore();
 
       ctx.restore();
 
@@ -10625,7 +10680,7 @@ Founder, BaloWaci</p>
       ctx.arc(0, 0, radius * 0.43, 0, Math.PI * 2);
       ctx.fillStyle = 'rgba(2, 15, 36, 0.78)';
       ctx.fill();
-      drawWorldSyncCenterGlobe(ctx, radius, now);
+      drawWorldSyncCenterGlobe(ctx, radius, now, worldsyncHeroState);
       ctx.fillStyle = '#d7ab45';
       ctx.font = `700 ${Math.max(22, radius * 0.065)}px Playfair Display, serif`;
       ctx.textAlign = 'center';
