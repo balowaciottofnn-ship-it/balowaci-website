@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" translate="no" class="notranslate">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google" content="notranslate">
   <title>BaloWaci - A Unified Time Interpretation System</title>
   <meta name="theme-color" content="#090812">
   <meta name="description" content="BaloWaci is a symbolic time artifact built around harmony, ritual, and layered global time.">
@@ -5665,7 +5666,7 @@
 </head>
 <body>
   <div class="stars-container" id="starsContainer"></div>
-<a class="site-corner-logo" href="#hero" aria-label="BaloWaci home">
+<a class="site-corner-logo notranslate" href="#hero" aria-label="BaloWaci home" translate="no">
     <img src="assets/balogo-circle.png" alt="BaloWaci logo">
     <span>Balo<span class="brand-waci">Waci</span></span>
   </a>
@@ -5694,7 +5695,7 @@
     <span class="watch-side-word balo" aria-hidden="true">Balo</span>
     <div class="hero-interface-copy">
       <p class="hero-kicker" data-i18n="hero.kicker">WorldSync live watch</p>
-      <h1>Balo<span>Waci</span></h1>
+      <h1 class="notranslate" translate="no">Balo<span>Waci</span></h1>
       <p data-i18n="hero.body">BaloWaci helps people read one moment in more than one way: local time, world time, cultural rhythm, and weather-aware context in one live watch interface.</p>
       <div class="hero-command-row">
         <a class="luxury-btn primary" href="interfaces/universe-watch-wrist.html" data-i18n="hero.openWatch">Open Live Watch</a>
@@ -8419,6 +8420,28 @@ Founder, BaloWaci</p>
 
     Object.assign(finalPremiumAreaTranslations.en, {"access.community":"Community","access.news":"News","access.updates":"Updates","access.prototypeProgress":"Prototype progress","access.premiumTier":"Premium Tier","access.premiumTierPrice":"$4.99-$9.99/month","access.premiumTierBody":"For users who want BaloWaci as a daily world-time companion, not only a website they visit once.","access.fullWorldsync":"Full WorldSync","access.allCountries":"All countries","access.allCities":"All cities","access.advancedSync":"Advanced synchronization","access.personalDashboard":"Personal world dashboard","access.timeCollections":"Time Collections","access.favoriteCountries":"Favorite countries","access.familyLocations":"Family locations","access.businessLocations":"Business locations","access.sampleLocations":"DR Congo, Japan, Brazil, New York, London","access.advancedAnalytics":"Advanced Analytics","access.timeDifferences":"Time differences","access.workingOverlap":"Working-hours overlap","access.meetingPlanner":"Meeting planner","access.usefulFor":"Useful for travelers, businesses, and international families","access.premiumPlusTitle":"Premium Plus: BaloWaci Universe","access.premiumPlusPrice":"$14.99-$29.99/month","access.premiumPlusBody":"The serious platform layer: cultural time knowledge, challenge systems, and digital ownership benefits.","access.timeBattleSync":"Time Battle Sync","access.compareCountries":"Compare countries","access.timeChallenges":"Compete in time challenges","access.globalSyncEvents":"Global synchronization events","access.culturalTimeLibrary":"Cultural Time Library","access.differentSystems":"Different cultural time systems","access.historicalInterpretations":"Historical interpretations","access.educationalContent":"Educational content","access.watchOwnerBenefits":"Watch Owner Benefits","access.digitalCertificate":"Digital certificate","access.ownershipProfile":"Ownership profile","access.limitedReleases":"Limited releases for Trinity, Axis, and WorldSync owners","access.foundersClubTitle":"BaloWaci Founders Club","access.foundersClubPrice":"$99-$499/year","access.foundersClubBodyLong":"The high-end membership where the luxury experience lives before and after the physical watches arrive.","access.memberAccess":"Member Access","access.earlyPrototypeAccess":"Early prototype access","access.limitedEditions":"Limited editions","access.privateLivestreams":"Private livestreams","access.founderUpdates":"Founder Updates","access.investorUpdates":"Investor updates","access.factoryUpdates":"Factory updates","access.newModelPreviews":"New model previews","access.consolePreviewTitle":"Premium Console Preview","access.consolePreviewBody":"Use this 25-minute preview to test the paid layer before charging users: collector themes, saved city views, premium interpretation modes, and a private WorldSync setup.","access.premiumToolsTitle":"Premium WorldSync Tools","access.premiumCityFocus":"Premium city focus","access.interpretationMode":"Interpretation mode","access.includeWeatherContext":"Include live weather context","access.autoSavePremium":"Auto-save this premium setup on this device","premium.previewLockedTitle":"Premium preview is locked","premium.previewLockedBody":"Start the preview to test saved city focus, collector themes, interpretation mode, and personal WorldSync setup.","premium.previewUnlockedStatus":"Premium preview unlocked. {time} remaining. Change city, mode, themes, and click premium cards to test features.","premium.interpretationPrompt":"Activate the preview to see what the selected time means for travel, business, family, culture, or collecting.","premium.noFeatureSelected":"No feature selected","premium.featurePrompt":"After activation, click any premium tier card to preview what users will experience.","premium.cardUnlockedLabel":"Premium preview unlocked. Click to test this feature."});
     Object.entries(finalPremiumAreaTranslations).forEach(([language, entries]) => { Object.assign(translations[language] || (translations[language] = {}), entries); });
+
+    const finalSwahiliHomepageFix = {
+      'nav.today': 'Leo',
+      'nav.watch': 'Saa',
+      'nav.prototypes': 'Mifano',
+      'nav.liveTime': 'Wakati Hai',
+      'nav.founder': 'Mwanzilishi',
+      'nav.feedback': 'Maoni',
+      'hero.kicker': 'Saa hai ya WorldSync',
+      'hero.body': 'BaloWaci huwasaidia watu kusoma wakati mmoja kwa njia zaidi ya moja: wakati wa eneo, wakati wa dunia, mdundo wa kitamaduni, na hali ya hewa katika kiolesura kimoja cha saa hai.',
+      'hero.openWatch': 'Fungua Saa Hai',
+      'hero.openWheel': 'Fungua Gurudumu Hai',
+      'hero.localPulse': 'Mapigo ya eneo',
+      'hero.worldRhythm': 'Mdundo wa dunia',
+      'hero.worldsyncCode': 'Msimbo wa WorldSync',
+      'weather.condition.clear': 'Angavu',
+      'weather.condition.clouds': 'Mawingu',
+      'weather.condition.rain': 'Mvua',
+      'weather.condition.storm': 'Dhoruba',
+      'weather.condition.snow': 'Theluji'
+    };
+    Object.assign(translations.sw || (translations.sw = {}), finalSwahiliHomepageFix);
 
     function t(key) {
       return translations[currentLanguage]?.[key] || translations.en[key] || key;
