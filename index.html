@@ -5585,6 +5585,46 @@
     .prototype-update-content { min-width: 0 !important; }
     .prototype-update-title { max-width: 100% !important; font-size: clamp(2rem, 3vw, 3.05rem) !important; line-height: 1.08 !important; overflow-wrap: anywhere !important; }
     .prototype-update-copy, .prototype-phase-readout p { color: #e7eef2 !important; overflow-wrap: anywhere !important; }
+
+    /* Strong homepage brightness override: visibly lighten the first screen. */
+    body .luxury-hero {
+      background:
+        linear-gradient(90deg, rgba(31, 38, 48, 0.36), rgba(35, 48, 58, 0.04) 48%, rgba(25, 33, 43, 0.18)),
+        radial-gradient(circle at 70% 42%, rgba(118, 224, 236, 0.44), transparent 42%),
+        radial-gradient(circle at 24% 18%, rgba(255, 218, 104, 0.46), transparent 40%),
+        radial-gradient(circle at 42% 54%, rgba(255, 255, 255, 0.12), transparent 44%),
+        #202936 !important;
+    }
+
+    #hero .hero-interface-copy,
+    #hero .hero-interface-copy p {
+      color: #f7fbff !important;
+      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.42) !important;
+    }
+
+    #hero .hero-interface-copy h1,
+    #hero .hero-interface-copy h1 span {
+      text-shadow: 0 0 18px rgba(255, 255, 255, 0.14), 0 2px 10px rgba(0, 0, 0, 0.42) !important;
+    }
+
+    #hero .hero-kicker,
+    #hero .hero-metric span {
+      color: #f2f7fb !important;
+    }
+
+    #hero .hero-metric,
+    #hero .worldsync-city-dock,
+    #hero > .weather-sync .weather-status {
+      background: rgba(20, 28, 37, 0.68) !important;
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.22) !important;
+    }
+
+    #hero .worldsync-hero-stage,
+    #hero .live-worldsync-watch-shell,
+    #hero .worldsync-prototype-image {
+      filter: brightness(1.2) saturate(1.08) contrast(1.03) !important;
+    }
+
   </style>
 </head>
 <body>
