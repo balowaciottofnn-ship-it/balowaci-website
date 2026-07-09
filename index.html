@@ -5662,6 +5662,113 @@
       filter: none !important;
     }
 
+    /* BaloWaci homepage luxury brightness fix */
+    body {
+      background:
+        radial-gradient(circle at 70% 25%, rgba(255, 215, 120, 0.18), transparent 28%),
+        radial-gradient(circle at 25% 35%, rgba(120, 80, 255, 0.12), transparent 30%),
+        linear-gradient(135deg, #05070d 0%, #0a1018 45%, #020308 100%) !important;
+      color: #f5f1e8 !important;
+    }
+
+    #hero.luxury-hero,
+    #hero.hero,
+    #hero.worldsync-section {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 70% 25%, rgba(255, 215, 120, 0.18), transparent 28%),
+        radial-gradient(circle at 25% 35%, rgba(120, 80, 255, 0.12), transparent 30%),
+        linear-gradient(135deg, rgba(8, 12, 20, 0.92), rgba(10, 17, 28, 0.82)) !important;
+    }
+
+    #hero .hero-interface-copy h1 {
+      color: #9b5cff !important;
+      text-shadow:
+        0 0 12px rgba(244, 210, 122, 0.35),
+        0 0 28px rgba(120, 65, 255, 0.25),
+        0 4px 20px rgba(0, 0, 0, 0.76) !important;
+    }
+
+    #hero .hero-interface-copy h1 span {
+      color: #f2c75c !important;
+    }
+
+    #hero .hero-interface-copy p {
+      color: rgba(255, 255, 255, 0.88) !important;
+      line-height: 1.7;
+      text-shadow: 0 0 8px rgba(0, 0, 0, 0.55) !important;
+    }
+
+    #hero .hero-kicker,
+    #hero .section-label,
+    #hero .worldsync-label {
+      color: rgba(255, 255, 255, 0.72) !important;
+      letter-spacing: 0.22em;
+    }
+
+    #hero .luxury-btn.primary,
+    #hero .btn-primary,
+    #hero button.primary-btn {
+      background: linear-gradient(135deg, #ffe28a, #d5a937) !important;
+      color: #111 !important;
+      border: 1px solid rgba(255, 225, 140, 0.9) !important;
+      box-shadow:
+        0 0 18px rgba(255, 205, 90, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.55) !important;
+      text-shadow: none !important;
+    }
+
+    #hero .luxury-btn.secondary,
+    #hero .secondary-btn,
+    #hero .outline-btn {
+      background: rgba(255, 255, 255, 0.04) !important;
+      color: #f4d27a !important;
+      border: 1px solid rgba(244, 210, 122, 0.45) !important;
+      box-shadow: 0 0 12px rgba(244, 210, 122, 0.18) !important;
+    }
+
+    #hero .home-watch-shell,
+    #hero .watch-container,
+    #hero .watch-hero,
+    #hero .worldsync-watch,
+    #hero .worldsync-hero-stage,
+    #hero .worldsync-prototype-shell,
+    #hero .worldsync-prototype-image {
+      filter: brightness(1.18) contrast(1.12) saturate(1.15) drop-shadow(0 0 35px rgba(255, 215, 120, 0.18)) !important;
+    }
+
+    #hero .home-watch-shell img,
+    #hero .watch-container img,
+    #hero .watch-hero img,
+    #hero .worldsync-watch img {
+      filter: brightness(1.2) contrast(1.12) saturate(1.15) !important;
+    }
+
+    .interface-nav {
+      background: rgba(5, 8, 14, 0.72) !important;
+      border: 1px solid rgba(255, 255, 255, 0.09) !important;
+      box-shadow: 0 0 24px rgba(255, 215, 120, 0.08) !important;
+      backdrop-filter: blur(14px);
+    }
+
+    #hero > .weather-sync .weather-status {
+      background: rgba(255, 255, 255, 0.08) !important;
+      color: rgba(255, 255, 255, 0.9) !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    }
+
+    #hero .slogan {
+      margin-top: 18px;
+      color: #f4d27a;
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-shadow: 0 0 14px rgba(244, 210, 122, 0.35);
+    }
+
+
   </style>
 </head>
 <body>
@@ -5697,6 +5804,7 @@
       <p class="hero-kicker" data-i18n="hero.kicker">WorldSync live watch</p>
       <h1 class="notranslate" translate="no">Balo<span>Waci</span></h1>
       <p data-i18n="hero.body">BaloWaci helps people read one moment in more than one way: local time, world time, cultural rhythm, and weather-aware context in one live watch interface.</p>
+      <div class="slogan" data-i18n="hero.slogan">Everything Moving Together In Time</div>
       <div class="hero-command-row">
         <a class="luxury-btn primary" href="interfaces/universe-watch-wrist.html" data-i18n="hero.openWatch">Open Live Watch</a>
         <a class="luxury-btn secondary" href="interfaces/universe-time-wheel-patent.html" data-i18n="hero.openWheel">Open Live Wheel</a>
@@ -8432,6 +8540,12 @@ Founder, BaloWaci</p>
     Object.assign(finalNonSwahiliLanguageCleanup.zh, {"daily.moon.title":"Yuexiang","prototype.kicker":"Liu yue 2026 chanpin gengxin","prototype.family":"Cong faming wenjian dao ke gongzuo de shiwu.","prototype.intro":"Mei ge BaloWaci yuanxing dou tansuo yi ge qingchu de gainian: Trinity jiehe san zhong duqu shijian de fangshi, Axis jieshi fangxiang yu pingheng, WorldSync lianjie shijie chengshi.","prototype.trinityTitle":"BaloWaci Trinity","prototype.trinityBody":"Daima YAH. Trinity ba biaozhun shijian, 24 xiaoshi shijian he wenhua shijian fang zai yiqi, bangzhu ni yong san zhong fangshi lijie tong yi shike.","prototype.axisTitle":"BaloWaci Axis","prototype.axisBody":"Daima WEH. Axis xiang shijian luopan yiyang jieshi fangxiang, yundong he geren zhuanzhu.","prototype.worldsyncTitle":"BaloWaci WorldSync","prototype.worldsyncBody":"Daima YEH. WorldSync rang ni xuanze chengshi, chakan shishi shijian, bing lijie butong difang ruhe gongxiang tong yi shike.","prototype.languageTitle":"Trinity yuyan","prototype.mainDialLabel":"Zhu biaopan","prototype.mainDialBody":"Chuantong biaopan rang suoyou ren neng gou hen kuai dingwei dangqian shijian.","prototype.secondRingLabel":"Di er shijian huan","prototype.secondRingBody":"Nei huan bangzhu ni tongshi duqu ling yi zhong shijian moshi.","prototype.subdialsLabel":"Xiao biaopan","prototype.subdialsBody":"Fu zhu biaopan zhichi wenhua, quanqiu he 24 xiaoshi jieshi.","prototype.materialLabel":"Cailiao","prototype.materialBody":"Anse jinshu, jinse xijie he lanse boli ba shijian yuyan ronghe zai yiqi.","vision.spiritTitle":"Jingshen","vision.spiritBody":"Pingjing de yundong, heping yu gengxin xiangzheng ban sui shijian tiyan.","premium.selectedCityTime":"Xuan ding chengshi shijian","premium.chooseCity":"Xuanze yi ge chengshi lai chakan.","premium.localComparisonLabel":"Bendi bijiao","premium.compareStart":"Qidong gaoji yulan lai bijiao ni de shijian.","premium.timeInterpretationLabel":"Shijian jieshi","premium.locked":"Yi suoding","premium.featureTestLabel":"Gaoji gongneng ceshi","revenue.physicalWatches":"1. Shiti shoubiao","revenue.largestSource":"Zui da shouru laiyuan","revenue.premiumObjects":"Trinity, Axis he WorldSync chengwei gaoji duixiang","revenue.limitedEditions":"2. Xianliang ban","revenue.profitMargins":"Zuigao lirun kongjian","revenue.scarcity":"Xiyou xing, daima, zhengshu he suoyouzhe shenfen","revenue.foundersClub":"3. Chuangshiren julebu","revenue.membership":"Chixu de shehua huiyuan","revenue.privateUpdates":"Siren gengxin he zaoqi fangwen","revenue.premiumWorldsync":"4. Gaoji WorldSync","revenue.softwareRevenue":"Ke kuozhan de ruanjian shouru","revenue.dashboards":"Yibiao pan, baocun didian, huiyi jihua he fenxi","revenue.licensing":"5. Shouquan","revenue.upside":"Changqi qianli hen da","revenue.partners":"Wei hezuo huoban tigong BaloWaci shijian jieshi jishu","footer.privacy":"Yinsi","footer.userAgreement":"Yonghu xieyi","footer.terms":"Tiaokuan","footer.legal":"Falv","weather.loading":"Zhengzai huoqu ni de tianqi weizhi..."});
     Object.assign(finalNonSwahiliLanguageCleanup.ar, {"daily.moon.title":"Marhalat al-qamar","prototype.kicker":"Tahdith muntaj Yuniu 2026","prototype.family":"Min milaf ikhtira ila adah taamal.","prototype.intro":"Kull namudhaj BaloWaci yastakshif fikrah wadihah: Trinity yajma thalath turuq liqiraat al-waqt, Axis yashrah al-ittijah wal-tawazun, wa WorldSync yarbit mudun al-alam.","prototype.trinityTitle":"BaloWaci Trinity","prototype.trinityBody":"Ramz YAH. Trinity yuzhir al-waqt al-adi, waqt 24 saah, wal-waqt al-thaqafi maan lifahm nafs al-lahzah bithalath turuq.","prototype.axisTitle":"BaloWaci Axis","prototype.axisBody":"Ramz WEH. Axis yashrah al-ittijah, al-harakah, wal-tarkiz al-shakhsi mithl buslat waqt.","prototype.worldsyncTitle":"BaloWaci WorldSync","prototype.worldsyncBody":"Ramz YEH. WorldSync yadayuk takhtar madinah, tara waqtaha mubasharatan, watafham kayf tasharik al-amakin al-mukhtalifah nafs al-lahzah.","prototype.languageTitle":"Lughat Trinity","prototype.mainDialLabel":"Al-mina al-raisi","prototype.mainDialBody":"Al-wajh al-taqlidi yajaal al-waqt sahl al-qiraah bisurah.","prototype.secondRingLabel":"Halqat al-waqt al-thaniyah","prototype.secondRingBody":"Al-halqa al-dakhiliyah tusaid ala qiraat namat waqt akhar fi nafs al-nazarah.","prototype.subdialsLabel":"Minaat musaadah","prototype.subdialsBody":"Al-minaat al-saghirah tudaam qiraat thaqafiyah, alamiyah, wa 24 saah.","prototype.materialLabel":"Al-mawad","prototype.materialBody":"Al-maadin al-daakinah, tafasil al-dhahab, wal-zujaj al-azraq tajma lughat al-waqt.","artifact.directionBody":"Ramz wahid. Anzimah kathirah. Al-kharij yasbah ahda, wal-maana fi al-dakhil yanmu bi-umq.","artifact.obsidian":"Aswad obsidian","artifact.titanium":"Titanium masqul","artifact.gold":"Dhahab champagne","artifact.sapphire":"Zujaj sapphire mudakhkhan","vision.spiritTitle":"Al-ruh","vision.spiritBody":"Ramz hadii lil-harakah, al-salam, wal-tajaddud yurafiq tajribat al-waqt.","access.trinitySimulator":"Muhaki Trinity","access.viewStandardTime":"Ard al-waqt al-adi","access.viewCulturalTime":"Ard al-waqt al-thaqafi","access.viewMilitaryTime":"Ard waqt 24 saah","access.basicAnimations":"Harakat asasiyah","access.worldsyncBasic":"WorldSync asasi","access.selectCountries":"Ikhtar baad al-duwal","access.compareTimes":"Qarin al-awqat","access.basicWorldMap":"Kharitat alam asasiyah","access.founderStory":"Qissat al-muassis","access.balowaciJourney":"Rihlat BaloWaci","access.mission":"Al-risalah","access.song":"Al-sawt","access.websiteExperience":"Tajribat al-mawqie","premium.selectedCityTime":"Waqt al-madinah al-mukhtarah","premium.chooseCity":"Ikhtar madinah lil-muayanah.","premium.localComparisonLabel":"Muqaranah mahalliyah","premium.compareStart":"Ibda al-muayanah al-mumayyazah limuqaranat waqtik.","premium.timeInterpretationLabel":"Tafsir al-waqt","premium.locked":"Mughlaq","premium.featureTestLabel":"Ikhtibar miza mumayyazah","revenue.physicalWatches":"1. Saat madiyah","revenue.largestSource":"Akbar masdar dakhl","revenue.premiumObjects":"Trinity, Axis, wa WorldSync tusbih ashya mumayyazah","revenue.limitedEditions":"2. Isdarat mahdudah","revenue.profitMargins":"Aala hawamish ribh","revenue.scarcity":"Nudrah, rumuz, shahadat, wa makanat malik","revenue.foundersClub":"3. Nadi al-muassisin","revenue.membership":"Udwiyah fakhimah mutakarrirah","revenue.privateUpdates":"Tahdithat khassah wa wusul mubakkir","revenue.premiumWorldsync":"4. WorldSync mumayyaz","revenue.softwareRevenue":"Dakhl baramij qabil lil-tawassu","revenue.dashboards":"Lawhat, amakin mahfuzah, mukhattit ijtimaat, wa tahlilat","revenue.licensing":"5. Tarkhis","revenue.upside":"Imkaniyah tawilah al-ajal kabirah","revenue.partners":"Taqniyat tafsir waqt BaloWaci lil-shuraka","footer.privacy":"Al-khususiyah","footer.userAgreement":"Ittifaqiyat al-mustakhdim","footer.terms":"Al-shurut","footer.legal":"Qanuni","revenue.freeAppUser":"Mustakhdim al-tatbiq al-majjani","revenue.freeAppUserBody":"Yuhibb al-nizam.","revenue.premiumUser":"Mustakhdim mumayyaz","revenue.premiumUserBody":"Yahfaz al-amakin wa yastakhdim WorldSync yawmiyan.","revenue.foundersClubShort":"Nadi al-muassisin","revenue.foundersClubBody":"Yahsil ala wusul khass wa tahdithat al-namadhij.","revenue.trinityOwner":"Malik Trinity","revenue.trinityOwnerBody":"Yamlik ramz YAH.","revenue.axisOwner":"Malik Axis","revenue.axisOwnerBody":"Yamlik ramz WEH.","revenue.worldsyncOwner":"Malik WorldSync","revenue.worldsyncOwnerBody":"Yamlik ramz YEH.","revenue.collector":"Jami","revenue.collectorBody":"Yajma isdarat mahdudah wa isdarat mustaqbaliyah.","revenue.paymentStep":"Al-khutwah al-taliyah lil-daf: wasl Stripe aw PayPal aw Gumroad hatta tusbih al-bitaqat al-mumayyazah al-mughlaqah masarat daf haqiqiyah."});
     Object.entries(finalNonSwahiliLanguageCleanup).forEach(([language, entries]) => { Object.assign(translations[language] || (translations[language] = {}), entries); });
+
+
+        const finalHeroSloganTranslations = {"en":"Everything Moving Together In Time","sw":"Kila kitu kinasonga pamoja katika wakati","es":"Todo se mueve junto en el tiempo","pt":"Tudo se move junto no tempo","fr":"Tout bouge ensemble dans le temps","zh":"\u4e00\u5207\u90fd\u5728\u65f6\u95f4\u4e2d\u5171\u540c\u79fb\u52a8","ar":"\u0643\u0644 \u0634\u064a\u0621 \u064a\u062a\u062d\u0631\u0643 \u0645\u0639\u0627 \u0641\u064a \u0627\u0644\u0648\u0642\u062a"};
+    Object.entries(finalHeroSloganTranslations).forEach(([language, value]) => { Object.assign(translations[language] || (translations[language] = {}), { 'hero.slogan': value }); });
+
+
 
 
     function t(key) {
