@@ -4732,6 +4732,20 @@
       max-width: 560px;
     }
 
+
+
+    .hero::before,
+    .home::before,
+    .worldsync-section::before,
+    #hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.08);
+      pointer-events: none;
+      z-index: 0;
+    }
+
     #hero .hero-interface-copy h1 {
       font-size: clamp(4.2rem, 7.2vw, 7.8rem);
     }
